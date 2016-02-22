@@ -1,0 +1,4 @@
+.gradle/
+.idea/workspace.xml
+.idea/libraries/Gradle__*
+.idea/gradle.xml

@@ -1,0 +1,57 @@
+{
+  "texture": "skin.png",
+  "fonts": {
+    "default": "fonts/roboto_light_bold_9.fnt",
+    "bold": "fonts/roboto_medium_bold_9.fnt",
+    "fontawesome": "fonts/fontawesome_11.fnt"
+  },
+  "colors": {
+    "background": "0x323334"
+  },
+  "patches": {
+    "spinner.background_normal": {
+      "region": [197, 1, 24, 21],
+      "split": [4, 16, 2, 2]
+    },
+    "spinner.background_edit": {
+      "region": [170, 1, 24, 21],
+      "split": [4, 16, 2, 2]
+    },
+    "collapsible_panel.background": {
+      "region": [224, 1, 19, 31],
+      "split": [4, 4, 22, 4]
+    },
+    "checkbox.background": {
+      "region": [223, 1, 14, 15],
+      "split": [4, 4, 5, 4]
+    },
+    "checkbox.mark": {
+      "region": [239, 1, 14, 15],
+      "split": [1, 1, 1, 1]
+    },
+    "button.background_normal": {
+      "region": [168, 22, 20, 21],
+      "split": [4, 4, 4, 4]
+    },
+    "button.background_hovered": {
+      "region": [190, 22, 20, 21],
+      "split": [4, 4, 4, 4]
+    },
+    "button.background_armed": {
+      "region": [212, 22, 20, 21],
+      "split": [4, 4, 4, 4]
+    },
+    "textfield.background_normal": {
+      "region": [120, 23, 20, 21],
+      "split": [4, 4, 4, 4]
+    },
+    "textfield.background_hovered": {
+      "region": [120, 23, 20, 21],
+      "split": [4, 4, 4, 4]
+    },
+    "textfield.background_focused": {
+      "region": [120, 23, 20, 21],
+      "split": [4, 4, 4, 4]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+package com.katzstudio.kreativity.ui.listener;
+
+import com.katzstudio.kreativity.ui.event.KrKeyEvent;
+
+/**
+ * Listener for keyboard events.
+ */
+public interface KrKeyboardListener {
+
+    void keyPressed(KrKeyEvent event);
+
+    void keyReleased(KrKeyEvent event);
+}
