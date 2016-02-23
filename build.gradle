@@ -1,8 +1,13 @@
-group = "com.katzstudio"
-version = "1.0.0"
+plugins {
+    id "org.sonarqube" version "1.2"
+}
 
 apply plugin: "java"
 apply plugin: "idea"
+
+group = "com.katzstudio"
+
+version = "1.0.0"
 
 compileJava {
     sourceCompatibility = 1.8
