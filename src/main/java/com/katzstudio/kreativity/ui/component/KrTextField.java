@@ -161,7 +161,7 @@ public class KrTextField extends KrWidget {
         }
 
         public void moveCaretRight() {
-            caretPosition = Math.max(text.length(), caretPosition);
+            caretPosition = Math.min(text.length(), caretPosition + 1);
         }
 
         public void moveCaretHome() {
@@ -204,9 +204,11 @@ public class KrTextField extends KrWidget {
         }
 
         public void moveCaretNextWord() {
+            caretPosition = findNextWord(caretPosition, text);
         }
 
         public void moveCaretPreviousWord() {
+            caretPosition = findPreviousWord(caretPosition, text);
         }
 
         public void setCaretPosition(int caretPosition) {
@@ -217,6 +219,34 @@ public class KrTextField extends KrWidget {
         }
 
         public void redo() {
+        }
+
+        private static int findNextWord(int startPosition, String text) {
+            boolean foundWhitespace = false;
+            boolean done = false;
+            while (startPosition < text.length() && !done) {
+                if (text.charAt(startPosition) != ' ' && foundWhitespace) {
+                    done = true;
+                } else {
+                    foundWhitespace = text.charAt(startPosition) == ' ';
+                    startPosition += 1;
+                }
+            }
+            return startPosition;
+        }
+
+        private static int findPreviousWord(int startPosition, String text) {
+            boolean foundNonWhitespace = false;
+            boolean done = false;
+            while (startPosition > 0 && !done) {
+                if (text.charAt(startPosition - 1) == ' ' && foundNonWhitespace) {
+                    done = true;
+                } else {
+                    foundNonWhitespace = text.charAt(startPosition - 1) != ' ';
+                    startPosition -= 1;
+                }
+            }
+            return startPosition;
         }
     }
 

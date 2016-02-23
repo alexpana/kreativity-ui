@@ -55,6 +55,7 @@ public class TextDocumentTest {
 
         document.setCaretPosition(100);
         assertThat(document.getCaretPosition(), is(10));
-
     }
+
+    // TODO(alex): implement tests for undo / redo actions
 }
