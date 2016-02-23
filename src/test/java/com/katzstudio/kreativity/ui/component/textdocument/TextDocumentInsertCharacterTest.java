@@ -2,7 +2,6 @@ package com.katzstudio.kreativity.ui.component.textdocument;
 
 import com.katzstudio.kreativity.ui.component.KrTextField.TextDocument;
 import lombok.RequiredArgsConstructor;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -29,7 +28,6 @@ public class TextDocumentInsertCharacterTest {
     private final String expectedResult;
 
     @Test
-    @Ignore(value = "Features are not implemented yet.")
     public void testInsertCharacter() throws Exception {
         TextDocument document = new TextDocument();
         document.setText(originalText);

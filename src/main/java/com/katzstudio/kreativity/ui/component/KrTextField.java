@@ -125,12 +125,13 @@ public class KrTextField extends KrWidget {
             this.caretPosition = 0;
         }
 
-        public void insertText(String text) {
-            deleteSelection();
+        public void insertText(char charater) {
+            insertText(String.valueOf(charater));
         }
 
-        public void insertText(char charater) {
+        public void insertText(String text) {
             deleteSelection();
+            this.text = this.text.substring(0, caretPosition) + text + this.text.substring(caretPosition);
         }
 
         public void deleteSelection() {
@@ -209,7 +210,7 @@ public class KrTextField extends KrWidget {
         }
 
         public void setCaretPosition(int caretPosition) {
-            caretPosition = Math.max(0, Math.min(caretPosition, text.length()));
+            this.caretPosition = Math.max(0, Math.min(caretPosition, text.length()));
         }
 
         public void undo() {

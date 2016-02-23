@@ -43,12 +43,18 @@ public class TextDocumentTest {
     }
 
     @Test
-    public void testDeleteSelection() throws Exception {
+    public void testSetCaretPosition() throws Exception {
         TextDocument document = new TextDocument();
         document.setText("0123456789");
 
-        // "012.34567.89"
-        document.setSelection(3, 8);
-        document.deleteSelection();
+        document.setCaretPosition(3);
+        assertThat(document.getCaretPosition(), is(3));
+
+        document.setCaretPosition(-3);
+        assertThat(document.getCaretPosition(), is(0));
+
+        document.setCaretPosition(100);
+        assertThat(document.getCaretPosition(), is(10));
+
     }
 }
