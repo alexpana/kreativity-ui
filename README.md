@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/alexpana/kreativity-ui.svg?branch=master)](https://travis-ci.org/alexpana/kreativity-ui)
+
 Kreativity UI
 =============
 
