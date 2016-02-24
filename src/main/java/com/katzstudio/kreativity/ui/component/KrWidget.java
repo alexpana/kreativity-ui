@@ -57,7 +57,7 @@ public class KrWidget {
 
     @Getter @Setter private String name;
 
-    @Getter @Setter private KrPadding padding = new KrPadding(0, 0, 0, 0);
+    @Getter @Setter private KrPadding padding = new KrPadding(0);
 
     @Setter private KrCanvas canvas;
 

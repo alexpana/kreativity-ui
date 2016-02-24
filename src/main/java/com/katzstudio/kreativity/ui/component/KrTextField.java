@@ -33,7 +33,7 @@ public class KrTextField extends KrWidget {
     public KrTextField() {
         textDocument = new TextDocument();
         setStyle(KreativitySkin.instance().getTextFieldStyle());
-        setPadding(new KrPadding(4, 4, 0, 0));
+        setPadding(new KrPadding(0, 4));
     }
 
     @Override
@@ -61,11 +61,19 @@ public class KrTextField extends KrWidget {
         }
 
         if (event.getKeycode() == Input.Keys.LEFT) {
-            textDocument.moveCaretLeft();
+            if (event.isCtrlDown()) {
+                textDocument.moveCaretNextWord();
+            } else {
+                textDocument.moveCaretLeft();
+            }
         }
 
         if (event.getKeycode() == Input.Keys.RIGHT) {
-            textDocument.moveCaretRight();
+            if (event.isCtrlDown()) {
+                textDocument.moveCaretPreviousWord();
+            } else {
+                textDocument.moveCaretRight();
+            }
         }
 
         if (event.getKeycode() == Input.Keys.HOME) {
@@ -94,6 +102,8 @@ public class KrTextField extends KrWidget {
 
         renderer.renderDrawable(background, getX(), getY(), getWidth(), getHeight());
 
+        computeTextOffset();
+
         // render text
         String text = textDocument.getText();
         Rectangle textBounds = metrics(style.font).bounds(text);
@@ -106,6 +116,11 @@ public class KrTextField extends KrWidget {
         float caretX = textPosition.x + metrics(style.font).bounds(text.substring(0, caretPosition)).getWidth() + 1;
         renderer.setForeground(style.caretColor);
         renderer.renderLine(caretX, getY() + 4, caretX, getY() + 15);
+    }
+
+    private void computeTextOffset() {
+        Rectangle visibleTextArea; // to be determined
+        float caretXPosition = getX() + textOffset + metrics(style.font).bounds(textDocument.getTextBeforeCaret()).width;
     }
 
     public static class TextDocument {
@@ -213,6 +228,10 @@ public class KrTextField extends KrWidget {
 
         public void setCaretPosition(int caretPosition) {
             this.caretPosition = Math.max(0, Math.min(caretPosition, text.length()));
+        }
+
+        public String getTextBeforeCaret() {
+            return text.substring(0, caretPosition);
         }
 
         public void undo() {

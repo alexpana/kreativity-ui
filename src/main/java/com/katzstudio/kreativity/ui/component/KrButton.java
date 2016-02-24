@@ -42,7 +42,7 @@ public class KrButton extends KrWidget {
     public KrButton(String text) {
         this.text = text;
         setStyle(KreativitySkin.instance().getButtonStyle());
-        setPadding(new KrPadding(4, 4, 5, 5));
+        setPadding(new KrPadding(5, 4));
         setTextAlignment(KrAlignment.MIDDLE_CENTER);
         setSize(getSelfPreferredSize());
     }

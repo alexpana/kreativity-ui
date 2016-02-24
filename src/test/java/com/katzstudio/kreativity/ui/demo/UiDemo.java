@@ -61,7 +61,7 @@ public class UiDemo extends Game {
 
         // Labels
         KrLabel labelA = new KrLabel("Hello Word");
-        labelA.setPadding(new KrPadding(3, 3, 5, 5));
+        labelA.setPadding(new KrPadding(5, 3));
         labelA.setPosition(10, 10);
         labelA.setSize(labelA.getPreferredSize());
 
