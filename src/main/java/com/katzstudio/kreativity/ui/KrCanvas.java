@@ -123,6 +123,7 @@ public class KrCanvas implements InputProcessor {
 
         // only dispatch visible keys
         if (ignoreNextKeyTyped) {
+            ignoreNextKeyTyped = false;
             return true;
         }
 
