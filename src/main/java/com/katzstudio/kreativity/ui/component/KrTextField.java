@@ -157,6 +157,7 @@ public class KrTextField extends KrWidget {
 
             text = text.substring(0, selectionBegin) + text.substring(selectionEnd);
             caretPosition = selectionBegin;
+            clearSelection();
         }
 
         public boolean hasSelection() {
@@ -168,9 +169,26 @@ public class KrTextField extends KrWidget {
         }
 
         public void deleteCharBeforeCaret() {
+            if (hasSelection()) {
+                deleteSelection();
+                return;
+            }
+
+            if (caretPosition > 0) {
+                text = text.substring(0, caretPosition - 1) + text.substring(caretPosition);
+                caretPosition = caretPosition - 1;
+            }
         }
 
         public void deleteCharAfterCaret() {
+            if (hasSelection()) {
+                deleteSelection();
+                return;
+            }
+
+            if (caretPosition < text.length()) {
+                text = text.substring(0, caretPosition) + text.substring(caretPosition + 1);
+            }
         }
 
         public void moveCaretLeft() {
