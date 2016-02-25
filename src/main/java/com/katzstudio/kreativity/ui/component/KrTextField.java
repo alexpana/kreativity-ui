@@ -7,12 +7,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.AlignmentTool;
+import com.katzstudio.kreativity.ui.FontMetrics;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KrRenderer;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -104,16 +105,26 @@ public class KrTextField extends KrWidget {
 
         computeTextOffset();
 
-        // render text
+        FontMetrics metrics = metrics(style.font);
         String text = textDocument.getText();
-        Rectangle textBounds = metrics(style.font).bounds(text);
+        Rectangle textBounds = metrics.bounds(text);
         Vector2 textPosition = AlignmentTool.alignRectangles(textBounds, getGeometry(), KrAlignment.MIDDLE_LEFT);
         textPosition.x += getPadding().left + textOffset;
+
+        // render selection
+        if (textDocument.hasSelection()) {
+            float selectionStartX = textPosition.x + metrics.bounds(text.substring(0, textDocument.getSelectionBegin())).getWidth();
+            float selectionEndX = textPosition.y + metrics.bounds(text.substring(0, textDocument.selectionEnd)).getWidth();
+
+            // TODO(alex): use a brush to draw the selection rectangle
+        }
+
+        // render text
         renderer.renderText(text, textPosition);
 
         // render caret
         int caretPosition = textDocument.getCaretPosition();
-        float caretX = textPosition.x + metrics(style.font).bounds(text.substring(0, caretPosition)).getWidth() + 1;
+        float caretX = textPosition.x + metrics.bounds(text.substring(0, caretPosition)).getWidth() + 1;
         renderer.setForeground(style.caretColor);
         renderer.renderLine(caretX, getY() + 4, caretX, getY() + 15);
     }

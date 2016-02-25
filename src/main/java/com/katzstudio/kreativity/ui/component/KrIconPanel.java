@@ -3,8 +3,8 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.FontAwesomeGlyph;
-import com.katzstudio.kreativity.ui.KrRenderer;
 import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 import lombok.Setter;
 

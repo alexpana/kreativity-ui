@@ -1,11 +1,11 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrRenderer;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import org.junit.Before;
 import org.junit.Test;
 

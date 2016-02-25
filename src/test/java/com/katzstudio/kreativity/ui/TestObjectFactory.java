@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;

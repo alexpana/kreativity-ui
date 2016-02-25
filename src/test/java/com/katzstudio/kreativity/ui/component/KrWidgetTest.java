@@ -1,7 +1,7 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrRenderer;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import org.junit.Test;
 
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createCanvas;

@@ -2,10 +2,10 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrRenderer;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.Model;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

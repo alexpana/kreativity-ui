@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui;
+package com.katzstudio.kreativity.ui.render;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -31,6 +31,8 @@ public class KrRenderer {
     private final ShapeRenderer shapeRenderer;
 
     private boolean isSpriteBatchOpen = false;
+
+    // TODO(alex): Add support for brush / pen to be used when rendering shapes
 
     public KrRenderer() {
         spriteBatch = new SpriteBatch(100);
@@ -74,6 +76,10 @@ public class KrRenderer {
         shapeRenderer.setColor(foregroundColor);
         shapeRenderer.line(x1, viewportSize.y - y1, x2, viewportSize.y - y2);
         shapeRenderer.end();
+    }
+
+    public void renderRectangle(float x1, float y1, float w, float h) {
+        // TODO(alex): implement
     }
 
     public void setFont(BitmapFont font) {
