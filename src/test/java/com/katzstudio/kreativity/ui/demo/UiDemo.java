@@ -32,6 +32,7 @@ public class UiDemo extends Game {
     private static Drawable RED_DRAWABLE;
 
     private KrCanvas canvas;
+
     private SpriteBatch spriteBatch;
 
     public static void main(String[] args) {

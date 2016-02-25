@@ -147,13 +147,16 @@ public class KrTextField extends KrWidget {
         public void insertText(String text) {
             deleteSelection();
             this.text = this.text.substring(0, caretPosition) + text + this.text.substring(caretPosition);
+            caretPosition += text.length();
         }
 
         public void deleteSelection() {
             if (!hasSelection()) {
                 return;
             }
+
             text = text.substring(0, selectionBegin) + text.substring(selectionEnd);
+            caretPosition = selectionBegin;
         }
 
         public boolean hasSelection() {
@@ -177,14 +180,27 @@ public class KrTextField extends KrWidget {
 
         public void moveCaretRight() {
             caretPosition = Math.min(text.length(), caretPosition + 1);
+            syncSelectionFromCursor();
         }
 
         public void moveCaretHome() {
             caretPosition = 0;
+            syncSelectionFromCursor();
         }
 
         public void moveCaretEnd() {
             caretPosition = text.length();
+            syncSelectionFromCursor();
+        }
+
+        public void moveCaretNextWord() {
+            caretPosition = findNextWord(caretPosition, text);
+            syncSelectionFromCursor();
+        }
+
+        public void moveCaretPreviousWord() {
+            caretPosition = findPreviousWord(caretPosition, text);
+            syncSelectionFromCursor();
         }
 
         public void beginSelection() {
@@ -216,14 +232,6 @@ public class KrTextField extends KrWidget {
             if (isSelecting) {
                 selectionEnd = caretPosition;
             }
-        }
-
-        public void moveCaretNextWord() {
-            caretPosition = findNextWord(caretPosition, text);
-        }
-
-        public void moveCaretPreviousWord() {
-            caretPosition = findPreviousWord(caretPosition, text);
         }
 
         public void setCaretPosition(int caretPosition) {
