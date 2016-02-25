@@ -47,6 +47,8 @@ public class KrCanvas implements InputProcessor {
 
     private boolean isShiftDown = false;
 
+    private boolean ignoreNextKeyTyped = false;
+
     public KrCanvas() {
         this(new KrRenderer(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -108,6 +110,7 @@ public class KrCanvas implements InputProcessor {
         }
 
         // only dispatch special keys
+        ignoreNextKeyTyped = true;
         KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, keycode);
         return dispatchEvent(keyboardFocusHolder, keyEvent);
     }
@@ -119,7 +122,7 @@ public class KrCanvas implements InputProcessor {
         }
 
         // only dispatch visible keys
-        if (character == '\u0000') {
+        if (ignoreNextKeyTyped) {
             return true;
         }
 
