@@ -1,10 +1,13 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +16,7 @@ import static com.katzstudio.kreativity.ui.TestObjectFactory.createButtonStyle;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -39,7 +43,7 @@ public class KrButtonTest {
     public void testDrawSimple() throws Exception {
         button.drawSelf(renderer);
         verifyRendererCalledWithDrawable(buttonStyle.backgroundNormal);
-        verify(renderer).drawText(eq("button"), any(Float.class), any(Float.class));
+        verify(renderer).drawTextWithShadow(eq("button"), any(Vector2.class), eq(Vector2.Zero), eq(Color.BLACK));
     }
 
     @Test
@@ -90,6 +94,7 @@ public class KrButtonTest {
         button.handle(new KrMouseEvent(KrMouseEvent.Type.PRESSED, KrMouseEvent.Button.LEFT, null, null));
         button.drawSelf(renderer);
         verifyRendererCalledWithDrawable(buttonStyle.backgroundArmed);
+        reset(renderer);
 
         button.handle(new KrExitEvent());
         button.drawSelf(renderer);
@@ -97,6 +102,7 @@ public class KrButtonTest {
     }
 
     public void verifyRendererCalledWithDrawable(Drawable drawable) {
-        verify(renderer).renderDrawable(eq(drawable), any(Float.class), any(Float.class), any(Float.class), any(Float.class));
+        verify(renderer).setBrush(eq(new KrDrawableBrush(drawable)));
+        verify(renderer).fillRect(any(Float.class), any(Float.class), any(Float.class), any(Float.class));
     }
 }

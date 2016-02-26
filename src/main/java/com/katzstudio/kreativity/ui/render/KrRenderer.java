@@ -143,10 +143,6 @@ public class KrRenderer {
         drawable.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
     }
 
-    public void renderRectangle(float x1, float y1, float w, float h) {
-        // TODO(alex): implement
-    }
-
     public void translate(float x, float y) {
         this.translation.add(x, y);
     }
