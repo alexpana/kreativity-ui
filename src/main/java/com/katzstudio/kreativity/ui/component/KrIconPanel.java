@@ -30,6 +30,6 @@ public class KrIconPanel extends KrWidget {
     protected void drawSelf(KrRenderer renderer) {
         final BitmapFont.TextBounds bounds = KreativitySkin.instance().getFontAwesome().getBounds(iconGlyph.getRepresentation());
         renderer.setFont(KreativitySkin.instance().getFontAwesome());
-        renderer.renderText(iconGlyph.getRepresentation(), getX() + (getWidth() - bounds.width) / 2, getY() + getHeight() + (getHeight() - bounds.height) / 2);
+        renderer.drawText(iconGlyph.getRepresentation(), getX() + (getWidth() - bounds.width) / 2, getY() + getHeight() + (getHeight() - bounds.height) / 2);
     }
 }

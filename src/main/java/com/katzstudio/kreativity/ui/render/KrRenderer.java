@@ -12,25 +12,29 @@ import com.badlogic.gdx.utils.Pools;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The {@link KrRenderer} class takes care of rendering various parts of the interface.
+ * <p>
+ * It can render geometric shapes, images and text. All UI components call
+ * the renderer to paint their graphical representation
+ */
 public class KrRenderer {
 
     private final SpriteBatch spriteBatch;
 
-    private BitmapFont font;
+    private final ShapeRenderer shapeRenderer;
 
-    private Color foregroundColor;
-
-    @Getter @Setter private Vector2 viewportSize;
+    @Setter private BitmapFont font;
 
     private Vector2 translation;
 
-    private Vector2 textShadowOffset;
-
-    private Color textShadowColor;
-
-    private final ShapeRenderer shapeRenderer;
-
     private boolean isSpriteBatchOpen = false;
+
+    @Getter @Setter private Vector2 viewportSize;
+
+    @Getter @Setter private KrBrush brush;
+
+    @Getter @Setter private KrPen pen;
 
     // TODO(alex): Add support for brush / pen to be used when rendering shapes
 
@@ -39,8 +43,6 @@ public class KrRenderer {
         shapeRenderer = new ShapeRenderer(100);
         shapeRenderer.setAutoShapeType(true);
         translation = Vector2.Zero;
-        textShadowOffset = Vector2.Zero;
-        textShadowColor = Color.BLACK;
     }
 
     public void beginFrame() {
@@ -51,19 +53,89 @@ public class KrRenderer {
         ensureClosed();
     }
 
-    public void renderText(String text, Vector2 position) {
-        renderText(text, position.x, position.y);
+    public void drawText(String text, Vector2 position) {
+        drawText(text, position.x, position.y);
     }
 
-    public void renderText(String text, float x, float y) {
+    public void drawText(String text, float x, float y) {
         ensureSpriteBatchOpen();
-        if (textShadowOffset.x != 0 || textShadowOffset.y != 0) {
-            font.setColor(textShadowColor);
-            font.draw(spriteBatch, text, x + textShadowOffset.x, viewportSize.y - y - textShadowOffset.y);
+
+        Color originalFontColor = font.getColor();
+
+        font.setColor(pen.getColor());
+        font.draw(spriteBatch, text, x, viewportSize.y - y);
+
+        font.setColor(originalFontColor);
+    }
+
+    public void drawTextWithShadow(String text, Vector2 position, Vector2 shadowOffset, Color shadowColor) {
+        if (shadowOffset.equals(Vector2.Zero)) {
+            drawText(text, position);
+            return;
         }
 
-        font.setColor(foregroundColor);
-        font.draw(spriteBatch, text, x, viewportSize.y - y);
+        Color originalFontColor = font.getColor();
+
+        ensureSpriteBatchOpen();
+
+        // render shadow
+        font.setColor(shadowColor);
+        font.draw(spriteBatch, text, position.x + shadowOffset.x, viewportSize.y - position.y - shadowOffset.y);
+
+        // render text
+        font.setColor(pen.getColor());
+        font.draw(spriteBatch, text, position.x, viewportSize.y - position.y);
+
+        font.setColor(originalFontColor);
+    }
+
+    public void drawRect(Rectangle rectangle) {
+        drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+
+    public void drawRect(float x, float y, float w, float h) {
+        ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(pen.getColor());
+
+        drawLineInternal(x, y, x + w, y);
+        drawLineInternal(x, y, x, y + h);
+        drawLineInternal(x + w, y, x + w, y + h);
+        drawLineInternal(x, y + h, x + w, y + h);
+
+        shapeRenderer.end();
+    }
+
+
+    public void drawLine(float x1, float y1, float x2, float y2) {
+        ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(pen.getColor());
+        drawLineInternal(x1, y1, x2, y2);
+        shapeRenderer.end();
+    }
+
+    private void drawLineInternal(float x1, float y1, float x2, float y2) {
+        shapeRenderer.line(x1, viewportSize.y - y1, x2, viewportSize.y - y2);
+    }
+
+    public void fillRect(Rectangle rectangle) {
+        fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+
+    public void fillRect(float x, float y, float w, float h) {
+        if (brush instanceof KrDrawableBrush) {
+            KrDrawableBrush drawableBrush = (KrDrawableBrush) brush;
+            ensureSpriteBatchOpen();
+            drawableBrush.getDrawable().draw(spriteBatch, x, viewportSize.y - y - h, w, h);
+        }
+
+        if (brush instanceof KrColorBrush) {
+            KrColorBrush colorBrush = (KrColorBrush) brush;
+
+            ensureShapeRendererOpen(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(colorBrush.getColor());
+            shapeRenderer.rect(x, viewportSize.y - y, w, h);
+            shapeRenderer.end();
+        }
     }
 
     public void renderDrawable(Drawable drawable, float x, float y, float w, float h) {
@@ -71,32 +143,12 @@ public class KrRenderer {
         drawable.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
     }
 
-    public void renderLine(float x1, float y1, float x2, float y2) {
-        ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(foregroundColor);
-        shapeRenderer.line(x1, viewportSize.y - y1, x2, viewportSize.y - y2);
-        shapeRenderer.end();
-    }
-
     public void renderRectangle(float x1, float y1, float w, float h) {
         // TODO(alex): implement
     }
 
-    public void setFont(BitmapFont font) {
-        this.font = font;
-    }
-
-    public void setForeground(Color foregroundColor) {
-        this.foregroundColor = foregroundColor;
-    }
-
     public void translate(float x, float y) {
         this.translation.add(x, y);
-    }
-
-    public void setTextShadow(Vector2 shadowOffset, Color shadowColor) {
-        this.textShadowOffset = shadowOffset;
-        this.textShadowColor = shadowColor;
     }
 
     public boolean beginClip(float x, float y, float width, float height) {

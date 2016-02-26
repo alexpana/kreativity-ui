@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.Model;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,10 +63,12 @@ public class KrCheckbox extends KrWidget {
     @Override
     protected void drawSelf(KrRenderer renderer) {
         // TODO(alex): add support for text
-        renderer.renderDrawable(style.background, getX(), getY(), getWidth(), getHeight());
+        renderer.setBrush(new KrDrawableBrush(style.background));
+        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
         if (isChecked) {
-            renderer.renderDrawable(style.mark, getX(), getY(), getWidth(), getHeight());
+            renderer.setBrush(new KrDrawableBrush(style.mark));
+            renderer.fillRect(getX(), getY(), getWidth(), getHeight());
         }
     }
 

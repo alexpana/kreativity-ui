@@ -14,6 +14,7 @@ import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.libgdx.LibGdxInputHelper;
+import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 
@@ -90,7 +91,7 @@ public class KrCanvas implements InputProcessor {
     public void draw() {
         renderer.beginFrame();
         renderer.setFont(KreativitySkin.instance().getDefaultFont());
-        renderer.setForeground(KreativitySkin.getColor(KreativitySkin.ColorKey.FOREGROUND));
+        renderer.setPen(new KrPen(1, KreativitySkin.getColor(KreativitySkin.ColorKey.FOREGROUND)));
         rootComponent.draw(renderer);
         renderer.endFrame();
     }

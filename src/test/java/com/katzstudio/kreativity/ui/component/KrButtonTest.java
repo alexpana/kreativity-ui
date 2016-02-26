@@ -39,7 +39,7 @@ public class KrButtonTest {
     public void testDrawSimple() throws Exception {
         button.drawSelf(renderer);
         verifyRendererCalledWithDrawable(buttonStyle.backgroundNormal);
-        verify(renderer).renderText(eq("button"), any(Float.class), any(Float.class));
+        verify(renderer).drawText(eq("button"), any(Float.class), any(Float.class));
     }
 
     @Test

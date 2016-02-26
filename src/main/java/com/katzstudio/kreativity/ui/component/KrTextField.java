@@ -13,6 +13,8 @@ import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
+import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -101,7 +103,8 @@ public class KrTextField extends KrWidget {
             background = style.backgroundFocused;
         }
 
-        renderer.renderDrawable(background, getX(), getY(), getWidth(), getHeight());
+        renderer.setBrush(new KrDrawableBrush(background));
+        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
         computeTextOffset();
 
@@ -120,13 +123,13 @@ public class KrTextField extends KrWidget {
         }
 
         // render text
-        renderer.renderText(text, textPosition);
+        renderer.drawText(text, textPosition);
 
         // render caret
         int caretPosition = textDocument.getCaretPosition();
         float caretX = textPosition.x + metrics.bounds(text.substring(0, caretPosition)).getWidth() + 1;
-        renderer.setForeground(style.caretColor);
-        renderer.renderLine(caretX, getY() + 4, caretX, getY() + 15);
+        renderer.setPen(new KrPen(1, style.caretColor));
+        renderer.drawLine(caretX, getY() + 4, caretX, getY() + 15);
     }
 
     private void computeTextOffset() {

@@ -13,6 +13,8 @@ import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
+import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -97,18 +99,18 @@ public class KrButton extends KrWidget {
     @Override
     protected void drawSelf(KrRenderer renderer) {
         Drawable background = getBackgroundForState(state);
-        renderer.renderDrawable(background, getX(), getY(), getWidth(), getHeight());
 
-        renderer.setForeground(style.foregroundColor);
-        renderer.setFont(style.font);
-        renderer.setTextShadow(style.textShadowOffset, style.textShadowColor);
+        renderer.setBrush(new KrDrawableBrush(background));
+        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
         BitmapFont.TextBounds bounds = style.font.getBounds(getText());
         Vector2 textPosition = AlignmentTool.alignRectangles(new Rectangle(0, 0, bounds.width, bounds.height), getGeometry(), getTextAlignment());
-
         Vector2 textOffset = state == State.ARMED ? new Vector2(0, 1) : Vector2.Zero;
+        textPosition.add(textOffset);
 
-        renderer.renderText(text, textPosition.x + textOffset.x, textPosition.y + textOffset.y);
+        renderer.setPen(new KrPen(1, style.foregroundColor));
+        renderer.setFont(style.font);
+        renderer.drawTextWithShadow(text, textPosition, style.textShadowOffset, style.textShadowColor);
     }
 
     @Override

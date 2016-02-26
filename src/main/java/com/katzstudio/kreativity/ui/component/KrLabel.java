@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
+import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,14 +40,15 @@ public class KrLabel extends KrWidget {
         renderer.beginClip(getX(), getY(), getWidth(), getHeight());
 
         Style style = getStyle();
-        renderer.renderDrawable(style.background, getX(), getY(), getWidth(), getHeight());
+        renderer.setBrush(new KrDrawableBrush(style.background));
+        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
         style.font.setColor(style.foregroundColor);
 
         renderer.setFont(style.font);
-        renderer.setForeground(style.foregroundColor);
+        renderer.setPen(new KrPen(1, style.foregroundColor));
 
-        renderer.renderText(text, getX() + getPadding().left, getY() + getPadding().top);
+        renderer.drawText(text, getX() + getPadding().left, getY() + getPadding().top);
 
         renderer.endClip();
     }
