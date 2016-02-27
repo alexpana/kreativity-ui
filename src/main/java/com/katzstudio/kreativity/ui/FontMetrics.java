@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The {@link FontMetrics} class offers detailed information about the size, position and offset
  * of the glyphs and text rendered with a specific font.
@@ -11,11 +14,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FontMetrics {
 
+    private final static Map<BitmapFont, FontMetrics> CACHE = new HashMap<>();
+
     private final BitmapFont bitmapFont;
 
     public static FontMetrics metrics(BitmapFont bitmapFont) {
-        // TODO(alex): since we only use less than 5 fonts, we should cache this
-        return new FontMetrics(bitmapFont);
+        if (!CACHE.containsKey(bitmapFont)) {
+            CACHE.put(bitmapFont, new FontMetrics(bitmapFont));
+        }
+        return CACHE.get(bitmapFont);
     }
 
     public Rectangle bounds(String text) {

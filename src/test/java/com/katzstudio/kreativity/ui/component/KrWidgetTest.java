@@ -1,13 +1,11 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.render.KrRenderer;
 import org.junit.Test;
 
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createCanvas;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link KrWidget}
@@ -63,7 +61,7 @@ public class KrWidgetTest {
 
         assertThat(widget.getCanvas(), is((KrCanvas) null));
 
-        KrCanvas canvas = new KrCanvas(mock(KrRenderer.class), 100, 100);
+        KrCanvas canvas = createCanvas();
         canvas.getRootComponent().add(widget);
         assertThat(widget.getCanvas(), is(canvas));
     }

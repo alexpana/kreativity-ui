@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.AlignmentTool;
 import com.katzstudio.kreativity.ui.FontMetrics;
 import com.katzstudio.kreativity.ui.KrAlignment;
-import com.katzstudio.kreativity.ui.KrColor;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
@@ -56,10 +55,33 @@ public class KrTextField extends KrWidget {
     protected boolean keyPressedEvent(KrKeyEvent event) {
         super.keyPressedEvent(event);
 
-        System.out.println("event.getValue() = " + event.getValue());
+        System.out.println("event.getKeycode() = " + event.getKeycode());
+
+        if (event.getKeycode() == Input.Keys.A && event.isCtrlDown()) {
+            textDocument.selectAll();
+            return true;
+        }
+
+        if (event.getKeycode() == Input.Keys.C && event.isCtrlDown()) {
+            getCanvas().getClipboard().setContents(textDocument.getSelectedText());
+            return true;
+        }
+
+        if (event.getKeycode() == Input.Keys.V && event.isCtrlDown()) {
+            textDocument.insertText(getCanvas().getClipboard().getContents());
+            return true;
+        }
 
         if (!event.getValue().equals("")) {
             textDocument.insertText(event.getValue());
+        }
+
+        if (event.isShiftDown() && !textDocument.hasSelection()) {
+            textDocument.beginSelection();
+        }
+
+        if (!event.isShiftDown()) {
+            textDocument.endSelection();
         }
 
         if (event.getKeycode() == Input.Keys.BACKSPACE) {
@@ -94,6 +116,9 @@ public class KrTextField extends KrWidget {
             textDocument.moveCaretEnd();
         }
 
+        System.out.println("textDocument.selectionBegin = " + textDocument.selectionBegin);
+        System.out.println("textDocument.selectionEnd = " + textDocument.selectionEnd);
+
         return true;
     }
 
@@ -122,11 +147,12 @@ public class KrTextField extends KrWidget {
         Rectangle textBounds = metrics.bounds(text);
         Vector2 textPosition = AlignmentTool.alignRectangles(textBounds, innerViewport, KrAlignment.MIDDLE_LEFT);
         textPosition.x = getX() + getPadding().left - textOffset;
+        textPosition.y += 1;
 
         // render selection
         if (textDocument.hasSelection()) {
-            Rectangle selectionRect = getSelectionRect();
-            renderer.setBrush(new KrColorBrush(KrColor.rgb(0x363d42)));
+            Rectangle selectionRect = getSelectionRect(textPosition.x);
+            renderer.setBrush(new KrColorBrush(style.selectionColor));
             renderer.fillRect(selectionRect);
         }
 
@@ -154,13 +180,20 @@ public class KrTextField extends KrWidget {
         return background;
     }
 
-    private Rectangle getSelectionRect() {
+    private Rectangle getSelectionRect(float textPositionX) {
 
-        // TODO(alex): proper implementation pls
-//        float selectionStartX = textPosition.x + metrics.bounds(text.substring(0, textDocument.getSelectionBegin())).getWidth();
-//        float selectionEndX = textPosition.y + metrics.bounds(text.substring(0, textDocument.selectionEnd)).getWidth();
+        FontMetrics metrics = metrics(style.font);
+        String text = textDocument.getText();
 
-        return new Rectangle(getX(), getY() + CARET_TOP_OFFSET, 45, CARET_HEIGHT);
+        float selectionStartX = textPositionX + metrics.bounds(text.substring(0, textDocument.getSelectionBegin())).getWidth();
+        float selectionEndX = textPositionX + metrics.bounds(text.substring(0, textDocument.selectionEnd)).getWidth();
+        float selectionWidth = selectionEndX - selectionStartX;
+
+        return new Rectangle(
+                selectionStartX,
+                getY() + CARET_TOP_OFFSET,
+                selectionWidth,
+                CARET_HEIGHT);
     }
 
     private void recalculateTextOffset() {
@@ -276,7 +309,7 @@ public class KrTextField extends KrWidget {
         }
 
         public void beginSelection() {
-            selectionBegin = caretPosition;
+            selectionBegin = selectionEnd = caretPosition;
             isSelecting = true;
         }
 
@@ -303,6 +336,8 @@ public class KrTextField extends KrWidget {
         private void syncSelectionFromCursor() {
             if (isSelecting) {
                 selectionEnd = caretPosition;
+            } else {
+                clearSelection();
             }
         }
 
@@ -347,6 +382,17 @@ public class KrTextField extends KrWidget {
             }
             return startPosition;
         }
+
+        public void selectAll() {
+            setSelection(0, text.length());
+        }
+
+        public String getSelectedText() {
+            if (selectionBegin > selectionEnd) {
+                return text.substring(selectionEnd, selectionBegin);
+            }
+            return text.substring(selectionBegin, selectionEnd);
+        }
     }
 
     @AllArgsConstructor
@@ -363,5 +409,7 @@ public class KrTextField extends KrWidget {
         public Color foregroundColor;
 
         public Color caretColor;
+
+        public Color selectionColor;
     }
 }

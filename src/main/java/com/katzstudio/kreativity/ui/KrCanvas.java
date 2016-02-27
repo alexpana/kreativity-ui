@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Clipboard;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
@@ -33,6 +34,8 @@ public class KrCanvas implements InputProcessor {
 
     @Getter private final KrPanel rootComponent;
 
+    @Getter private final Clipboard clipboard;
+
     private final KrRenderer renderer;
 
     @Getter private float width;
@@ -49,15 +52,14 @@ public class KrCanvas implements InputProcessor {
 
     private boolean isShiftDown = false;
 
-    private boolean ignoreNextKeyTyped = false;
-
     private int pressedKeyCode = 0;
 
     public KrCanvas() {
-        this(new KrRenderer(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this(new KrRenderer(), Gdx.app.getClipboard(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public KrCanvas(KrRenderer renderer, float width, float height) {
+    public KrCanvas(KrRenderer renderer, Clipboard clipboard, float width, float height) {
+        this.clipboard = clipboard;
         rootComponent = new KrPanel();
         rootComponent.setCanvas(this);
         this.renderer = renderer;
@@ -105,13 +107,15 @@ public class KrCanvas implements InputProcessor {
         isShiftDown = isShiftDown || isShift(keycode);
         pressedKeyCode = keycode;
 
+        System.out.println("KrCanvas  DOWN  keycode = " + keycode);
+
         return keyboardFocusHolder != null;
 
     }
 
     @Override
     public boolean keyTyped(char character) {
-        System.out.println("keyTyped character = " + character);
+        System.out.println("KrCanvas  TYPED  character = " + character);
 
         if (keyboardFocusHolder == null) {
             return false;
@@ -119,7 +123,7 @@ public class KrCanvas implements InputProcessor {
 
         // dispatch visible key
         if (LibGdxInputHelper.hasStringRepresentation(pressedKeyCode)) {
-            KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character);
+            KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character).toBuilder().keycode(pressedKeyCode).build();
             return dispatchEvent(keyboardFocusHolder, keyEvent);
         }
 

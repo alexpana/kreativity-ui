@@ -131,6 +131,7 @@ public class KrCanvasTest {
         canvas.requestFocus(widget);
         reset(widget);
 
+        canvas.keyDown(120);
         canvas.keyTyped('x');
 
         verify(widget).handle(eq(new KrKeyEvent(KrKeyEvent.Type.PRESSED, 120, "x")));

@@ -141,7 +141,8 @@ public class KreativitySkin {
                 drawablePatches.get("textfield.background_focused"),
                 defaultFont,
                 getColor(FOREGROUND),
-                getColor(FOREGROUND));
+                getColor(FOREGROUND),
+                KrColor.rgb(0x38466b));
     }
 
     private void loadCursors() {

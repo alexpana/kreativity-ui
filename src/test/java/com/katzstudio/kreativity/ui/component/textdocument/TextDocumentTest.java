@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(JUnitParamsRunner.class)
 public class TextDocumentTest {
     @Test
-    public void testSetText() throws Exception {
+    public void testSetText() {
         TextDocument textDocument = new TextDocument();
 
         textDocument.setText("you shall not pass!");
@@ -23,7 +23,7 @@ public class TextDocumentTest {
     }
 
     @Test
-    public void testCaretNavigation() throws Exception {
+    public void testCaretNavigation() {
         TextDocument textDocument = new TextDocument();
         textDocument.setText("0123456789");
 
@@ -48,7 +48,7 @@ public class TextDocumentTest {
 
     @Test
     @Parameters
-    public void testSetCaretPosition(Integer caretPosition, Integer expectedPosition) throws Exception {
+    public void testSetCaretPosition(Integer caretPosition, Integer expectedPosition) {
         TextDocument document = new TextDocument();
         document.setText("0123456789");
 
@@ -111,6 +111,65 @@ public class TextDocumentTest {
                 {5, 10, 5, "01234"},
                 {5, 9, 5, "012349"},
         };
+    }
+
+    @Test
+    public void testDeselectOnCaretMove() {
+        TextDocument document = new TextDocument();
+        document.setText("something");
+        document.setSelection(2, 4);
+
+        document.moveCaretHome();
+        assertThat(document.hasSelection(), is(false));
+    }
+
+    @Test
+    public void testBeginSelection() {
+        TextDocument document = new TextDocument();
+        document.setText("something");
+
+        document.setCaretPosition(4);
+        document.beginSelection();
+        assertThat(document.getSelectionBegin(), is(4));
+        assertThat(document.getSelectionEnd(), is(4));
+    }
+
+    @Test
+    public void testGetSelectedText() {
+        TextDocument document = new TextDocument();
+        document.setText("0123456789");
+        document.setSelection(2, 6);
+        assertThat(document.getSelectedText(), is("2345"));
+    }
+
+    @Test
+    public void testGetSelectedTextWithReverseSelection() {
+        TextDocument document = new TextDocument();
+        document.setText("0123456789");
+        document.setSelection(6, 2);
+        assertThat(document.getSelectedText(), is("2345"));
+    }
+
+    @Test
+    public void testInsertAfterSelecting() {
+        TextDocument document = new TextDocument();
+        document.setText("0123456789");
+        document.setSelection(2, 6);
+
+        document.insertText("something");
+
+        assertThat(document.getText(), is("01something6789"));
+    }
+
+    @Test
+    public void testInsertAfterSelectingAll() {
+        TextDocument document = new TextDocument();
+        document.setText("0123456789");
+        document.setSelection(0, 10);
+
+        document.insertText("something");
+
+        assertThat(document.getText(), is("something"));
     }
 
     // TODO(alex): implement tests for undo / redo actions
