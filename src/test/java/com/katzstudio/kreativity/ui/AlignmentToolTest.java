@@ -17,7 +17,7 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @RunWith(Parameterized.class)
-public class KrAlignmentToolTest {
+public class AlignmentToolTest {
 
     private final Rectangle innerRectangle;
 
