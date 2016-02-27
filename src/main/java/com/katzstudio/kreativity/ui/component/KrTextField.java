@@ -62,7 +62,7 @@ public class KrTextField extends KrWidget {
             return true;
         }
 
-        if (event.getKeycode() == Input.Keys.C && event.isCtrlDown()) {
+        if (event.getKeycode() == Input.Keys.C && event.isCtrlDown() && textDocument.hasSelection()) {
             getCanvas().getClipboard().setContents(textDocument.getSelectedText());
             return true;
         }
