@@ -171,6 +171,4 @@ public class TextDocumentTest {
 
         assertThat(document.getText(), is("something"));
     }
-
-    // TODO(alex): implement tests for undo / redo actions
 }
