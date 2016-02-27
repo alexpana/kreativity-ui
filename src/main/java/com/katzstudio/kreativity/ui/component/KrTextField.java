@@ -225,6 +225,7 @@ public class KrTextField extends KrWidget {
         public void setText(String text) {
             this.text = text;
             this.caretPosition = 0;
+            clearSelection();
         }
 
         public void insertText(char charater) {
@@ -242,7 +243,10 @@ public class KrTextField extends KrWidget {
                 return;
             }
 
-            text = text.substring(0, selectionBegin) + text.substring(selectionEnd);
+            int selectionLow = Math.min(selectionBegin, selectionBegin);
+            int selectionHigh = Math.max(selectionBegin, selectionEnd);
+
+            text = text.substring(0, selectionLow) + text.substring(selectionHigh);
             caretPosition = selectionBegin;
             clearSelection();
         }

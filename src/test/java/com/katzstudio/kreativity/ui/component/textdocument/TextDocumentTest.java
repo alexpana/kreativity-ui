@@ -129,7 +129,7 @@ public class TextDocumentTest {
         document.setText("something");
         document.setCaretPosition(4);
         document.beginSelection();
-        
+
         assertThat(document.getSelectionBegin(), is(4));
         assertThat(document.getSelectionEnd(), is(4));
     }
@@ -168,5 +168,35 @@ public class TextDocumentTest {
         document.insertText("something");
 
         assertThat(document.getText(), is("something"));
+    }
+
+    @Test
+    public void testDeleteReverseSelection() throws Exception {
+        TextDocument document = new TextDocument();
+
+        document.setText("0123456789");
+        document.setSelection(6, 2);
+        document.deleteCharAfterCaret();
+
+        assertThat(document.getText(), is("016789"));
+        assertThat(document.hasSelection(), is(false));
+
+        document.setText("0123456789");
+        document.setSelection(6, 2);
+        document.deleteCharBeforeCaret();
+
+        assertThat(document.getText(), is("016789"));
+        assertThat(document.hasSelection(), is(false));
+    }
+
+    @Test
+    public void testSetTextRemovesSelectionAndCaretPosition() throws Exception {
+        TextDocument document = new TextDocument();
+        document.setText("0123456789");
+        document.setSelection(6, 2);
+        document.setText("something wrong?");
+
+        assertThat(document.hasSelection(), is(false));
+        assertThat(document.getCaretPosition(), is(0));
     }
 }
