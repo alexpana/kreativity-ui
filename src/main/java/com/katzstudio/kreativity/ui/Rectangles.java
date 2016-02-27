@@ -37,7 +37,57 @@ public class Rectangles {
         return this;
     }
 
+    public Rectangles intersect(Rectangle other) {
+        Segment horizontalIntersectionProjection = project(horizontalProjection(rectangle), horizontalProjection(other));
+        Segment verticalIntersectionProjection = project(verticalProjection(rectangle), verticalProjection(other));
+        rectangle = rectangleFromProjections(horizontalIntersectionProjection, verticalIntersectionProjection);
+        return this;
+    }
+
+    private static Segment verticalProjection(Rectangle rectangle) {
+        return new Segment(rectangle.y, rectangle.y + rectangle.height);
+    }
+
+    private static Segment horizontalProjection(Rectangle rectangle) {
+        return new Segment(rectangle.x, rectangle.x + rectangle.width);
+    }
+
+    private static Rectangle rectangleFromProjections(Segment horizontalProjection, Segment verticalProjection) {
+        float width = horizontalProjection.getSecond() - horizontalProjection.getFirst();
+        float height = verticalProjection.getSecond() - verticalProjection.getFirst();
+
+        if (width == 0 || height == 0) {
+            return new Rectangle(0, 0, 0, 0);
+        }
+
+        return new Rectangle(horizontalProjection.getFirst(),
+                verticalProjection.getFirst(),
+                width,
+                height);
+    }
+
+    private static Segment project(Segment first, Segment second) {
+        if (first.getFirst() > second.getFirst()) {
+            Segment tmp = first;
+            first = second;
+            second = tmp;
+        }
+
+        if (second.getFirst() > first.getSecond()) {
+            return Segment.ZERO;
+        }
+        return new Segment(second.getFirst(), Math.min(second.getSecond(), first.getSecond()));
+    }
+
     public Rectangle value() {
         return rectangle;
+    }
+
+    private static class Segment extends Pair<Float, Float> {
+        public static final Segment ZERO = new Segment(0.0f, 0.0f);
+
+        public Segment(Float first, Float second) {
+            super(first, second);
+        }
     }
 }

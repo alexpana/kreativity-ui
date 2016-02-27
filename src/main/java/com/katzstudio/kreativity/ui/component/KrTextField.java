@@ -9,10 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.AlignmentTool;
 import com.katzstudio.kreativity.ui.FontMetrics;
 import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrColor;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -27,6 +29,10 @@ import static com.katzstudio.kreativity.ui.FontMetrics.metrics;
  */
 public class KrTextField extends KrWidget {
 
+    public static final int CARET_HEIGHT = 14;
+
+    public static final int CARET_TOP_OFFSET = 3;
+
     @Getter @Setter private Style style;
 
     private final TextDocument textDocument;
@@ -36,7 +42,7 @@ public class KrTextField extends KrWidget {
     public KrTextField() {
         textDocument = new TextDocument();
         setStyle(KreativitySkin.instance().getTextFieldStyle());
-        setPadding(new KrPadding(0, 4));
+        setPadding(new KrPadding(1, 0, 4, 0));
     }
 
     @Override
@@ -98,6 +104,8 @@ public class KrTextField extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
+        renderer.beginClip(getX(), getY(), getWidth(), getHeight());
+
         Drawable background = style.backgroundNormal;
         if (isFocused()) {
             background = style.backgroundFocused;
@@ -113,13 +121,14 @@ public class KrTextField extends KrWidget {
         Rectangle textBounds = metrics.bounds(text);
         Vector2 textPosition = AlignmentTool.alignRectangles(textBounds, getGeometry(), KrAlignment.MIDDLE_LEFT);
         textPosition.x += getPadding().left + textOffset;
+        textPosition.y -= 1;
 
         // render selection
-        if (textDocument.hasSelection()) {
-            float selectionStartX = textPosition.x + metrics.bounds(text.substring(0, textDocument.getSelectionBegin())).getWidth();
-            float selectionEndX = textPosition.y + metrics.bounds(text.substring(0, textDocument.selectionEnd)).getWidth();
-
-            // TODO(alex): use a brush to draw the selection rectangle
+//        if (textDocument.hasSelection()) {
+        if (true) {
+            Rectangle selectionRect = getSelectionRect();
+            renderer.setBrush(new KrColorBrush(KrColor.rgb(0x363d42)));
+            renderer.fillRect(selectionRect);
         }
 
         // render text
@@ -129,7 +138,17 @@ public class KrTextField extends KrWidget {
         int caretPosition = textDocument.getCaretPosition();
         float caretX = textPosition.x + metrics.bounds(text.substring(0, caretPosition)).getWidth() + 1;
         renderer.setPen(new KrPen(1, style.caretColor));
-        renderer.drawLine(caretX, getY() + 4, caretX, getY() + 15);
+        renderer.drawLine(caretX, getY() + CARET_TOP_OFFSET, caretX, getY() + CARET_TOP_OFFSET + CARET_HEIGHT);
+
+        renderer.endClip();
+    }
+
+    private Rectangle getSelectionRect() {
+        // TODO(alex): proper implementation pls
+//        float selectionStartX = textPosition.x + metrics.bounds(text.substring(0, textDocument.getSelectionBegin())).getWidth();
+//        float selectionEndX = textPosition.y + metrics.bounds(text.substring(0, textDocument.selectionEnd)).getWidth();
+
+        return new Rectangle(getX(), getY() + CARET_TOP_OFFSET, 45, CARET_HEIGHT);
     }
 
     private void computeTextOffset() {

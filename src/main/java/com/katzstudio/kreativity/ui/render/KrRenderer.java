@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Pools;
 import lombok.Getter;
@@ -105,7 +104,6 @@ public class KrRenderer {
         shapeRenderer.end();
     }
 
-
     public void drawLine(float x1, float y1, float x2, float y2) {
         ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(pen.getColor());
@@ -133,14 +131,9 @@ public class KrRenderer {
 
             ensureShapeRendererOpen(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(colorBrush.getColor());
-            shapeRenderer.rect(x, viewportSize.y - y, w, h);
+            shapeRenderer.rect(x, viewportSize.y - y - h, w, h);
             shapeRenderer.end();
         }
-    }
-
-    public void renderDrawable(Drawable drawable, float x, float y, float w, float h) {
-        ensureSpriteBatchOpen();
-        drawable.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
     }
 
     public void translate(float x, float y) {
