@@ -51,6 +51,8 @@ public class KrCanvas implements InputProcessor {
 
     private boolean ignoreNextKeyTyped = false;
 
+    private int pressedKeyCode = 0;
+
     public KrCanvas() {
         this(new KrRenderer(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -101,35 +103,28 @@ public class KrCanvas implements InputProcessor {
         isAltDown = isAltDown || isAlt(keycode);
         isCtrlDown = isCtrlDown || isCtrl(keycode);
         isShiftDown = isShiftDown || isShift(keycode);
+        pressedKeyCode = keycode;
 
-        if (keyboardFocusHolder == null) {
-            return false;
-        }
+        return keyboardFocusHolder != null;
 
-        if (LibGdxInputHelper.hasStringRepresentation(keycode)) {
-            // wait for the keyTyped event
-            return true;
-        }
-
-        // only dispatch special keys
-        ignoreNextKeyTyped = true;
-        KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, keycode);
-        return dispatchEvent(keyboardFocusHolder, keyEvent);
     }
 
     @Override
     public boolean keyTyped(char character) {
+        System.out.println("keyTyped character = " + character);
+
         if (keyboardFocusHolder == null) {
             return false;
         }
 
-        // only dispatch visible keys
-        if (ignoreNextKeyTyped) {
-            ignoreNextKeyTyped = false;
-            return true;
+        // dispatch visible key
+        if (LibGdxInputHelper.hasStringRepresentation(pressedKeyCode)) {
+            KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character);
+            return dispatchEvent(keyboardFocusHolder, keyEvent);
         }
 
-        KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character);
+        // dispatch special key
+        KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, pressedKeyCode);
         return dispatchEvent(keyboardFocusHolder, keyEvent);
     }
 

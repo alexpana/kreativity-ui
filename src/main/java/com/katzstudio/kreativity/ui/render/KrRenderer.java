@@ -140,6 +140,10 @@ public class KrRenderer {
         this.translation.add(x, y);
     }
 
+    public boolean beginClip(Rectangle rectangle) {
+        return beginClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+
     public boolean beginClip(float x, float y, float width, float height) {
         spriteBatch.flush();
         Rectangle clipRectangle = Pools.obtain(Rectangle.class);

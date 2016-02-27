@@ -14,6 +14,7 @@ public class FontMetrics {
     private final BitmapFont bitmapFont;
 
     public static FontMetrics metrics(BitmapFont bitmapFont) {
+        // TODO(alex): since we only use less than 5 fonts, we should cache this
         return new FontMetrics(bitmapFont);
     }
 
