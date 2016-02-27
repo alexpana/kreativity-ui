@@ -228,10 +228,6 @@ public class KrTextField extends KrWidget {
             clearSelection();
         }
 
-        public void insertText(char charater) {
-            insertText(String.valueOf(charater));
-        }
-
         public void insertText(String text) {
             deleteSelection();
             this.text = this.text.substring(0, caretPosition) + text + this.text.substring(caretPosition);
