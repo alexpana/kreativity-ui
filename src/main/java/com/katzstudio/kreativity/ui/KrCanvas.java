@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Clipboard;
+import com.badlogic.gdx.utils.Timer;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
@@ -21,6 +22,8 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.Input.Keys.LEFT;
+import static com.badlogic.gdx.Input.Keys.RIGHT;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getButtonFor;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getRepresentation;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isAlt;
@@ -32,11 +35,17 @@ import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isShift;
  */
 public class KrCanvas implements InputProcessor {
 
+    private static final float KEY_REPEAT_INITIAL_TIME = 0.4f;
+
+    private static final float KEY_REPEAT_TIME = 0.1f;
+
     @Getter private final KrPanel rootComponent;
 
     @Getter private final Clipboard clipboard;
 
     private final KrRenderer renderer;
+
+    private final KeyRepeatTask keyRepeatTask = new KeyRepeatTask();
 
     @Getter private float width;
 
@@ -108,13 +117,16 @@ public class KrCanvas implements InputProcessor {
         pressedKeyCode = keycode;
 
         return keyboardFocusHolder != null;
-
     }
 
     @Override
     public boolean keyTyped(char character) {
         if (keyboardFocusHolder == null) {
             return false;
+        }
+
+        if (pressedKeyCode == LEFT || pressedKeyCode == RIGHT) {
+            scheduleKeyRepeatTask(character);
         }
 
         // dispatch visible key
@@ -133,6 +145,8 @@ public class KrCanvas implements InputProcessor {
         isAltDown = isAltDown && !isAlt(keycode);
         isCtrlDown = isCtrlDown && !isCtrl(keycode);
         isShiftDown = isShiftDown && !isShift(keycode);
+
+        keyRepeatTask.cancel();
 
         KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.RELEASED, keycode);
         if (isShiftDown) {
@@ -217,6 +231,14 @@ public class KrCanvas implements InputProcessor {
         return new KrMouseEvent(type, eventButton, mouseDelta, mousePosition);
     }
 
+    public void scheduleKeyRepeatTask(char keyChar) {
+        if (!keyRepeatTask.isScheduled() || keyRepeatTask.keyChar != keyChar) {
+            keyRepeatTask.keyChar = keyChar;
+            keyRepeatTask.cancel();
+            Timer.schedule(keyRepeatTask, KEY_REPEAT_INITIAL_TIME, KEY_REPEAT_TIME);
+        }
+    }
+
     private boolean dispatchEvent(KrWidget widget, KrEvent event) {
         if (widget == null) {
             return false;
@@ -293,5 +315,16 @@ public class KrCanvas implements InputProcessor {
         }
 
         return false;
+    }
+
+    /**
+     * Used to schedule repeated key presses for arrows
+     */
+    private class KeyRepeatTask extends Timer.Task {
+        public char keyChar;
+
+        public void run() {
+            keyTyped(keyChar);
+        }
     }
 }

@@ -55,8 +55,6 @@ public class KrTextField extends KrWidget {
     protected boolean keyPressedEvent(KrKeyEvent event) {
         super.keyPressedEvent(event);
 
-        System.out.println("event.getKeycode() = " + event.getKeycode());
-
         if (event.getKeycode() == Input.Keys.A && event.isCtrlDown()) {
             textDocument.selectAll();
             return true;
@@ -115,9 +113,6 @@ public class KrTextField extends KrWidget {
         if (event.getKeycode() == Input.Keys.END) {
             textDocument.moveCaretEnd();
         }
-
-        System.out.println("textDocument.selectionBegin = " + textDocument.selectionBegin);
-        System.out.println("textDocument.selectionEnd = " + textDocument.selectionEnd);
 
         return true;
     }
