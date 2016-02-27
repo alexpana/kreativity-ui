@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.WidgetToStringBuilder;
+import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
@@ -391,8 +391,8 @@ public class KrWidget {
         return toStringBuilder().toString();
     }
 
-    public WidgetToStringBuilder toStringBuilder() {
-        return WidgetToStringBuilder.builder().name(name).bounds(getBounds()).enabled(true).visible(true);
+    public KrWidgetToStringBuilder toStringBuilder() {
+        return KrWidgetToStringBuilder.builder().name(name).bounds(getBounds()).enabled(true).visible(true);
     }
 
     private Rectangle getScreenBounds() {

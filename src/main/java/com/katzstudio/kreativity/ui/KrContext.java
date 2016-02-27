@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
  * on 12-Apr-2015.
  */
 @RequiredArgsConstructor
-public class UiContext {
+public class KrContext {
 
     @Getter private final Stage stage;
 

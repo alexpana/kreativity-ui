@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.AlignmentTool;
 import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
@@ -104,7 +104,7 @@ public class KrButton extends KrWidget {
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
         BitmapFont.TextBounds bounds = style.font.getBounds(getText());
-        Vector2 textPosition = AlignmentTool.alignRectangles(new Rectangle(0, 0, bounds.width, bounds.height), getGeometry(), getTextAlignment());
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, bounds.width, bounds.height), getGeometry(), getTextAlignment());
         Vector2 textOffset = state == State.ARMED ? new Vector2(0, 1) : Vector2.Zero;
         textPosition.add(textOffset);
 

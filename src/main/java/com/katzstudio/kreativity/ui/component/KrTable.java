@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.common.collect.Lists;
+import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.UiContext;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -49,7 +49,7 @@ public class KrTable extends Table {
     @Getter
     private Renderer renderer;
 
-    public KrTable(UiContext uiContext, Model model) {
+    public KrTable(KrContext uiContext, Model model) {
         this.model = model;
 
         renderer = new DefaultRenderer(uiContext);
@@ -83,7 +83,7 @@ public class KrTable extends Table {
         reloadComponents();
     }
 
-    private InputListener createInputListener(final UiContext uiContext) {
+    private InputListener createInputListener(final KrContext uiContext) {
         return new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -357,9 +357,9 @@ public class KrTable extends Table {
 
         private final Label.LabelStyle cellStyle;
 
-        private final UiContext uiContext;
+        private final KrContext uiContext;
 
-        public DefaultRenderer(UiContext uiContext) {
+        public DefaultRenderer(KrContext uiContext) {
             this.uiContext = uiContext;
 
             cellStyle = new Label.LabelStyle(uiContext.getSkin().get(Label.LabelStyle.class));

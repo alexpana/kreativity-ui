@@ -8,19 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The {@link FontMetrics} class offers detailed information about the size, position and offset
+ * The {@link KrFontMetrics} class offers detailed information about the size, position and offset
  * of the glyphs and text rendered with a specific font.
  */
 @RequiredArgsConstructor
-public class FontMetrics {
+public class KrFontMetrics {
 
-    private final static Map<BitmapFont, FontMetrics> CACHE = new HashMap<>();
+    private final static Map<BitmapFont, KrFontMetrics> CACHE = new HashMap<>();
 
     private final BitmapFont bitmapFont;
 
-    public static FontMetrics metrics(BitmapFont bitmapFont) {
+    public static KrFontMetrics metrics(BitmapFont bitmapFont) {
         if (!CACHE.containsKey(bitmapFont)) {
-            CACHE.put(bitmapFont, new FontMetrics(bitmapFont));
+            CACHE.put(bitmapFont, new KrFontMetrics(bitmapFont));
         }
         return CACHE.get(bitmapFont);
     }

@@ -2,7 +2,7 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
-import com.katzstudio.kreativity.ui.FontAwesomeGlyph;
+import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
@@ -13,9 +13,9 @@ import lombok.Setter;
  */
 public class KrIconPanel extends KrWidget {
 
-    @Getter @Setter private FontAwesomeGlyph iconGlyph;
+    @Getter @Setter private KrFontAwesomeGlyph iconGlyph;
 
-    public KrIconPanel(FontAwesomeGlyph iconGlyph) {
+    public KrIconPanel(KrFontAwesomeGlyph iconGlyph) {
         this.iconGlyph = iconGlyph;
         setSize(getSelfPreferredSize());
     }

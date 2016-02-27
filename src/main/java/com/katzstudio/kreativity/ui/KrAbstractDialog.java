@@ -25,9 +25,9 @@ public abstract class KrAbstractDialog<E> extends Window {
     private final TextButton actionButton;
 
     @Getter
-    private final UiContext uiContext;
+    private final KrContext uiContext;
 
-    public KrAbstractDialog(UiContext uiContext, String title) {
+    public KrAbstractDialog(KrContext uiContext, String title) {
         super(title, uiContext.getSkin());
         this.uiContext = uiContext;
 

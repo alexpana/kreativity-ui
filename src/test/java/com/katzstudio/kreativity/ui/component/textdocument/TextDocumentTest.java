@@ -118,8 +118,8 @@ public class TextDocumentTest {
         TextDocument document = new TextDocument();
         document.setText("something");
         document.setSelection(2, 4);
-
         document.moveCaretHome();
+
         assertThat(document.hasSelection(), is(false));
     }
 
@@ -127,9 +127,9 @@ public class TextDocumentTest {
     public void testBeginSelection() {
         TextDocument document = new TextDocument();
         document.setText("something");
-
         document.setCaretPosition(4);
         document.beginSelection();
+        
         assertThat(document.getSelectionBegin(), is(4));
         assertThat(document.getSelectionEnd(), is(4));
     }
@@ -155,7 +155,6 @@ public class TextDocumentTest {
         TextDocument document = new TextDocument();
         document.setText("0123456789");
         document.setSelection(2, 6);
-
         document.insertText("something");
 
         assertThat(document.getText(), is("01something6789"));
@@ -166,7 +165,6 @@ public class TextDocumentTest {
         TextDocument document = new TextDocument();
         document.setText("0123456789");
         document.setSelection(0, 10);
-
         document.insertText("something");
 
         assertThat(document.getText(), is("something"));

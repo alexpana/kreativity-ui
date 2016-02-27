@@ -5,7 +5,7 @@ package com.katzstudio.kreativity.ui;
  * can implement undo / redo while skipping intermediate changes (such as dragging a spinner or entering characters
  * in a text field).
  */
-public interface Model<T> {
+public interface KrModel<T> {
 
     /**
      * Returns the current value of the model.
@@ -31,7 +31,7 @@ public interface Model<T> {
      */
     void ephemeralChangesEnd();
 
-    class Empty<T> implements Model<T> {
+    class Empty<T> implements KrModel<T> {
 
         @Override
         public T getValue() {

@@ -5,41 +5,41 @@ import com.badlogic.gdx.math.Rectangle;
 /**
  * Helper class for building widget string representations
  */
-public class WidgetToStringBuilder {
+public class KrWidgetToStringBuilder {
     private String name = "Unnamed";
     private String type = "KrWidget";
     private Rectangle bounds = new Rectangle(0, 0, 0, 0);
     private boolean visible = true;
     private boolean enabled = true;
 
-    private WidgetToStringBuilder() {
+    private KrWidgetToStringBuilder() {
     }
 
-    public static WidgetToStringBuilder builder() {
-        return new WidgetToStringBuilder();
+    public static KrWidgetToStringBuilder builder() {
+        return new KrWidgetToStringBuilder();
     }
 
-    public WidgetToStringBuilder name(String name) {
+    public KrWidgetToStringBuilder name(String name) {
         this.name = name == null ? "Unnamed" : name;
         return this;
     }
 
-    public WidgetToStringBuilder type(String type) {
+    public KrWidgetToStringBuilder type(String type) {
         this.type = type == null ? "KrWidget" : type;
         return this;
     }
 
-    public WidgetToStringBuilder bounds(Rectangle bounds) {
+    public KrWidgetToStringBuilder bounds(Rectangle bounds) {
         this.bounds = bounds;
         return this;
     }
 
-    public WidgetToStringBuilder visible(boolean visible) {
+    public KrWidgetToStringBuilder visible(boolean visible) {
         this.visible = visible;
         return this;
     }
 
-    public WidgetToStringBuilder enabled(boolean enabled) {
+    public KrWidgetToStringBuilder enabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }

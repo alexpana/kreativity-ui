@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.AlignmentTool;
-import com.katzstudio.kreativity.ui.FontMetrics;
 import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrAlignmentTool;
+import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
@@ -21,8 +21,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import static com.katzstudio.kreativity.ui.FontMetrics.metrics;
-import static com.katzstudio.kreativity.ui.Rectangles.rectangles;
+import static com.katzstudio.kreativity.ui.KrFontMetrics.metrics;
+import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
 
 /**
  * The {@link KrTextField} class provides a widget that can display and edit plain text.
@@ -142,10 +142,10 @@ public class KrTextField extends KrWidget {
         renderer.beginClip(innerViewport);
 
         String text = textDocument.getText();
-        FontMetrics metrics = metrics(style.font);
+        KrFontMetrics metrics = metrics(style.font);
 
         Rectangle textBounds = metrics.bounds(text);
-        Vector2 textPosition = AlignmentTool.alignRectangles(textBounds, innerViewport, KrAlignment.MIDDLE_LEFT);
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(textBounds, innerViewport, KrAlignment.MIDDLE_LEFT);
         textPosition.x = getX() + getPadding().left - textOffset;
         textPosition.y += 1;
 
@@ -182,7 +182,7 @@ public class KrTextField extends KrWidget {
 
     private Rectangle getSelectionRect(float textPositionX) {
 
-        FontMetrics metrics = metrics(style.font);
+        KrFontMetrics metrics = metrics(style.font);
         String text = textDocument.getText();
 
         float selectionStartX = textPositionX + metrics.bounds(text.substring(0, textDocument.getSelectionBegin())).getWidth();

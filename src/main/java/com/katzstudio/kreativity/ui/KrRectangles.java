@@ -6,22 +6,22 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 /**
- * The {@link Rectangles} class offers functionality for manipulating {@link Rectangle} objects.
+ * The {@link KrRectangles} class offers functionality for manipulating {@link Rectangle} objects.
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Rectangles {
+public class KrRectangles {
 
     private Rectangle rectangle;
 
-    public static Rectangles rectangles(Rectangle rectangle) {
-        return new Rectangles(rectangle);
+    public static KrRectangles rectangles(Rectangle rectangle) {
+        return new KrRectangles(rectangle);
     }
 
-    public static Rectangles rectangles(Vector2 size) {
-        return new Rectangles(new Rectangle(0, 0, size.x, size.y));
+    public static KrRectangles rectangles(Vector2 size) {
+        return new KrRectangles(new Rectangle(0, 0, size.x, size.y));
     }
 
-    public Rectangles shrink(KrPadding padding) {
+    public KrRectangles shrink(KrPadding padding) {
         rectangle.x += padding.left;
         rectangle.y += padding.top;
         rectangle.width -= padding.getHorizontalPadding();
@@ -29,7 +29,7 @@ public class Rectangles {
         return this;
     }
 
-    public Rectangles expand(KrPadding padding) {
+    public KrRectangles expand(KrPadding padding) {
         rectangle.x -= padding.left;
         rectangle.y -= padding.top;
         rectangle.width += padding.getHorizontalPadding();
@@ -37,7 +37,7 @@ public class Rectangles {
         return this;
     }
 
-    public Rectangles intersect(Rectangle other) {
+    public KrRectangles intersect(Rectangle other) {
         Segment horizontalIntersectionProjection = project(horizontalProjection(rectangle), horizontalProjection(other));
         Segment verticalIntersectionProjection = project(verticalProjection(rectangle), verticalProjection(other));
         rectangle = rectangleFromProjections(horizontalIntersectionProjection, verticalIntersectionProjection);
@@ -83,7 +83,7 @@ public class Rectangles {
         return rectangle;
     }
 
-    private static class Segment extends Pair<Float, Float> {
+    private static class Segment extends KrPair<Float, Float> {
         public static final Segment ZERO = new Segment(0.0f, 0.0f);
 
         public Segment(Float first, Float second) {

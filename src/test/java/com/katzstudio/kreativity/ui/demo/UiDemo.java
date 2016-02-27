@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrColor;
+import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.KreativitySkin;
-import com.katzstudio.kreativity.ui.UiContext;
 import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrCollapsiblePanel;
@@ -137,7 +137,7 @@ public class UiDemo extends Game {
 //        collapsibleScrollPanel.setExpandX(true);
     }
 
-    private KrScrollPanel createKrScrollPanel(UiContext uiContext, int x, int y, int w, int h) {
+    private KrScrollPanel createKrScrollPanel(KrContext uiContext, int x, int y, int w, int h) {
         Table table = createTable(uiContext, "text line ", 20);
         KrScrollPanel scrollPanel = new KrScrollPanel(uiContext, table);
         scrollPanel.setBounds(x, y, w, h);
@@ -146,7 +146,7 @@ public class UiDemo extends Game {
         return scrollPanel;
     }
 
-    private KrCollapsiblePanel createKrCollapsiblePanel(UiContext uiContext, int x, int y, int w, int h) {
+    private KrCollapsiblePanel createKrCollapsiblePanel(KrContext uiContext, int x, int y, int w, int h) {
         Table table = createTable(uiContext, "Property ", 10);
         KrCollapsiblePanel collapsiblePanel = new KrCollapsiblePanel(uiContext, "Game Object");
         collapsiblePanel.setBounds(x, y, w, h);
@@ -155,7 +155,7 @@ public class UiDemo extends Game {
         return collapsiblePanel;
     }
 
-    private Table createTable(UiContext uiContext, String prefix, int rows) {
+    private Table createTable(KrContext uiContext, String prefix, int rows) {
         Table table = new Table(uiContext.getSkin());
         for (int i = 0; i < rows; ++i) {
             Label label = new Label(prefix + " " + i, uiContext.getSkin());

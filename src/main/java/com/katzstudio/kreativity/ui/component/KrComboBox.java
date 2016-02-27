@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
-import com.katzstudio.kreativity.ui.UiContext;
+import com.katzstudio.kreativity.ui.KrContext;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -60,7 +60,7 @@ public class KrComboBox<T> extends Widget implements Disableable {
 
     private final Model<T> model;
 
-    public KrComboBox(UiContext uiContext, Model<T> model) {
+    public KrComboBox(KrContext uiContext, Model<T> model) {
         this.model = model;
 
         setStyle(uiContext.getSkin().get("default", Style.class));

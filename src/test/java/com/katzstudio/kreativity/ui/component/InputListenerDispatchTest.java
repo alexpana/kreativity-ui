@@ -42,7 +42,7 @@ public class InputListenerDispatchTest {
                 {"KrWidget", new KrWidget()},
                 {"KrButton", new KrButton("")},
                 {"KrCheckbox", new KrCheckbox()},
-//                {"KrIconPanel", new KrIconPanel(FontAwesomeGlyph.FONT)},
+//                {"KrIconPanel", new KrIconPanel(KrFontAwesomeGlyph.FONT)},
                 {"KrTextField", new KrTextField()},
         });
     }

@@ -9,7 +9,7 @@ public class KrDialog extends KrAbstractDialog<Object> {
 
     private final Actor content;
 
-    public KrDialog(UiContext uiContext, String title, Actor content) {
+    public KrDialog(KrContext uiContext, String title, Actor content) {
         super(uiContext, title);
         this.content = content;
     }

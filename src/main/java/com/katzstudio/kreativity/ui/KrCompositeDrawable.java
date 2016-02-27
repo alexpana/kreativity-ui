@@ -8,11 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * Created by alex
  * on 27.03.2015.
  */
-public class CompositeDrawable extends TextureRegionDrawable {
+public class KrCompositeDrawable extends TextureRegionDrawable {
     private final TextureRegion first;
     private final TextureRegion second;
 
-    public CompositeDrawable(TextureRegion first, TextureRegion second) {
+    public KrCompositeDrawable(TextureRegion first, TextureRegion second) {
         super(second);
         this.first = first;
         this.second = second;

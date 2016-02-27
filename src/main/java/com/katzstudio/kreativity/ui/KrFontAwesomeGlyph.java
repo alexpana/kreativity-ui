@@ -19,7 +19,7 @@ package com.katzstudio.kreativity.ui;
  * console.log(result);
  */
 @SuppressWarnings("unused")
-public enum FontAwesomeGlyph {
+public enum KrFontAwesomeGlyph {
 
     _500PX("\uf26e"),
     ADJUST("\uf042"),
@@ -718,7 +718,7 @@ public enum FontAwesomeGlyph {
 
     private final String representation;
 
-    FontAwesomeGlyph(String representation) {
+    KrFontAwesomeGlyph(String representation) {
         this.representation = representation;
     }
 
@@ -737,9 +737,9 @@ public enum FontAwesomeGlyph {
      * @param iconName the icon name
      * @return the corresponding glyph
      */
-    public static FontAwesomeGlyph fromString(String iconName) {
+    public static KrFontAwesomeGlyph fromString(String iconName) {
         try {
-            return FontAwesomeGlyph.valueOf(iconName.replaceAll("-", "_").toUpperCase());
+            return KrFontAwesomeGlyph.valueOf(iconName.replaceAll("-", "_").toUpperCase());
         } catch (IllegalArgumentException e) {
             return null;
         }

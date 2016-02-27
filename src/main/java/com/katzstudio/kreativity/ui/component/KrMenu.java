@@ -18,8 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.google.common.collect.Lists;
+import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.UiContext;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,9 +47,9 @@ public class KrMenu extends Table {
     @Getter
     private Vector2 displayLocation = Vector2.Zero.cpy();
 
-    private UiContext context;
+    private KrContext context;
 
-    public KrMenu(UiContext context) {
+    public KrMenu(KrContext context) {
         this.context = context;
 
         titleLabel = new Label("", context.getSkin());

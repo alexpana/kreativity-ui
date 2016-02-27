@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.google.common.collect.Lists;
+import com.katzstudio.kreativity.ui.KrContext;
+import com.katzstudio.kreativity.ui.KrModel;
 import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.Model;
-import com.katzstudio.kreativity.ui.UiContext;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,9 +36,9 @@ public class KrSpinner extends TextField {
 
     @Getter
     @Setter
-    private Model<Float> model;
+    private KrModel<Float> model;
 
-    public KrSpinner(UiContext uiContext, String text) {
+    public KrSpinner(KrContext uiContext, String text) {
         super(text, uiContext.getSkin());
 
         KrToolkit.ensureUniqueStyle(this);
@@ -66,7 +66,7 @@ public class KrSpinner extends TextField {
         setText("0");
     }
 
-    private InputListener createInputListener(final UiContext uiContext) {
+    private InputListener createInputListener(final KrContext uiContext) {
         return new InputListener() {
             private boolean dragStarted;
             private boolean wasDragged = false;

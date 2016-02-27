@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.katzstudio.kreativity.ui.KrColor;
+import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.UiContext;
 import lombok.Getter;
 
 /**
@@ -29,7 +29,7 @@ public class KrScrollPanel extends Table {
     @Getter
     private boolean expandX;
 
-    public KrScrollPanel(UiContext uiContext, Actor innerComponent) {
+    public KrScrollPanel(KrContext uiContext, Actor innerComponent) {
         this.verticalScrollBar = new KrScrollBar();
         this.horizontalScrollBar = new KrScrollBar();
         this.innerComponent = innerComponent;

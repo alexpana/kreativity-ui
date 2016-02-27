@@ -13,11 +13,11 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Unit tests for {@link AlignmentTool}
+ * Unit tests for {@link KrAlignmentTool}
  */
 @RequiredArgsConstructor
 @RunWith(Parameterized.class)
-public class AlignmentToolTest {
+public class KrAlignmentToolTest {
 
     private final Rectangle innerRectangle;
 
@@ -29,7 +29,7 @@ public class AlignmentToolTest {
 
     @Test
     public void testAlignment() throws Exception {
-        Vector2 actualPosition = AlignmentTool.alignRectangles(innerRectangle, outerRectangle, alignment);
+        Vector2 actualPosition = KrAlignmentTool.alignRectangles(innerRectangle, outerRectangle, alignment);
         Assert.assertThat(actualPosition, CoreMatchers.is(expectedPosition));
     }
 

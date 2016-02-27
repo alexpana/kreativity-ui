@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Helper class for manipulating widget geometries (rectangles).
  */
-public class AlignmentTool {
-    private AlignmentTool() {
+public class KrAlignmentTool {
+    private KrAlignmentTool() {
     }
 
     public static Vector2 alignRectangles(Rectangle inner, Rectangle outer, KrAlignment alignment) {

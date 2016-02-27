@@ -14,18 +14,18 @@ import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
-import com.katzstudio.kreativity.ui.libgdx.LibGdxInputHelper;
+import com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 
 import java.util.ArrayList;
 
-import static com.katzstudio.kreativity.ui.libgdx.LibGdxInputHelper.getButtonFor;
-import static com.katzstudio.kreativity.ui.libgdx.LibGdxInputHelper.getRepresentation;
-import static com.katzstudio.kreativity.ui.libgdx.LibGdxInputHelper.isAlt;
-import static com.katzstudio.kreativity.ui.libgdx.LibGdxInputHelper.isCtrl;
-import static com.katzstudio.kreativity.ui.libgdx.LibGdxInputHelper.isShift;
+import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getButtonFor;
+import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getRepresentation;
+import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isAlt;
+import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isCtrl;
+import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isShift;
 
 /**
  * Top level container for UI elements. Delegates input events to top level components.
@@ -107,22 +107,18 @@ public class KrCanvas implements InputProcessor {
         isShiftDown = isShiftDown || isShift(keycode);
         pressedKeyCode = keycode;
 
-        System.out.println("KrCanvas  DOWN  keycode = " + keycode);
-
         return keyboardFocusHolder != null;
 
     }
 
     @Override
     public boolean keyTyped(char character) {
-        System.out.println("KrCanvas  TYPED  character = " + character);
-
         if (keyboardFocusHolder == null) {
             return false;
         }
 
         // dispatch visible key
-        if (LibGdxInputHelper.hasStringRepresentation(pressedKeyCode)) {
+        if (KrLibGdxInputHelper.hasStringRepresentation(pressedKeyCode)) {
             KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character).toBuilder().keycode(pressedKeyCode).build();
             return dispatchEvent(keyboardFocusHolder, keyEvent);
         }

@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.katzstudio.kreativity.ui.FontAwesomeGlyph;
+import com.katzstudio.kreativity.ui.KrContext;
+import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
 import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.UiContext;
 import lombok.Getter;
 
 /**
@@ -40,7 +40,7 @@ public class KrCollapsiblePanel extends Table {
 
     private final KrIconPanel iconPanel;
 
-    private final UiContext uiContext;
+    private final KrContext uiContext;
 
     private int state = STATE_EXPANDED;
 
@@ -48,7 +48,7 @@ public class KrCollapsiblePanel extends Table {
 
     private float actualHeight = 0.0f;
 
-    public KrCollapsiblePanel(UiContext uiContext, String title) {
+    public KrCollapsiblePanel(KrContext uiContext, String title) {
         this.uiContext = uiContext;
         this.title = title;
 
@@ -62,7 +62,7 @@ public class KrCollapsiblePanel extends Table {
             }
         });
 
-        iconPanel = new KrIconPanel(FontAwesomeGlyph.CARET_DOWN);
+        iconPanel = new KrIconPanel(KrFontAwesomeGlyph.CARET_DOWN);
 
         background(uiContext.getSkin().getDrawable("collapsiblepanel.background"));
         getBackground().setTopHeight(2);
@@ -116,9 +116,9 @@ public class KrCollapsiblePanel extends Table {
         state = newState;
 
         if (state == STATE_COLLAPSED || state == STATE_COLLAPSING) {
-            iconPanel.setIconGlyph(FontAwesomeGlyph.CARET_RIGHT);
+            iconPanel.setIconGlyph(KrFontAwesomeGlyph.CARET_RIGHT);
         } else {
-            iconPanel.setIconGlyph(FontAwesomeGlyph.CARET_DOWN);
+            iconPanel.setIconGlyph(KrFontAwesomeGlyph.CARET_DOWN);
         }
 
         if (state == STATE_COLLAPSED) {

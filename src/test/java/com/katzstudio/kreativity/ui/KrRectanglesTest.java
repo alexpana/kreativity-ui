@@ -10,17 +10,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Unit tests for {@link Rectangles}
+ * Unit tests for {@link KrRectangles}
  */
 @RunWith(JUnitParamsRunner.class)
-public class RectanglesTest {
+public class KrRectanglesTest {
 
     @Test
     public void testShrinkWithPadding() {
         KrPadding padding = new KrPadding(6, 4, 2, 4);
         Rectangle rectangle = new Rectangle(50, 50, 100, 100);
 
-        Rectangle result = Rectangles.rectangles(rectangle).shrink(padding).value();
+        Rectangle result = KrRectangles.rectangles(rectangle).shrink(padding).value();
         assertThat(result, is(new Rectangle(54, 56, 92, 92)));
     }
 
@@ -29,22 +29,22 @@ public class RectanglesTest {
         KrPadding padding = new KrPadding(6, 4, 2, 4);
         Rectangle rectangle = new Rectangle(50, 50, 100, 100);
 
-        Rectangle result = Rectangles.rectangles(rectangle).expand(padding).value();
+        Rectangle result = KrRectangles.rectangles(rectangle).expand(padding).value();
         assertThat(result, is(new Rectangle(46, 44, 108, 108)));
     }
 
     @Test
     @Parameters(method = "parametersForIntersectionTests")
     public void testIntersection(Rectangle r1, Rectangle r2, Rectangle expectedResult) {
-        assertThat(Rectangles.rectangles(r1).intersect(r2).value(), is(expectedResult));
+        assertThat(KrRectangles.rectangles(r1).intersect(r2).value(), is(expectedResult));
 
-        assertThat(Rectangles.rectangles(r2).intersect(r1).value(), is(expectedResult));
+        assertThat(KrRectangles.rectangles(r2).intersect(r1).value(), is(expectedResult));
     }
 
     @Test
     @Parameters(method = "parametersForIntersectionTests")
     public void testIntersectionIsCommutative(Rectangle r1, Rectangle r2, Rectangle expectedResult) {
-        assertThat(Rectangles.rectangles(r2).intersect(r1).value(), is(Rectangles.rectangles(r1).intersect(r2).value()));
+        assertThat(KrRectangles.rectangles(r2).intersect(r1).value(), is(KrRectangles.rectangles(r1).intersect(r2).value()));
     }
 
 

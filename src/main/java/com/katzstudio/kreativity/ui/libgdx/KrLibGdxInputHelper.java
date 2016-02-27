@@ -11,7 +11,7 @@ import static com.badlogic.gdx.Input.Keys.*;
 /**
  * Class for binding libgdx input events to kreativity events.
  */
-public class LibGdxInputHelper {
+public class KrLibGdxInputHelper {
     private static final List<Integer> metaKeys = Lists.newArrayList(
             ALT_LEFT, ALT_RIGHT, CONTROL_LEFT, CONTROL_RIGHT, SHIFT_LEFT, SHIFT_RIGHT
     );
@@ -28,7 +28,7 @@ public class LibGdxInputHelper {
             F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12
     );
 
-    private LibGdxInputHelper() {
+    private KrLibGdxInputHelper() {
     }
 
     public static KrMouseEvent.Button getButtonFor(int button) {

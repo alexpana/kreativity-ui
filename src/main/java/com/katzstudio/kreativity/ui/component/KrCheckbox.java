@@ -2,8 +2,8 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.katzstudio.kreativity.ui.KrModel;
 import com.katzstudio.kreativity.ui.KreativitySkin;
-import com.katzstudio.kreativity.ui.Model;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -25,7 +25,7 @@ public class KrCheckbox extends KrWidget {
 
     @Getter @Setter private String text;
 
-    @Getter @Setter private Model<Boolean> model = new Model.Empty<>();
+    @Getter @Setter private KrModel<Boolean> model = new KrModel.Empty<>();
 
     private final List<ValueListener> valueListeners = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class KrCheckbox extends KrWidget {
 
     @Override
     public void update(float deltaSeconds) {
-        if (!(model instanceof Model.Empty) && model.getValue() != isChecked) {
+        if (!(model instanceof KrModel.Empty) && model.getValue() != isChecked) {
             isChecked = model.getValue();
         }
     }
