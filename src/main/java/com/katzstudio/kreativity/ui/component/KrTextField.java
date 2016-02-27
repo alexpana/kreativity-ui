@@ -239,11 +239,11 @@ public class KrTextField extends KrWidget {
                 return;
             }
 
-            int selectionLow = Math.min(selectionBegin, selectionBegin);
+            int selectionLow = Math.min(selectionBegin, selectionEnd);
             int selectionHigh = Math.max(selectionBegin, selectionEnd);
 
             text = text.substring(0, selectionLow) + text.substring(selectionHigh);
-            caretPosition = selectionBegin;
+            caretPosition = selectionLow;
             clearSelection();
         }
 

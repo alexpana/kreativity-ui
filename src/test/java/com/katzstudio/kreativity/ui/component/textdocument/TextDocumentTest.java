@@ -175,17 +175,27 @@ public class TextDocumentTest {
         TextDocument document = new TextDocument();
 
         document.setText("0123456789");
-        document.setSelection(6, 2);
+        document.setCaretPosition(6);
+        document.beginSelection();
+        for (int i = 0; i < 4; ++i) {
+            document.moveCaretLeft();
+        }
         document.deleteCharAfterCaret();
 
         assertThat(document.getText(), is("016789"));
+        assertThat(document.getCaretPosition(), is(2));
         assertThat(document.hasSelection(), is(false));
 
         document.setText("0123456789");
-        document.setSelection(6, 2);
+        document.setCaretPosition(6);
+        document.beginSelection();
+        for (int i = 0; i < 4; ++i) {
+            document.moveCaretLeft();
+        }
         document.deleteCharBeforeCaret();
 
         assertThat(document.getText(), is("016789"));
+        assertThat(document.getCaretPosition(), is(2));
         assertThat(document.hasSelection(), is(false));
     }
 
