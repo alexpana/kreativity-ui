@@ -50,7 +50,7 @@
       "split": [4, 4, 4, 4]
     },
     "textfield.background_focused": {
-      "region": [120, 23, 20, 21],
+      "region": [145, 23, 20, 21],
       "split": [4, 4, 4, 4]
     }
   }
