@@ -27,15 +27,13 @@ public class KrRenderer {
 
     private Vector2 translation;
 
-    private boolean isSpriteBatchOpen = false;
+    private RenderMode renderMode = RenderMode.NONE;
 
     @Getter @Setter private Vector2 viewportSize;
 
     @Getter @Setter private KrBrush brush;
 
     @Getter @Setter private KrPen pen;
-
-    // TODO(alex): Add support for brush / pen to be used when rendering shapes
 
     public KrRenderer() {
         spriteBatch = new SpriteBatch(100);
@@ -45,11 +43,11 @@ public class KrRenderer {
     }
 
     public void beginFrame() {
-        ensureSpriteBatchOpen();
+        changeRenderMode(RenderMode.SPRITE_BATCH);
     }
 
     public void endFrame() {
-        ensureClosed();
+        endRenderMode(this.renderMode);
     }
 
     public void drawText(String text, Vector2 position) {
@@ -121,8 +119,8 @@ public class KrRenderer {
 
     public void fillRect(float x, float y, float w, float h) {
         if (brush instanceof KrDrawableBrush) {
-            KrDrawableBrush drawableBrush = (KrDrawableBrush) brush;
             ensureSpriteBatchOpen();
+            KrDrawableBrush drawableBrush = (KrDrawableBrush) brush;
             drawableBrush.getDrawable().draw(spriteBatch, x, viewportSize.y - y - h, w, h);
         }
 
@@ -161,29 +159,61 @@ public class KrRenderer {
         Pools.free(ScissorStack.popScissors());
     }
 
-    // TODO(alex): implement pushState() / popState()
+    public void popState() {
+        // TODO(alex): implement
+    }
+
+    public void pushState() {
+        // TODO(alex): implement
+    }
 
     private void ensureSpriteBatchOpen() {
-        if (!isSpriteBatchOpen) {
-            shapeRenderer.end();
-            spriteBatch.begin();
-            isSpriteBatchOpen = true;
-        }
+        changeRenderMode(RenderMode.SPRITE_BATCH);
     }
 
     private void ensureShapeRendererOpen(ShapeRenderer.ShapeType shapeType) {
-        if (isSpriteBatchOpen) {
-            spriteBatch.end();
+        if (renderMode != RenderMode.SHAPE || shapeRenderer.getCurrentType() != shapeType) {
+            endRenderMode(renderMode);
+
             shapeRenderer.begin(shapeType);
-            isSpriteBatchOpen = false;
+            renderMode = RenderMode.SHAPE;
         }
     }
 
-    private void ensureClosed() {
-        if (isSpriteBatchOpen) {
-            spriteBatch.end();
-        } else {
-            shapeRenderer.end();
+    private void changeRenderMode(RenderMode renderMode) {
+        if (this.renderMode == renderMode) {
+            return;
         }
+
+        endRenderMode(this.renderMode);
+        this.renderMode = renderMode;
+        beginRenderMode(renderMode);
+    }
+
+    private void beginRenderMode(RenderMode renderMode) {
+        switch (renderMode) {
+            case SPRITE_BATCH:
+                spriteBatch.begin();
+                break;
+            case SHAPE:
+                shapeRenderer.begin();
+                break;
+        }
+    }
+
+    private void endRenderMode(RenderMode renderMode) {
+        switch (renderMode) {
+            case SPRITE_BATCH:
+                spriteBatch.end();
+                break;
+            case SHAPE:
+                shapeRenderer.end();
+                break;
+        }
+        this.renderMode = RenderMode.NONE;
+    }
+
+    private enum RenderMode {
+        NONE, SPRITE_BATCH, SHAPE
     }
 }
