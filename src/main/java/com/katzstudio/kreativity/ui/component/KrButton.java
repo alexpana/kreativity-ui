@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -43,7 +43,7 @@ public class KrButton extends KrWidget {
 
     public KrButton(String text) {
         this.text = text;
-        setStyle(KreativitySkin.instance().getButtonStyle());
+        setStyle(KrSkin.instance().getButtonStyle());
         setPadding(new KrPadding(5, 4));
         setTextAlignment(KrAlignment.MIDDLE_CENTER);
         setSize(getSelfPreferredSize());

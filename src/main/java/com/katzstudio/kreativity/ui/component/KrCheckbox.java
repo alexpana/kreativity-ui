@@ -3,7 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrModel;
-import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -30,7 +30,7 @@ public class KrCheckbox extends KrWidget {
     private final List<ValueListener> valueListeners = new ArrayList<>();
 
     public KrCheckbox() {
-        setStyle(KreativitySkin.instance().getCheckboxStyle());
+        setStyle(KrSkin.instance().getCheckboxStyle());
         setSize(getSelfPreferredSize());
     }
 

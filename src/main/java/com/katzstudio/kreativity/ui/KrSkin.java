@@ -31,17 +31,17 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katzstudio.kreativity.ui.KreativitySkin.ColorKey.BACKGROUND_DARK;
-import static com.katzstudio.kreativity.ui.KreativitySkin.ColorKey.BACKGROUND_LIGHT;
-import static com.katzstudio.kreativity.ui.KreativitySkin.ColorKey.FOREGROUND;
-import static com.katzstudio.kreativity.ui.KreativitySkin.ColorKey.SELECTION_BACKGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_LIGHT;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.FOREGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SELECTION_BACKGROUND;
 
 /**
  * Kreativity Skin
  */
-public class KreativitySkin {
+public class KrSkin {
 
-    private static final KreativitySkin KREATIVITY_SKIN = new KreativitySkin();
+    private static final KrSkin KREATIVITY_SKIN = new KrSkin();
 
     private final static ImmutableMap<ColorKey, Color> colors = ImmutableMap.<ColorKey, Color>builder()
             .put(BACKGROUND_LIGHT, new Color(0x424242ff))
@@ -70,12 +70,14 @@ public class KreativitySkin {
 
     @Getter @Setter private KrTextField.Style textFieldStyle;
 
+    @Getter @Setter private KrTextField.Style spinnerStyle;
+
     @Getter private Texture skinTexture;
 
-    private KreativitySkin() {
+    private KrSkin() {
     }
 
-    public static KreativitySkin instance() {
+    public static KrSkin instance() {
         return KREATIVITY_SKIN;
     }
 
@@ -139,6 +141,24 @@ public class KreativitySkin {
                 drawablePatches.get("textfield.background_normal"),
                 drawablePatches.get("textfield.background_hovered"),
                 drawablePatches.get("textfield.background_focused"),
+                defaultFont,
+                getColor(FOREGROUND),
+                getColor(FOREGROUND),
+                KrColor.rgb(0x38466b));
+
+        textFieldStyle = new KrTextField.Style(
+                drawablePatches.get("textfield.background_normal"),
+                drawablePatches.get("textfield.background_hovered"),
+                drawablePatches.get("textfield.background_focused"),
+                defaultFont,
+                getColor(FOREGROUND),
+                getColor(FOREGROUND),
+                KrColor.rgb(0x38466b));
+
+        spinnerStyle = new KrTextField.Style(
+                drawablePatches.get("spinner.background_normal"),
+                drawablePatches.get("spinner.background_hovered"),
+                drawablePatches.get("spinner.background_focused"),
                 defaultFont,
                 getColor(FOREGROUND),
                 getColor(FOREGROUND),

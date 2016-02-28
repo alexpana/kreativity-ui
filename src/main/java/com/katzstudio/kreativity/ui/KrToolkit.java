@@ -27,17 +27,17 @@ public class KrToolkit {
 
     private static long DOUBLE_CLICK_THRESHOLD = 500;
 
-    private static KreativitySkin.Cursor currentCursor;
+    private static KrSkin.Cursor currentCursor;
 
-    public static void setCursor(KreativitySkin.Cursor cursor) {
+    public static void setCursor(KrSkin.Cursor cursor) {
         if (cursor == null) {
-            cursor = KreativitySkin.Cursor.POINTER;
+            cursor = KrSkin.Cursor.POINTER;
         }
         currentCursor = cursor;
         Gdx.input.setCursorImage(cursor.getCursorPixmap(), cursor.getHotSpotX(), cursor.getHotSpotY());
     }
 
-    public static KreativitySkin.Cursor getCursor() {
+    public static KrSkin.Cursor getCursor() {
         return currentCursor;
     }
 

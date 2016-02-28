@@ -2,131 +2,101 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrModel;
-import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.event.KrKeyEvent;
+import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
+import static com.katzstudio.kreativity.ui.event.KrMouseEvent.Button.LEFT;
+import static com.katzstudio.kreativity.ui.event.KrMouseEvent.Button.RIGHT;
+
 /**
  * Spinner component.
  */
-public class KrSpinner extends TextField {
+public class KrSpinner extends KrTextField {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.##");
 
     private float value = 0;
 
-    @Getter
-    @Setter
-    private float increment = 0.1f;
+    @Getter @Setter private float increment = 0.1f;
 
     private final List<EditListener> editListeners = Lists.newArrayList();
 
-    @Getter
-    @Setter
-    private KrModel<Float> model;
+    @Getter @Setter private KrModel<Float> model;
 
-    public KrSpinner(KrContext uiContext, String text) {
-        super(text, uiContext.getSkin());
+    private boolean dragStarted;
 
-        KrToolkit.ensureUniqueStyle(this);
+    private boolean wasDragged = false;
 
-        Drawable noedit_background = uiContext.getSkin().getDrawable("spinner.background_noedit");
-        Drawable edit_background = uiContext.getSkin().getDrawable("spinner.background_edit");
+    public KrSpinner() {
+        setStyle(KrSkin.instance().getSpinnerStyle());
 
-        getStyle().background = noedit_background;
-        getStyle().background.setBottomHeight(3);
-        getStyle().background.setLeftWidth(7);
-
-        addListener(createInputListener(uiContext));
-        addListener(new FocusListener() {
-            @Override
-            public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
-                if (event.isFocused()) {
-                    getStyle().background = edit_background;
-                } else {
-                    getStyle().background = noedit_background;
-                }
-                validateText();
-            }
-        });
-
-        setText("0");
+        KrPadding padding = getPadding();
+        padding.right = 17;
+        setPadding(padding);
     }
 
-    private InputListener createInputListener(final KrContext uiContext) {
-        return new InputListener() {
-            private boolean dragStarted;
-            private boolean wasDragged = false;
+    @Override
+    protected boolean keyPressedEvent(KrKeyEvent event) {
+        if (event.getKeycode() == Input.Keys.ENTER || event.getKeycode() == Input.Keys.ESCAPE) {
+            validateText();
+            notifyEditStopped();
+            clearFocus();
+            return true;
+        }
 
-            @Override
-            public boolean keyTyped(InputEvent event, char character) {
-                if (event.getKeyCode() == Input.Keys.ENTER) {
-                    validateText();
-                    notifyEditStopped();
-                    return true;
-                }
+        return super.keyPressedEvent(event);
+    }
 
-                if (event.getKeyCode() == Input.Keys.ESCAPE) {
-                    validateText();
-                    notifyEditStopped();
-                    uiContext.getStage().setKeyboardFocus(null);
-                    return true;
-                }
-                return false;
-            }
+    @Override
+    protected boolean mousePressedEvent(KrMouseEvent event) {
+        wasDragged = false;
 
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                wasDragged = false;
+        if (event.getButton() == RIGHT) {
+            notifyEditStarted();
+            setValue(0);
+            notifyEditStopped();
+        }
 
-                if (button == Input.Buttons.RIGHT) {
-                    notifyEditStarted();
-                    setValue(0);
-                    notifyEditStopped();
-                }
+        if (event.getButton() == LEFT) {
+            dragStarted = true;
+            notifyEditStarted();
+        }
 
-                if (button == Input.Buttons.LEFT) {
-                    dragStarted = true;
-                    notifyEditStarted();
-                }
+        clearFocus();
+        event.accept();
+        return true;
+    }
 
-                uiContext.getStage().setKeyboardFocus(null);
-                event.setBubbles(false);
-                event.handle();
-                return true;
-            }
+    @Override
+    protected boolean mouseMoveEvent(KrMouseEvent event) {
+        if (dragStarted) {
+            wasDragged = true;
+            incrementValue(Gdx.input.getDeltaX());
+        }
+        event.accept();
+        return true;
+    }
 
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (dragStarted) {
-                    wasDragged = true;
-                    incrementValue(Gdx.input.getDeltaX());
-                }
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dragStarted = false;
-                if (!wasDragged && button == Input.Buttons.LEFT) {
-                    uiContext.getStage().setKeyboardFocus(KrSpinner.this);
-                } else {
-                    notifyEditStopped();
-                }
-            }
-        };
+    @Override
+    protected boolean mouseReleasedEvent(KrMouseEvent event) {
+        dragStarted = false;
+        if (!wasDragged && event.getButton() == LEFT) {
+            requestFocus();
+            textDocument.selectAll();
+        } else {
+            notifyEditStopped();
+        }
+        event.accept();
+        return true;
     }
 
     private void validateText() {
@@ -176,14 +146,14 @@ public class KrSpinner extends TextField {
         super.setText(str);
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (model != null && model.getValue() != value) {
-            setValue(model.getValue());
-        }
-
-        super.draw(batch, parentAlpha);
-    }
+//    @Override
+//    public void draw(Batch batch, float parentAlpha) {
+//        if (model != null && model.getValue() != value) {
+//            setValue(model.getValue());
+//        }
+//
+//        super.draw(batch, parentAlpha);
+//    }
 
     public void addEditListener(EditListener editListener) {
         editListeners.add(editListener);

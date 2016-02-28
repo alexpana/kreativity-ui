@@ -10,7 +10,8 @@ import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
@@ -35,13 +36,13 @@ public class KrTextField extends KrWidget {
 
     @Getter @Setter private Style style;
 
-    private final TextDocument textDocument;
+    protected final TextDocument textDocument;
 
     private int textOffset;
 
     public KrTextField() {
         textDocument = new TextDocument();
-        setStyle(KreativitySkin.instance().getTextFieldStyle());
+        setStyle(KrSkin.instance().getTextFieldStyle());
         setPadding(new KrPadding(1, 4, 4, 4));
     }
 
@@ -118,6 +119,13 @@ public class KrTextField extends KrWidget {
     }
 
     @Override
+    protected boolean focusLostEvent(KrFocusEvent event) {
+        super.focusLostEvent(event);
+        textDocument.clearSelection();
+        return true;
+    }
+
+    @Override
     public Vector2 getSelfPreferredSize() {
         Rectangle textBounds = metrics(style.font).bounds(textDocument.getText());
         return expandSizeWithPadding(textBounds.getSize(new Vector2()), getPadding());
@@ -145,7 +153,7 @@ public class KrTextField extends KrWidget {
         textPosition.y += 1;
 
         // render selection
-        if (textDocument.hasSelection()) {
+        if (isFocused() && textDocument.hasSelection()) {
             Rectangle selectionRect = getSelectionRect(textPosition.x);
             renderer.setBrush(new KrColorBrush(style.selectionColor));
             renderer.fillRect(selectionRect);
@@ -212,6 +220,14 @@ public class KrTextField extends KrWidget {
         if (caretXPosition >= innerViewport.x + innerViewport.width) {
             textOffset += caretXPosition - (innerViewport.x + innerViewport.width) + 1;
         }
+    }
+
+    public void setText(String text) {
+        textDocument.setText(text);
+    }
+
+    public String getText() {
+        return textDocument.getText();
     }
 
     public static class TextDocument {

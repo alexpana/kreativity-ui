@@ -53,8 +53,8 @@ public class KrTable extends Table {
         this.model = model;
 
         renderer = new DefaultRenderer(uiContext);
-//        selectionHighlight = new KrWidget(KreativitySkin.getColor(SELECTION_BACKGROUND));
-//        headerBackground = new KrWidget(KreativitySkin.getColor(BACKGROUND_DARK));
+//        selectionHighlight = new KrWidget(KrSkin.getColor(SELECTION_BACKGROUND));
+//        headerBackground = new KrWidget(KrSkin.getColor(BACKGROUND_DARK));
         scrollBar = createScrollBar();
 
         cells.clear();

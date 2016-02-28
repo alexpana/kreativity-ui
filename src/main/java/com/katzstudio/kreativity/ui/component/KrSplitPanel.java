@@ -57,7 +57,7 @@ public class KrSplitPanel extends Table {
 //                private float maxDelta;
 //                private float minDelta;
 //
-//                private KreativitySkin.Cursor previousCursor;
+//                private KrSkin.Cursor previousCursor;
 //
 //                @Override
 //                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -75,7 +75,7 @@ public class KrSplitPanel extends Table {
 //                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 //                    if (previousCursor == null) {
 //                        previousCursor = KrToolkit.getCursor();
-//                        KrToolkit.setCursor(KreativitySkin.Cursor.RESIZE_V);
+//                        KrToolkit.setCursor(KrSkin.Cursor.RESIZE_V);
 //                    }
 //                }
 //

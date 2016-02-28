@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -22,7 +22,7 @@ public class KrLabel extends KrWidget {
     @Getter @Setter private Style style;
 
     public KrLabel(String text) {
-        setStyle(KreativitySkin.instance().getLabelStyle());
+        setStyle(KrSkin.instance().getLabelStyle());
         this.text = text;
         setSize(getSelfPreferredSize());
     }

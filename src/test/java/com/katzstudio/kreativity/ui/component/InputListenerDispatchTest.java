@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
@@ -36,7 +36,7 @@ public class InputListenerDispatchTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object[]> testCases() {
-        KreativitySkin.instance().setButtonStyle(createButtonStyle());
+        KrSkin.instance().setButtonStyle(createButtonStyle());
 
         return Arrays.asList(new Object[][]{
                 {"KrWidget", new KrWidget()},

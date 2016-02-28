@@ -13,13 +13,14 @@ import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrColor;
 import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.KreativitySkin;
 import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrCollapsiblePanel;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrScrollPanel;
+import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 
 import static com.badlogic.gdx.Gdx.gl;
@@ -66,7 +67,7 @@ public class UiDemo extends Game {
 
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
-        KreativitySkin.instance().install();
+        KrSkin.instance().install();
         canvas = new KrCanvas();
         Gdx.input.setInputProcessor(canvas);
 
@@ -98,7 +99,12 @@ public class UiDemo extends Game {
 
         KrTextField textField = new KrTextField();
         textField.setSize(100, 21);
-        textField.setPosition(200, 10);
+        textField.setPosition(210, 10);
+
+        KrSpinner spinner = new KrSpinner();
+        spinner.setSize(100, 21);
+        spinner.setPosition(210, 40);
+
 
         canvas.getRootComponent().add(checkboxA);
         canvas.getRootComponent().add(checkboxB);
@@ -106,6 +112,7 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(buttonA);
         canvas.getRootComponent().add(largeButton);
         canvas.getRootComponent().add(textField);
+        canvas.getRootComponent().add(spinner);
 
         // Scroll Panel
 //        KrScrollPanel scrollPanel = createKrScrollPanel(uiContext, 10, 690, 100, 100);

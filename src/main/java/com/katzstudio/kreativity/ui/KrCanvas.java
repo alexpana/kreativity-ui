@@ -53,6 +53,8 @@ public class KrCanvas implements InputProcessor {
 
     @Getter private KrWidget keyboardFocusHolder;
 
+    @Getter private KrWidget mouseFocusHolder;
+
     private KrWidget currentlyHoveredWidget = null;
 
     private boolean isAltDown = false;
@@ -103,8 +105,8 @@ public class KrCanvas implements InputProcessor {
      */
     public void draw() {
         renderer.beginFrame();
-        renderer.setFont(KreativitySkin.instance().getDefaultFont());
-        renderer.setPen(new KrPen(1, KreativitySkin.getColor(KreativitySkin.ColorKey.FOREGROUND)));
+        renderer.setFont(KrSkin.instance().getDefaultFont());
+        renderer.setPen(new KrPen(1, KrSkin.getColor(KrSkin.ColorKey.FOREGROUND)));
         rootComponent.draw(renderer);
         renderer.endFrame();
     }
@@ -182,20 +184,26 @@ public class KrCanvas implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.PRESSED, screenX, screenY, button);
-        dispatchEvent(findWidgetAt(rootComponent, screenX, screenY), mouseEvent);
+        mouseFocusHolder = findWidgetAt(rootComponent, screenX, screenY);
+        if (mouseFocusHolder != keyboardFocusHolder) {
+            requestFocus(mouseFocusHolder);
+        }
+        dispatchEvent(mouseFocusHolder, mouseEvent);
         return mouseEvent.handled();
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.RELEASED, screenX, screenY, button);
-        dispatchEvent(findWidgetAt(rootComponent, screenX, screenY), mouseEvent);
+        dispatchEvent(mouseFocusHolder, mouseEvent);
         return mouseEvent.handled();
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+        KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.MOVED, screenX, screenY, -1);
+        dispatchEvent(mouseFocusHolder, mouseEvent);
+        return mouseEvent.handled();
     }
 
     @Override

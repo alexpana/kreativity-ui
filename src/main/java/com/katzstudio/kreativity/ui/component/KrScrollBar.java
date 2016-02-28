@@ -8,15 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.KreativitySkin;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
-import static com.katzstudio.kreativity.ui.KreativitySkin.ColorKey.BACKGROUND_DARK;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
 
 /**
  * Scroll bar component which can be embedded into other components to enable scrolling
@@ -123,7 +123,7 @@ public class KrScrollBar extends Widget {
         super.draw(batch, parentAlpha);
 
         // draw slider
-        Drawable slider = KrToolkit.createColorDrawable(KreativitySkin.getColor(BACKGROUND_DARK));
+        Drawable slider = KrToolkit.createColorDrawable(KrSkin.getColor(BACKGROUND_DARK));
         slider.draw(batch, getX(), getY() + getHeight() - sliderPosition - sliderSize, getWidth(), sliderSize);
     }
 

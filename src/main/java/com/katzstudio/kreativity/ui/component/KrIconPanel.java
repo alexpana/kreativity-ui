@@ -3,7 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
-import com.katzstudio.kreativity.ui.KreativitySkin;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,14 +22,14 @@ public class KrIconPanel extends KrWidget {
 
     @Override
     public Vector2 getSelfPreferredSize() {
-        final BitmapFont.TextBounds bounds = KreativitySkin.instance().getFontAwesome().getBounds(iconGlyph.getRepresentation());
+        final BitmapFont.TextBounds bounds = KrSkin.instance().getFontAwesome().getBounds(iconGlyph.getRepresentation());
         return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
     }
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        final BitmapFont.TextBounds bounds = KreativitySkin.instance().getFontAwesome().getBounds(iconGlyph.getRepresentation());
-        renderer.setFont(KreativitySkin.instance().getFontAwesome());
+        final BitmapFont.TextBounds bounds = KrSkin.instance().getFontAwesome().getBounds(iconGlyph.getRepresentation());
+        renderer.setFont(KrSkin.instance().getFontAwesome());
         renderer.drawText(iconGlyph.getRepresentation(), getX() + (getWidth() - bounds.width) / 2, getY() + getHeight() + (getHeight() - bounds.height) / 2);
     }
 }

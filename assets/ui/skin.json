@@ -13,7 +13,7 @@
       "region": [197, 1, 24, 21],
       "split": [4, 16, 2, 2]
     },
-    "spinner.background_edit": {
+    "spinner.background_focused": {
       "region": [170, 1, 24, 21],
       "split": [4, 16, 2, 2]
     },

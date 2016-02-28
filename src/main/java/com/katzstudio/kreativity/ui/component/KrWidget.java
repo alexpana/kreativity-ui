@@ -213,6 +213,14 @@ public class KrWidget {
         return canvas != null && canvas.requestFocus(this);
     }
 
+    public void clearFocus() {
+        KrCanvas canvas = getCanvas();
+        if (canvas != null) {
+            canvas.clearFocus();
+        }
+    }
+
+
     @SuppressWarnings("SimplifiableIfStatement")
     public boolean handle(KrEvent event) {
         if (event instanceof KrMouseEvent) {
