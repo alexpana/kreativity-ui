@@ -194,10 +194,17 @@ public class KrTextField extends KrWidget {
     }
 
     private void recalculateTextOffset() {
+        KrFontMetrics metrics = metrics(style.font);
         float textPositionX = getX() + getPadding().left - textOffset;
-        float caretXPosition = textPositionX + metrics(style.font).bounds(textDocument.getTextBeforeCaret()).width;
+        float caretXPosition = textPositionX + metrics.bounds(textDocument.getTextBeforeCaret()).width;
+        float textWidth = metrics.bounds(textDocument.getText()).width;
 
         Rectangle innerViewport = rectangles(getGeometry()).shrink(getPadding()).value();
+        if (innerViewport.getWidth() > textWidth) {
+            textOffset = 0;
+            return;
+        }
+
         if (caretXPosition <= innerViewport.x) {
             textOffset -= innerViewport.x - caretXPosition;
         }
