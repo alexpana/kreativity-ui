@@ -46,7 +46,7 @@ public class KrButton extends KrWidget {
         setStyle(KrSkin.instance().getButtonStyle());
         setPadding(new KrPadding(5, 4));
         setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        setSize(getSelfPreferredSize());
+        setSize(calculatePreferredSize());
     }
 
     public void addListener(Listener listener) {
@@ -62,7 +62,7 @@ public class KrButton extends KrWidget {
     }
 
     @Override
-    public Vector2 getSelfPreferredSize() {
+    public Vector2 calculatePreferredSize() {
         BitmapFont.TextBounds bounds = style.font.getBounds(text);
         return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
     }

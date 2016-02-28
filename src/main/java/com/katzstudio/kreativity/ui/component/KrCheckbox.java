@@ -31,7 +31,7 @@ public class KrCheckbox extends KrWidget {
 
     public KrCheckbox() {
         setStyle(KrSkin.instance().getCheckboxStyle());
-        setSize(getSelfPreferredSize());
+        setSize(calculatePreferredSize());
     }
 
     public void setChecked(boolean checked) {
@@ -55,7 +55,7 @@ public class KrCheckbox extends KrWidget {
     }
 
     @Override
-    public Vector2 getSelfPreferredSize() {
+    public Vector2 calculatePreferredSize() {
         // TODO(alex): add support for text
         return new Vector2(14, 15);
     }

@@ -17,11 +17,11 @@ public class KrIconPanel extends KrWidget {
 
     public KrIconPanel(KrFontAwesomeGlyph iconGlyph) {
         this.iconGlyph = iconGlyph;
-        setSize(getSelfPreferredSize());
+        setSize(calculatePreferredSize());
     }
 
     @Override
-    public Vector2 getSelfPreferredSize() {
+    public Vector2 calculatePreferredSize() {
         final BitmapFont.TextBounds bounds = KrSkin.instance().getFontAwesome().getBounds(iconGlyph.getRepresentation());
         return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
     }

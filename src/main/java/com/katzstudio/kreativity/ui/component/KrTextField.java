@@ -126,7 +126,7 @@ public class KrTextField extends KrWidget {
     }
 
     @Override
-    public Vector2 getSelfPreferredSize() {
+    public Vector2 calculatePreferredSize() {
         Rectangle textBounds = metrics(style.font).bounds(textDocument.getText());
         return expandSizeWithPadding(textBounds.getSize(new Vector2()), getPadding());
     }

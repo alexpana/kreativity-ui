@@ -1,23 +1,24 @@
 package com.katzstudio.kreativity.ui.layout;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.component.KrWidget;
-import lombok.RequiredArgsConstructor;
 
 /**
  * A layout that computes the minimum, maximum and preferred size of a {@link KrWidget} based on it's children,
  * and distributes it's children according to the available space.
  */
-@RequiredArgsConstructor
-public abstract class KrLayout {
+public interface KrLayout {
 
-    private final KrWidget parentComponent;
+    void setGeometry(Rectangle geometry);
 
-    public abstract void doLayout();
+    Vector2 getMinSize();
 
-    public abstract Vector2 getMinSize();
+    Vector2 getMaxSize();
 
-    public abstract Vector2 getMaxSize();
+    Vector2 getPreferredSize();
 
-    public abstract Vector2 getPreferredSize();
+    void addWidget(KrWidget child, Object layoutConstraint);
+
+    void removeWidget(KrWidget child);
 }

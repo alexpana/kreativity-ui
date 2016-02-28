@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
@@ -156,5 +157,22 @@ public class KrCanvasTest {
         KrCanvas canvas = createCanvas();
 
         assertThat(canvas.keyDown(32), is(false));
+    }
+
+    @Test
+    public void testConvertPointToScreen() throws Exception {
+        KrCanvas canvas = createCanvas();
+
+        KrWidget first = new KrWidget();
+        KrWidget second = new KrWidget();
+
+        first.add(second);
+        canvas.getRootComponent().add(first);
+
+        first.setBounds(50, 50, 100, 100);
+
+        second.setBounds(8, 4, 10, 10);
+
+        assertThat(KrCanvas.convertPointToScreen(new Vector2(4, 2), second), is(new Vector2(62, 56)));
     }
 }

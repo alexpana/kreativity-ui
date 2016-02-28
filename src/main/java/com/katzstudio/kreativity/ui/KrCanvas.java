@@ -301,6 +301,18 @@ public class KrCanvas implements InputProcessor {
         return widgetBounds;
     }
 
+    /**
+     * Converts a point location from the local space of a widget to the screen space
+     *
+     * @param point  a position local to the widget
+     * @param widget the widget which contains the requested point
+     * @return the point's position in screen space
+     */
+    public static Vector2 convertPointToScreen(Vector2 point, KrWidget widget) {
+        Rectangle widgetBounds = getScreenBounds(widget);
+        return widgetBounds.getPosition(new Vector2()).add(point);
+    }
+
     public boolean clearFocus() {
         return requestFocus(null);
     }

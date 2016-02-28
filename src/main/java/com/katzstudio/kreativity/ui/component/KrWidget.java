@@ -45,7 +45,7 @@ public class KrWidget {
 
     @Getter private KrWidget parent;
 
-    @Getter private KrLayout layout = new KrAbsoluteLayout(this);
+    @Getter private KrLayout layout = new KrAbsoluteLayout();
 
     private Vector2 userPreferredSize;
 
@@ -67,6 +67,14 @@ public class KrWidget {
 
     private final List<KrFocusListener> focusListeners = Lists.newArrayList();
 
+    @Setter private Vector2 minSize;
+
+    @Setter private Vector2 maxSize;
+
+    @Setter private Vector2 preferredSize;
+
+    @Getter private boolean isValid;
+
     public KrWidget() {
     }
 
@@ -74,20 +82,38 @@ public class KrWidget {
         this.name = name;
     }
 
+    public int getChildCount() {
+        return children.size();
+    }
+
+    public KrWidget getChild(int index) {
+        return children.get(index);
+    }
+
     public void add(KrWidget child) {
+        add(child, null);
+    }
+
+    public void add(KrWidget child, Object layoutConstraint) {
         if (child.getParent() != null) {
             throw new IllegalArgumentException("Widget already has a parent: " + child.getParent());
         }
         children.add(child);
         child.setParent(this);
         child.setCanvas(this.canvas);
+
+        layout.addWidget(child, layoutConstraint);
+
         invalidate();
     }
 
     public void remove(KrWidget child) {
-        children.remove(child);
-        child.setParent(null);
+
+        layout.removeWidget(child);
+
         child.setCanvas(null);
+        child.setParent(null);
+        children.remove(child);
 
         if (child.isFocused) {
             getCanvas().clearFocus();
@@ -140,6 +166,24 @@ public class KrWidget {
         this.setBounds(position.x, position.y, size.x, size.y);
     }
 
+    public void validate() {
+        layout.setGeometry(this.getGeometry());
+
+        isValid = true;
+    }
+
+    public void invalidate() {
+        isValid = false;
+
+        invalidateParent();
+    }
+
+    public void invalidateParent() {
+        if (parent != null) {
+            parent.invalidate();
+        }
+    }
+
     public void draw(KrRenderer renderer) {
         drawSelf(renderer);
         drawChildren(renderer);
@@ -159,32 +203,63 @@ public class KrWidget {
         renderer.translate(-getX(), -getY());
     }
 
-    public Vector2 getPreferredSize() {
-        if (userPreferredSize != null) {
-            return userPreferredSize;
-        } else {
-            return getSelfPreferredSize();
-        }
-    }
-
-    public Vector2 getSelfPreferredSize() {
+    public Vector2 calculatePreferredSize() {
         return layout.getPreferredSize();
     }
 
-    public void setUserPreferredSize(Vector2 preferredSize) {
-        userPreferredSize = preferredSize;
+    public boolean isMaxSizeSet() {
+        return maxSize != null;
     }
 
-    public Vector2 getUserPreferredSize() {
-        return userPreferredSize;
-    }
-
-    public void invalidate() {
-        if (parent != null) {
-            parent.invalidate();
+    public Vector2 getMaxSize() {
+        if (isMaxSizeSet()) {
+            return maxSize;
+        } else {
+            return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
         }
+    }
 
-        layout.doLayout();
+    public boolean isMinSizeSet() {
+        return minSize != null;
+    }
+
+    public Vector2 getMinSize() {
+        if (isMinSizeSet()) {
+            return minSize;
+        } else {
+            return new Vector2(0, 0);
+        }
+    }
+
+    public boolean isPreferredSizeSet() {
+        return preferredSize != null;
+    }
+
+    public Vector2 getPreferredSize() {
+        if (isPreferredSizeSet()) {
+            return preferredSize;
+        } else {
+            return calculatePreferredSize();
+        }
+    }
+
+    private Rectangle getScreenBounds() {
+        float offsetX = 0;
+        float offsetY = 0;
+        if (parent != null) {
+            Rectangle parentBounds = parent.getScreenBounds();
+            offsetX = parentBounds.x;
+            offsetY = parentBounds.y;
+        }
+        return new Rectangle(offsetX + getX(), offsetY + getY(), getWidth(), getHeight());
+    }
+
+    private Rectangle getBounds() {
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public Vector2 getSize() {
+        return new Vector2(getWidth(), getHeight());
     }
 
     public KrWidget getTopLevelAncestor() {
@@ -401,21 +476,6 @@ public class KrWidget {
 
     public KrWidgetToStringBuilder toStringBuilder() {
         return KrWidgetToStringBuilder.builder().name(name).bounds(getBounds()).enabled(true).visible(true);
-    }
-
-    private Rectangle getScreenBounds() {
-        float offsetX = 0;
-        float offsetY = 0;
-        if (parent != null) {
-            Rectangle parentBounds = parent.getScreenBounds();
-            offsetX = parentBounds.x;
-            offsetY = parentBounds.y;
-        }
-        return new Rectangle(offsetX + getX(), offsetY + getY(), getWidth(), getHeight());
-    }
-
-    private Rectangle getBounds() {
-        return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
     @AllArgsConstructor

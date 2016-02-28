@@ -24,11 +24,11 @@ public class KrLabel extends KrWidget {
     public KrLabel(String text) {
         setStyle(KrSkin.instance().getLabelStyle());
         this.text = text;
-        setSize(getSelfPreferredSize());
+        setSize(calculatePreferredSize());
     }
 
     @Override
-    public Vector2 getSelfPreferredSize() {
+    public Vector2 calculatePreferredSize() {
         BitmapFont.TextBounds bounds = getStyle().font.getBounds(text);
         Vector2 textSize = new Vector2(bounds.width, bounds.height);
 

@@ -26,7 +26,7 @@ public class KrPanel extends KrWidget {
     }
 
     @Override
-    public Vector2 getSelfPreferredSize() {
+    public Vector2 calculatePreferredSize() {
         return getLayout().getPreferredSize();
     }
 

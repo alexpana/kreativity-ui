@@ -1,20 +1,16 @@
 package com.katzstudio.kreativity.ui.layout;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 
 /**
  * A layout that allows components to position and size themselves.
  */
-public class KrAbsoluteLayout extends KrLayout {
-
-    public KrAbsoluteLayout(KrWidget parentComponent) {
-        super(parentComponent);
-    }
+public class KrAbsoluteLayout implements KrLayout {
 
     @Override
-    public void doLayout() {
-        // nothing to do, components are positioned and sized from the outside
+    public void setGeometry(Rectangle geometry) {
     }
 
     @Override
@@ -31,5 +27,13 @@ public class KrAbsoluteLayout extends KrLayout {
     public Vector2 getPreferredSize() {
         // TODO(alex): iterate through components and get their bounding box.
         return getMaxSize();
+    }
+
+    @Override
+    public void addWidget(KrWidget child, Object layoutConstraint) {
+    }
+
+    @Override
+    public void removeWidget(KrWidget child) {
     }
 }
