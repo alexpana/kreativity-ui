@@ -127,8 +127,12 @@ public class KrTextField extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        Rectangle textBounds = metrics(style.font).bounds(textDocument.getText());
-        return expandSizeWithPadding(textBounds.getSize(new Vector2()), getPadding());
+        return new Vector2(200, 21);
+    }
+
+    @Override
+    public String toString() {
+        return toStringBuilder().type("KrTextField").toString();
     }
 
     @Override
@@ -136,13 +140,13 @@ public class KrTextField extends KrWidget {
         recalculateTextOffset();
 
         Rectangle innerViewport = rectangles(getGeometry()).shrink(getPadding()).value();
-        renderer.beginClip(getGeometry());
+        boolean componentClip = renderer.beginClip(getGeometry());
 
         // render background
         renderer.setBrush(new KrDrawableBrush(getBackgroundDrawable()));
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
-        renderer.beginClip(innerViewport);
+        boolean viewportClip = renderer.beginClip(innerViewport);
 
         String text = textDocument.getText();
         KrFontMetrics metrics = metrics(style.font);
@@ -170,11 +174,13 @@ public class KrTextField extends KrWidget {
             renderer.drawLine(caretX, getY() + CARET_TOP_OFFSET, caretX, getY() + CARET_TOP_OFFSET + CARET_HEIGHT);
         }
 
-        // end clip: inner viewport
-        renderer.endClip();
+        if (viewportClip) {
+            renderer.endClip();
+        }
 
-        // end clip: widget geometry
-        renderer.endClip();
+        if (componentClip) {
+            renderer.endClip();
+        }
     }
 
     private Drawable getBackgroundDrawable() {
