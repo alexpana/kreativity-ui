@@ -29,4 +29,8 @@ public class KrFontMetrics {
         BitmapFont.TextBounds bounds = bitmapFont.getBounds(text);
         return new Rectangle(0, 0, bounds.width, bounds.height);
     }
+
+    public float lineHeight() {
+        return bitmapFont.getLineHeight();
+    }
 }
