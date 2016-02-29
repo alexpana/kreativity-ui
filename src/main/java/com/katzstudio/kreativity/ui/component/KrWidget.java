@@ -45,7 +45,7 @@ public class KrWidget {
 
     @Getter private KrWidget parent;
 
-    @Getter private KrLayout layout = new KrAbsoluteLayout();
+    @Getter @Setter private KrLayout layout = new KrAbsoluteLayout();
 
     private Vector2 userPreferredSize;
 
@@ -175,6 +175,9 @@ public class KrWidget {
     public void invalidate() {
         isValid = false;
 
+        // TODO(alex): find a proper place to call validate()
+        layout.setGeometry(new Rectangle(0, 0, getWidth(), getHeight()));
+
         invalidateParent();
     }
 
@@ -254,7 +257,7 @@ public class KrWidget {
         return new Rectangle(offsetX + getX(), offsetY + getY(), getWidth(), getHeight());
     }
 
-    private Rectangle getBounds() {
+    public Rectangle getGeometry() {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
@@ -465,17 +468,13 @@ public class KrWidget {
         return new Vector2(size.x + padding.getHorizontalPadding(), size.y + padding.getVerticalPadding());
     }
 
-    protected Rectangle getGeometry() {
-        return new Rectangle(getX(), getY(), getWidth(), getHeight());
-    }
-
     @Override
     public String toString() {
         return toStringBuilder().toString();
     }
 
     public KrWidgetToStringBuilder toStringBuilder() {
-        return KrWidgetToStringBuilder.builder().name(name).bounds(getBounds()).enabled(true).visible(true);
+        return KrWidgetToStringBuilder.builder().name(name).bounds(getGeometry()).enabled(true).visible(true);
     }
 
     @AllArgsConstructor
