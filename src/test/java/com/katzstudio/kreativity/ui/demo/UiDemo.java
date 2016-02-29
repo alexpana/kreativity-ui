@@ -22,6 +22,8 @@ import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrScrollPanel;
 import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrTextField;
+import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 
 import static com.badlogic.gdx.Gdx.gl;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
@@ -46,8 +48,8 @@ public class UiDemo extends Game {
         System.out.println("Running ui demo");
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = 400;
-        config.height = 400;
+        config.width = 500;
+        config.height = 500;
         config.fullscreen = false;
         config.vSyncEnabled = true;
         config.title = "Kreativity UI Demo";
@@ -106,6 +108,25 @@ public class UiDemo extends Game {
         spinner.setPosition(210, 40);
 
 
+        // grid layout
+        KrWidget form = new KrWidget();
+        form.setLayout(new KrGridLayout(2, 3, 3));
+
+        KrWidget usernameLabel = new KrLabel("Username");
+        usernameLabel.setName("label.username");
+        KrWidget usernameEdit = new KrTextField();
+        usernameEdit.setName("textfield.username");
+        KrWidget addressLabel = new KrLabel("Address");
+        addressLabel.setName("label.address");
+        KrWidget addressEdit = new KrTextField();
+        addressEdit.setName("textfield.address");
+
+        form.add(usernameLabel);
+        form.add(usernameEdit);
+        form.add(addressLabel);
+        form.add(addressEdit);
+        form.setBounds(320, 10, 200, 60);
+
         canvas.getRootComponent().add(checkboxA);
         canvas.getRootComponent().add(checkboxB);
         canvas.getRootComponent().add(labelA);
@@ -113,6 +134,7 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(largeButton);
         canvas.getRootComponent().add(textField);
         canvas.getRootComponent().add(spinner);
+        canvas.getRootComponent().add(form);
 
         // Scroll Panel
 //        KrScrollPanel scrollPanel = createKrScrollPanel(uiContext, 10, 690, 100, 100);
