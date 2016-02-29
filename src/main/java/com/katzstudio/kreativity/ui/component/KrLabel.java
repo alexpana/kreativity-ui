@@ -37,7 +37,7 @@ public class KrLabel extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.beginClip(getX(), getY(), getWidth(), getHeight());
+        boolean componentClip = renderer.beginClip(getX(), getY(), getWidth(), getHeight());
 
         Style style = getStyle();
         renderer.setBrush(new KrDrawableBrush(style.background));
@@ -50,7 +50,9 @@ public class KrLabel extends KrWidget {
 
         renderer.drawText(text, getX() + getPadding().left, getY() + getPadding().top);
 
-        renderer.endClip();
+        if (componentClip) {
+            renderer.endClip();
+        }
     }
 
     @Override
