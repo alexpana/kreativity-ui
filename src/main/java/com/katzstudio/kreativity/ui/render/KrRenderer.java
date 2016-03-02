@@ -131,7 +131,6 @@ public class KrRenderer {
     }
 
     private void drawLineInternal(float x1, float y1, float x2, float y2) {
-        System.out.println("Draw Line: " + x1 + ", " + y1 + ", " + x2 + ", " + y2);
         shapeRenderer.line(x1, viewportSize.y - y1, x2 + 1, viewportSize.y - y2 - 1);
     }
 

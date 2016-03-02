@@ -1,9 +1,9 @@
 package com.katzstudio.kreativity.ui.render;
 
 import com.badlogic.gdx.graphics.Color;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * The {@link KrPen} class is used for describing the width and color
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
  * It's also used for specifying the text color.
  */
 @Builder(toBuilder = true)
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class KrPen {
 
     @Getter private final float width;

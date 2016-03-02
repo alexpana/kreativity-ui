@@ -120,7 +120,7 @@ public class KrSkin {
         panelStyle = new KrPanel.Style(KrToolkit.createColorDrawable(KrColor.TRANSPARENT));
 
         labelStyle = new KrLabel.Style(
-                KrToolkit.createColorDrawable(getColor(BACKGROUND_LIGHT)),
+                KrToolkit.createColorDrawable(KrColor.TRANSPARENT),
                 defaultFont,
                 KrColor.rgb(0xffffff));
 

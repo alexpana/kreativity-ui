@@ -203,7 +203,7 @@ public class KrTextField extends KrWidget {
         return new Rectangle(
                 selectionStartX,
                 getY() + CARET_TOP_OFFSET,
-                selectionWidth,
+                selectionWidth + 1,
                 CARET_HEIGHT);
     }
 
