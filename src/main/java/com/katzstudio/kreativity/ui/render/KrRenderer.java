@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrColor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -20,15 +21,23 @@ import lombok.Setter;
  */
 public class KrRenderer {
 
+    private final RenderMode spriteBatchRenderMode;
+
+    private final RenderMode lineShapeRenderMode;
+
+    private final RenderMode filledShapeRenderMode;
+
+    private final RenderMode nullRenderMode;
+
     private final SpriteBatch spriteBatch;
 
     private final ShapeRenderer shapeRenderer;
 
+    private RenderMode currentRenderMode;
+
     @Setter private BitmapFont font;
 
     private Vector2 translation;
-
-    private RenderMode renderMode = RenderMode.NONE;
 
     @Getter @Setter private Vector2 viewportSize;
 
@@ -42,16 +51,24 @@ public class KrRenderer {
         shapeRenderer.setAutoShapeType(true);
         translation = Vector2.Zero;
 
+        spriteBatchRenderMode = new SpriteBatchRenderMode();
+        lineShapeRenderMode = new ShapeRenderMode(ShapeRenderer.ShapeType.Line);
+        filledShapeRenderMode = new ShapeRenderMode(ShapeRenderer.ShapeType.Filled);
+        nullRenderMode = new NullRenderMode();
+
+        currentRenderMode = nullRenderMode;
+
         pen = new KrPen(1.0f, Color.BLACK);
         brush = new KrColorBrush(KrColor.TRANSPARENT);
     }
 
     public void beginFrame() {
-        changeRenderMode(RenderMode.SPRITE_BATCH);
+        currentRenderMode = nullRenderMode;
     }
 
     public void endFrame() {
-        endRenderMode(this.renderMode);
+        flush();
+        translate(-translation.x, -translation.y);
     }
 
     public void drawText(String text, Vector2 position) {
@@ -98,10 +115,10 @@ public class KrRenderer {
         ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(pen.getColor());
 
-        drawLineInternal(x, y, x + w, y);
-        drawLineInternal(x, y, x, y + h);
-        drawLineInternal(x + w, y, x + w, y + h);
-        drawLineInternal(x, y + h, x + w, y + h);
+        drawLineInternal(x, y, x + w - 1, y);
+        drawLineInternal(x, y, x, y + h - 1);
+        drawLineInternal(x + w - 1, y, x + w - 1, y + h - 1);
+        drawLineInternal(x, y + h - 1, x + w - 1, y + h - 1);
 
         shapeRenderer.end();
     }
@@ -114,7 +131,8 @@ public class KrRenderer {
     }
 
     private void drawLineInternal(float x1, float y1, float x2, float y2) {
-        shapeRenderer.line(x1, viewportSize.y - y1, x2, viewportSize.y - y2);
+        System.out.println("Draw Line: " + x1 + ", " + y1 + ", " + x2 + ", " + y2);
+        shapeRenderer.line(x1, viewportSize.y - y1, x2 + 1, viewportSize.y - y2 - 1);
     }
 
     public void fillRect(Rectangle rectangle) {
@@ -134,14 +152,13 @@ public class KrRenderer {
             ensureShapeRendererOpen(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(colorBrush.getColor());
             shapeRenderer.rect(x, viewportSize.y - y - h, w, h);
-            shapeRenderer.end();
         }
     }
 
     public void translate(float x, float y) {
-        this.translation.add(x, y);
-        spriteBatch.getTransformMatrix().translate(x, y, 0);
-        shapeRenderer.translate(x, y, 0);
+        translation.add(x, y);
+        spriteBatch.getTransformMatrix().translate(x, -y, 0);
+        shapeRenderer.translate(x, -y, 0);
     }
 
     public boolean beginClip(Rectangle rectangle) {
@@ -151,7 +168,7 @@ public class KrRenderer {
     public boolean beginClip(float x, float y, float width, float height) {
         flush();
         Rectangle clipRectangle = Pools.obtain(Rectangle.class);
-        clipRectangle.set(x, viewportSize.y - y - height, width, height);
+        clipRectangle.set(x + translation.x, viewportSize.y - y - height - translation.y, width, height);
         if (ScissorStack.pushScissors(clipRectangle)) {
             return true;
         }
@@ -161,7 +178,7 @@ public class KrRenderer {
     }
 
     public void endClip() {
-        spriteBatch.flush();
+        flush();
         Pools.free(ScissorStack.popScissors());
     }
 
@@ -174,63 +191,67 @@ public class KrRenderer {
     }
 
     private void ensureSpriteBatchOpen() {
-        changeRenderMode(RenderMode.SPRITE_BATCH);
+        if (currentRenderMode != spriteBatchRenderMode) {
+            currentRenderMode.end();
+            currentRenderMode = spriteBatchRenderMode;
+            currentRenderMode.begin();
+        }
     }
 
     private void ensureShapeRendererOpen(ShapeRenderer.ShapeType shapeType) {
-        if (renderMode != RenderMode.SHAPE || shapeRenderer.getCurrentType() != shapeType) {
-            endRenderMode(renderMode);
-
-            shapeRenderer.begin(shapeType);
-            renderMode = RenderMode.SHAPE;
+        RenderMode requestedRenderMode = shapeType == ShapeRenderer.ShapeType.Line ? lineShapeRenderMode : filledShapeRenderMode;
+        if (currentRenderMode != requestedRenderMode) {
+            currentRenderMode.end();
+            currentRenderMode = requestedRenderMode;
+            currentRenderMode.begin();
         }
-    }
-
-    private void changeRenderMode(RenderMode renderMode) {
-        if (this.renderMode == renderMode) {
-            return;
-        }
-
-        endRenderMode(this.renderMode);
-        this.renderMode = renderMode;
-        beginRenderMode(renderMode);
-    }
-
-    private void beginRenderMode(RenderMode renderMode) {
-        switch (renderMode) {
-            case SPRITE_BATCH:
-                spriteBatch.begin();
-                break;
-            case SHAPE:
-                shapeRenderer.begin();
-                break;
-        }
-    }
-
-    private void endRenderMode(RenderMode renderMode) {
-        switch (renderMode) {
-            case SPRITE_BATCH:
-                spriteBatch.end();
-                break;
-            case SHAPE:
-                shapeRenderer.end();
-                break;
-        }
-        this.renderMode = RenderMode.NONE;
     }
 
     private void flush() {
-        switch (renderMode) {
-            case SPRITE_BATCH:
-                spriteBatch.flush();
-                break;
-            case SHAPE:
-                shapeRenderer.flush();
-                break;
+        currentRenderMode.end();
+        currentRenderMode = nullRenderMode;
+    }
+
+    private interface RenderMode {
+        void begin();
+
+        void end();
+    }
+
+    private class SpriteBatchRenderMode implements RenderMode {
+        @Override
+        public void begin() {
+            spriteBatch.begin();
+        }
+
+        @Override
+        public void end() {
+            spriteBatch.end();
         }
     }
 
-    private enum RenderMode {
-        NONE, SPRITE_BATCH, SHAPE
+    @RequiredArgsConstructor
+    private class ShapeRenderMode implements RenderMode {
+        public final ShapeRenderer.ShapeType shapeType;
+
+        @Override
+        public void begin() {
+            shapeRenderer.begin(shapeType);
+        }
+
+        @Override
+        public void end() {
+            shapeRenderer.end();
+        }
+    }
+
+    private class NullRenderMode implements RenderMode {
+        @Override
+        public void begin() {
+        }
+
+        @Override
+        public void end() {
+        }
     }
 }
