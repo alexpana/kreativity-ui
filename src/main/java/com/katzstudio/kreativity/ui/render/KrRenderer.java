@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Pools;
+import com.katzstudio.kreativity.ui.KrColor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,6 +41,9 @@ public class KrRenderer {
         shapeRenderer = new ShapeRenderer(100);
         shapeRenderer.setAutoShapeType(true);
         translation = Vector2.Zero;
+
+        pen = new KrPen(1.0f, Color.BLACK);
+        brush = new KrColorBrush(KrColor.TRANSPARENT);
     }
 
     public void beginFrame() {
@@ -136,6 +140,8 @@ public class KrRenderer {
 
     public void translate(float x, float y) {
         this.translation.add(x, y);
+        spriteBatch.getTransformMatrix().translate(x, y, 0);
+        shapeRenderer.translate(x, y, 0);
     }
 
     public boolean beginClip(Rectangle rectangle) {
@@ -143,7 +149,7 @@ public class KrRenderer {
     }
 
     public boolean beginClip(float x, float y, float width, float height) {
-        spriteBatch.flush();
+        flush();
         Rectangle clipRectangle = Pools.obtain(Rectangle.class);
         clipRectangle.set(x, viewportSize.y - y - height, width, height);
         if (ScissorStack.pushScissors(clipRectangle)) {
@@ -211,6 +217,17 @@ public class KrRenderer {
                 break;
         }
         this.renderMode = RenderMode.NONE;
+    }
+
+    private void flush() {
+        switch (renderMode) {
+            case SPRITE_BATCH:
+                spriteBatch.flush();
+                break;
+            case SHAPE:
+                shapeRenderer.flush();
+                break;
+        }
     }
 
     private enum RenderMode {
