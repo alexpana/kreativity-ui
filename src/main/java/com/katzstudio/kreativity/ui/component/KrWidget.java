@@ -217,9 +217,13 @@ public class KrWidget {
     public Vector2 getMaxSize() {
         if (isMaxSizeSet()) {
             return maxSize;
-        } else {
-            return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
         }
+
+        if (!(layout instanceof KrAbsoluteLayout)) {
+            return layout.getMaxSize();
+        }
+
+        return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
     }
 
     public boolean isMinSizeSet() {
@@ -229,9 +233,13 @@ public class KrWidget {
     public Vector2 getMinSize() {
         if (isMinSizeSet()) {
             return minSize;
-        } else {
-            return new Vector2(0, 0);
         }
+
+        if (!(layout instanceof KrAbsoluteLayout)) {
+            return layout.getMinSize();
+        }
+
+        return getPreferredSize();
     }
 
     public boolean isPreferredSizeSet() {
@@ -241,9 +249,13 @@ public class KrWidget {
     public Vector2 getPreferredSize() {
         if (isPreferredSizeSet()) {
             return preferredSize;
-        } else {
-            return calculatePreferredSize();
         }
+
+        if (!(layout instanceof KrAbsoluteLayout)) {
+            return layout.getPreferredSize();
+        }
+
+        return calculatePreferredSize();
     }
 
     private Rectangle getScreenBounds() {

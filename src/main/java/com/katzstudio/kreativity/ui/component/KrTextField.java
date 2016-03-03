@@ -127,7 +127,7 @@ public class KrTextField extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        return new Vector2(200, 21);
+        return new Vector2(80, 21);
     }
 
     @Override

@@ -6,8 +6,12 @@ import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.component.KrWidget;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A layout implementation that distributes widgets in a grid.
@@ -20,13 +24,11 @@ public class KrGridLayout implements KrLayout {
 
     private final List<KrWidget> widgets = Lists.newArrayList();
 
+    private final Map<KrWidget, Constraint> constraints = new HashMap<>();
+
     private final int verticalPadding;
 
     private final int horizontalPadding;
-
-//    private KrSizePolicyModel columnSizePolicy = new KrSizePolicyModel();
-
-    private int constraintsMask = 0;
 
     public KrGridLayout(int columns) {
         this(columns, 0, 0);
@@ -40,10 +42,7 @@ public class KrGridLayout implements KrLayout {
 
     @Override
     public void setGeometry(Rectangle geometry) {
-//        int availableWidth = (int) (geometry.getWidth() - horizontalPadding * (columnCount + 1));
-//        List<Float> columnSize = columnSizePolicy.getSizes(availableWidth);
-
-        int rowCount = (widgets.size() + 1) / columnCount;
+        int rowCount = getRowCount();
         int cellHeight = (int) (geometry.getHeight() - verticalPadding * (rowCount + 1)) / rowCount;
         int cellWidth = (int) (geometry.getWidth() - horizontalPadding * (columnCount + 1)) / columnCount;
 
@@ -52,8 +51,6 @@ public class KrGridLayout implements KrLayout {
         int column = 0;
 
         for (KrWidget widget : widgets) {
-//            int cellWidth = columnSize.get(column).intValue();
-
             layoutInsideCell(widget, new Rectangle(cellX, cellY, cellWidth, cellHeight));
 
             cellX += cellWidth + horizontalPadding;
@@ -66,39 +63,84 @@ public class KrGridLayout implements KrLayout {
         }
     }
 
+    private int getRowCount() {
+        return (widgets.size() + 1) / columnCount;
+    }
+
     private void layoutInsideCell(KrWidget widget, Rectangle cellBounds) {
+        Constraint constraint = constraints.get(widget);
         Vector2 widgetPreferredSize = widget.getPreferredSize();
 
         int widgetWidth = (widgetPreferredSize.x >= cellBounds.width) ? (int) cellBounds.width : (int) widgetPreferredSize.x;
         int widgetHeight = (widgetPreferredSize.y >= cellBounds.height) ? (int) cellBounds.height : (int) widgetPreferredSize.y;
 
-        Vector2 widgetPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, widgetWidth, widgetHeight), cellBounds, KrAlignment.MIDDLE_CENTER);
+        if (constraint.stretchHorizontal) {
+            widgetWidth = (int) cellBounds.width;
+        }
+
+        if (constraint.stretchVertical) {
+            widgetHeight = (int) cellBounds.height;
+        }
+
+        Vector2 widgetPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, widgetWidth, widgetHeight), cellBounds, constraint.alignment);
 
         widget.setBounds(widgetPosition.x, widgetPosition.y, widgetWidth, widgetHeight);
     }
 
     @Override
     public Vector2 getMinSize() {
-        return null;
+        float cellWidth = widgets.stream().map(widget -> widget.getMinSize().x).max(Float::compare).orElse(0.0f);
+        float cellHeight = widgets.stream().map(widget -> widget.getMinSize().y).max(Float::compare).orElse(0.0f);
+        float rowCount = getRowCount();
+
+        return new Vector2(columnCount * cellWidth + (columnCount + 1) * horizontalPadding,
+                rowCount * cellHeight + (rowCount + 1) * verticalPadding);
     }
 
     @Override
     public Vector2 getMaxSize() {
-        return null;
+        return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
     }
 
     @Override
     public Vector2 getPreferredSize() {
-        return null;
+        float cellWidth = widgets.stream().map(widget -> widget.getPreferredSize().x).max(Float::compare).orElse(0.0f);
+        float cellHeight = widgets.stream().map(widget -> widget.getPreferredSize().y).max(Float::compare).orElse(0.0f);
+        float rowCount = getRowCount();
+
+        return new Vector2(columnCount * cellWidth + (columnCount + 1) * horizontalPadding,
+                rowCount * cellHeight + (rowCount + 1) * verticalPadding);
     }
 
     @Override
     public void addWidget(KrWidget child, Object layoutConstraint) {
+        if (layoutConstraint == null) {
+            layoutConstraint = Constraint.DEFAULT;
+        }
+
+        if (!(layoutConstraint instanceof Constraint)) {
+            throw new IllegalArgumentException("Unrecognized constraint class");
+        }
+
+        constraints.put(child, (Constraint) layoutConstraint);
         widgets.add(child);
     }
 
     @Override
     public void removeWidget(KrWidget child) {
         widgets.remove(child);
+        constraints.remove(child);
+    }
+
+    @RequiredArgsConstructor
+    public static class Constraint {
+
+        public static final Constraint DEFAULT = new Constraint(KrAlignment.MIDDLE_CENTER, false, false);
+
+        @Getter private final KrAlignment alignment;
+
+        @Getter final boolean stretchHorizontal;
+
+        @Getter final boolean stretchVertical;
     }
 }

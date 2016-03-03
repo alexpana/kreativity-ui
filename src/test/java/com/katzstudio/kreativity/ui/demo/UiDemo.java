@@ -6,9 +6,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrColor;
 import com.katzstudio.kreativity.ui.KrContext;
@@ -24,6 +26,7 @@ import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout;
+import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 
 import static com.badlogic.gdx.Gdx.gl;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
@@ -116,16 +119,17 @@ public class UiDemo extends Game {
         usernameLabel.setName("label.username");
         KrWidget usernameEdit = new KrTextField();
         usernameEdit.setName("textfield.username");
-        KrWidget addressLabel = new KrLabel("Address");
-        addressLabel.setName("label.address");
-        KrWidget addressEdit = new KrTextField();
-        addressEdit.setName("textfield.address");
+        KrWidget weight = new KrLabel("Weight");
+        weight.setName("label.weight");
+        KrWidget weightEdit = new KrSpinner();
+        weightEdit.setName("spinner.weight");
 
-        form.add(usernameLabel);
+        form.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         form.add(usernameEdit);
-        form.add(addressLabel);
-        form.add(addressEdit);
-        form.setBounds(320, 10, 200, 60);
+        form.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+        form.add(weightEdit);
+        form.setBounds(10, 100, 200, 60);
+        form.setBounds(new Vector2(10, 100), form.getMinSize());
 
         canvas.getRootComponent().add(checkboxA);
         canvas.getRootComponent().add(checkboxB);
