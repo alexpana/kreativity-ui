@@ -13,12 +13,18 @@ public class KrSizePolicyModel {
 
     private final List<KrUnifiedSize> sizePolicies = Lists.newArrayList();
 
-    public KrSizePolicyModel(List<KrUnifiedSize> sizePolicies) {
-        this.sizePolicies.addAll(sizePolicies);
+    public KrSizePolicyModel(int size) {
+        for (int i = 0; i < size; ++i) {
+            sizePolicies.add(new KrUnifiedSize(0, 1));
+        }
     }
 
     public KrSizePolicyModel(KrUnifiedSize... policies) {
         this.sizePolicies.addAll(Lists.newArrayList(policies));
+    }
+
+    public int getCount() {
+        return sizePolicies.size();
     }
 
     public Stream<KrUnifiedSize> stream() {
