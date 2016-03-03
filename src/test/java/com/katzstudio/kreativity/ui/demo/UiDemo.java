@@ -15,8 +15,10 @@ import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrColor;
 import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrCollapsiblePanel;
@@ -113,7 +115,9 @@ public class UiDemo extends Game {
 
         // grid layout
         KrWidget form = new KrWidget();
-        form.setLayout(new KrGridLayout(2, 3, 3));
+        KrGridLayout formLayout = new KrGridLayout(2, 3, 3);
+        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(40, 0), new KrUnifiedSize(80, 1)));
+        form.setLayout(formLayout);
 
         KrWidget usernameLabel = new KrLabel("Username");
         usernameLabel.setName("label.username");
@@ -125,9 +129,9 @@ public class UiDemo extends Game {
         weightEdit.setName("spinner.weight");
 
         form.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        form.add(usernameEdit);
+        form.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
         form.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        form.add(weightEdit);
+        form.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
         form.setBounds(10, 100, 200, 60);
         form.setBounds(new Vector2(10, 100), form.getMinSize());
 

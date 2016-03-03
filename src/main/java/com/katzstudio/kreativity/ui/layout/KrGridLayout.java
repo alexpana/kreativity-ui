@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
+import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,10 @@ public class KrGridLayout implements KrLayout {
 
     private final int horizontalPadding;
 
+    @Getter private KrSizePolicyModel columnSizePolicy;
+
+    private boolean isAdjusting = false;
+
     public KrGridLayout(int columns) {
         this(columns, 0, 0);
     }
@@ -38,19 +43,39 @@ public class KrGridLayout implements KrLayout {
         this.verticalPadding = verticalPadding;
         this.horizontalPadding = horizontalPadding;
         this.columnCount = columns;
+        this.columnSizePolicy = new KrSizePolicyModel(columns);
+    }
+
+    public void setColumnSizePolicy(KrSizePolicyModel sizePolicy) {
+        int elementCount = sizePolicy.getCount();
+        if (elementCount != columnCount) {
+            throw new IllegalArgumentException(
+                    String.format("Size policy has wrong number of elements. Expected %d but got %d.",
+                            columnCount,
+                            elementCount));
+        }
+
+        this.columnSizePolicy = sizePolicy;
     }
 
     @Override
     public void setGeometry(Rectangle geometry) {
+        if (isAdjusting) {
+            return;
+        }
+
+        isAdjusting = true;
         int rowCount = getRowCount();
         int cellHeight = (int) (geometry.getHeight() - verticalPadding * (rowCount + 1)) / rowCount;
-        int cellWidth = (int) (geometry.getWidth() - horizontalPadding * (columnCount + 1)) / columnCount;
+
+        List<Float> sizes = columnSizePolicy.getSizes(geometry.getWidth());
 
         int cellX = (int) (geometry.getX() + horizontalPadding);
         int cellY = (int) (geometry.getY() + verticalPadding);
         int column = 0;
 
         for (KrWidget widget : widgets) {
+            float cellWidth = sizes.get(column);
             layoutInsideCell(widget, new Rectangle(cellX, cellY, cellWidth, cellHeight));
 
             cellX += cellWidth + horizontalPadding;
@@ -61,6 +86,7 @@ public class KrGridLayout implements KrLayout {
                 cellY += cellHeight + verticalPadding;
             }
         }
+        isAdjusting = false;
     }
 
     private int getRowCount() {
@@ -84,7 +110,7 @@ public class KrGridLayout implements KrLayout {
 
         Vector2 widgetPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, widgetWidth, widgetHeight), cellBounds, constraint.alignment);
 
-        widget.setBounds(widgetPosition.x, widgetPosition.y, widgetWidth, widgetHeight);
+        widget.setBounds((int) widgetPosition.x, (int) widgetPosition.y, widgetWidth, widgetHeight);
     }
 
     @Override
