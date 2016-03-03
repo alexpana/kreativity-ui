@@ -87,7 +87,7 @@ public class KrCanvas implements InputProcessor {
         this.width = width;
         this.height = height;
         rootComponent.setSize(width, height);
-        renderer.setViewportSize(new Vector2(width, height));
+        renderer.setViewportSize(width, height);
     }
 
     /**

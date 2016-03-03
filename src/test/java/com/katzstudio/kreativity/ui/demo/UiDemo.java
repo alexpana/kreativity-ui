@@ -204,4 +204,9 @@ public class UiDemo extends Game {
         canvas.update(Gdx.graphics.getDeltaTime());
         canvas.draw();
     }
+
+    @Override
+    public void resize(int width, int height) {
+        canvas.setSize(width, height);
+    }
 }

@@ -1,5 +1,6 @@
 package com.katzstudio.kreativity.ui.render;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,7 +40,7 @@ public class KrRenderer {
 
     private Vector2 translation;
 
-    @Getter @Setter private Vector2 viewportSize;
+    @Getter private Vector2 viewportSize;
 
     @Getter @Setter private KrBrush brush;
 
@@ -179,6 +180,12 @@ public class KrRenderer {
     public void endClip() {
         flush();
         Pools.free(ScissorStack.popScissors());
+    }
+
+    public void setViewportSize(float width, float height) {
+        viewportSize.set(width, height);
+        spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void popState() {

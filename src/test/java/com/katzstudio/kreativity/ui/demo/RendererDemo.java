@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -68,6 +67,6 @@ public class RendererDemo extends Game {
 
     @Override
     public void resize(int width, int height) {
-        renderer.setViewportSize(new Vector2(width, height));
+        renderer.setViewportSize(width, height);
     }
 }
