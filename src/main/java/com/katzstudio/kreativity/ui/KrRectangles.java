@@ -17,6 +17,10 @@ public class KrRectangles {
         return new KrRectangles(rectangle);
     }
 
+    public static KrRectangles rectangles(float width, float height) {
+        return new KrRectangles(new Rectangle(0, 0, width, height));
+    }
+
     public static KrRectangles rectangles(Vector2 size) {
         return new KrRectangles(new Rectangle(0, 0, size.x, size.y));
     }
@@ -81,6 +85,10 @@ public class KrRectangles {
 
     public Rectangle value() {
         return rectangle;
+    }
+
+    public Vector2 size() {
+        return new Vector2(rectangle.width, rectangle.height);
     }
 
     private static class Segment extends KrPair<Float, Float> {

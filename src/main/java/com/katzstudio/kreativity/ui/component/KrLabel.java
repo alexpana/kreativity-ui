@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
@@ -11,6 +12,9 @@ import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import static com.katzstudio.kreativity.ui.KrFontMetrics.metrics;
+import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
 
 /**
  * A simple label component
@@ -29,10 +33,10 @@ public class KrLabel extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        BitmapFont.TextBounds bounds = getStyle().font.getBounds(text);
-        Vector2 textSize = new Vector2(bounds.width, bounds.height);
-
-        return expandSizeWithPadding(textSize, getPadding());
+        KrFontMetrics metrics = metrics(getStyle().font);
+        float textWidth = metrics.bounds(text).width;
+        float textHeight = metrics.lineHeight();
+        return rectangles(textWidth, textHeight).expand(getPadding()).size();
     }
 
     @Override

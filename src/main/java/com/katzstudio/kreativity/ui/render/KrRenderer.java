@@ -40,7 +40,7 @@ public class KrRenderer {
 
     private Vector2 translation;
 
-    @Getter private Vector2 viewportSize;
+    @Getter private Vector2 viewportSize = new Vector2(0, 0);
 
     @Getter @Setter private KrBrush brush;
 
