@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * A brush that paints a {@link Drawable} image
  */
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
 public class KrDrawableBrush extends KrBrush {
     @Getter private final Drawable drawable;
