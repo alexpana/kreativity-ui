@@ -42,6 +42,7 @@ public class KrTextField extends KrWidget {
 
     public KrTextField() {
         textDocument = new TextDocument();
+        setFocusable(true);
         setStyle(KrSkin.instance().getTextFieldStyle());
         setPadding(new KrPadding(1, 4, 4, 4));
     }

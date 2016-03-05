@@ -97,9 +97,9 @@ public class KrSkin {
         String textureName = jsonSkin.get("texture").asString();
         skinTexture = new Texture(Gdx.files.internal("ui/" + textureName));
 
-        defaultFont = new BitmapFont(Gdx.files.internal("ui/fonts/roboto_light_bold_9.fnt"));
+        defaultFont = new BitmapFont(Gdx.files.internal("ui/fonts/roboto_10.fnt"));
 
-        defaultFontBold = new BitmapFont(Gdx.files.internal("ui/fonts/roboto_medium_bold_9.fnt"));
+        defaultFontBold = new BitmapFont(Gdx.files.internal("ui/fonts/open_sans_10.fnt"));
 
         fontAwesome = new BitmapFont(Gdx.files.internal("ui/fonts/fontawesome_11.fnt"));
 

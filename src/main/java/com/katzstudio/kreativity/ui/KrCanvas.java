@@ -16,6 +16,7 @@ import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper;
+import com.katzstudio.kreativity.ui.listener.KrWidgetListener;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 import static com.badlogic.gdx.Input.Keys.LEFT;
 import static com.badlogic.gdx.Input.Keys.RIGHT;
+import static com.badlogic.gdx.Input.Keys.TAB;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getButtonFor;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getRepresentation;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isAlt;
@@ -65,14 +67,28 @@ public class KrCanvas implements InputProcessor {
 
     private int pressedKeyCode = 0;
 
+    @Getter private final KrFocusManager focusManager;
+
     public KrCanvas() {
         this(new KrRenderer(), Gdx.app.getClipboard(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public KrCanvas(KrRenderer renderer, Clipboard clipboard, float width, float height) {
         this.clipboard = clipboard;
+
         rootComponent = new KrPanel();
+        rootComponent.setName("root");
         rootComponent.setCanvas(this);
+
+        focusManager = new KrFocusManager(rootComponent);
+
+        rootComponent.addWidgetListener(new KrWidgetListener.KrAbstractWidgetListener() {
+            @Override
+            public void invalidated() {
+                focusManager.refresh();
+            }
+        });
+
         this.renderer = renderer;
         setSize(width, height);
     }
@@ -125,6 +141,17 @@ public class KrCanvas implements InputProcessor {
     public boolean keyTyped(char character) {
         if (keyboardFocusHolder == null) {
             return false;
+        }
+
+        // handle tab key
+        System.out.println("character = " + character);
+        if (pressedKeyCode == TAB && !keyboardFocusHolder.acceptsTabInput()) {
+            if (isShiftDown) {
+                focusPrevious();
+            } else {
+                focusNext();
+            }
+            return true;
         }
 
         if (pressedKeyCode == LEFT || pressedKeyCode == RIGHT) {
@@ -318,6 +345,7 @@ public class KrCanvas implements InputProcessor {
     }
 
     public boolean requestFocus(KrWidget widget) {
+        System.out.println("requesting focus for widget = " + widget);
         if (widget != null && widget.getCanvas() != this) {
             throw new IllegalArgumentException("Cannot focus a widget that doesn't belong to this canvas.");
         }
@@ -335,6 +363,14 @@ public class KrCanvas implements InputProcessor {
         }
 
         return false;
+    }
+
+    public void focusNext() {
+        requestFocus(focusManager.nextFocusable(keyboardFocusHolder));
+    }
+
+    public void focusPrevious() {
+        requestFocus(focusManager.previousFocusable(keyboardFocusHolder));
     }
 
     /**

@@ -105,18 +105,20 @@ public class UiDemo extends Game {
         largeButton.addListener(() -> System.out.println("Large Button clicked"));
 
         KrTextField textField = new KrTextField();
+        textField.setName("textfield.test");
         textField.setSize(100, 21);
         textField.setPosition(210, 10);
 
         KrSpinner spinner = new KrSpinner();
+        spinner.setName("spinner.test");
         spinner.setSize(100, 21);
         spinner.setPosition(210, 40);
 
 
         // grid layout
         KrWidget form = new KrWidget();
-        KrGridLayout formLayout = new KrGridLayout(2, 3, 3);
-        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(40, 0), new KrUnifiedSize(80, 1)));
+        KrGridLayout formLayout = new KrGridLayout(2, 5, 3);
+        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(55, 0), new KrUnifiedSize(80, 1)));
         form.setLayout(formLayout);
 
         KrWidget usernameLabel = new KrLabel("Username");

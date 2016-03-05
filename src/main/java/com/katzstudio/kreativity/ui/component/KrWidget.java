@@ -19,6 +19,7 @@ import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.listener.KrMouseListener;
+import com.katzstudio.kreativity.ui.listener.KrWidgetListener;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,8 @@ import java.util.List;
  */
 @SuppressWarnings({"UnusedParameters", "unused"})
 public class KrWidget {
+
+    public static final String FOCUS_PROPERTY = "property.focus";
 
     @Getter private float x;
 
@@ -67,13 +70,17 @@ public class KrWidget {
 
     private final List<KrFocusListener> focusListeners = Lists.newArrayList();
 
+    private final List<KrWidgetListener> widgetListeners = Lists.newArrayList();
+
     @Setter private Vector2 minSize;
 
     @Setter private Vector2 maxSize;
 
     @Setter private Vector2 preferredSize;
 
-    @Getter private boolean isValid;
+    @Getter private boolean isValid = true;
+
+    @Getter private boolean isFocusable = false;
 
     public KrWidget() {
     }
@@ -167,17 +174,13 @@ public class KrWidget {
     }
 
     public void validate() {
-        layout.setGeometry(this.getGeometry());
-
+        layout.setGeometry(new Rectangle(0, 0, getWidth(), getHeight()));
         isValid = true;
     }
 
     public void invalidate() {
         isValid = false;
-
-        // TODO(alex): find a proper place to call validate()
-        layout.setGeometry(new Rectangle(0, 0, getWidth(), getHeight()));
-
+        notifyWidgetInvalidated();
         invalidateParent();
     }
 
@@ -193,6 +196,14 @@ public class KrWidget {
     }
 
     public void update(float deltaSeconds) {
+        if (!isValid) {
+            validate();
+        }
+        updateChildren(deltaSeconds);
+    }
+
+    public void updateChildren(float deltaSeconds) {
+        children.forEach(child -> child.update(deltaSeconds));
     }
 
     protected void drawSelf(KrRenderer renderer) {
@@ -310,6 +321,9 @@ public class KrWidget {
         }
     }
 
+    public boolean acceptsTabInput() {
+        return false;
+    }
 
     @SuppressWarnings("SimplifiableIfStatement")
     public boolean handle(KrEvent event) {
@@ -474,6 +488,29 @@ public class KrWidget {
 
     protected void notifyFocusLost(KrFocusEvent event) {
         focusListeners.forEach(l -> l.focusLost(event));
+    }
+
+    public void setFocusable(boolean focusable) {
+        if (this.isFocusable != focusable) {
+            this.isFocusable = focusable;
+            notifyWidgetPropertyChanged(FOCUS_PROPERTY, !isFocusable, isFocusable);
+        }
+    }
+
+    public void addWidgetListener(KrWidgetListener listener) {
+        widgetListeners.add(listener);
+    }
+
+    public void removeWidgetListener(KrWidgetListener listener) {
+        widgetListeners.remove(listener);
+    }
+
+    protected void notifyWidgetPropertyChanged(String propertyName, Object oldValue, Object newValue) {
+        widgetListeners.forEach(listener -> listener.propertyChanged(propertyName, oldValue, newValue));
+    }
+
+    protected void notifyWidgetInvalidated() {
+        widgetListeners.forEach(KrWidgetListener::invalidated);
     }
 
     protected final Vector2 expandSizeWithPadding(Vector2 size, KrPadding padding) {

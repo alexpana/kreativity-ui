@@ -39,7 +39,7 @@ public class KrGridLayout implements KrLayout {
         this(columns, 0, 0);
     }
 
-    public KrGridLayout(int columns, int verticalPadding, int horizontalPadding) {
+    public KrGridLayout(int columns, int horizontalPadding, int verticalPadding) {
         this.verticalPadding = verticalPadding;
         this.horizontalPadding = horizontalPadding;
         this.columnCount = columns;
