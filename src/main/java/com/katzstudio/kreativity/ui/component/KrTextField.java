@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.badlogic.gdx.Input.Keys.ESCAPE;
 import static com.katzstudio.kreativity.ui.KrFontMetrics.metrics;
 import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
 
@@ -61,6 +62,10 @@ public class KrTextField extends KrWidget {
     @Override
     protected boolean keyPressedEvent(KrKeyEvent event) {
         super.keyPressedEvent(event);
+
+        if (event.getKeycode() == ESCAPE) {
+            getCanvas().clearFocus();
+        }
 
         if (event.getKeycode() == Input.Keys.A && event.isCtrlDown()) {
             textDocument.selectAll();
