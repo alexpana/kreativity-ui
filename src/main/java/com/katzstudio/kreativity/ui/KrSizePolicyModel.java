@@ -23,6 +23,10 @@ public class KrSizePolicyModel {
         this.sizePolicies.addAll(Lists.newArrayList(policies));
     }
 
+    public KrSizePolicyModel(List<KrUnifiedSize> sizePolicies) {
+        this.sizePolicies.addAll(sizePolicies);
+    }
+
     public int getCount() {
         return sizePolicies.size();
     }

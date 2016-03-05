@@ -4,8 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -23,10 +21,12 @@ import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrCollapsiblePanel;
 import com.katzstudio.kreativity.ui.component.KrLabel;
+import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrScrollPanel;
 import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 
@@ -36,25 +36,22 @@ import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
 import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
 import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
+import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.HORIZONTAL;
+import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICAL;
 
 /**
+ * Demo / testing application.
  */
 public class UiDemo extends Game {
 
     private static Drawable WIDGET_BACKGROUND;
 
-    private static Drawable RED_DRAWABLE;
-
     private KrCanvas canvas;
 
-    private SpriteBatch spriteBatch;
-
     public static void main(String[] args) {
-        System.out.println("Running ui demo");
-
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = 500;
-        config.height = 500;
+        config.width = 800;
+        config.height = 600;
         config.fullscreen = false;
         config.vSyncEnabled = true;
         config.title = "Kreativity UI Demo";
@@ -67,10 +64,7 @@ public class UiDemo extends Game {
         gl.glDepthMask(true);
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        spriteBatch = new SpriteBatch();
-
         WIDGET_BACKGROUND = KrToolkit.createColorDrawable(KrColor.rgb(0x252525));
-        RED_DRAWABLE = KrToolkit.createColorDrawable(Color.RED);
 
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
@@ -114,28 +108,12 @@ public class UiDemo extends Game {
         spinner.setSize(100, 21);
         spinner.setPosition(210, 40);
 
-
         // grid layout
-        KrWidget form = new KrWidget();
-        KrGridLayout formLayout = new KrGridLayout(2, 5, 3);
-        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(55, 0), new KrUnifiedSize(80, 1)));
-        form.setLayout(formLayout);
+        KrWidget gridLayoutWidget = createGridLayout();
 
-        KrWidget usernameLabel = new KrLabel("Username");
-        usernameLabel.setName("label.username");
-        KrWidget usernameEdit = new KrTextField();
-        usernameEdit.setName("textfield.username");
-        KrWidget weight = new KrLabel("Weight");
-        weight.setName("label.weight");
-        KrWidget weightEdit = new KrSpinner();
-        weightEdit.setName("spinner.weight");
+        KrWidget horizontalFlowLayout = createHorizontalFlowLayout();
 
-        form.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        form.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        form.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        form.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        form.setBounds(10, 100, 200, 60);
-        form.setBounds(new Vector2(10, 100), form.getMinSize());
+        KrWidget verticalFlowLayout = createVerticalFlowLayout();
 
         canvas.getRootComponent().add(checkboxA);
         canvas.getRootComponent().add(checkboxB);
@@ -144,7 +122,9 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(largeButton);
         canvas.getRootComponent().add(textField);
         canvas.getRootComponent().add(spinner);
-        canvas.getRootComponent().add(form);
+        canvas.getRootComponent().add(gridLayoutWidget);
+        canvas.getRootComponent().add(horizontalFlowLayout);
+        canvas.getRootComponent().add(verticalFlowLayout);
 
         // Scroll Panel
 //        KrScrollPanel scrollPanel = createKrScrollPanel(uiContext, 10, 690, 100, 100);
@@ -174,6 +154,70 @@ public class UiDemo extends Game {
 //        KrScrollPanel collapsibleScrollPanel = new KrScrollPanel(uiContext, collapsiblePanelTable);
 //        collapsibleScrollPanel.setBounds(120, 490, 200, 300);
 //        collapsibleScrollPanel.setExpandX(true);
+    }
+
+    private KrWidget createVerticalFlowLayout() {
+        KrWidget panel = new KrPanel();
+        panel.setLayout(new KrFlowLayout(VERTICAL, 5, 2));
+
+        KrLabel labelA = new KrLabel("V Flow Label A");
+        labelA.setName("flowlayoutV.labelA");
+
+        KrLabel labelB = new KrLabel("V Flow Label B");
+        labelB.setName("flowlayoutV.labelB");
+
+        KrLabel labelC = new KrLabel("V Flow Label C");
+        labelC.setName("flowlayoutV.labelC");
+
+        panel.add(labelA);
+        panel.add(labelB);
+        panel.add(labelC);
+        panel.setBounds(new Vector2(10, 150), panel.getPreferredSize());
+        return panel;
+    }
+
+    private KrWidget createHorizontalFlowLayout() {
+        KrWidget panel = new KrPanel();
+        panel.setLayout(new KrFlowLayout(HORIZONTAL, 5, 2));
+
+        KrLabel labelA = new KrLabel("Label A");
+        labelA.setName("flowlayoutH.labelA");
+
+        KrLabel labelB = new KrLabel("Some very long label");
+        labelB.setName("flowlayoutH.labelB");
+
+        KrLabel labelC = new KrLabel("X");
+        labelC.setName("flowlayoutH.labelC");
+
+        panel.add(labelA);
+        panel.add(labelB);
+        panel.add(labelC);
+        panel.setBounds(190, 100, 180, 20);
+        return panel;
+    }
+
+    private KrWidget createGridLayout() {
+        KrWidget form = new KrWidget();
+        KrGridLayout formLayout = new KrGridLayout(2, 5, 3);
+        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(55, 0), new KrUnifiedSize(80, 1)));
+        form.setLayout(formLayout);
+
+        KrWidget usernameLabel = new KrLabel("Username");
+        usernameLabel.setName("label.username");
+        KrWidget usernameEdit = new KrTextField();
+        usernameEdit.setName("textfield.username");
+        KrWidget weight = new KrLabel("Weight");
+        weight.setName("label.weight");
+        KrWidget weightEdit = new KrSpinner();
+        weightEdit.setName("spinner.weight");
+
+        form.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+        form.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
+        form.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+        form.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
+        form.setBounds(10, 100, 200, 60);
+        form.setBounds(new Vector2(10, 100), form.getMinSize());
+        return form;
     }
 
     private KrScrollPanel createKrScrollPanel(KrContext uiContext, int x, int y, int w, int h) {

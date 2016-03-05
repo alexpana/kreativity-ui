@@ -173,6 +173,10 @@ public class KrWidget {
         this.setBounds(position.x, position.y, size.x, size.y);
     }
 
+    public void setBounds(Rectangle bounds) {
+        this.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+
     public void validate() {
         layout.setGeometry(new Rectangle(0, 0, getWidth(), getHeight()));
         isValid = true;
