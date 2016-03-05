@@ -35,7 +35,7 @@ public class KrButton extends KrWidget {
 
     private State state = State.NORMAL;
 
-    @Getter @Setter private Style style;
+    @Setter private Style style;
 
     @Getter @Setter private String text;
 
@@ -49,6 +49,11 @@ public class KrButton extends KrWidget {
         setPadding(new KrPadding(5, 4));
         setTextAlignment(KrAlignment.MIDDLE_CENTER);
         setSize(calculatePreferredSize());
+    }
+
+    @Override
+    public Object getStyle() {
+        return style;
     }
 
     public void addListener(Listener listener) {

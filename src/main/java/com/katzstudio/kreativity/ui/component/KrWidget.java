@@ -177,6 +177,10 @@ public class KrWidget {
         this.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
+    public Object getStyle() {
+        return null;
+    }
+
     public void validate() {
         layout.setGeometry(new Rectangle(0, 0, getWidth(), getHeight()));
         isValid = true;
@@ -532,7 +536,6 @@ public class KrWidget {
 
     @AllArgsConstructor
     public static class Style {
-
         public Drawable background;
     }
 }

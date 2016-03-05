@@ -21,7 +21,7 @@ public class KrCheckbox extends KrWidget {
 
     @Getter private boolean isChecked;
 
-    @Getter @Setter private Style style;
+    @Setter private Style style;
 
     @Getter @Setter private String text;
 
@@ -32,6 +32,11 @@ public class KrCheckbox extends KrWidget {
     public KrCheckbox() {
         setStyle(KrSkin.instance().getCheckboxStyle());
         setSize(calculatePreferredSize());
+    }
+
+    @Override
+    public Object getStyle() {
+        return style;
     }
 
     public void setChecked(boolean checked) {

@@ -34,7 +34,7 @@ public class KrTextField extends KrWidget {
 
     public static final int CARET_TOP_OFFSET = 3;
 
-    @Getter @Setter private Style style;
+    @Setter private Style style;
 
     protected final TextDocument textDocument;
 
@@ -45,6 +45,11 @@ public class KrTextField extends KrWidget {
         setFocusable(true);
         setStyle(KrSkin.instance().getTextFieldStyle());
         setPadding(new KrPadding(1, 4, 4, 4));
+    }
+
+    @Override
+    public Object getStyle() {
+        return style;
     }
 
     @Override
@@ -376,10 +381,16 @@ public class KrTextField extends KrWidget {
             return text.substring(0, caretPosition);
         }
 
+        @SuppressWarnings("unused")
         public void undo() {
+            // TODO(alex): implement this
+            throw new UnsupportedOperationException("not implemented");
         }
 
+        @SuppressWarnings("unused")
         public void redo() {
+            // TODO(alex): implement this
+            throw new UnsupportedOperationException("not implemented");
         }
 
         private static int findNextWord(int startPosition, String text) {

@@ -158,6 +158,8 @@ public class UiDemo extends Game {
 
     private KrWidget createVerticalFlowLayout() {
         KrWidget panel = new KrPanel();
+        KrPanel.Style style = (KrPanel.Style) panel.getStyle();
+
         panel.setLayout(new KrFlowLayout(VERTICAL, 5, 2));
 
         KrLabel labelA = new KrLabel("V Flow Label A");

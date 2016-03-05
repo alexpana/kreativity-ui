@@ -6,22 +6,26 @@ import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Setter;
 
 /**
  * A simple panel that can host other components. It can be styled with a background.
  */
 public class KrPanel extends KrWidget {
-    @Getter @Setter private Style style;
+    @Setter private Style style;
 
     public KrPanel() {
         setStyle(KrSkin.instance().getPanelStyle());
     }
 
     @Override
+    public Object getStyle() {
+        return style;
+    }
+
+    @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(new KrDrawableBrush(getStyle().background));
+        renderer.setBrush(new KrDrawableBrush(style.background));
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 

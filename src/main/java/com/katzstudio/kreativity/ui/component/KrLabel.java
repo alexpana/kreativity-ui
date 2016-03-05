@@ -23,7 +23,7 @@ public class KrLabel extends KrWidget {
 
     @Getter @Setter private String text;
 
-    @Getter @Setter private Style style;
+    @Setter private Style style;
 
     public KrLabel(String text) {
         setStyle(KrSkin.instance().getLabelStyle());
@@ -33,7 +33,7 @@ public class KrLabel extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        KrFontMetrics metrics = metrics(getStyle().font);
+        KrFontMetrics metrics = metrics(style.font);
         float textWidth = metrics.bounds(text).width;
         float textHeight = metrics.lineHeight();
         return rectangles(textWidth, textHeight).expand(getPadding()).size();
@@ -43,7 +43,6 @@ public class KrLabel extends KrWidget {
     protected void drawSelf(KrRenderer renderer) {
         boolean componentClip = renderer.beginClip(getX(), getY(), getWidth(), getHeight());
 
-        Style style = getStyle();
         renderer.setBrush(new KrDrawableBrush(style.background));
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
@@ -57,6 +56,11 @@ public class KrLabel extends KrWidget {
         if (componentClip) {
             renderer.endClip();
         }
+    }
+
+    @Override
+    public Object getStyle() {
+        return style;
     }
 
     @Override
