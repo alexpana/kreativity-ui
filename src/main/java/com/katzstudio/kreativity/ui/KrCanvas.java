@@ -144,7 +144,6 @@ public class KrCanvas implements InputProcessor {
         }
 
         // handle tab key
-        System.out.println("character = " + character);
         if (pressedKeyCode == TAB && !keyboardFocusHolder.acceptsTabInput()) {
             if (isShiftDown) {
                 focusPrevious();
@@ -345,7 +344,6 @@ public class KrCanvas implements InputProcessor {
     }
 
     public boolean requestFocus(KrWidget widget) {
-        System.out.println("requesting focus for widget = " + widget);
         if (widget != null && widget.getCanvas() != this) {
             throw new IllegalArgumentException("Cannot focus a widget that doesn't belong to this canvas.");
         }
