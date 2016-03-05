@@ -94,8 +94,8 @@ public class UiDemo extends Game {
         checkboxB.setPosition(10, 30);
 
         // Buttons
-        KrButton buttonA = new KrButton("Button A");
-        buttonA.setSize(60, 20);
+        KrButton buttonA = new KrButton("Triangulate");
+        buttonA.setSize(100, 24);
         buttonA.setPosition(100, 10);
         buttonA.addListener(() -> System.out.println("Button A clicked"));
 

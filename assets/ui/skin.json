@@ -1,8 +1,8 @@
 {
   "texture": "skin.png",
   "fonts": {
-    "default": "fonts/roboto_light_bold_9.fnt",
-    "bold": "fonts/roboto_medium_bold_9.fnt",
+    "default": "fonts/roboto_11.fnt",
+    "bold": "fonts/roboto_11_bold.fnt",
     "fontawesome": "fonts/fontawesome_11.fnt"
   },
   "colors": {

@@ -22,6 +22,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import static com.katzstudio.kreativity.ui.KrFontMetrics.metrics;
+
 /**
  * A push button component.
  */
@@ -103,8 +105,9 @@ public class KrButton extends KrWidget {
         renderer.setBrush(new KrDrawableBrush(background));
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
-        BitmapFont.TextBounds bounds = style.font.getBounds(getText());
-        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, bounds.width, bounds.height), getGeometry(), getTextAlignment());
+        float textWidth = style.font.getBounds(getText()).width;
+        float textHeight = metrics(style.font).lineHeight();
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight), getGeometry(), getTextAlignment());
         Vector2 textOffset = state == State.ARMED ? new Vector2(0, 1) : Vector2.Zero;
         textPosition.add(textOffset);
 

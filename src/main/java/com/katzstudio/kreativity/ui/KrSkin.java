@@ -97,11 +97,14 @@ public class KrSkin {
         String textureName = jsonSkin.get("texture").asString();
         skinTexture = new Texture(Gdx.files.internal("ui/" + textureName));
 
-        defaultFont = new BitmapFont(Gdx.files.internal("ui/fonts/roboto_10.fnt"));
+        String defaultFontPath = jsonSkin.get("fonts").get("default").asString();
+        defaultFont = new BitmapFont(Gdx.files.internal("ui/" + defaultFontPath));
 
-        defaultFontBold = new BitmapFont(Gdx.files.internal("ui/fonts/open_sans_10.fnt"));
+        String boldFontPath = jsonSkin.get("fonts").get("bold").asString();
+        defaultFontBold = new BitmapFont(Gdx.files.internal("ui/" + boldFontPath));
 
-        fontAwesome = new BitmapFont(Gdx.files.internal("ui/fonts/fontawesome_11.fnt"));
+        String fontAwesomePath = jsonSkin.get("fonts").get("fontawesome").asString();
+        fontAwesome = new BitmapFont(Gdx.files.internal("ui/" + fontAwesomePath));
 
         JsonValue patches = jsonSkin.get("patches");
         for (JsonValue patch : patches) {
