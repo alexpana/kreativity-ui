@@ -138,9 +138,9 @@ public class KrGridLayoutTest {
 
         gridLayout.setGeometry(new Rectangle(0, 0, 200, 200));
 
-        assertThat(widgetA1.getGeometry(), is(new Rectangle(10, 27.5f, 85, 50)));
-        assertThat(widgetA2.getGeometry(), is(new Rectangle(122.5f, 27.5f, 50.0f, 50.0f)));
-        assertThat(widgetB1.getGeometry(), is(new Rectangle(27.5f, 105, 50, 85)));
+        assertThat(widgetA1.getGeometry(), is(new Rectangle(10, 27f, 85, 50)));
+        assertThat(widgetA2.getGeometry(), is(new Rectangle(122f, 27f, 50, 50)));
+        assertThat(widgetB1.getGeometry(), is(new Rectangle(27f, 105, 50, 85)));
         assertThat(widgetB2.getGeometry(), is(new Rectangle(105, 105, 85, 85)));
     }
 }

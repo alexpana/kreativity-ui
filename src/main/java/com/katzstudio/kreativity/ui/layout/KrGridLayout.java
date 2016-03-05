@@ -68,7 +68,7 @@ public class KrGridLayout implements KrLayout {
         int rowCount = getRowCount();
         int cellHeight = (int) (geometry.getHeight() - verticalPadding * (rowCount + 1)) / rowCount;
 
-        List<Float> sizes = columnSizePolicy.getSizes(geometry.getWidth());
+        List<Float> sizes = columnSizePolicy.getSizes(geometry.getWidth() - horizontalPadding * (rowCount + 1));
 
         int cellX = (int) (geometry.getX() + horizontalPadding);
         int cellY = (int) (geometry.getY() + verticalPadding);
