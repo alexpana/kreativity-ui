@@ -59,10 +59,8 @@ public class KrLabel extends KrWidget {
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
         Vector2 textBounds = getTextBounds();
-        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textBounds.x, textBounds.y), getGeometry(), getTextAlignment());
-        if (textBounds.x < getWidth()) {
-            textPosition.x += getPadding().left;
-        }
+        Rectangle alignmentReference = rectangles(getGeometry()).shrink(getPadding()).value();
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textBounds.x, textBounds.y), alignmentReference, getTextAlignment());
         renderer.setPen(new KrPen(1, style.foregroundColor));
         renderer.setFont(style.font);
         renderer.drawText(text, textPosition);

@@ -259,29 +259,34 @@ public class UiDemo extends Game {
 
         KrLabel topWidget = new KrLabel("Top");
         topWidget.setName("borderlayout.top");
+        topWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         topWidget.ensureUniqueStyle();
         ((KrLabel.Style) topWidget.getStyle()).background = DARKER_GRAY;
         topWidget.setPreferredSize(new Vector2(100, 40));
 
         KrLabel bottomWidget = new KrLabel("Bottom");
         bottomWidget.setName("borderlayout.bottom");
+        bottomWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         bottomWidget.ensureUniqueStyle();
         ((KrLabel.Style) bottomWidget.getStyle()).background = DARKER_GRAY;
         bottomWidget.setPreferredSize(new Vector2(100, 20));
 
         KrLabel leftWidget = new KrLabel("L");
         leftWidget.setName("borderlayout.left");
+        leftWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         leftWidget.ensureUniqueStyle();
         ((KrLabel.Style) leftWidget.getStyle()).background = DARKER_GRAY;
         leftWidget.setPreferredSize(new Vector2(30, 20));
 
         KrLabel rightWidget = new KrLabel("R");
         rightWidget.setName("borderlayout.right");
+        rightWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         rightWidget.ensureUniqueStyle();
         ((KrLabel.Style) rightWidget.getStyle()).background = DARKER_GRAY;
         rightWidget.setPreferredSize(new Vector2(20, 20));
 
         KrLabel centerWidget = new KrLabel("CENTER");
+        centerWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         centerWidget.setName("borderlayout.center");
         centerWidget.ensureUniqueStyle();
         ((KrLabel.Style) centerWidget.getStyle()).background = DARKER_GRAY;
@@ -293,7 +298,7 @@ public class UiDemo extends Game {
         panel.add(rightWidget, KrBorderLayout.Constraint.EAST);
         panel.add(centerWidget, KrBorderLayout.Constraint.CENTER);
 
-        panel.setBounds(new Vector2(180, 180), panel.getMinSize());
+        panel.setBounds(new Vector2(180, 180), panel.getPreferredSize());
 
         return panel;
     }
