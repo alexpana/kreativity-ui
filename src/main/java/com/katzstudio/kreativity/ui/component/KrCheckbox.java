@@ -39,6 +39,13 @@ public class KrCheckbox extends KrWidget {
         return style;
     }
 
+    @Override
+    public void ensureUniqueStyle() {
+        if (style == KrSkin.instance().getCheckboxStyle()) {
+            style = style.copy();
+        }
+    }
+
     public void setChecked(boolean checked) {
         if (checked != isChecked) {
             isChecked = checked;
@@ -107,6 +114,10 @@ public class KrCheckbox extends KrWidget {
         public Drawable background;
 
         public Drawable mark;
+
+        public Style copy() {
+            return new Style(background, mark);
+        }
     }
 
     public interface ValueListener {

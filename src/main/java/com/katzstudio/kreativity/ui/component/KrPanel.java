@@ -24,6 +24,13 @@ public class KrPanel extends KrWidget {
     }
 
     @Override
+    public void ensureUniqueStyle() {
+        if (style == KrSkin.instance().getPanelStyle()) {
+            style = style.copy();
+        }
+    }
+
+    @Override
     protected void drawSelf(KrRenderer renderer) {
         renderer.setBrush(new KrDrawableBrush(style.background));
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
@@ -37,5 +44,9 @@ public class KrPanel extends KrWidget {
     @AllArgsConstructor
     public static final class Style {
         public Drawable background;
+
+        public Style copy() {
+            return new Style(background);
+        }
     }
 }

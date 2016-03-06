@@ -56,6 +56,13 @@ public class KrButton extends KrWidget {
         return style;
     }
 
+    @Override
+    public void ensureUniqueStyle() {
+        if (style == KrSkin.instance().getButtonStyle()) {
+            style = style.copy();
+        }
+    }
+
     public void addListener(Listener listener) {
         listeners.add(listener);
     }
@@ -166,6 +173,10 @@ public class KrButton extends KrWidget {
         public Color textShadowColor;
 
         // TODO: icon
+
+        public Style copy() {
+            return new Style(backgroundNormal, backgroundHovered, backgroundArmed, font, foregroundColor, textShadowOffset, textShadowColor);
+        }
     }
 
 }

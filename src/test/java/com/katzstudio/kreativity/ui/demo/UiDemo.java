@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrColor;
 import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
@@ -36,6 +35,8 @@ import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
 import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
 import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
+import static com.katzstudio.kreativity.ui.KrColor.rgb;
+import static com.katzstudio.kreativity.ui.KrToolkit.createColorDrawable;
 import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICAL;
 
@@ -45,6 +46,10 @@ import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICA
 public class UiDemo extends Game {
 
     private static Drawable WIDGET_BACKGROUND;
+
+    private Drawable DARK_GRAY;
+
+    private Drawable DARKER_GRAY;
 
     private KrCanvas canvas;
 
@@ -64,7 +69,11 @@ public class UiDemo extends Game {
         gl.glDepthMask(true);
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        WIDGET_BACKGROUND = KrToolkit.createColorDrawable(KrColor.rgb(0x252525));
+        WIDGET_BACKGROUND = createColorDrawable(rgb(0x252525));
+
+        DARK_GRAY = createColorDrawable(rgb(0x434343));
+
+        DARKER_GRAY = createColorDrawable(rgb(0x303030));
 
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
@@ -158,17 +167,24 @@ public class UiDemo extends Game {
 
     private KrWidget createVerticalFlowLayout() {
         KrWidget panel = new KrPanel();
-        KrPanel.Style style = (KrPanel.Style) panel.getStyle();
+        panel.ensureUniqueStyle();
+        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
 
         panel.setLayout(new KrFlowLayout(VERTICAL, 5, 2));
 
         KrLabel labelA = new KrLabel("V Flow Label A");
+        labelA.ensureUniqueStyle();
+        ((KrLabel.Style)labelA.getStyle()).background = DARKER_GRAY;
         labelA.setName("flowlayoutV.labelA");
 
-        KrLabel labelB = new KrLabel("V Flow Label B");
+        KrLabel labelB = new KrLabel("V Flow Label B - gj");
+        labelB.ensureUniqueStyle();
+        ((KrLabel.Style)labelB.getStyle()).background = DARKER_GRAY;
         labelB.setName("flowlayoutV.labelB");
 
         KrLabel labelC = new KrLabel("V Flow Label C");
+        labelC.ensureUniqueStyle();
+        ((KrLabel.Style)labelC.getStyle()).background = DARKER_GRAY;
         labelC.setName("flowlayoutV.labelC");
 
         panel.add(labelA);

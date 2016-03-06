@@ -2,7 +2,6 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrPadding;
@@ -21,7 +20,6 @@ import com.katzstudio.kreativity.ui.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.listener.KrWidgetListener;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -95,6 +93,9 @@ public class KrWidget {
 
     public KrWidget getChild(int index) {
         return children.get(index);
+    }
+
+    public void ensureUniqueStyle() {
     }
 
     public void add(KrWidget child) {
@@ -532,10 +533,5 @@ public class KrWidget {
 
     public KrWidgetToStringBuilder toStringBuilder() {
         return KrWidgetToStringBuilder.builder().name(name).bounds(getGeometry()).enabled(true).visible(true);
-    }
-
-    @AllArgsConstructor
-    public static class Style {
-        public Drawable background;
     }
 }

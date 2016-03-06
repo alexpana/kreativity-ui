@@ -6,6 +6,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Clipboard;
 import com.katzstudio.kreativity.ui.component.KrButton;
+import com.katzstudio.kreativity.ui.component.KrCheckbox;
+import com.katzstudio.kreativity.ui.component.KrLabel;
+import com.katzstudio.kreativity.ui.component.KrPanel;
+import com.katzstudio.kreativity.ui.component.KrTextField;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
@@ -32,6 +36,16 @@ public class TestObjectFactory {
         return bitmapFontMock;
     }
 
+    public static KrPanel.Style createPanelStyle() {
+        return new KrPanel.Style(mock(Drawable.class));
+    }
+
+    public static KrLabel.Style createLabelStyle() {
+        return new KrLabel.Style(mock(Drawable.class),
+                createBitmapFont(),
+                Color.BLACK);
+    }
+
     public static KrButton.Style createButtonStyle() {
         return new KrButton.Style(mock(Drawable.class),
                 mock(Drawable.class),
@@ -40,6 +54,23 @@ public class TestObjectFactory {
                 Color.BLACK,
                 Vector2.Zero,
                 Color.BLACK);
+    }
+
+    public static KrTextField.Style createTextFieldStyle() {
+        return new KrTextField.Style(
+                mock(Drawable.class),
+                mock(Drawable.class),
+                mock(Drawable.class),
+                createBitmapFont(),
+                Color.BLACK,
+                Color.BLACK,
+                Color.BLACK);
+    }
+
+    public static KrCheckbox.Style createCheckBoxStyle() {
+        return new KrCheckbox.Style(
+                mock(Drawable.class),
+                mock(Drawable.class));
     }
 
     public static KrCanvas createCanvas() {

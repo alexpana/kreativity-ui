@@ -32,6 +32,13 @@ public class KrLabel extends KrWidget {
     }
 
     @Override
+    public void ensureUniqueStyle() {
+        if (style == KrSkin.instance().getLabelStyle()) {
+            style = style.copy();
+        }
+    }
+
+    @Override
     public Vector2 calculatePreferredSize() {
         KrFontMetrics metrics = metrics(style.font);
         float textWidth = metrics.bounds(text).width;
@@ -76,5 +83,9 @@ public class KrLabel extends KrWidget {
         public BitmapFont font;
 
         public Color foregroundColor;
+
+        Style copy() {
+            return new Style(background, font, foregroundColor);
+        }
     }
 }

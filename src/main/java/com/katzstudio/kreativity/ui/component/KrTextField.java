@@ -49,6 +49,13 @@ public class KrTextField extends KrWidget {
     }
 
     @Override
+    public void ensureUniqueStyle() {
+        if (style == KrSkin.instance().getTextFieldStyle()) {
+            style = style.copy();
+        }
+    }
+
+    @Override
     public Object getStyle() {
         return style;
     }
@@ -454,5 +461,9 @@ public class KrTextField extends KrWidget {
         public Color caretColor;
 
         public Color selectionColor;
+
+        public Style copy() {
+            return new Style(backgroundNormal, backgroundHovered, backgroundFocused, font, foregroundColor, caretColor, selectionColor);
+        }
     }
 }
