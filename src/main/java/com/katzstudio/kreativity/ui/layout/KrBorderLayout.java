@@ -2,11 +2,16 @@ package com.katzstudio.kreativity.ui.layout;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.CENTER;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.EAST;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.NORTH;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.SOUTH;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.WEST;
 
 /**
  * Layout manager that can place widgets either in the center of the area (stretched) or on
@@ -15,20 +20,18 @@ import java.util.Map;
 public class KrBorderLayout implements KrLayout {
 
     public enum Constraint {
-        WEST, NORTH, SOUTH, EAST, CENTER;
+        WEST, NORTH, SOUTH, EAST, CENTER
     }
 
-    private final Map<KrWidget, Constraint> constraints = new HashMap<>();
+    private final Map<Constraint, KrWidget> constraints = new HashMap<>();
 
     private final int verticalPadding;
 
     private final int horizontalPadding;
 
-    private KrSizePolicyModel columnSizePolicy;
-
     private int constraintsMask = 0;
 
-    public KrBorderLayout(int columns) {
+    public KrBorderLayout() {
         this(0, 0);
     }
 
@@ -39,21 +42,92 @@ public class KrBorderLayout implements KrLayout {
 
     @Override
     public void setGeometry(Rectangle geometry) {
+        // NORTH
+        KrWidget northWidget = constraints.get(NORTH);
+        float northWidgetHeight = northWidget != null ? northWidget.getPreferredSize().y : 0;
+        Rectangle northCell = new Rectangle(horizontalPadding, verticalPadding, geometry.getWidth() - 2 * horizontalPadding, northWidgetHeight);
+
+        // SOUTH
+        KrWidget southWidget = constraints.get(Constraint.SOUTH);
+        float southWidgetHeight = southWidget != null ? southWidget.getPreferredSize().y : 0;
+        Rectangle southCell = new Rectangle(horizontalPadding, verticalPadding, geometry.getWidth() - 2 * horizontalPadding, southWidgetHeight);
+
+        float centerHeight = geometry.getHeight() - 4 * verticalPadding - southCell.height - northCell.height;
+
+        // WEST
+        KrWidget westWidget = constraints.get(Constraint.WEST);
+        float westWidgetWidth = westWidget != null ? westWidget.getPreferredSize().x : 0;
+        Rectangle westCell = new Rectangle(horizontalPadding,
+                verticalPadding * 2 + northCell.getHeight(),
+                westWidgetWidth,
+                centerHeight);
+
+        // EAST
+        KrWidget eastWidget = constraints.get(Constraint.EAST);
+        float eastWidgetWidth = eastWidget != null ? eastWidget.getPreferredSize().x : 0;
+        Rectangle eastCell = new Rectangle(geometry.getWidth() - horizontalPadding - eastWidgetWidth,
+                verticalPadding * 2 + northWidgetHeight,
+                eastWidgetWidth,
+                centerHeight);
+
+        // CENTER
+        KrWidget centerWidget = constraints.get(Constraint.CENTER);
+        Rectangle centerCell = new Rectangle(
+                horizontalPadding * 2 + westWidgetWidth,
+                verticalPadding * 2 + northWidgetHeight,
+                geometry.getWidth() - 4 * horizontalPadding - westWidgetWidth - eastWidgetWidth,
+                centerHeight);
+
+        southCell.y = 3 * verticalPadding + northWidgetHeight + centerHeight;
+
+        layoutInsideCell(northWidget, northCell);
+        layoutInsideCell(westWidget, westCell);
+        layoutInsideCell(centerWidget, centerCell);
+        layoutInsideCell(eastWidget, eastCell);
+        layoutInsideCell(southWidget, southCell);
+    }
+
+    private void layoutInsideCell(KrWidget widget, Rectangle cellBounds) {
+        widget.setBounds(cellBounds);
     }
 
     @Override
     public Vector2 getMinSize() {
-        return null;
+        float minWidth = max(minSizeOf(NORTH).x, minSizeOf(WEST).x + minSizeOf(CENTER).x + minSizeOf(EAST).x + 2 * verticalPadding, minSizeOf(SOUTH).x) + 2 * horizontalPadding;
+        float minHeight = minSizeOf(NORTH).y + max(minSizeOf(WEST).y, minSizeOf(CENTER).y, minSizeOf(EAST).y) + minSizeOf(SOUTH).y + 4 * verticalPadding;
+        return new Vector2(minWidth, minHeight);
     }
 
     @Override
     public Vector2 getMaxSize() {
-        return null;
+        return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
     }
 
     @Override
     public Vector2 getPreferredSize() {
-        return null;
+        float prefWidth = max(prefSizeOf(NORTH).x, prefSizeOf(WEST).x + prefSizeOf(CENTER).x + prefSizeOf(EAST).x + 2 * verticalPadding, prefSizeOf(SOUTH).x) + 2 * verticalPadding;
+        float prefHeight = prefSizeOf(NORTH).y + max(prefSizeOf(WEST).y, prefSizeOf(CENTER).y, prefSizeOf(EAST).y) + prefSizeOf(SOUTH).y + 4 * verticalPadding;
+        return new Vector2(prefWidth, prefHeight);
+    }
+
+    private Vector2 minSizeOf(Constraint constraint) {
+        if (constraints.containsKey(constraint)) {
+            return constraints.get(constraint).getMinSize();
+        } else {
+            return Vector2.Zero;
+        }
+    }
+
+    private Vector2 prefSizeOf(Constraint constraint) {
+        if (constraints.containsKey(constraint)) {
+            return constraints.get(constraint).getPreferredSize();
+        } else {
+            return Vector2.Zero;
+        }
+    }
+
+    private float max(float a, float b, float c) {
+        return Math.max(a, Math.max(b, c));
     }
 
     @Override
@@ -68,18 +142,28 @@ public class KrBorderLayout implements KrLayout {
             throw new IllegalArgumentException("Constraint already used: " + layoutConstraint);
         }
 
-        constraints.put(child, constraint);
+        constraints.put(constraint, child);
         useConstraint(constraint);
     }
 
     @Override
     public void removeWidget(KrWidget child) {
-        if (!constraints.containsKey(child)) {
+        Constraint constraint = getConstraintFor(child);
+        if (constraint == null) {
             throw new IllegalArgumentException("Widget isn't managed by this layout.");
         }
 
-        clearConstraint(constraints.get(child));
-        constraints.remove(child);
+        clearConstraint(constraint);
+        constraints.remove(constraint);
+    }
+
+    private Constraint getConstraintFor(KrWidget child) {
+        for (Map.Entry<Constraint, KrWidget> entry : constraints.entrySet()) {
+            if (entry.getValue() == child) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     private boolean constraintUsed(Constraint constraint) {

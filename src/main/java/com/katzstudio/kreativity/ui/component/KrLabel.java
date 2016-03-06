@@ -2,9 +2,12 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrFontMetrics;
+import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrAlignmentTool;
+import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
@@ -25,9 +28,14 @@ public class KrLabel extends KrWidget {
 
     @Setter private Style style;
 
+    @Setter @Getter private KrAlignment textAlignment;
+
     public KrLabel(String text) {
-        setStyle(KrSkin.instance().getLabelStyle());
         this.text = text;
+        this.textAlignment = KrAlignment.MIDDLE_LEFT;
+
+        setStyle(KrSkin.instance().getLabelStyle());
+        setPadding(new KrPadding(3, 3));
         setSize(calculatePreferredSize());
     }
 
@@ -40,10 +48,7 @@ public class KrLabel extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        KrFontMetrics metrics = metrics(style.font);
-        float textWidth = metrics.bounds(text).width;
-        float textHeight = metrics.textHeight();
-        return rectangles(textWidth, textHeight).expand(getPadding()).size();
+        return rectangles(getTextBounds()).expand(getPadding()).size();
     }
 
     @Override
@@ -53,16 +58,24 @@ public class KrLabel extends KrWidget {
         renderer.setBrush(new KrDrawableBrush(style.background));
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
-        style.font.setColor(style.foregroundColor);
-
-        renderer.setFont(style.font);
+        Vector2 textBounds = getTextBounds();
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textBounds.x, textBounds.y), getGeometry(), getTextAlignment());
+        if (textBounds.x < getWidth()) {
+            textPosition.x += getPadding().left;
+        }
         renderer.setPen(new KrPen(1, style.foregroundColor));
-
-        renderer.drawText(text, getX() + getPadding().left, getY() + getPadding().top);
+        renderer.setFont(style.font);
+        renderer.drawText(text, textPosition);
 
         if (componentClip) {
             renderer.endClip();
         }
+    }
+
+    protected Vector2 getTextBounds() {
+        float textWidth = metrics(style.font).bounds(text).width;
+        float textHeight = metrics(style.font).textHeight();
+        return new Vector2(textWidth, textHeight);
     }
 
     @Override

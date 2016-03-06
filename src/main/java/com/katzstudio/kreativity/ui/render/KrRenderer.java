@@ -79,6 +79,9 @@ public class KrRenderer {
     public void drawText(String text, float x, float y) {
         ensureSpriteBatchOpen();
 
+        // compensate for libgdx's metrics
+        y -= font.getAscent();
+
         Color originalFontColor = font.getColor();
 
         font.setColor(pen.getColor());

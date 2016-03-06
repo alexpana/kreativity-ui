@@ -259,7 +259,7 @@ public class KrWidget {
             return layout.getMinSize();
         }
 
-        return getPreferredSize();
+        return calculatePreferredSize();
     }
 
     public boolean isPreferredSizeSet() {

@@ -25,6 +25,7 @@ import com.katzstudio.kreativity.ui.component.KrScrollPanel;
 import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
@@ -73,7 +74,7 @@ public class UiDemo extends Game {
 
         DARK_GRAY = createColorDrawable(rgb(0x434343));
 
-        DARKER_GRAY = createColorDrawable(rgb(0x303030));
+        DARKER_GRAY = createColorDrawable(rgb(0x393939));
 
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
@@ -124,6 +125,8 @@ public class UiDemo extends Game {
 
         KrWidget verticalFlowLayout = createVerticalFlowLayout();
 
+        KrWidget borderLayoutPanel = createBorderLayoutPanel();
+
         canvas.getRootComponent().add(checkboxA);
         canvas.getRootComponent().add(checkboxB);
         canvas.getRootComponent().add(labelA);
@@ -134,6 +137,7 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(gridLayoutWidget);
         canvas.getRootComponent().add(horizontalFlowLayout);
         canvas.getRootComponent().add(verticalFlowLayout);
+        canvas.getRootComponent().add(borderLayoutPanel);
 
         // Scroll Panel
 //        KrScrollPanel scrollPanel = createKrScrollPanel(uiContext, 10, 690, 100, 100);
@@ -170,21 +174,21 @@ public class UiDemo extends Game {
         panel.ensureUniqueStyle();
         ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
 
-        panel.setLayout(new KrFlowLayout(VERTICAL, 5, 2));
+        panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
 
         KrLabel labelA = new KrLabel("V Flow Label A");
         labelA.ensureUniqueStyle();
-        ((KrLabel.Style)labelA.getStyle()).background = DARKER_GRAY;
+        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
         labelA.setName("flowlayoutV.labelA");
 
         KrLabel labelB = new KrLabel("V Flow Label B - gj");
         labelB.ensureUniqueStyle();
-        ((KrLabel.Style)labelB.getStyle()).background = DARKER_GRAY;
+        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
         labelB.setName("flowlayoutV.labelB");
 
         KrLabel labelC = new KrLabel("V Flow Label C");
         labelC.ensureUniqueStyle();
-        ((KrLabel.Style)labelC.getStyle()).background = DARKER_GRAY;
+        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
         labelC.setName("flowlayoutV.labelC");
 
         panel.add(labelA);
@@ -196,21 +200,30 @@ public class UiDemo extends Game {
 
     private KrWidget createHorizontalFlowLayout() {
         KrWidget panel = new KrPanel();
-        panel.setLayout(new KrFlowLayout(HORIZONTAL, 5, 2));
+        panel.ensureUniqueStyle();
+        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+
+        panel.setLayout(new KrFlowLayout(HORIZONTAL, 5, 5));
 
         KrLabel labelA = new KrLabel("Label A");
+        labelA.ensureUniqueStyle();
+        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
         labelA.setName("flowlayoutH.labelA");
 
         KrLabel labelB = new KrLabel("Some very long label");
+        labelB.ensureUniqueStyle();
+        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
         labelB.setName("flowlayoutH.labelB");
 
         KrLabel labelC = new KrLabel("X");
+        labelC.ensureUniqueStyle();
+        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
         labelC.setName("flowlayoutH.labelC");
 
         panel.add(labelA);
         panel.add(labelB);
         panel.add(labelC);
-        panel.setBounds(190, 100, 180, 20);
+        panel.setBounds(190, 100, 180, 40);
         return panel;
     }
 
@@ -236,6 +249,53 @@ public class UiDemo extends Game {
         form.setBounds(10, 100, 200, 60);
         form.setBounds(new Vector2(10, 100), form.getMinSize());
         return form;
+    }
+
+    private KrWidget createBorderLayoutPanel() {
+        KrWidget panel = new KrPanel();
+        panel.ensureUniqueStyle();
+        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+        panel.setLayout(new KrBorderLayout(4, 4));
+
+        KrLabel topWidget = new KrLabel("Top");
+        topWidget.setName("borderlayout.top");
+        topWidget.ensureUniqueStyle();
+        ((KrLabel.Style) topWidget.getStyle()).background = DARKER_GRAY;
+        topWidget.setPreferredSize(new Vector2(100, 40));
+
+        KrLabel bottomWidget = new KrLabel("Bottom");
+        bottomWidget.setName("borderlayout.bottom");
+        bottomWidget.ensureUniqueStyle();
+        ((KrLabel.Style) bottomWidget.getStyle()).background = DARKER_GRAY;
+        bottomWidget.setPreferredSize(new Vector2(100, 20));
+
+        KrLabel leftWidget = new KrLabel("L");
+        leftWidget.setName("borderlayout.left");
+        leftWidget.ensureUniqueStyle();
+        ((KrLabel.Style) leftWidget.getStyle()).background = DARKER_GRAY;
+        leftWidget.setPreferredSize(new Vector2(30, 20));
+
+        KrLabel rightWidget = new KrLabel("R");
+        rightWidget.setName("borderlayout.right");
+        rightWidget.ensureUniqueStyle();
+        ((KrLabel.Style) rightWidget.getStyle()).background = DARKER_GRAY;
+        rightWidget.setPreferredSize(new Vector2(20, 20));
+
+        KrLabel centerWidget = new KrLabel("CENTER");
+        centerWidget.setName("borderlayout.center");
+        centerWidget.ensureUniqueStyle();
+        ((KrLabel.Style) centerWidget.getStyle()).background = DARKER_GRAY;
+        centerWidget.setPreferredSize(new Vector2(100, 20));
+
+        panel.add(topWidget, KrBorderLayout.Constraint.NORTH);
+        panel.add(bottomWidget, KrBorderLayout.Constraint.SOUTH);
+        panel.add(leftWidget, KrBorderLayout.Constraint.WEST);
+        panel.add(rightWidget, KrBorderLayout.Constraint.EAST);
+        panel.add(centerWidget, KrBorderLayout.Constraint.CENTER);
+
+        panel.setBounds(new Vector2(180, 180), panel.getMinSize());
+
+        return panel;
     }
 
     private KrScrollPanel createKrScrollPanel(KrContext uiContext, int x, int y, int w, int h) {
