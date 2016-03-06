@@ -33,4 +33,9 @@ public class KrFontMetrics {
     public float lineHeight() {
         return bitmapFont.getLineHeight();
     }
+
+    public float textHeight() {
+        // TODO(alex): figure out what libgdx thinks these numbers mean
+        return bitmapFont.getCapHeight();
+    }
 }

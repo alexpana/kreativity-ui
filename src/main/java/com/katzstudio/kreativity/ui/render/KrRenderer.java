@@ -93,6 +93,9 @@ public class KrRenderer {
             return;
         }
 
+        // compensate for libgdx's metrics
+        position.sub(0, font.getAscent());
+
         Color originalFontColor = font.getColor();
 
         ensureSpriteBatchOpen();

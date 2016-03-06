@@ -35,7 +35,7 @@ public class KrLabel extends KrWidget {
     public Vector2 calculatePreferredSize() {
         KrFontMetrics metrics = metrics(style.font);
         float textWidth = metrics.bounds(text).width;
-        float textHeight = metrics.lineHeight();
+        float textHeight = metrics.textHeight();
         return rectangles(textWidth, textHeight).expand(getPadding()).size();
     }
 

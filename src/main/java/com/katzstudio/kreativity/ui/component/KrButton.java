@@ -111,7 +111,7 @@ public class KrButton extends KrWidget {
         renderer.fillRect(getX(), getY(), getWidth(), getHeight());
 
         float textWidth = style.font.getBounds(getText()).width;
-        float textHeight = metrics(style.font).lineHeight();
+        float textHeight = metrics(style.font).textHeight();
         Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight), getGeometry(), getTextAlignment());
         Vector2 textOffset = state == State.ARMED ? new Vector2(0, 1) : Vector2.Zero;
         textPosition.add(textOffset);
