@@ -60,6 +60,7 @@ public class KrRangeTest {
         assertThat((double) range.clamp(value), closeTo(expected, TOLERATED_ERROR));
     }
 
+    @SuppressWarnings("unused")
     private Object parametersForTestClamp() {
         return new Object[][]{
                 {10, new KrRange(-20, 20), 10},
