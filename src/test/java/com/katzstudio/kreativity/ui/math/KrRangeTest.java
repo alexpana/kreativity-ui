@@ -16,6 +16,8 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 @RunWith(JUnitParamsRunner.class)
 public class KrRangeTest {
 
+    public static final double TOLERATED_ERROR = 0.00001;
+
     @Test
     @Parameters
     public void testConstructor(float min, float max) throws Exception {
@@ -33,7 +35,7 @@ public class KrRangeTest {
     @Test
     @Parameters
     public void testMapRange(float value, KrRange sourceRange, KrRange targetRange, float expectedValue) throws Exception {
-        assertThat((double) map(value, sourceRange, targetRange), closeTo(expectedValue, 0.00001));
+        assertThat((double) map(value, sourceRange, targetRange), closeTo(expectedValue, TOLERATED_ERROR));
     }
 
     @SuppressWarnings("unused")
@@ -49,6 +51,23 @@ public class KrRangeTest {
                 {2, new KrRange(-2, 2), new KrRange(100, 400), 400},
                 {3, new KrRange(-2, 2), new KrRange(100, 400), 475},
                 {4, new KrRange(-2, 2), new KrRange(100, 400), 550},
+        };
+    }
+
+    @Test
+    @Parameters
+    public void testClamp(float value, KrRange range, float expected) throws Exception {
+        assertThat((double) range.clamp(value), closeTo(expected, TOLERATED_ERROR));
+    }
+
+    private Object parametersForTestClamp() {
+        return new Object[][]{
+                {10, new KrRange(-20, 20), 10},
+                {10, new KrRange(-20, 10), 10},
+                {10, new KrRange(-20, 0), 0},
+                {10, new KrRange(-20, -20), -20},
+                {10, new KrRange(10, 20), 10},
+                {10, new KrRange(30, 40), 30},
         };
     }
 }

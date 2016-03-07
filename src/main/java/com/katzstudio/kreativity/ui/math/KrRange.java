@@ -19,6 +19,18 @@ public class KrRange {
         return max - min;
     }
 
+    public float clamp(float value) {
+        if (value < min) {
+            return min;
+        }
+
+        if (value > max) {
+            return max;
+        }
+
+        return value;
+    }
+
     public static float map(float sourceValue, KrRange sourceRange, KrRange targetRange) {
         if (sourceRange.length() == 0) {
             return targetRange.min;
