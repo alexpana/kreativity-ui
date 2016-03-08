@@ -24,6 +24,7 @@ import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrScrollPanel;
 import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrTextField;
+import com.katzstudio.kreativity.ui.component.KrVerticalScrollBar;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
@@ -118,15 +119,6 @@ public class UiDemo extends Game {
         spinner.setSize(100, 21);
         spinner.setPosition(210, 40);
 
-        // grid layout
-        KrWidget gridLayoutWidget = createGridLayout();
-
-        KrWidget horizontalFlowLayout = createHorizontalFlowLayout();
-
-        KrWidget verticalFlowLayout = createVerticalFlowLayout();
-
-        KrWidget borderLayoutPanel = createBorderLayoutPanel();
-
         canvas.getRootComponent().add(checkboxA);
         canvas.getRootComponent().add(checkboxB);
         canvas.getRootComponent().add(labelA);
@@ -134,10 +126,11 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(largeButton);
         canvas.getRootComponent().add(textField);
         canvas.getRootComponent().add(spinner);
-        canvas.getRootComponent().add(gridLayoutWidget);
-        canvas.getRootComponent().add(horizontalFlowLayout);
-        canvas.getRootComponent().add(verticalFlowLayout);
-        canvas.getRootComponent().add(borderLayoutPanel);
+        canvas.getRootComponent().add(createGridLayout());
+        canvas.getRootComponent().add(createHorizontalFlowLayout());
+        canvas.getRootComponent().add(createVerticalFlowLayout());
+        canvas.getRootComponent().add(createBorderLayoutPanel());
+        canvas.getRootComponent().add(createVerticalScrollBarPanel());
 
         // Scroll Panel
 //        KrScrollPanel scrollPanel = createKrScrollPanel(uiContext, 10, 690, 100, 100);
@@ -167,6 +160,26 @@ public class UiDemo extends Game {
 //        KrScrollPanel collapsibleScrollPanel = new KrScrollPanel(uiContext, collapsiblePanelTable);
 //        collapsibleScrollPanel.setBounds(120, 490, 200, 300);
 //        collapsibleScrollPanel.setExpandX(true);
+    }
+
+    private KrPanel createVerticalScrollBarPanel() {
+        KrVerticalScrollBar scrollBar = new KrVerticalScrollBar();
+        scrollBar.setPreferredSize(new Vector2(6, 100));
+        scrollBar.setName("scrollbar.vertical");
+
+        KrLabel label = new KrLabel(String.valueOf((int) scrollBar.getCurrentValue()));
+        label.setTextAlignment(KrAlignment.MIDDLE_CENTER);
+        label.setName("scrollbar.vertical.value_label");
+
+        scrollBar.addScrollListener(value -> label.setText(String.valueOf((int) value)));
+
+        KrPanel result = new KrPanel();
+        result.setLayout(new KrBorderLayout());
+        result.add(scrollBar, KrBorderLayout.Constraint.CENTER);
+        result.add(label, KrBorderLayout.Constraint.SOUTH);
+        result.setBounds(400, 10, 30, 100);
+
+        return result;
     }
 
     private KrWidget createVerticalFlowLayout() {

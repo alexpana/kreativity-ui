@@ -1,147 +1,107 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.math.KrRange;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
 
 /**
  * Scroll bar component which can be embedded into other components to enable scrolling
  */
-public class KrScrollBar extends Widget {
+public abstract class KrScrollBar extends KrWidget {
 
-    private float sliderSize = 20;
+    private final List<Listener> listeners = new ArrayList<>();
 
-    @Getter
-    private float minValue = 0;
+    @Getter @Setter private float scrollStep = 10;
 
-    @Getter
-    private float maxValue = 100;
+    @Setter protected Style style;
 
-    @Getter
-    private float currentValue = 0;
+    @Getter protected float currentValue = 0;
 
-    private float sliderPosition = 0;
+    protected KrRange valueRange;
 
-    private final List<Listener> listeners = Lists.newArrayList();
+    protected KrRange thumbRange;
 
-    @Getter
-    @Setter
-    private float scrollAmount = 10;
+    protected float thumbLength = 20;
+
+    protected float thumbPosition = 0;
 
     public KrScrollBar() {
-        setTouchable(Touchable.enabled);
+        valueRange = new KrRange(0, 100);
+    }
 
-        ClickListener inputListener = new ClickListener() {
-            private boolean dragging;
-            private float dragBeginY;
-            private float beginDragSliderPosition;
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (isOverThumb(x, y)) {
-                    dragBeginY = y;
-                    beginDragSliderPosition = sliderPosition;
-                    dragging = true;
-                }
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dragging = false;
-            }
-
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (dragging) {
-                    float moveDelta = (dragBeginY - y);
-                    setSliderPosition(beginDragSliderPosition + moveDelta);
-                }
-            }
-
-            @Override
-            public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                setCurrentValue(currentValue + scrollAmount * amount);
-                return true;
-            }
-        };
-
-        addListener(inputListener);
+    @Override
+    public Object getStyle() {
+        return style;
     }
 
     public void setCurrentValue(float newValue) {
-        currentValue = clamp(newValue, minValue, maxValue);
+        currentValue = valueRange.clamp(newValue);
         updatePositionFromValue();
-
         notifyScrolled(getCurrentValue());
     }
 
-    private void setSliderPosition(float newPosition) {
-        sliderPosition = clamp(newPosition, 0, getHeight() - sliderSize);
-        updateValueFromPosition();
+    private void updatePositionFromValue() {
+        thumbPosition = KrRange.map(currentValue, valueRange, thumbRange);
+    }
 
+    protected void setThumbPosition(float newPosition) {
+        thumbPosition = clamp(newPosition, 0, getHeight() - thumbLength);
+        updateValueFromPosition();
         notifyScrolled(getCurrentValue());
     }
 
     private void updateValueFromPosition() {
-        currentValue = mapRange(sliderPosition, 0, getHeight() - sliderSize, minValue, maxValue);
+        currentValue = KrRange.map(thumbPosition, thumbRange, valueRange);
     }
 
-    private void updatePositionFromValue() {
-        sliderPosition = mapRange(currentValue, minValue, maxValue, 0, getHeight() - sliderSize);
-    }
+    private void updateThumbLength() {
+        float height = getHeight();
 
-    public void updateSliderSize() {
-        if (getHeight() != 0 && (1 + (maxValue - minValue) / getHeight()) != 0) {
-            sliderSize = this.getHeight() / (1 + (maxValue - minValue) / getHeight());
+        if (height != 0 && (1 + valueRange.length() / height) != 0) {
+            thumbLength = height / (1 + valueRange.length() / height);
         } else {
-            sliderSize = 0;
+            thumbLength = 0;
         }
-    }
 
-    private boolean isOverThumb(float x, float y) {
-        Rectangle rectangle = new Rectangle(0, getHeight() - sliderPosition - sliderSize, getWidth(), sliderSize);
-        return rectangle.contains(x, y);
+        thumbRange = new KrRange(0, getTrackLength() - thumbLength);
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+    public void setBounds(float x, float y, float width, float height) {
+        super.setBounds(x, y, width, height);
+        updateThumbLength();
+    }
 
-        // draw slider
-        Drawable slider = KrToolkit.createColorDrawable(KrSkin.getColor(BACKGROUND_DARK));
-        slider.draw(batch, getX(), getY() + getHeight() - sliderPosition - sliderSize, getWidth(), sliderSize);
+    /**
+     * Returns the geometry of the thumb in local space
+     */
+    protected abstract Rectangle getThumbGeometry();
+
+    protected abstract float getTrackLength();
+
+    private boolean isOverThumb(float x, float y) {
+        return getThumbGeometry().contains(x, y);
     }
 
     public void setMaxValue(float maxValue) {
-        this.maxValue = maxValue;
-        updateSliderSize();
+        valueRange = new KrRange(valueRange.getMin(), maxValue);
+        updateThumbLength();
         updateValueFromPosition();
     }
 
     public void setMinValue(float minValue) {
-        this.minValue = minValue;
-        updateSliderSize();
+        valueRange = new KrRange(minValue, valueRange.getMax());
+        updateThumbLength();
         updateValueFromPosition();
-    }
-
-    @Override
-    protected void sizeChanged() {
-        updateSliderSize();
     }
 
     public void addScrollListener(Listener listener) {
@@ -156,15 +116,30 @@ public class KrScrollBar extends Widget {
         listeners.stream().forEach(listener -> listener.scrolled(newScrollValue));
     }
 
-    public interface Listener {
-        void scrolled(float newScrollValue);
-    }
-
     protected static float mapRange(float value, float min, float max, float newMin, float newMax) {
         if (min == max) {
             return newMin;
         }
 
         return newMin + (newMax - newMin) * (value - min) / (max - min);
+    }
+
+    public interface Listener {
+        void scrolled(float newScrollValue);
+    }
+
+    @AllArgsConstructor
+    public static class Style {
+        public Drawable trackDrawable;
+
+        public Drawable thumbDrawable;
+
+        public float size;
+
+        public KrPadding padding;
+
+        public Style copy() {
+            return new Style(trackDrawable, thumbDrawable, size, padding);
+        }
     }
 }

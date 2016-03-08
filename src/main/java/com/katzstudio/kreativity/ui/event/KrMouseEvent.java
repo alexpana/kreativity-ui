@@ -25,5 +25,5 @@ public class KrMouseEvent extends KrEvent {
 
     @Getter private final Vector2 deltaMove;
 
-    @Getter private final Vector2 position;
+    @Getter private final Vector2 screenPosition;
 }

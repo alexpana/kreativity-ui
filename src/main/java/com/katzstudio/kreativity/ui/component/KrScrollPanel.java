@@ -17,29 +17,27 @@ public class KrScrollPanel extends Table {
 
     private static final float SCROLLBAR_SIZE = 5;
 
-    private final KrScrollBar verticalScrollBar;
+//    private final KrScrollBar verticalScrollBar;
 
-    private final KrScrollBar horizontalScrollBar;
+//    private final KrScrollBar horizontalScrollBar;
 
     private final Actor innerComponent;
 
-    @Getter
-    private boolean expandY;
+    @Getter private boolean expandY;
 
-    @Getter
-    private boolean expandX;
+    @Getter private boolean expandX;
 
     public KrScrollPanel(KrContext uiContext, Actor innerComponent) {
-        this.verticalScrollBar = new KrScrollBar();
-        this.horizontalScrollBar = new KrScrollBar();
+//        this.verticalScrollBar = new KrScrollBar();
+//        this.horizontalScrollBar = new KrScrollBar();
         this.innerComponent = innerComponent;
 
         add(this.innerComponent);
-        add(verticalScrollBar);
-        add(horizontalScrollBar);
+//        add(verticalScrollBar);
+//        add(horizontalScrollBar);
 
-        verticalScrollBar.addScrollListener(event -> layout());
-        horizontalScrollBar.addScrollListener(event -> layout());
+//        verticalScrollBar.addScrollListener(event -> layout());
+//        horizontalScrollBar.addScrollListener(event -> layout());
 
         setBackground(KrToolkit.createColorDrawable(KrColor.TRANSPARENT));
 
@@ -48,7 +46,7 @@ public class KrScrollPanel extends Table {
         addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                uiContext.getStage().setScrollFocus(verticalScrollBar);
+//                uiContext.getStage().setScrollFocus(verticalScrollBar);
             }
 
             @Override
@@ -88,7 +86,7 @@ public class KrScrollPanel extends Table {
         childHeight = childPreferredSize.y;
 
 //        if (expandX) {
-            childWidth = getWidth();
+        childWidth = getWidth();
 //        }
 
         if (expandY) {
@@ -101,32 +99,32 @@ public class KrScrollPanel extends Table {
         float childX = 0;
         float childY = getHeight() - childHeight;
 
-        if (requiresHorizontalScrollbar) {
-            float widthOverflow = childWidth - this.getWidth();
+//        if (requiresHorizontalScrollbar) {
+//            float widthOverflow = childWidth - this.getWidth();
+//
+//            horizontalScrollBar.setVisible(true);
+//            horizontalScrollBar.setBounds(0, 0, getWidth() - SCROLLBAR_SIZE, SCROLLBAR_SIZE);
+//            horizontalScrollBar.setMaxValue(widthOverflow);
+//            childX += horizontalScrollBar.getCurrentValue();
+//        } else {
+//            horizontalScrollBar.setVisible(false);
+//        }
 
-            horizontalScrollBar.setVisible(true);
-            horizontalScrollBar.setBounds(0, 0, getWidth() - SCROLLBAR_SIZE, SCROLLBAR_SIZE);
-            horizontalScrollBar.setMaxValue(widthOverflow);
-            childX += horizontalScrollBar.getCurrentValue();
-        } else {
-            horizontalScrollBar.setVisible(false);
-        }
-
-        if (requiresVerticalScrollbar) {
-            float heightOverflow = childHeight - this.getHeight();
-
-            verticalScrollBar.setVisible(true);
-            verticalScrollBar.setBounds(
-                    getWidth() - SCROLLBAR_SIZE,
-                    requiresHorizontalScrollbar ? SCROLLBAR_SIZE : 0,
-                    SCROLLBAR_SIZE,
-                    getHeight());
-            verticalScrollBar.setMaxValue(heightOverflow);
-
-            childY += verticalScrollBar.getCurrentValue();
-        } else {
-            verticalScrollBar.setVisible(false);
-        }
+//        if (requiresVerticalScrollbar) {
+//            float heightOverflow = childHeight - this.getHeight();
+//
+//            verticalScrollBar.setVisible(true);
+//            verticalScrollBar.setBounds(
+//                    getWidth() - SCROLLBAR_SIZE,
+//                    requiresHorizontalScrollbar ? SCROLLBAR_SIZE : 0,
+//                    SCROLLBAR_SIZE,
+//                    getHeight());
+//            verticalScrollBar.setMaxValue(heightOverflow);
+//
+//            childY += verticalScrollBar.getCurrentValue();
+//        } else {
+//            verticalScrollBar.setVisible(false);
+//        }
 
         float horizontalPadding = (childWidth >= getWidth() - SCROLLBAR_SIZE && requiresVerticalScrollbar) ? SCROLLBAR_SIZE : 0;
         float verticalPadding = (childHeight >= getHeight() - SCROLLBAR_SIZE && requiresHorizontalScrollbar) ? SCROLLBAR_SIZE : 0;

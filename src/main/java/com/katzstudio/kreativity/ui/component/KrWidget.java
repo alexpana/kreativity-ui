@@ -200,8 +200,10 @@ public class KrWidget {
     }
 
     public void draw(KrRenderer renderer) {
+        renderer.translate(getX(), getY());
         drawSelf(renderer);
         drawChildren(renderer);
+        renderer.translate(-getX(), -getY());
     }
 
     public void update(float deltaSeconds) {
@@ -219,11 +221,9 @@ public class KrWidget {
     }
 
     protected void drawChildren(KrRenderer renderer) {
-        renderer.translate(getX(), getY());
         for (KrWidget child : children) {
             child.draw(renderer);
         }
-        renderer.translate(-getX(), -getY());
     }
 
     public Vector2 calculatePreferredSize() {
@@ -359,7 +359,7 @@ public class KrWidget {
         }
 
         if (event instanceof KrScrollEvent) {
-            return scrolledEvent((KrScrollEvent) event);
+            return scrollEvent((KrScrollEvent) event);
         }
 
         if (event instanceof KrEnterEvent) {
@@ -393,7 +393,7 @@ public class KrWidget {
         return event.handled();
     }
 
-    protected boolean scrolledEvent(KrScrollEvent event) {
+    protected boolean scrollEvent(KrScrollEvent event) {
         notifyMouseScrolled(event);
         return event.handled();
     }
@@ -524,6 +524,17 @@ public class KrWidget {
 
     protected final Vector2 expandSizeWithPadding(Vector2 size, KrPadding padding) {
         return new Vector2(size.x + padding.getHorizontalPadding(), size.y + padding.getVerticalPadding());
+    }
+
+    public Vector2 screenToLocal(Vector2 screenPosition) {
+        return screenToLocal(screenPosition.x, screenPosition.y);
+    }
+
+    public Vector2 screenToLocal(float screenX, float screenY) {
+        Rectangle screenBounds = KrCanvas.getScreenBounds(this);
+        float localX = screenBounds.x;
+        float localY = screenBounds.y;
+        return new Vector2(screenX - localX, screenY - localY);
     }
 
     @Override

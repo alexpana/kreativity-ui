@@ -115,12 +115,13 @@ public class KrButton extends KrWidget {
         Drawable background = getBackgroundForState(state);
 
         renderer.setBrush(new KrDrawableBrush(background));
-        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
+        renderer.fillRect(0, 0, getWidth(), getHeight());
 
         float textWidth = style.font.getBounds(getText()).width;
         float textHeight = metrics(style.font).textHeight();
-        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight), getGeometry(), getTextAlignment());
-        Vector2 textOffset = state == State.ARMED ? new Vector2(0, 1) : Vector2.Zero;
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight),
+                new Rectangle(0, 0, getWidth(), getHeight()), getTextAlignment());
+        Vector2 textOffset = state == State.ARMED ? Vector2.Y : Vector2.Zero;
         textPosition.add(textOffset);
 
         renderer.setPen(new KrPen(1, style.foregroundColor));

@@ -24,6 +24,7 @@ import com.katzstudio.kreativity.ui.component.KrComboBox;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrList;
 import com.katzstudio.kreativity.ui.component.KrPanel;
+import com.katzstudio.kreativity.ui.component.KrScrollBar;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import lombok.Getter;
 import lombok.Setter;
@@ -71,6 +72,10 @@ public class KrSkin {
     @Getter @Setter private KrTextField.Style textFieldStyle;
 
     @Getter @Setter private KrTextField.Style spinnerStyle;
+
+    @Getter @Setter private KrScrollBar.Style verticalScrollBarStyle;
+
+    @Getter @Setter private KrScrollBar.Style horizontalScrollBarStyle;
 
     @Getter private Texture skinTexture;
 
@@ -166,6 +171,18 @@ public class KrSkin {
                 getColor(FOREGROUND),
                 getColor(FOREGROUND),
                 KrColor.rgb(0x38466b));
+
+        verticalScrollBarStyle = new KrScrollBar.Style(
+                drawablePatches.get("scrollbar.vertical.track"),
+                drawablePatches.get("scrollbar.vertical.thumb"),
+                4,
+                new KrPadding(0));
+
+        horizontalScrollBarStyle = new KrScrollBar.Style(
+                drawablePatches.get("scrollbar.horizontal.track"),
+                drawablePatches.get("scrollbar.horizontal.thumb"),
+                4,
+                new KrPadding(0));
     }
 
     private void loadCursors() {

@@ -50,7 +50,7 @@ public class KrRenderer {
         spriteBatch = new SpriteBatch(100);
         shapeRenderer = new ShapeRenderer(100);
         shapeRenderer.setAutoShapeType(true);
-        translation = Vector2.Zero;
+        translation = new Vector2(0, 0);
 
         spriteBatchRenderMode = new SpriteBatchRenderMode();
         lineShapeRenderMode = new ShapeRenderMode(ShapeRenderer.ShapeType.Line);

@@ -33,7 +33,7 @@ public class KrPanel extends KrWidget {
     @Override
     protected void drawSelf(KrRenderer renderer) {
         renderer.setBrush(new KrDrawableBrush(style.background));
-        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
+        renderer.fillRect(0, 0, getWidth(), getHeight());
     }
 
     @Override

@@ -68,11 +68,12 @@ public class KrTable extends Table {
     }
 
     private KrScrollBar createScrollBar() {
-        KrScrollBar scrollBar = new KrScrollBar();
-        scrollBar.setScrollAmount(ROW_HEIGHT + ROW_PADDING);
-        scrollBar.setMaxValue(getOverflowHeight());
-        scrollBar.addScrollListener(newScrollValue -> layout());
-        return scrollBar;
+//        KrScrollBar scrollBar = new KrScrollBar();
+//        scrollBar.setScrollStep(ROW_HEIGHT + ROW_PADDING);
+//        scrollBar.setMaxValue(getOverflowHeight());
+//        scrollBar.addScrollListener(newScrollValue -> layout());
+//        return scrollBar;
+        return null;
     }
 
     public void setRenderer(Renderer newRenderer) {
@@ -87,7 +88,7 @@ public class KrTable extends Table {
         return new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                uiContext.getStage().setScrollFocus(scrollBar);
+//                uiContext.getStage().setScrollFocus(scrollBar);
             }
 
             @Override
@@ -137,7 +138,7 @@ public class KrTable extends Table {
 
         cells.stream().filter(cell -> cell.getRow() == 0).forEach(cell -> add(cell.getComponent()));
 
-        add(scrollBar);
+//        add(scrollBar);
     }
 
     // TODO: find a way to use a single listener for all cells

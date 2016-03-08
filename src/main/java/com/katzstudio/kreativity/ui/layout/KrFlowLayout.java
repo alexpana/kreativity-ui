@@ -113,7 +113,7 @@ public class KrFlowLayout implements KrLayout {
 
     private Vector2 getSize(Function<KrWidget, Vector2> widgetSizeFunction) {
         if (widgets.size() == 0) {
-            return Vector2.Zero;
+            return new Vector2(0, 0);
         }
 
         float totalHorizontalPadding = horizontalPadding * (getCols() + 1);

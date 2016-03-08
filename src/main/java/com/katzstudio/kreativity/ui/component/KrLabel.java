@@ -53,13 +53,13 @@ public class KrLabel extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        boolean componentClip = renderer.beginClip(getX(), getY(), getWidth(), getHeight());
+        boolean componentClip = renderer.beginClip(0, 0, getWidth(), getHeight());
 
         renderer.setBrush(new KrDrawableBrush(style.background));
-        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
+        renderer.fillRect(0, 0, getWidth(), getHeight());
 
         Vector2 textBounds = getTextBounds();
-        Rectangle alignmentReference = rectangles(getGeometry()).shrink(getPadding()).value();
+        Rectangle alignmentReference = rectangles(new Rectangle(0, 0, getWidth(), getHeight())).shrink(getPadding()).value();
         Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textBounds.x, textBounds.y), alignmentReference, getTextAlignment());
         renderer.setPen(new KrPen(1, style.foregroundColor));
         renderer.setFont(style.font);

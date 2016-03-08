@@ -157,13 +157,15 @@ public class KrTextField extends KrWidget {
     protected void drawSelf(KrRenderer renderer) {
         recalculateTextOffset();
 
-        Rectangle innerViewport = rectangles(getGeometry()).shrink(getPadding()).value();
-        boolean componentClip = renderer.beginClip(getGeometry());
+        Rectangle innerGeometry = new Rectangle(0, 0, getWidth(), getHeight());
+
+        boolean componentClip = renderer.beginClip(innerGeometry);
 
         // render background
         renderer.setBrush(new KrDrawableBrush(getBackgroundDrawable()));
-        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
+        renderer.fillRect(0, 0, getWidth(), getHeight());
 
+        Rectangle innerViewport = rectangles(innerGeometry).shrink(getPadding()).value();
         boolean viewportClip = renderer.beginClip(innerViewport);
 
         String text = textDocument.getText();
@@ -171,7 +173,7 @@ public class KrTextField extends KrWidget {
 
         Rectangle textBounds = metrics.bounds(text);
         Vector2 textPosition = KrAlignmentTool.alignRectangles(textBounds, innerViewport, KrAlignment.MIDDLE_LEFT);
-        textPosition.x = getX() + getPadding().left - textOffset;
+        textPosition.x = getPadding().left - textOffset;
         textPosition.y += 1;
 
         // render selection
@@ -189,7 +191,7 @@ public class KrTextField extends KrWidget {
             int caretPosition = textDocument.getCaretPosition();
             float caretX = textPosition.x + metrics.bounds(text.substring(0, caretPosition)).getWidth() + 1;
             renderer.setPen(new KrPen(1, style.caretColor));
-            renderer.drawLine(caretX, getY() + CARET_TOP_OFFSET, caretX, getY() + CARET_TOP_OFFSET + CARET_HEIGHT);
+            renderer.drawLine(caretX, CARET_TOP_OFFSET, caretX, CARET_TOP_OFFSET + CARET_HEIGHT);
         }
 
         if (viewportClip) {
@@ -220,7 +222,7 @@ public class KrTextField extends KrWidget {
 
         return new Rectangle(
                 selectionStartX,
-                getY() + CARET_TOP_OFFSET,
+                CARET_TOP_OFFSET,
                 selectionWidth + 1,
                 CARET_HEIGHT);
     }
