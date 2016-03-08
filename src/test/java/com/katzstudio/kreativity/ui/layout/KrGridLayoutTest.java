@@ -2,7 +2,9 @@ package com.katzstudio.kreativity.ui.layout;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -142,5 +144,24 @@ public class KrGridLayoutTest {
         assertThat(widgetA2.getGeometry(), is(new Rectangle(122f, 27f, 50, 50)));
         assertThat(widgetB1.getGeometry(), is(new Rectangle(27f, 105, 50, 85)));
         assertThat(widgetB2.getGeometry(), is(new Rectangle(105, 105, 85, 85)));
+    }
+
+    @Test
+    public void testOneColumn() throws Exception {
+        KrGridLayout gridLayout = new KrGridLayout(1);
+
+        KrWidget widget1 = new KrWidget();
+        KrWidget widget2 = new KrWidget();
+        KrWidget widget3 = new KrWidget();
+
+        gridLayout.addWidget(widget1, new Constraint(KrAlignment.MIDDLE_CENTER, true, true));
+        gridLayout.addWidget(widget2, new Constraint(KrAlignment.MIDDLE_CENTER, true, true));
+        gridLayout.addWidget(widget3, new Constraint(KrAlignment.MIDDLE_CENTER, true, true));
+
+        gridLayout.setGeometry(new Rectangle(0, 0, 30, 90));
+
+        assertThat(widget1.getGeometry(), is(new Rectangle(0, 0, 30, 30)));
+        assertThat(widget2.getGeometry(), is(new Rectangle(0, 30, 30, 30)));
+        assertThat(widget3.getGeometry(), is(new Rectangle(0, 60, 30, 30)));
     }
 }

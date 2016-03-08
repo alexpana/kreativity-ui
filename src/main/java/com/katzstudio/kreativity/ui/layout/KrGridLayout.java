@@ -90,7 +90,7 @@ public class KrGridLayout implements KrLayout {
     }
 
     private int getRowCount() {
-        return (widgets.size() + 1) / columnCount;
+        return (int) (widgets.size() / columnCount + 0.5);
     }
 
     private void layoutInsideCell(KrWidget widget, Rectangle cellBounds) {
