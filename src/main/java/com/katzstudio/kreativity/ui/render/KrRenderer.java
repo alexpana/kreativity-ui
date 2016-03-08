@@ -126,15 +126,12 @@ public class KrRenderer {
         drawLineInternal(x, y, x, y + h - 1);
         drawLineInternal(x + w - 1, y, x + w - 1, y + h - 1);
         drawLineInternal(x, y + h - 1, x + w - 1, y + h - 1);
-
-        shapeRenderer.end();
     }
 
     public void drawLine(float x1, float y1, float x2, float y2) {
         ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(pen.getColor());
         drawLineInternal(x1, y1, x2, y2);
-        shapeRenderer.end();
     }
 
     private void drawLineInternal(float x1, float y1, float x2, float y2) {
@@ -162,6 +159,7 @@ public class KrRenderer {
     }
 
     public void translate(float x, float y) {
+        flush();
         translation.add(x, y);
         spriteBatch.getTransformMatrix().translate(x, -y, 0);
         shapeRenderer.translate(x, -y, 0);
