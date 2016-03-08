@@ -88,7 +88,9 @@ public class KrBorderLayout implements KrLayout {
     }
 
     private void layoutInsideCell(KrWidget widget, Rectangle cellBounds) {
-        widget.setBounds(cellBounds);
+        if (widget != null) {
+            widget.setBounds(cellBounds);
+        }
     }
 
     @Override
@@ -114,7 +116,7 @@ public class KrBorderLayout implements KrLayout {
         if (constraints.containsKey(constraint)) {
             return constraints.get(constraint).getMinSize();
         } else {
-            return Vector2.Zero;
+            return new Vector2(0, 0);
         }
     }
 
@@ -122,7 +124,7 @@ public class KrBorderLayout implements KrLayout {
         if (constraints.containsKey(constraint)) {
             return constraints.get(constraint).getPreferredSize();
         } else {
-            return Vector2.Zero;
+            return new Vector2(0, 0);
         }
     }
 
