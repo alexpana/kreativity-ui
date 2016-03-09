@@ -1,10 +1,12 @@
 package com.katzstudio.kreativity.ui.math;
 
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Data structure defining a range
  */
+@ToString
 public class KrRange {
     @Getter private final float min;
 
