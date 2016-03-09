@@ -76,11 +76,11 @@ public class KrCheckbox extends KrWidget {
     protected void drawSelf(KrRenderer renderer) {
         // TODO(alex): add support for text
         renderer.setBrush(new KrDrawableBrush(style.background));
-        renderer.fillRect(getX(), getY(), getWidth(), getHeight());
+        renderer.fillRect(0, 0, getWidth(), getHeight());
 
         if (isChecked) {
             renderer.setBrush(new KrDrawableBrush(style.mark));
-            renderer.fillRect(getX(), getY(), getWidth(), getHeight());
+            renderer.fillRect(0, 0, getWidth(), getHeight());
         }
     }
 
