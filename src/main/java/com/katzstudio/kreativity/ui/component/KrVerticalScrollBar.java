@@ -71,7 +71,14 @@ public class KrVerticalScrollBar extends KrScrollBar {
 
     @Override
     protected boolean scrollEvent(KrScrollEvent event) {
-        return super.scrollEvent(event);
+        super.scrollEvent(event);
+
+        if (!isDragging) {
+            setCurrentValue(getCurrentValue() + getScrollStep() * event.getScrollAmount());
+        }
+
+        event.accept();
+        return true;
     }
 
     @Override
