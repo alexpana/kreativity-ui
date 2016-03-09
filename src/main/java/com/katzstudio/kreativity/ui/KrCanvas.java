@@ -253,8 +253,8 @@ public class KrCanvas implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         KrScrollEvent scrollEvent = new KrScrollEvent(amount);
-        // TODO(alex): dispatch the event
-
+        KrWidget destinationWidget = findWidgetAt(rootComponent, Gdx.input.getX(), Gdx.input.getY());
+        dispatchEvent(destinationWidget, scrollEvent);
         return scrollEvent.handled();
     }
 
