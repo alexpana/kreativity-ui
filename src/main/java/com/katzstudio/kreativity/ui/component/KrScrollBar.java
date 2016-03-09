@@ -133,6 +133,8 @@ public class KrScrollBar extends KrWidget {
             float positionOnTrack = orientation == VERTICAL ? localMouseLocation.y : localMouseLocation.x;
             dragPosition = positionOnTrack - thumbLength / 2;
             setThumbPosition(dragPosition);
+        } else {
+            dragPosition = thumbPosition;
         }
 
         isDragging = true;
