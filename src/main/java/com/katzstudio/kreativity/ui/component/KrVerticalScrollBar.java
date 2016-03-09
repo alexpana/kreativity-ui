@@ -15,6 +15,12 @@ public class KrVerticalScrollBar extends KrScrollBar {
 
     private boolean isDragging = false;
 
+    /**
+     * The drag position is allowed to go over the thumb position threshold. It is used to prevent the thumb from
+     * moving while the mouse is outside the bounds of the scrollbar.
+     */
+    private float dragPosition;
+
     public KrVerticalScrollBar() {
         style = KrSkin.instance().getVerticalScrollBarStyle();
     }
@@ -54,7 +60,8 @@ public class KrVerticalScrollBar extends KrScrollBar {
     protected boolean mouseMoveEvent(KrMouseEvent event) {
         super.mouseMoveEvent(event);
         if (isDragging) {
-            setThumbPosition(thumbPosition + event.getDeltaMove().y);
+            dragPosition = dragPosition + event.getDeltaMove().y;
+            setThumbPosition(dragPosition);
             event.accept();
             return true;
         }
