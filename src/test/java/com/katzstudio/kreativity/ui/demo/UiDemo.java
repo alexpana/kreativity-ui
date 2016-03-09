@@ -21,10 +21,10 @@ import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrCollapsiblePanel;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrPanel;
+import com.katzstudio.kreativity.ui.component.KrScrollBar;
 import com.katzstudio.kreativity.ui.component.KrScrollPanel;
 import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrTextField;
-import com.katzstudio.kreativity.ui.component.KrVerticalScrollBar;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
@@ -131,6 +131,7 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(createVerticalFlowLayout());
         canvas.getRootComponent().add(createBorderLayoutPanel());
         canvas.getRootComponent().add(createVerticalScrollBarPanel());
+        canvas.getRootComponent().add(createHorizontalScrollBarPanel());
 
         // Scroll Panel
 //        KrScrollPanel scrollPanel = createKrScrollPanel(uiContext, 10, 690, 100, 100);
@@ -163,7 +164,7 @@ public class UiDemo extends Game {
     }
 
     private KrPanel createVerticalScrollBarPanel() {
-        KrVerticalScrollBar scrollBar = new KrVerticalScrollBar();
+        KrScrollBar scrollBar = new KrScrollBar(KrScrollBar.Orientation.VERTICAL);
         scrollBar.setPreferredSize(new Vector2(6, 100));
         scrollBar.setName("scrollbar.vertical");
 
@@ -178,6 +179,29 @@ public class UiDemo extends Game {
         result.add(scrollBar, KrBorderLayout.Constraint.CENTER);
         result.add(label, KrBorderLayout.Constraint.SOUTH);
         result.setBounds(400, 10, 30, 100);
+
+        return result;
+    }
+
+    private KrPanel createHorizontalScrollBarPanel() {
+        KrScrollBar scrollBar = new KrScrollBar(KrScrollBar.Orientation.HORIZONTAL);
+        scrollBar.setPreferredSize(new Vector2(100, 6));
+        scrollBar.setName("scrollbar.horizontal");
+
+        KrLabel label = new KrLabel(String.valueOf((int) scrollBar.getCurrentValue()));
+        label.setTextAlignment(KrAlignment.MIDDLE_CENTER);
+        label.setPreferredSize(new Vector2(30, 20));
+        label.setName("scrollbar.horizontal.value_label");
+
+        scrollBar.addScrollListener(value -> {
+            label.setText(String.valueOf((int) value));
+        });
+
+        KrPanel result = new KrPanel();
+        result.setLayout(new KrBorderLayout());
+        result.add(scrollBar, KrBorderLayout.Constraint.CENTER);
+        result.add(label, KrBorderLayout.Constraint.EAST);
+        result.setBounds(450, 10, 100, 30);
 
         return result;
     }
