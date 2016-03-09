@@ -115,7 +115,7 @@ public class KrScrollBar extends KrWidget {
         float trackLength = getTrackLength();
 
         if (trackLength != 0 && (1 + valueRange.length() / trackLength) != 0) {
-            thumbLength = trackLength / (1 + valueRange.length() / trackLength);
+            thumbLength = (int) (trackLength / (1 + valueRange.length() / trackLength));
         } else {
             thumbLength = 0;
         }
@@ -128,13 +128,16 @@ public class KrScrollBar extends KrWidget {
         super.mousePressedEvent(event);
 
         Vector2 localMouseLocation = screenToLocal(event.getScreenPosition());
-        if (getThumbGeometry().contains(localMouseLocation)) {
-            isDragging = true;
-            event.accept();
-            return true;
+
+        if (!getThumbGeometry().contains(localMouseLocation)) {
+            float positionOnTrack = orientation == VERTICAL ? localMouseLocation.y : localMouseLocation.x;
+            dragPosition = positionOnTrack - thumbLength / 2;
+            setThumbPosition(dragPosition);
         }
 
-        return false;
+        isDragging = true;
+        event.accept();
+        return true;
     }
 
     @Override
@@ -147,6 +150,7 @@ public class KrScrollBar extends KrWidget {
             event.accept();
             return true;
         }
+
         return false;
     }
 
