@@ -16,7 +16,6 @@ import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper;
-import com.katzstudio.kreativity.ui.listener.KrWidgetListener;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
@@ -82,7 +81,7 @@ public class KrCanvas implements InputProcessor {
 
         focusManager = new KrFocusManager(rootComponent);
 
-        rootComponent.addWidgetListener(new KrWidgetListener.KrAbstractWidgetListener() {
+        rootComponent.addWidgetListener(new KrWidget.KrWidgetListener.KrAbstractWidgetListener() {
             @Override
             public void invalidated() {
                 focusManager.refresh();

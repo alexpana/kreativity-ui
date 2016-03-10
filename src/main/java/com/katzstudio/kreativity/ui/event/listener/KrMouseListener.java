@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.listener;
+package com.katzstudio.kreativity.ui.event.listener;
 
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;

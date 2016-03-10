@@ -13,12 +13,11 @@ import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
+import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
+import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
+import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
-import com.katzstudio.kreativity.ui.listener.KrFocusListener;
-import com.katzstudio.kreativity.ui.listener.KrKeyboardListener;
-import com.katzstudio.kreativity.ui.listener.KrMouseListener;
-import com.katzstudio.kreativity.ui.listener.KrWidgetListener;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 import lombok.Setter;
@@ -321,15 +320,14 @@ public class KrWidget {
         }
 
         if (parent != null) {
-            return parent.getCanvas();
+            canvas = parent.getCanvas();
         }
 
-        return null;
+        return canvas;
     }
 
     public boolean requestFocus() {
-        KrCanvas canvas = getCanvas();
-        return canvas != null && canvas.requestFocus(this);
+        return getCanvas() != null && getCanvas().requestFocus(this);
     }
 
     public void clearFocus() {
@@ -553,5 +551,38 @@ public class KrWidget {
 
     public KrWidgetToStringBuilder toStringBuilder() {
         return KrWidgetToStringBuilder.builder().name(name).bounds(getGeometry()).enabled(true).visible(true);
+    }
+
+    /**
+     * Listener for {@link KrWidget} specific events like adding / removing children or property changes.
+     */
+    public interface KrWidgetListener {
+
+        void childAdded(KrWidget child);
+
+        void childRemoved(KrWidget child);
+
+        void propertyChanged(String propertyName, Object oldValue, Object newValue);
+
+        void invalidated();
+
+        class KrAbstractWidgetListener implements KrWidgetListener {
+
+            @Override
+            public void childAdded(KrWidget child) {
+            }
+
+            @Override
+            public void childRemoved(KrWidget child) {
+            }
+
+            @Override
+            public void propertyChanged(String propertyName, Object oldValue, Object newValue) {
+            }
+
+            @Override
+            public void invalidated() {
+            }
+        }
     }
 }
