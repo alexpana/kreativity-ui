@@ -134,9 +134,6 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(createHorizontalScrollBarPanel());
         canvas.getRootComponent().add(createScrollPanel());
 
-        // Scroll Panel
-//        KrScrollPanel scrollPanel = createKrScrollPanel(uiContext, 10, 690, 100, 100);
-
         // Collapsible Panel A
 //        KrCollapsiblePanel collapsiblePanelA = createKrCollapsiblePanel(uiContext, 120, 690, 300, 100);
 //        collapsiblePanelA.setName("Game Object");
@@ -166,8 +163,9 @@ public class UiDemo extends Game {
 
     private KrWidget createScrollPanel() {
         KrWidget panel = createVerticalFlowLayout();
+        panel.setPreferredSize(new Vector2(120, 200));
         KrScrollPanel scrollPanel = new KrScrollPanel(panel);
-        scrollPanel.setBounds(350, 150, 100, 100);
+        scrollPanel.setBounds(350, 150, 150, 70);
         return scrollPanel;
     }
 

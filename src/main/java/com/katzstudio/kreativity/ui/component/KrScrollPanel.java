@@ -11,7 +11,7 @@ import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.HOR
 import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.VERTICAL;
 
 /**
- * A panel component that displays scrollbars when it's size is smaller then its children.
+ * A panel component that displays scrollBars when it's size is smaller then its children.
  */
 public class KrScrollPanel extends KrPanel {
 
@@ -56,55 +56,55 @@ public class KrScrollPanel extends KrPanel {
 
     private class LayoutManager implements KrLayout {
 
-        private Vector2 lastResize = new Vector2(0, 0);
+        private Vector2 lastGeometrySize = new Vector2(0, 0);
 
         @Override
         public void setGeometry(Rectangle geometry) {
-            if (geometry.width == lastResize.x && geometry.height == lastResize.y) {
+            if (geometry.width == lastGeometrySize.x && geometry.height == lastGeometrySize.y) {
                 return;
             }
 
-            lastResize = new Vector2(geometry.width, geometry.height);
+            Vector2 geometrySize = new Vector2(geometry.width, geometry.height);
+            lastGeometrySize = geometrySize;
+            verticalScrollBar.setValueRange(0, 0);
+            horizontalScrollBar.setValueRange(0, 0);
 
+            // initial sizes
             float childWidth = Math.max(innerComponent.getPreferredSize().x, geometry.width);
             float childHeight = Math.max(innerComponent.getPreferredSize().y, geometry.height);
 
-            verticalScrollBar.setValue(0);
-            horizontalScrollBar.setValue(0);
+            float vPrefSize = verticalScrollBar.getPreferredSize().x;
+            float hPrefSize = horizontalScrollBar.getPreferredSize().y;
 
-            boolean horizontalScrollRequired = false;
-            boolean verticalScrollRequired = false;
+            boolean horizontalScrollRequired = childWidth > geometrySize.x;
+            boolean verticalScrollRequired = childHeight > geometrySize.y;
 
-            if (childWidth > geometry.getWidth()) {
-                horizontalScrollRequired = true;
-                float horizontalOverflow = childWidth - geometry.getWidth();
-                horizontalScrollBar.setValueRange(new KrRange(0, horizontalOverflow));
-            } else {
-                horizontalScrollBar.setValueRange(0, 0);
-            }
+            float vScrollBarSize = verticalScrollRequired ? vPrefSize : 0;
+            float hScrollBarSize = horizontalScrollRequired ? hPrefSize : 0;
 
-            if (childHeight > geometry.getHeight()) {
-                verticalScrollRequired = true;
-                float verticalOverflow = childHeight - geometry.getHeight();
-                verticalScrollBar.setValueRange(0, verticalOverflow);
-            } else {
-                verticalScrollBar.setValueRange(0, 0);
-            }
+            // recalculate size based on the new constraints (presence of scrollbars)
+            childWidth = Math.max(innerComponent.getPreferredSize().x, geometry.width - vScrollBarSize);
+            childHeight = Math.max(innerComponent.getPreferredSize().y, geometry.height - hScrollBarSize);
 
-            float vScrollbarSize = verticalScrollRequired ? verticalScrollBar.getPreferredSize().x : 0;
-            float hScrollbarSize = horizontalScrollRequired ? horizontalScrollBar.getPreferredSize().y : 0;
+            verticalScrollRequired |= horizontalScrollRequired && (childHeight > geometry.height - hScrollBarSize);
+            horizontalScrollRequired |= verticalScrollRequired && (childWidth > geometry.width - vScrollBarSize);
+
+            vScrollBarSize = verticalScrollRequired ? vPrefSize : 0;
+            hScrollBarSize = horizontalScrollRequired ? hPrefSize : 0;
 
             if (horizontalScrollRequired) {
-                verticalScrollBar.setValueRange(0, verticalScrollBar.getValueRange().getMax() + hScrollbarSize);
+                float overflow = childWidth - geometry.getWidth() + (verticalScrollRequired ? vScrollBarSize : 0);
+                horizontalScrollBar.setValueRange(new KrRange(0, overflow));
             }
 
             if (verticalScrollRequired) {
-                horizontalScrollBar.setValueRange(0, horizontalScrollBar.getValueRange().getMax() + vScrollbarSize);
+                float overflow = childHeight - geometry.getHeight() + (horizontalScrollRequired ? hScrollBarSize : 0);
+                verticalScrollBar.setValueRange(0, overflow);
             }
 
             innerComponent.setBounds(0, 0, childWidth, childHeight);
-            verticalScrollBar.setBounds(geometry.width - vScrollbarSize, 0, vScrollbarSize, geometry.height);
-            horizontalScrollBar.setBounds(0, geometry.height - hScrollbarSize, geometry.width - vScrollbarSize, hScrollbarSize);
+            verticalScrollBar.setBounds(geometry.width - vScrollBarSize, 0, vScrollBarSize, geometry.height);
+            horizontalScrollBar.setBounds(0, geometry.height - hScrollBarSize, geometry.width - vScrollBarSize, hScrollBarSize);
         }
 
         @Override
