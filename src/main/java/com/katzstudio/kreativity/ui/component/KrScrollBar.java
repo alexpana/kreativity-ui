@@ -35,9 +35,9 @@ public class KrScrollBar extends KrWidget {
 
     @Getter protected float currentValue = 0;
 
-    protected KrRange valueRange;
+    @Getter protected KrRange valueRange = new KrRange(0, 0);
 
-    protected KrRange thumbRange;
+    protected KrRange thumbRange = new KrRange(0, 0);
 
     protected float thumbLength = 20;
 
@@ -90,7 +90,7 @@ public class KrScrollBar extends KrWidget {
         return orientation == VERTICAL ? skin.getVerticalScrollBarStyle() : skin.getHorizontalScrollBarStyle();
     }
 
-    public void setCurrentValue(float newValue) {
+    public void setValue(float newValue) {
         currentValue = valueRange.clamp(newValue);
         updatePositionFromValue();
         notifyScrolled(getCurrentValue());
@@ -170,7 +170,7 @@ public class KrScrollBar extends KrWidget {
         super.scrollEvent(event);
 
         if (!isDragging) {
-            setCurrentValue(getCurrentValue() + getScrollStep() * event.getScrollAmount());
+            setValue(getCurrentValue() + getScrollStep() * event.getScrollAmount());
         }
 
         event.accept();
@@ -187,6 +187,18 @@ public class KrScrollBar extends KrWidget {
     }
 
     @Override
+    public Vector2 calculatePreferredSize() {
+        switch (orientation) {
+            case VERTICAL:
+                return new Vector2(style.size, 100);
+            case HORIZONTAL:
+                return new Vector2(100, style.size);
+            default:
+                return new Vector2(0, 0);
+        }
+    }
+
+    @Override
     public void setBounds(float x, float y, float width, float height) {
         super.setBounds(x, y, width, height);
         updateThumbLength();
@@ -194,18 +206,6 @@ public class KrScrollBar extends KrWidget {
 
     private boolean isOverThumb(float x, float y) {
         return getThumbGeometry().contains(x, y);
-    }
-
-    public void setMaxValue(float maxValue) {
-        valueRange = new KrRange(valueRange.getMin(), maxValue);
-        updateThumbLength();
-        updateValueFromPosition();
-    }
-
-    public void setMinValue(float minValue) {
-        valueRange = new KrRange(minValue, valueRange.getMax());
-        updateThumbLength();
-        updateValueFromPosition();
     }
 
     public void addScrollListener(Listener listener) {
@@ -226,6 +226,16 @@ public class KrScrollBar extends KrWidget {
         }
 
         return newMin + (newMax - newMin) * (value - min) / (max - min);
+    }
+
+    public void setValueRange(float min, float max) {
+        setValueRange(new KrRange(min, max));
+    }
+
+    public void setValueRange(KrRange valueRange) {
+        this.valueRange = valueRange;
+        updateThumbLength();
+        updateValueFromPosition();
     }
 
     public interface Listener {

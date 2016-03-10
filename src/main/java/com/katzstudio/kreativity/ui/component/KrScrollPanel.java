@@ -1,152 +1,148 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.katzstudio.kreativity.ui.KrColor;
-import com.katzstudio.kreativity.ui.KrContext;
-import com.katzstudio.kreativity.ui.KrToolkit;
-import lombok.Getter;
+import com.katzstudio.kreativity.ui.event.KrScrollEvent;
+import com.katzstudio.kreativity.ui.layout.KrLayout;
+import com.katzstudio.kreativity.ui.math.KrRange;
+
+import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.HORIZONTAL;
+import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.VERTICAL;
 
 /**
- * A panel component that displays scrollbars when it's size is smaller then it's children.
+ * A panel component that displays scrollbars when it's size is smaller then its children.
  */
-public class KrScrollPanel extends Table {
+public class KrScrollPanel extends KrPanel {
 
     private static final float SCROLLBAR_SIZE = 5;
 
-//    private final KrScrollBar verticalScrollBar;
+    private final KrScrollBar verticalScrollBar;
 
-//    private final KrScrollBar horizontalScrollBar;
+    private final KrScrollBar horizontalScrollBar;
 
-    private final Actor innerComponent;
+    private final KrWidget innerComponent;
 
-    @Getter private boolean expandY;
-
-    @Getter private boolean expandX;
-
-    public KrScrollPanel(KrContext uiContext, Actor innerComponent) {
-//        this.verticalScrollBar = new KrScrollBar();
-//        this.horizontalScrollBar = new KrScrollBar();
+    public KrScrollPanel(KrWidget innerComponent) {
+        this.verticalScrollBar = new KrScrollBar(VERTICAL);
+        this.horizontalScrollBar = new KrScrollBar(HORIZONTAL);
         this.innerComponent = innerComponent;
 
-        add(this.innerComponent);
-//        add(verticalScrollBar);
-//        add(horizontalScrollBar);
+        setLayout(new LayoutManager());
+        add(innerComponent);
+        add(verticalScrollBar);
+        add(horizontalScrollBar);
 
-//        verticalScrollBar.addScrollListener(event -> layout());
-//        horizontalScrollBar.addScrollListener(event -> layout());
+        verticalScrollBar.addScrollListener(this::scrolledVertically);
+        horizontalScrollBar.addScrollListener(this::scrolledHorizontally);
+    }
 
-        setBackground(KrToolkit.createColorDrawable(KrColor.TRANSPARENT));
+    private void scrolledVertically(float value) {
+        innerComponent.setPosition(innerComponent.getX(), -value);
+    }
 
-        setClip(true);
+    private void scrolledHorizontally(float value) {
+        innerComponent.setPosition(-value, innerComponent.getY());
+    }
 
-        addListener(new InputListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-//                uiContext.getStage().setScrollFocus(verticalScrollBar);
+    @Override
+    public Vector2 calculatePreferredSize() {
+        return innerComponent.getPreferredSize();
+    }
+
+    @Override
+    protected boolean scrollEvent(KrScrollEvent event) {
+        verticalScrollBar.handle(event);
+        return event.handled();
+    }
+
+    private class LayoutManager implements KrLayout {
+
+        private Vector2 lastResize = new Vector2(0, 0);
+
+        @Override
+        public void setGeometry(Rectangle geometry) {
+            if (geometry.width == lastResize.x && geometry.height == lastResize.y) {
+                return;
             }
 
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                uiContext.getStage().setScrollFocus(null);
+            lastResize = new Vector2(geometry.width, geometry.height);
+
+            float childWidth = Math.max(innerComponent.getPreferredSize().x, geometry.width);
+            float childHeight = Math.max(innerComponent.getPreferredSize().y, geometry.height);
+
+            verticalScrollBar.setValue(0);
+            horizontalScrollBar.setValue(0);
+
+            boolean horizontalScrollRequired = false;
+            boolean verticalScrollRequired = false;
+
+            if (childWidth > geometry.getWidth()) {
+                horizontalScrollRequired = true;
+                float horizontalOverflow = childWidth - geometry.getWidth();
+                horizontalScrollBar.setValueRange(new KrRange(0, horizontalOverflow));
+            } else {
+                horizontalScrollBar.setValueRange(0, 0);
             }
-        });
-    }
 
-    public void setExpandX(boolean expandX) {
-        this.expandX = expandX;
-        layout();
-    }
+            if (childHeight > geometry.getHeight()) {
+                verticalScrollRequired = true;
+                float verticalOverflow = childHeight - geometry.getHeight();
+                verticalScrollBar.setValueRange(0, verticalOverflow);
+            } else {
+                verticalScrollBar.setValueRange(0, 0);
+            }
 
-    public void setExpandY(boolean expandY) {
-        this.expandY = expandY;
-        layout();
-    }
+            float vScrollbarSize = verticalScrollRequired ? verticalScrollBar.getPreferredSize().x : 0;
+            float hScrollbarSize = horizontalScrollRequired ? horizontalScrollBar.getPreferredSize().y : 0;
 
-    @Override
-    public float getMinWidth() {
-        return 0;
-    }
+            if (horizontalScrollRequired) {
+                verticalScrollBar.setValueRange(0, verticalScrollBar.getValueRange().getMax() + hScrollbarSize);
+            }
 
-    @Override
-    public float getMinHeight() {
-        return 0;
-    }
+            if (verticalScrollRequired) {
+                horizontalScrollBar.setValueRange(0, horizontalScrollBar.getValueRange().getMax() + vScrollbarSize);
+            }
 
-    @Override
-    public void layout() {
-        float childWidth;
-        float childHeight;
+            innerComponent.setBounds(
+                    0,
+                    0,
+                    childWidth,
+                    childHeight);
 
-        Vector2 childPreferredSize = KrToolkit.getPreferredSize(innerComponent);
-        childWidth = childPreferredSize.x;
-        childHeight = childPreferredSize.y;
+            verticalScrollBar.setBounds(
+                    geometry.width - vScrollbarSize,
+                    0,
+                    vScrollbarSize,
+                    geometry.height);
 
-//        if (expandX) {
-        childWidth = getWidth();
-//        }
-
-        if (expandY) {
-            childHeight = Math.max(getHeight(), childHeight);
+            horizontalScrollBar.setBounds(
+                    0,
+                    geometry.height - hScrollbarSize,
+                    geometry.width - vScrollbarSize,
+                    hScrollbarSize);
         }
 
-        boolean requiresVerticalScrollbar = this.getHeight() < childHeight;
-        boolean requiresHorizontalScrollbar = this.getWidth() < childWidth;
+        @Override
+        public Vector2 getMinSize() {
+            return null;
+        }
 
-        float childX = 0;
-        float childY = getHeight() - childHeight;
+        @Override
+        public Vector2 getMaxSize() {
+            return null;
+        }
 
-//        if (requiresHorizontalScrollbar) {
-//            float widthOverflow = childWidth - this.getWidth();
-//
-//            horizontalScrollBar.setVisible(true);
-//            horizontalScrollBar.setBounds(0, 0, getWidth() - SCROLLBAR_SIZE, SCROLLBAR_SIZE);
-//            horizontalScrollBar.setMaxValue(widthOverflow);
-//            childX += horizontalScrollBar.getCurrentValue();
-//        } else {
-//            horizontalScrollBar.setVisible(false);
-//        }
+        @Override
+        public Vector2 getPreferredSize() {
+            return null;
+        }
 
-//        if (requiresVerticalScrollbar) {
-//            float heightOverflow = childHeight - this.getHeight();
-//
-//            verticalScrollBar.setVisible(true);
-//            verticalScrollBar.setBounds(
-//                    getWidth() - SCROLLBAR_SIZE,
-//                    requiresHorizontalScrollbar ? SCROLLBAR_SIZE : 0,
-//                    SCROLLBAR_SIZE,
-//                    getHeight());
-//            verticalScrollBar.setMaxValue(heightOverflow);
-//
-//            childY += verticalScrollBar.getCurrentValue();
-//        } else {
-//            verticalScrollBar.setVisible(false);
-//        }
+        @Override
+        public void addWidget(KrWidget child, Object layoutConstraint) {
+        }
 
-        float horizontalPadding = (childWidth >= getWidth() - SCROLLBAR_SIZE && requiresVerticalScrollbar) ? SCROLLBAR_SIZE : 0;
-        float verticalPadding = (childHeight >= getHeight() - SCROLLBAR_SIZE && requiresHorizontalScrollbar) ? SCROLLBAR_SIZE : 0;
-
-        innerComponent.setBounds(
-                (int) childX,
-                (int) childY,
-                (int) childWidth - horizontalPadding,
-                (int) childHeight - verticalPadding);
-    }
-
-    @Override
-    public float getPrefWidth() {
-        return KrToolkit.getPreferredSize(innerComponent).x;
-    }
-
-    public float getPrefHeight() {
-        return KrToolkit.getPreferredSize(innerComponent).y;
-    }
-
-    @Override
-    protected void sizeChanged() {
-        layout();
+        @Override
+        public void removeWidget(KrWidget child) {
+        }
     }
 }

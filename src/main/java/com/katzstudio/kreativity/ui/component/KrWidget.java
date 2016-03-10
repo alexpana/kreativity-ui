@@ -80,6 +80,8 @@ public class KrWidget {
 
     @Getter private boolean isFocusable = false;
 
+    @Getter @Setter private boolean clipRendering = true;
+
     public KrWidget() {
     }
 
@@ -201,9 +203,16 @@ public class KrWidget {
 
     public void draw(KrRenderer renderer) {
         renderer.translate(getX(), getY());
+        boolean clipped = false;
+        if (clipRendering) {
+            clipped = renderer.beginClip(0, 0, getWidth(), getHeight());
+        }
         drawSelf(renderer);
         drawChildren(renderer);
         renderer.translate(-getX(), -getY());
+        if (clipped) {
+            renderer.endClip();
+        }
     }
 
     public void update(float deltaSeconds) {

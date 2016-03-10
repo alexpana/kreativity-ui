@@ -175,13 +175,13 @@ public class KrSkin {
         verticalScrollBarStyle = new KrScrollBar.Style(
                 drawablePatches.get("scrollbar.vertical.track"),
                 drawablePatches.get("scrollbar.vertical.thumb"),
-                4,
+                5,
                 new KrPadding(0));
 
         horizontalScrollBarStyle = new KrScrollBar.Style(
                 drawablePatches.get("scrollbar.horizontal.track"),
                 drawablePatches.get("scrollbar.horizontal.thumb"),
-                4,
+                5,
                 new KrPadding(0));
     }
 

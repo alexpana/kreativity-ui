@@ -185,13 +185,13 @@ public class KrTable extends Table {
         float rowTop = rowBottom + ROW_HEIGHT;
 
         if (rowBottom < 0) {
-            scrollBar.setCurrentValue(scrollBar.getCurrentValue() - rowBottom);
+            scrollBar.setValue(scrollBar.getCurrentValue() - rowBottom);
         }
 
 
         float viewportTop = getHeight() - ROW_HEIGHT - ROW_PADDING;
         if (rowTop > viewportTop) {
-            scrollBar.setCurrentValue(scrollBar.getCurrentValue() + (viewportTop - rowTop));
+            scrollBar.setValue(scrollBar.getCurrentValue() + (viewportTop - rowTop));
         }
     }
 
@@ -292,7 +292,7 @@ public class KrTable extends Table {
 
     @Override
     protected void sizeChanged() {
-        scrollBar.setMaxValue(getOverflowHeight());
+//        scrollBar.setMaxValue(getOverflowHeight());
         layout();
     }
 

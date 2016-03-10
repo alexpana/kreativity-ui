@@ -48,13 +48,13 @@ public class RendererDemo extends Game {
         renderer.setBrush(new KrColorBrush(0x9090ff));
         renderer.setPen(new KrPen(1, Color.WHITE));
 
-        // draw clipped rectangle
+        // draw clipRendering rectangle
 //        renderer.beginClip(3, 3, 5, 5);
 //        renderer.fillRect(0, 0, 50, 50);
 //        renderer.endClip();
 //        renderer.fillRect(10, 10, 10, 10);
 
-        // translate & draw clipped rectangle
+        // translate & draw clipRendering rectangle
         renderer.translate(20, 10);
         renderer.beginClip(0, 0, 20, 20);
         renderer.fillRect(0, 0, 100, 100);
