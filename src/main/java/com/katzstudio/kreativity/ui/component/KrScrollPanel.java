@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.math.KrRange;
+import lombok.Getter;
 
 import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.VERTICAL;
@@ -14,13 +15,11 @@ import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.VER
  */
 public class KrScrollPanel extends KrPanel {
 
-    private static final float SCROLLBAR_SIZE = 5;
+    @Getter private final KrScrollBar verticalScrollBar;
 
-    private final KrScrollBar verticalScrollBar;
+    @Getter private final KrScrollBar horizontalScrollBar;
 
-    private final KrScrollBar horizontalScrollBar;
-
-    private final KrWidget innerComponent;
+    @Getter private final KrWidget innerComponent;
 
     public KrScrollPanel(KrWidget innerComponent) {
         this.verticalScrollBar = new KrScrollBar(VERTICAL);
@@ -32,15 +31,15 @@ public class KrScrollPanel extends KrPanel {
         add(verticalScrollBar);
         add(horizontalScrollBar);
 
-        verticalScrollBar.addScrollListener(this::scrolledVertically);
-        horizontalScrollBar.addScrollListener(this::scrolledHorizontally);
+        verticalScrollBar.addScrollListener(this::onVerticalScroll);
+        horizontalScrollBar.addScrollListener(this::onHorizontalScroll);
     }
 
-    private void scrolledVertically(float value) {
+    private void onVerticalScroll(float value) {
         innerComponent.setPosition(innerComponent.getX(), -value);
     }
 
-    private void scrolledHorizontally(float value) {
+    private void onHorizontalScroll(float value) {
         innerComponent.setPosition(-value, innerComponent.getY());
     }
 
@@ -52,7 +51,7 @@ public class KrScrollPanel extends KrPanel {
     @Override
     protected boolean scrollEvent(KrScrollEvent event) {
         verticalScrollBar.handle(event);
-        return event.handled();
+        return true;
     }
 
     private class LayoutManager implements KrLayout {
@@ -103,38 +102,24 @@ public class KrScrollPanel extends KrPanel {
                 horizontalScrollBar.setValueRange(0, horizontalScrollBar.getValueRange().getMax() + vScrollbarSize);
             }
 
-            innerComponent.setBounds(
-                    0,
-                    0,
-                    childWidth,
-                    childHeight);
-
-            verticalScrollBar.setBounds(
-                    geometry.width - vScrollbarSize,
-                    0,
-                    vScrollbarSize,
-                    geometry.height);
-
-            horizontalScrollBar.setBounds(
-                    0,
-                    geometry.height - hScrollbarSize,
-                    geometry.width - vScrollbarSize,
-                    hScrollbarSize);
+            innerComponent.setBounds(0, 0, childWidth, childHeight);
+            verticalScrollBar.setBounds(geometry.width - vScrollbarSize, 0, vScrollbarSize, geometry.height);
+            horizontalScrollBar.setBounds(0, geometry.height - hScrollbarSize, geometry.width - vScrollbarSize, hScrollbarSize);
         }
 
         @Override
         public Vector2 getMinSize() {
-            return null;
+            return innerComponent.getMinSize();
         }
 
         @Override
         public Vector2 getMaxSize() {
-            return null;
+            return innerComponent.getMaxSize();
         }
 
         @Override
         public Vector2 getPreferredSize() {
-            return null;
+            return innerComponent.getPreferredSize();
         }
 
         @Override
