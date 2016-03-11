@@ -21,4 +21,30 @@ public interface KrMouseListener {
     void enter(KrEnterEvent event);
 
     void exit(KrExitEvent event);
+
+    abstract class KrMouseAdapter implements KrMouseListener {
+        @Override
+        public void scrolled(KrScrollEvent event) {
+        }
+
+        @Override
+        public void mouseMoved(KrMouseEvent event) {
+        }
+
+        @Override
+        public void mousePressed(KrMouseEvent event) {
+        }
+
+        @Override
+        public void mouseReleased(KrMouseEvent event) {
+        }
+
+        @Override
+        public void enter(KrEnterEvent event) {
+        }
+
+        @Override
+        public void exit(KrExitEvent event) {
+        }
+    }
 }
