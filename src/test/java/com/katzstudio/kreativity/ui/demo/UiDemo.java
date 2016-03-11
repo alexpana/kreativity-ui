@@ -24,6 +24,7 @@ import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrScrollBar;
 import com.katzstudio.kreativity.ui.component.KrScrollPanel;
 import com.katzstudio.kreativity.ui.component.KrSpinner;
+import com.katzstudio.kreativity.ui.component.KrSplitPanel;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
@@ -133,6 +134,7 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(createVerticalScrollBarPanel());
         canvas.getRootComponent().add(createHorizontalScrollBarPanel());
         canvas.getRootComponent().add(createScrollPanel());
+        canvas.getRootComponent().add(createSplitPanel());
 
         // Collapsible Panel A
 //        KrCollapsiblePanel collapsiblePanelA = createKrCollapsiblePanel(uiContext, 120, 690, 300, 100);
@@ -159,6 +161,16 @@ public class UiDemo extends Game {
 //        KrScrollPanel collapsibleScrollPanel = new KrScrollPanel(uiContext, collapsiblePanelTable);
 //        collapsibleScrollPanel.setBounds(120, 490, 200, 300);
 //        collapsibleScrollPanel.setExpandX(true);
+    }
+
+    private KrWidget createSplitPanel() {
+        KrSplitPanel splitPanel = new KrSplitPanel();
+        splitPanel.add(createVerticalFlowLayout(), new KrUnifiedSize(60, 1));
+        splitPanel.add(createVerticalFlowLayout(), new KrUnifiedSize(60, 1));
+        splitPanel.add(createVerticalFlowLayout(), new KrUnifiedSize(60, 1));
+
+        splitPanel.setBounds(560, 10, 120, 300);
+        return splitPanel;
     }
 
     private KrWidget createScrollPanel() {
