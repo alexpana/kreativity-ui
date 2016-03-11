@@ -254,6 +254,22 @@ public class KrWidget {
         return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
     }
 
+    public float getMaxWidth() {
+        return getMaxSize().x;
+    }
+
+    public float getMaxHeight() {
+        return getMaxSize().y;
+    }
+
+    public void setMaxWidth(float maxWidth) {
+        setMaxSize(new Vector2(maxWidth, maxSize.y));
+    }
+
+    public void setMaxHeight(float maxHeight) {
+        setMaxSize(new Vector2(maxSize.x, maxHeight));
+    }
+
     public boolean isMinSizeSet() {
         return minSize != null;
     }
@@ -270,6 +286,22 @@ public class KrWidget {
         return calculatePreferredSize();
     }
 
+    public float getMinWidth() {
+        return getMinSize().x;
+    }
+
+    public float getMinHeight() {
+        return getMinSize().y;
+    }
+
+    public void setMinWidth(float minWidth) {
+        setMinSize(new Vector2(minWidth, minSize.y));
+    }
+
+    public void setMinHeight(float minHeight) {
+        setMinSize(new Vector2(minSize.x, minHeight));
+    }
+
     public boolean isPreferredSizeSet() {
         return preferredSize != null;
     }
@@ -284,6 +316,22 @@ public class KrWidget {
         }
 
         return calculatePreferredSize();
+    }
+
+    public float getPreferredWidth() {
+        return getPreferredSize().x;
+    }
+
+    public float getPreferredHeight() {
+        return getPreferredSize().y;
+    }
+
+    public void setPreferredWidth(float preferredWidth) {
+        setPreferredSize(new Vector2(preferredWidth, preferredSize.y));
+    }
+
+    public void setPreferredHeight(float preferredHeight) {
+        setPreferredSize(new Vector2(preferredSize.x, preferredHeight));
     }
 
     private Rectangle getScreenBounds() {
