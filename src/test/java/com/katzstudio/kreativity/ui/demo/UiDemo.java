@@ -26,6 +26,7 @@ import com.katzstudio.kreativity.ui.component.KrScrollPanel;
 import com.katzstudio.kreativity.ui.component.KrSpinner;
 import com.katzstudio.kreativity.ui.component.KrSplitPanel;
 import com.katzstudio.kreativity.ui.component.KrTextField;
+import com.katzstudio.kreativity.ui.component.KrToggleButton;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
@@ -100,10 +101,11 @@ public class UiDemo extends Game {
         checkboxB.setPosition(10, 30);
 
         // Buttons
-        KrButton buttonA = new KrButton("Triangulate");
+        KrToggleButton buttonA = new KrToggleButton("Triangulate");
         buttonA.setSize(100, 24);
         buttonA.setPosition(100, 10);
         buttonA.addListener(() -> System.out.println("Button A clicked"));
+        buttonA.addToggleListener((isChecked -> System.out.println("Button A toggled. New state: " + (isChecked ? "checked" : "unchecked"))));
 
         KrButton largeButton = new KrButton("Large Button");
         largeButton.setSize(100, 40);

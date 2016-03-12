@@ -29,11 +29,11 @@ import static com.katzstudio.kreativity.ui.KrFontMetrics.metrics;
  */
 public class KrButton extends KrWidget {
 
-    private enum State {
+    protected enum State {
         NORMAL, HOVERED, ARMED
     }
 
-    private State state = State.NORMAL;
+    protected State state = State.NORMAL;
 
     @Setter private Style style;
 
@@ -71,7 +71,7 @@ public class KrButton extends KrWidget {
         listeners.remove(listener);
     }
 
-    private void notifyClicked() {
+    protected void notifyClicked() {
         listeners.forEach(Listener::clicked);
     }
 
@@ -91,9 +91,13 @@ public class KrButton extends KrWidget {
     @Override
     protected boolean mouseReleasedEvent(KrMouseEvent event) {
         super.mouseReleasedEvent(event);
-        setState(State.HOVERED);
-        notifyClicked();
-        return true;
+        if (state == State.ARMED) {
+            setState(State.HOVERED);
+            notifyClicked();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -146,7 +150,7 @@ public class KrButton extends KrWidget {
         throw new IllegalArgumentException("State not supported: " + state);
     }
 
-    private void setState(State newState) {
+    protected void setState(State newState) {
         if (this.state != newState) {
             this.state = newState;
         }
