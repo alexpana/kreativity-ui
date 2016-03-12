@@ -17,6 +17,7 @@ import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.component.KrButton;
+import com.katzstudio.kreativity.ui.component.KrButtonGroup;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrCollapsiblePanel;
 import com.katzstudio.kreativity.ui.component.KrLabel;
@@ -137,6 +138,7 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(createHorizontalScrollBarPanel());
         canvas.getRootComponent().add(createScrollPanel());
         canvas.getRootComponent().add(createSplitPanel());
+        canvas.getRootComponent().add(createButtonGroup());
 
         // Collapsible Panel A
 //        KrCollapsiblePanel collapsiblePanelA = createKrCollapsiblePanel(uiContext, 120, 690, 300, 100);
@@ -164,6 +166,19 @@ public class UiDemo extends Game {
 //        collapsibleScrollPanel.setBounds(120, 490, 200, 300);
 //        collapsibleScrollPanel.setExpandX(true);
     }
+
+    private KrButtonGroup createButtonGroup() {
+        KrToggleButton first = new KrToggleButton("RGB");
+        first.setName("toggle_group.first");
+        KrToggleButton second = new KrToggleButton("HSV");
+        second.setName("toggle_group.second");
+        KrToggleButton third = new KrToggleButton("CMYK");
+        third.setName("toggle_group.third");
+        KrButtonGroup buttonGroup = new KrButtonGroup(first, second, third);
+        buttonGroup.setBounds(10, 260, 160, 26);
+        return buttonGroup;
+    }
+
 
     private KrWidget createSplitPanel() {
         KrSplitPanel splitPanel = new KrSplitPanel();

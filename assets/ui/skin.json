@@ -68,6 +68,42 @@
         "scrollbar.horizontal.thumb": {
             "region": [6, 1, 4, 4],
             "split": [0, 0, 0, 0]
+        },
+        "button_group_first.background_normal": {
+            "region": [168, 44, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_first.background_hovered": {
+            "region": [190, 44, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_first.background_armed": {
+            "region": [212, 44, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_middle.background_normal": {
+            "region": [168, 66, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_middle.background_hovered": {
+            "region": [190, 66, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_middle.background_armed": {
+            "region": [212, 66, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_last.background_normal": {
+            "region": [168, 88, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_last.background_hovered": {
+            "region": [190, 88, 20, 21],
+            "split": [4, 4, 4, 4]
+        },
+        "button_group_last.background_armed": {
+            "region": [212, 88, 20, 21],
+            "split": [4, 4, 4, 4]
         }
     }
 }

@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.google.common.collect.ImmutableMap;
 import com.katzstudio.kreativity.ui.component.KrButton;
+import com.katzstudio.kreativity.ui.component.KrButtonGroup;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrComboBox;
 import com.katzstudio.kreativity.ui.component.KrLabel;
@@ -68,6 +69,14 @@ public class KrSkin {
     @Getter @Setter private KrCheckbox.Style checkboxStyle;
 
     @Getter @Setter private KrButton.Style buttonStyle;
+
+    @Getter @Setter private KrButton.Style buttonGroupFirstButtonStyle;
+
+    @Getter @Setter private KrButton.Style buttonGroupMiddleButtonStyle;
+
+    @Getter @Setter private KrButton.Style buttonGroupLastButtonStyle;
+
+    @Getter @Setter private KrButtonGroup.Style buttonGroupStyle;
 
     @Getter @Setter private KrTextField.Style textFieldStyle;
 
@@ -183,6 +192,40 @@ public class KrSkin {
                 drawablePatches.get("scrollbar.horizontal.thumb"),
                 5,
                 new KrPadding(0));
+
+        buttonGroupFirstButtonStyle = new KrButton.Style(
+                drawablePatches.get("button_group_first.background_normal"),
+                drawablePatches.get("button_group_first.background_hovered"),
+                drawablePatches.get("button_group_first.background_armed"),
+                defaultFont,
+                getColor(FOREGROUND),
+                new Vector2(0, 1),
+                new Color(0x00000060));
+
+        buttonGroupMiddleButtonStyle = new KrButton.Style(
+                drawablePatches.get("button_group_middle.background_normal"),
+                drawablePatches.get("button_group_middle.background_hovered"),
+                drawablePatches.get("button_group_middle.background_armed"),
+                defaultFont,
+                getColor(FOREGROUND),
+                new Vector2(0, 1),
+                new Color(0x00000060));
+
+        buttonGroupLastButtonStyle = new KrButton.Style(
+                drawablePatches.get("button_group_last.background_normal"),
+                drawablePatches.get("button_group_last.background_hovered"),
+                drawablePatches.get("button_group_last.background_armed"),
+                defaultFont,
+                getColor(FOREGROUND),
+                new Vector2(0, 1),
+                new Color(0x00000060));
+
+        buttonGroupStyle = new KrButtonGroup.Style(
+                buttonStyle,
+                buttonGroupFirstButtonStyle,
+                buttonGroupMiddleButtonStyle,
+                buttonGroupLastButtonStyle);
+
     }
 
     private void loadCursors() {

@@ -4,7 +4,6 @@ import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class KrToggleButton extends KrButton {
 
-    @Getter @Setter private boolean isChecked = false;
+    @Getter private boolean isChecked = false;
 
     private final List<KrToggleButtonListener> listeners = new ArrayList<>();
 
@@ -64,6 +63,20 @@ public class KrToggleButton extends KrButton {
             setState(State.HOVERED);
         }
         return true;
+    }
+
+    public void setChecked(boolean isChecked) {
+        if (this.isChecked != isChecked) {
+            this.isChecked = isChecked;
+
+            if (isChecked) {
+                setState(State.ARMED);
+            } else {
+                setState(State.NORMAL);
+            }
+
+            notifyToggled();
+        }
     }
 
     public void addToggleListener(KrToggleButtonListener listener) {
