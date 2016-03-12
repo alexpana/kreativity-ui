@@ -60,7 +60,7 @@ public class KrToggleButton extends KrButton {
         if (isChecked) {
             setState(State.ARMED);
         } else {
-            setState(State.HOVERED);
+            setState(State.NORMAL);
         }
         return true;
     }
