@@ -189,7 +189,7 @@ public class KrTextField extends KrWidget {
         // render caret
         if (isFocused()) {
             int caretPosition = textDocument.getCaretPosition();
-            float caretX = textPosition.x + metrics.bounds(text.substring(0, caretPosition)).getWidth() + 1;
+            float caretX = textPosition.x + metrics.bounds(text.substring(0, caretPosition)).getWidth();
             renderer.setPen(new KrPen(1, style.caretColor));
             renderer.drawLine(caretX, CARET_TOP_OFFSET, caretX, CARET_TOP_OFFSET + CARET_HEIGHT);
         }
