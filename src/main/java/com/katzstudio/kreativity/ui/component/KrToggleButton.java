@@ -25,17 +25,16 @@ public class KrToggleButton extends KrButton {
     @Override
     protected boolean mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
-        if (!isChecked) {
-            setState(State.ARMED);
-        } else {
-            setState(State.HOVERED);
-        }
+        setState(State.ARMED);
         return true;
     }
 
     @Override
     protected boolean mouseReleasedEvent(KrMouseEvent event) {
-        isChecked = state == State.ARMED;
+        isChecked = !isChecked;
+        if (!isChecked) {
+            setState(State.HOVERED);
+        }
         notifyToggled();
         notifyClicked();
         notifyMouseReleased(event);

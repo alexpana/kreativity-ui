@@ -3,6 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,10 @@ public class KrButtonGroup extends KrPanel {
 
     private Style style;
 
+    @Getter private boolean allowUncheck = true;
+
+    private boolean isAdjusting = false;
+
     public KrButtonGroup(KrToggleButton... buttons) {
 
         style = KrSkin.instance().getButtonGroupStyle();
@@ -32,18 +37,33 @@ public class KrButtonGroup extends KrPanel {
 
         toggleButtons.forEach(this::add);
 
-        toggleButtons.forEach(button -> button.addToggleListener(isChecked -> {
-            if (!isChecked) {
-                currentlyCheckedButton = null;
-                return;
-            }
-            if (currentlyCheckedButton != null) {
-                currentlyCheckedButton.setChecked(false);
-            }
-            currentlyCheckedButton = button;
-        }));
+        toggleButtons.forEach(button -> button.addToggleListener(isChecked -> buttonToggled(button)));
 
         applyStyle();
+    }
+
+    private void buttonToggled(KrToggleButton button) {
+        if (isAdjusting) {
+            return;
+        }
+
+        if (button.isChecked()) {
+            if (button != currentlyCheckedButton) {
+                if (currentlyCheckedButton != null) {
+                    isAdjusting = true;
+                    currentlyCheckedButton.setChecked(false);
+                    isAdjusting = false;
+                }
+                currentlyCheckedButton = button;
+            }
+        } else {
+            // unchecked
+            if (allowUncheck) {
+                currentlyCheckedButton = null;
+            } else {
+                currentlyCheckedButton.setChecked(true);
+            }
+        }
     }
 
     private void applyStyle() {
@@ -56,6 +76,14 @@ public class KrButtonGroup extends KrPanel {
             for (int i = 1; i < toggleButtons.size() - 1; ++i) {
                 toggleButtons.get(i).setStyle(style.middleButtonStyle);
             }
+        }
+    }
+
+    public void setAllowUncheck(boolean allowUncheck) {
+        this.allowUncheck = allowUncheck;
+
+        if (!allowUncheck && currentlyCheckedButton == null) {
+            toggleButtons.get(0).setChecked(true);
         }
     }
 
