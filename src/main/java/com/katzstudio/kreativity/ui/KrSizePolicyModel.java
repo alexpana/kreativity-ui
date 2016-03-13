@@ -55,6 +55,21 @@ public class KrSizePolicyModel {
                 .collect(Collectors.toList());
     }
 
+    public List<Integer> getIntSizes(float availableSpace) {
+        List<Float> accurateSizes = getSizes(availableSpace);
+
+        int totalUsedSize = 0;
+        for (int i = 0; i < accurateSizes.size(); ++i) {
+            double value = accurateSizes.get(i);
+            int floor = (int) Math.floor(value);
+            totalUsedSize += floor;
+            accurateSizes.set(i, (float) floor);
+        }
+        int lastElementIndex = accurateSizes.size() - 1;
+        accurateSizes.set(lastElementIndex, accurateSizes.get(lastElementIndex) + availableSpace - totalUsedSize);
+        return accurateSizes.stream().map(Float::intValue).collect(Collectors.toList());
+    }
+
     private static float nonNegative(float value) {
         return Math.max(value, 0);
     }

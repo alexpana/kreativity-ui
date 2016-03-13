@@ -59,18 +59,7 @@ public class KrFlowLayout implements KrLayout {
                 geometry.getWidth() - (getCols() + 1) * horizontalPadding :
                 geometry.getHeight() - (getRows() + 1) * verticalPadding;
 
-        List<Float> sizes = sizePolicyModel.getSizes(widgetAvailableSpace);
-
-        // TODO(alex): move this to the KrSizePolicyModel class
-        int totalUsedSize = 0;
-        for (int i = 0; i < sizes.size(); ++i) {
-            double value = sizes.get(i);
-            int floor = (int) Math.floor(value);
-            totalUsedSize += floor;
-            sizes.set(i, (float) floor);
-        }
-        int lastElementIndex = sizes.size() - 1;
-        sizes.set(lastElementIndex, sizes.get(lastElementIndex) + widgetAvailableSpace - totalUsedSize);
+        List<Integer> sizes = sizePolicyModel.getIntSizes(widgetAvailableSpace);
 
         float cellX = horizontalPadding;
         float cellY = verticalPadding;
