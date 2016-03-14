@@ -320,7 +320,7 @@ public class UiDemo extends Game {
         weightClone.setName("label.weight_clone");
         KrSpinner weightEditClone = new KrSpinner();
         weightEditClone.setName("spinner.weight_clone");
-        weightEditClone.setModel(weightEdit.getModel());
+        weightEditClone.setSpinnerModel(weightEdit.getSpinnerModel());
 
         form.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         form.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));

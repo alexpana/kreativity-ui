@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component.textdocument;
 
-import com.katzstudio.kreativity.ui.component.KrTextField.TextDocument;
+import com.katzstudio.kreativity.ui.component.KrTextDocument;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +13,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Unit tests for {@link TextDocument}
+ * Unit tests for {@link KrTextDocument}
  */
 @RequiredArgsConstructor
 @RunWith(Parameterized.class)
-public class TextDocumentCaretPositionAfterDeleteSelectionTest {
+public class KrTextDocumentCaretPositionAfterDeleteSelectionTest {
 
     private final String initialText;
 
@@ -29,7 +29,7 @@ public class TextDocumentCaretPositionAfterDeleteSelectionTest {
 
     @Test
     public void testCaretPositionAfterDeleteSelection() throws Exception {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText(initialText);
         document.setSelection(selectionBegin, selectionEnd);
 

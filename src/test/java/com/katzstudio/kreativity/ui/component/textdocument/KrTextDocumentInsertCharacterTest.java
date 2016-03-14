@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component.textdocument;
 
-import com.katzstudio.kreativity.ui.component.KrTextField.TextDocument;
+import com.katzstudio.kreativity.ui.component.KrTextDocument;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +13,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Unit tests for {@link TextDocument} related to inserting text
+ * Unit tests for {@link KrTextDocument} related to inserting text
  */
 @RunWith(Parameterized.class)
 @RequiredArgsConstructor
-public class TextDocumentInsertCharacterTest {
+public class KrTextDocumentInsertCharacterTest {
 
     private final String originalText;
 
@@ -29,7 +29,7 @@ public class TextDocumentInsertCharacterTest {
 
     @Test
     public void testInsertCharacter() throws Exception {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText(originalText);
         document.setCaretPosition(caretPosition);
         document.insertText(textToInsert);

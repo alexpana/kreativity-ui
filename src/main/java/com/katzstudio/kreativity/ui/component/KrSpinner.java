@@ -30,7 +30,7 @@ public class KrSpinner extends KrTextField {
 
     private final List<EditListener> editListeners = Lists.newArrayList();
 
-    @Getter @Setter private KrModel<Float> model = new KrModel.Default<>(0.0f);
+    @Getter @Setter private KrModel<Float> spinnerModel = new KrModel.Default<>(0.0f);
 
     private boolean dragStarted;
 
@@ -108,18 +108,18 @@ public class KrSpinner extends KrTextField {
     }
 
     private void resetText() {
-        setText(String.valueOf(model.getValue()));
+        setText(String.valueOf(spinnerModel.getValue()));
     }
 
     private void incrementValue(float times) {
-        float newValue = model.getValue() + increment * times;
+        float newValue = spinnerModel.getValue() + increment * times;
         setValue(newValue);
     }
 
     @SuppressWarnings("deprecation")
     public void setValue(float value) {
-        if (model.getValue() != value) {
-            model.setValue(value);
+        if (spinnerModel.getValue() != value) {
+            spinnerModel.setValue(value);
             setText(FORMAT.format(value));
             notifyValueChanged(value);
         }
@@ -138,7 +138,7 @@ public class KrSpinner extends KrTextField {
     @Override
     public void update(float deltaSeconds) {
         if (!isFocused()) {
-            setText(FORMAT.format(model.getValue()));
+            setText(FORMAT.format(spinnerModel.getValue()));
         }
         super.update(deltaSeconds);
     }

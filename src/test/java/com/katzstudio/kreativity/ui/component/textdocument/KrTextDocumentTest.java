@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component.textdocument;
 
-import com.katzstudio.kreativity.ui.component.KrTextField.TextDocument;
+import com.katzstudio.kreativity.ui.component.KrTextDocument;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
@@ -10,13 +10,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Unit tests for {@link TextDocument} class
+ * Unit tests for {@link KrTextDocument} class
  */
 @RunWith(JUnitParamsRunner.class)
-public class TextDocumentTest {
+public class KrTextDocumentTest {
     @Test
     public void testSetText() {
-        TextDocument textDocument = new TextDocument();
+        KrTextDocument textDocument = new KrTextDocument();
 
         textDocument.setText("you shall not pass!");
         assertThat(textDocument.getText(), is("you shall not pass!"));
@@ -24,7 +24,7 @@ public class TextDocumentTest {
 
     @Test
     public void testCaretNavigation() {
-        TextDocument textDocument = new TextDocument();
+        KrTextDocument textDocument = new KrTextDocument();
         textDocument.setText("0123456789");
 
         textDocument.moveCaretHome();
@@ -49,7 +49,7 @@ public class TextDocumentTest {
     @Test
     @Parameters
     public void testSetCaretPosition(Integer caretPosition, Integer expectedPosition) {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
 
         document.setCaretPosition(caretPosition);
@@ -68,7 +68,7 @@ public class TextDocumentTest {
     public void testDeleteCharBeforeCaret(Integer initialCaretPosition,
                                           Integer expectedCaretPosition,
                                           String expectedText) {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
         document.setCaretPosition(initialCaretPosition);
         document.deleteCharBeforeCaret();
@@ -93,7 +93,7 @@ public class TextDocumentTest {
                                                Integer selectionEnd,
                                                Integer expectedCaretPosition,
                                                String expectedText) {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
         document.setSelection(selectionStart, selectionEnd);
         document.deleteCharBeforeCaret();
@@ -115,7 +115,7 @@ public class TextDocumentTest {
 
     @Test
     public void testDeselectOnCaretMove() {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("something");
         document.setSelection(2, 4);
         document.moveCaretHome();
@@ -125,7 +125,7 @@ public class TextDocumentTest {
 
     @Test
     public void testBeginSelection() {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("something");
         document.setCaretPosition(4);
         document.beginSelection();
@@ -136,7 +136,7 @@ public class TextDocumentTest {
 
     @Test
     public void testGetSelectedText() {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
         document.setSelection(2, 6);
         assertThat(document.getSelectedText(), is("2345"));
@@ -144,7 +144,7 @@ public class TextDocumentTest {
 
     @Test
     public void testGetSelectedTextWithReverseSelection() {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
         document.setSelection(6, 2);
         assertThat(document.getSelectedText(), is("2345"));
@@ -152,7 +152,7 @@ public class TextDocumentTest {
 
     @Test
     public void testInsertAfterSelecting() {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
         document.setSelection(2, 6);
         document.insertText("something");
@@ -162,7 +162,7 @@ public class TextDocumentTest {
 
     @Test
     public void testInsertAfterSelectingAll() {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
         document.setSelection(0, 10);
         document.insertText("something");
@@ -172,7 +172,7 @@ public class TextDocumentTest {
 
     @Test
     public void testDeleteReverseSelection() throws Exception {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
 
         document.setText("0123456789");
         document.setCaretPosition(6);
@@ -201,7 +201,7 @@ public class TextDocumentTest {
 
     @Test
     public void testSetTextRemovesSelectionAndCaretPosition() throws Exception {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
         document.setText("0123456789");
         document.setSelection(6, 2);
         document.setText("something wrong?");

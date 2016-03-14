@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component.textdocument;
 
-import com.katzstudio.kreativity.ui.component.KrTextField.TextDocument;
+import com.katzstudio.kreativity.ui.component.KrTextDocument;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,17 +8,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Unit tests for {@link TextDocument} related to caret movement
+ * Unit tests for {@link KrTextDocument} related to caret movement
  */
-public class TextDocumentCaretMovementTest {
+public class KrTextDocumentCaretMovementTest {
 
     public static final String TEST_STRING = "aaaa bbb cccccc dddd  ee ";
 
-    private TextDocument document;
+    private KrTextDocument document;
 
     @Before
     public void setUp() {
-        document = new TextDocument();
+        document = new KrTextDocument();
         document.setText(TEST_STRING);
     }
 

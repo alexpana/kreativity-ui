@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component.textdocument;
 
-import com.katzstudio.kreativity.ui.component.KrTextField.TextDocument;
+import com.katzstudio.kreativity.ui.component.KrTextDocument;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +13,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Unit tests for {@link TextDocument} related to removing various selection configurations
+ * Unit tests for {@link KrTextDocument} related to removing various selection configurations
  */
 @RequiredArgsConstructor
 @RunWith(Parameterized.class)
-public class TextDocumentDeleteSelectionTest {
+public class KrTextDocumentDeleteSelectionTest {
 
     private final String text;
 
@@ -29,7 +29,7 @@ public class TextDocumentDeleteSelectionTest {
 
     @Test
     public void testDeleteSelection() {
-        TextDocument document = new TextDocument();
+        KrTextDocument document = new KrTextDocument();
 
         document.setText(text);
         document.setSelection(selectionBegin, selectionEnd);
