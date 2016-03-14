@@ -19,8 +19,6 @@ import java.util.List;
  */
 public class KrCheckbox extends KrWidget {
 
-    @Getter private boolean isChecked;
-
     @Setter private Style style;
 
     @Getter @Setter private String text;
@@ -47,17 +45,18 @@ public class KrCheckbox extends KrWidget {
     }
 
     public void setChecked(boolean checked) {
-        if (checked != isChecked) {
-            isChecked = checked;
+        if (checked != model.getValue()) {
             model.setValue(checked);
             notifyValueChanged(checked);
         }
     }
 
+    @SuppressWarnings("unused")
     public void addValueListener(ValueListener valueListener) {
         valueListeners.add(valueListener);
     }
 
+    @SuppressWarnings("unused")
     public void removeValueListener(ValueListener valueListener) {
         valueListeners.remove(valueListener);
     }
@@ -68,26 +67,17 @@ public class KrCheckbox extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        // TODO(alex): add support for text
         return new Vector2(14, 15);
     }
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        // TODO(alex): add support for text
         renderer.setBrush(new KrDrawableBrush(style.background));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        if (isChecked) {
+        if (model.getValue()) {
             renderer.setBrush(new KrDrawableBrush(style.mark));
             renderer.fillRect(0, 0, getWidth(), getHeight());
-        }
-    }
-
-    @Override
-    public void update(float deltaSeconds) {
-        if (!(model instanceof KrModel.Empty) && model.getValue() != isChecked) {
-            isChecked = model.getValue();
         }
     }
 
@@ -97,7 +87,7 @@ public class KrCheckbox extends KrWidget {
 
         if (event.getButton() == KrMouseEvent.Button.LEFT) {
             event.accept();
-            setChecked(!isChecked);
+            setChecked(!model.getValue());
             return true;
         }
         return false;
