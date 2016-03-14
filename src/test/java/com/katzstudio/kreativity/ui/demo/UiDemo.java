@@ -134,7 +134,7 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(spinner);
         canvas.getRootComponent().add(createGridLayout());
         canvas.getRootComponent().add(createHorizontalFlowLayout());
-        canvas.getRootComponent().add(createVerticalFlowLayout());
+//        canvas.getRootComponent().add(createVerticalFlowLayout());
         canvas.getRootComponent().add(createBorderLayoutPanel());
         canvas.getRootComponent().add(createVerticalScrollBarPanel());
         canvas.getRootComponent().add(createHorizontalScrollBarPanel());
@@ -314,14 +314,21 @@ public class UiDemo extends Game {
         usernameEdit.setName("textfield.username");
         KrWidget weight = new KrLabel("Weight");
         weight.setName("label.weight");
-        KrWidget weightEdit = new KrSpinner();
+        KrSpinner weightEdit = new KrSpinner();
         weightEdit.setName("spinner.weight");
+        KrWidget weightClone = new KrLabel("Weight 2");
+        weightClone.setName("label.weight_clone");
+        KrSpinner weightEditClone = new KrSpinner();
+        weightEditClone.setName("spinner.weight_clone");
+        weightEditClone.setModel(weightEdit.getModel());
 
         form.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         form.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
         form.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         form.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        form.setBounds(10, 100, 200, 60);
+        form.add(weightClone, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+        form.add(weightEditClone, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
+        form.setBounds(10, 100, 200, 90);
         form.setBounds(new Vector2(10, 100), form.getMinSize());
         return form;
     }

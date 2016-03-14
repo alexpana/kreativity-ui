@@ -24,13 +24,13 @@ public class KrSpinner extends KrTextField {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.##");
 
-    private float value = 0;
+//    private float value = 0;
 
     @Getter @Setter private float increment = 0.1f;
 
     private final List<EditListener> editListeners = Lists.newArrayList();
 
-    @Getter @Setter private KrModel<Float> model;
+    @Getter @Setter private KrModel<Float> model = new KrModel.Default<>(0.0f);
 
     private boolean dragStarted;
 
@@ -108,20 +108,18 @@ public class KrSpinner extends KrTextField {
     }
 
     private void resetText() {
-        setText(String.valueOf(value));
+        setText(String.valueOf(model.getValue()));
     }
 
     private void incrementValue(float times) {
-        setValue(value + increment * times);
+        float newValue = model.getValue() + increment * times;
+        setValue(newValue);
     }
 
     @SuppressWarnings("deprecation")
     public void setValue(float value) {
-        if (this.value != value) {
-            this.value = value;
-            if (model != null) {
-                model.setValue(value);
-            }
+        if (model.getValue() != value) {
+            model.setValue(value);
             setText(FORMAT.format(value));
             notifyValueChanged(value);
         }
@@ -135,6 +133,14 @@ public class KrSpinner extends KrTextField {
         } catch (NumberFormatException ignored) {
             return false;
         }
+    }
+
+    @Override
+    public void update(float deltaSeconds) {
+        if (!isFocused()) {
+            setText(FORMAT.format(model.getValue()));
+        }
+        super.update(deltaSeconds);
     }
 
     /**
