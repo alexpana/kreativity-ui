@@ -1,9 +1,11 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.katzstudio.kreativity.ui.KrModel;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,9 @@ import java.util.List;
  */
 public class KrToggleButton extends KrButton {
 
-    @Getter private boolean isChecked = false;
-
     private final List<KrToggleButtonListener> listeners = new ArrayList<>();
+
+    @Getter @Setter KrModel<Boolean> model = new KrModel.Default<>(false);
 
     public KrToggleButton(String text) {
         super(text);
@@ -31,21 +33,19 @@ public class KrToggleButton extends KrButton {
 
     @Override
     protected boolean mouseReleasedEvent(KrMouseEvent event) {
-        isChecked = !isChecked;
-        if (!isChecked) {
+        setChecked(!isChecked());
+        if (!isChecked()) {
             setState(State.HOVERED);
         }
-        notifyToggled();
         notifyClicked();
         notifyMouseReleased(event);
         return true;
     }
 
-
     @Override
     protected boolean enterEvent(KrEnterEvent event) {
         super.enterEvent(event);
-        if (isChecked) {
+        if (isChecked()) {
             setState(State.ARMED);
         } else {
             setState(State.HOVERED);
@@ -56,7 +56,7 @@ public class KrToggleButton extends KrButton {
     @Override
     protected boolean exitEvent(KrExitEvent event) {
         super.exitEvent(event);
-        if (isChecked) {
+        if (isChecked()) {
             setState(State.ARMED);
         } else {
             setState(State.NORMAL);
@@ -64,9 +64,13 @@ public class KrToggleButton extends KrButton {
         return true;
     }
 
+    public Boolean isChecked() {
+        return model.getValue();
+    }
+
     public void setChecked(boolean isChecked) {
-        if (this.isChecked != isChecked) {
-            this.isChecked = isChecked;
+        if (isChecked() != isChecked) {
+            model.setValue(isChecked);
 
             if (isChecked) {
                 setState(State.ARMED);
@@ -87,7 +91,7 @@ public class KrToggleButton extends KrButton {
     }
 
     protected void notifyToggled() {
-        listeners.forEach(listener -> listener.toggled(isChecked));
+        listeners.forEach(listener -> listener.toggled(isChecked()));
     }
 
 

@@ -178,7 +178,7 @@ public class UiDemo extends Game {
         third.setName("toggle_group.third");
         KrButtonGroup buttonGroup = new KrButtonGroup(first, second, third);
         buttonGroup.setBounds(10, 260, 160, 26);
-//        buttonGroup.setAllowUncheck(false);
+        buttonGroup.setAllowUncheck(false);
         return buttonGroup;
     }
 
