@@ -26,8 +26,8 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * created by Alex
- * on 10-Apr-2015.
+ * A menu widget displays a vertical list of actions that can be
+ * performed by clicking on them.
  */
 public class KrMenu extends Table {
 
@@ -243,19 +243,12 @@ public class KrMenu extends Table {
         }
     }
 
-    /**
-     * created by Alex
-     * on 10-Apr-2015.
-     */
     public static class Item {
-        @Getter
-        private final String title;
+        @Getter private final String title;
 
-        @Getter
-        private final List<Item> children = Lists.newArrayList();
+        @Getter private final List<Item> children = Lists.newArrayList();
 
-        @Getter
-        private Drawable icon;
+        @Getter private Drawable icon;
 
         public Item(String title) {
             this.title = title;
