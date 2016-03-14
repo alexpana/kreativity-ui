@@ -31,15 +31,22 @@ public interface KrModel<T> {
      */
     void ephemeralChangesEnd();
 
-    class Empty<T> implements KrModel<T> {
+    class Default<T> implements KrModel<T> {
+
+        public T value;
+
+        public Default(T initialValue) {
+            value = initialValue;
+        }
 
         @Override
         public T getValue() {
-            return null;
+            return value;
         }
 
         @Override
         public void setValue(T value) {
+            this.value = value;
         }
 
         @Override

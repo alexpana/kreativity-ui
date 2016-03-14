@@ -23,7 +23,7 @@ public class KrCheckbox extends KrWidget {
 
     @Getter @Setter private String text;
 
-    @Getter @Setter private KrModel<Boolean> model = new KrModel.Empty<>();
+    @Getter @Setter private KrModel<Boolean> model = new KrModel.Default<>(false);
 
     private final List<ValueListener> valueListeners = new ArrayList<>();
 

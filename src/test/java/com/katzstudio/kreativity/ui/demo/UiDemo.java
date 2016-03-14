@@ -96,10 +96,12 @@ public class UiDemo extends Game {
         KrCheckbox checkboxA = new KrCheckbox();
         checkboxA.setChecked(false);
         checkboxA.setPosition(40, 30);
+        checkboxA.addValueListener(value -> System.out.println("CheckboxA value = " + value));
 
         KrCheckbox checkboxB = new KrCheckbox();
         checkboxB.setChecked(true);
         checkboxB.setPosition(10, 30);
+        checkboxB.addValueListener(value -> System.out.println("CheckboxB value = " + value));
 
         // Buttons
         KrToggleButton buttonA = new KrToggleButton("Triangulate");
