@@ -5,6 +5,8 @@ Kreativity UI (under heavy development)
 
 UI framework built on top of libgdx. It focuses on elegant design and extensibility. Inspired by Qt. 
 
+![Screenshot showcasing available widgets](https://raw.githubusercontent.com/alexpana/kreativity-ui/master/screenshot.png)
+
 Frequently Asked Questions
 ==========================
 **Q: What is this?**
