@@ -3,6 +3,8 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
+import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.AllArgsConstructor;
@@ -15,7 +17,12 @@ public class KrPanel extends KrWidget {
     @Setter private Style style;
 
     public KrPanel() {
+        this(new KrAbsoluteLayout());
+    }
+
+    public KrPanel(KrLayout layout) {
         setStyle(KrSkin.instance().getPanelStyle());
+        setLayout(layout);
     }
 
     @Override

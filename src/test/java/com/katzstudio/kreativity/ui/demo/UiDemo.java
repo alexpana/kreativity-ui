@@ -4,22 +4,17 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrContext;
-import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrButtonGroup;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
-import com.katzstudio.kreativity.ui.component.KrCollapsiblePanel;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrScrollBar;
@@ -29,6 +24,7 @@ import com.katzstudio.kreativity.ui.component.KrSplitPanel;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import com.katzstudio.kreativity.ui.component.KrToggleButton;
 import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout;
@@ -50,17 +46,17 @@ import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICA
  */
 public class UiDemo extends Game {
 
-    private static Drawable WIDGET_BACKGROUND;
-
     private Drawable DARK_GRAY;
 
     private Drawable DARKER_GRAY;
+
+    private Color lightGray;
 
     private KrCanvas canvas;
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = 800;
+        config.width = 840;
         config.height = 600;
         config.fullscreen = false;
         config.vSyncEnabled = true;
@@ -74,11 +70,11 @@ public class UiDemo extends Game {
         gl.glDepthMask(true);
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        WIDGET_BACKGROUND = createColorDrawable(rgb(0x252525));
-
         DARK_GRAY = createColorDrawable(rgb(0x434343));
 
         DARKER_GRAY = createColorDrawable(rgb(0x393939));
+
+        lightGray = rgb(0xaaaaaa);
 
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
@@ -86,119 +82,146 @@ public class UiDemo extends Game {
         canvas = new KrCanvas();
         Gdx.input.setInputProcessor(canvas);
 
-        // Labels
-        KrLabel labelA = new KrLabel("Hello Word");
-        labelA.setPadding(new KrPadding(5, 3));
-        labelA.setPosition(10, 10);
-        labelA.setSize(labelA.getPreferredSize());
-
-        // Check Boxes
-        KrCheckbox checkboxA = new KrCheckbox();
-        checkboxA.setChecked(false);
-        checkboxA.setPosition(40, 30);
-        checkboxA.addValueListener(value -> System.out.println("CheckboxA value = " + value));
-
-        KrCheckbox checkboxB = new KrCheckbox();
-        checkboxB.setChecked(true);
-        checkboxB.setPosition(10, 30);
-        checkboxB.addValueListener(value -> System.out.println("CheckboxB value = " + value));
-
-        // Buttons
-        KrToggleButton buttonA = new KrToggleButton("Triangulate");
-        buttonA.setSize(100, 24);
-        buttonA.setPosition(100, 10);
-        buttonA.addListener(() -> System.out.println("Button A clicked"));
-        buttonA.addToggleListener((isChecked -> System.out.println("Button A toggled. New state: " + (isChecked ? "checked" : "unchecked"))));
-
-        KrButton largeButton = new KrButton("Large Button");
-        largeButton.setSize(100, 40);
-        largeButton.setPosition(100, 40);
-        largeButton.addListener(() -> System.out.println("Large Button clicked"));
-
-        KrTextField textField = new KrTextField();
-        textField.setName("textfield.test");
-        textField.setSize(100, 21);
-        textField.setPosition(210, 10);
-
-        KrSpinner spinner = new KrSpinner();
-        spinner.setName("spinner.test");
-        spinner.setSize(100, 21);
-        spinner.setPosition(210, 40);
-
-        canvas.getRootComponent().add(checkboxA);
-        canvas.getRootComponent().add(checkboxB);
-        canvas.getRootComponent().add(labelA);
-        canvas.getRootComponent().add(buttonA);
-        canvas.getRootComponent().add(largeButton);
-        canvas.getRootComponent().add(textField);
-        canvas.getRootComponent().add(spinner);
+        canvas.getRootComponent().add(createButtons());
         canvas.getRootComponent().add(createGridLayout());
-        canvas.getRootComponent().add(createHorizontalFlowLayout());
-//        canvas.getRootComponent().add(createVerticalFlowLayout());
+        canvas.getRootComponent().add(createCheckboxes());
+        canvas.getRootComponent().add(createHorizontalFlowLayoutPanel());
+        canvas.getRootComponent().add(createVerticalFlowLayoutPanel());
         canvas.getRootComponent().add(createBorderLayoutPanel());
-        canvas.getRootComponent().add(createVerticalScrollBarPanel());
-        canvas.getRootComponent().add(createHorizontalScrollBarPanel());
+        canvas.getRootComponent().add(createScrollBarsPanel());
         canvas.getRootComponent().add(createScrollPanel());
         canvas.getRootComponent().add(createSplitPanel());
-        canvas.getRootComponent().add(createButtonGroup());
-
-        // Collapsible Panel A
-//        KrCollapsiblePanel collapsiblePanelA = createKrCollapsiblePanel(uiContext, 120, 690, 300, 100);
-//        collapsiblePanelA.setName("Game Object");
-//        collapsiblePanelA.setContent(createTable(uiContext, "First collapsible panel", 10));
-
-        // Collapsible Panel B
-//        KrCollapsiblePanel collapsiblePanelB = createKrCollapsiblePanel(uiContext, 120, 690, 300, 100);
-//        collapsiblePanelB.setName("Sprite Graphics");
-//        collapsiblePanelB.setContent(createTable(uiContext, "First collapsible panel", 5));
-
-        // Collapsible Panel C
-//        KrCollapsiblePanel collapsiblePanelC = createKrCollapsiblePanel(uiContext, 120, 690, 300, 100);
-//        collapsiblePanelC.setName("Shape Collision");
-//        collapsiblePanelC.setContent(createTable(uiContext, "First collapsible panel", 7));
-
-        // Collapsible Panel Table
-//        Table collapsiblePanelTable = new Table(uiContext.getSkin());
-//        collapsiblePanelTable.add(collapsiblePanelA).fillX().top().padBottom(2).row();
-//        collapsiblePanelTable.add(collapsiblePanelB).fillX().top().padBottom(2).row();
-//        collapsiblePanelTable.add(collapsiblePanelC).fillX().top().row();
-//        collapsiblePanelTable.add(new KrWidget(new Color(0, 0, 0, 0))).fill().expand().row();
-
-//        KrScrollPanel collapsibleScrollPanel = new KrScrollPanel(uiContext, collapsiblePanelTable);
-//        collapsibleScrollPanel.setBounds(120, 490, 200, 300);
-//        collapsibleScrollPanel.setExpandX(true);
     }
 
-    private KrButtonGroup createButtonGroup() {
+    private KrPanel createCheckboxes() {
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel label = new KrLabel("Checkboxes");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setName("buttons.label");
+        label.setBounds(0, 0, 60, 20);
+
+        KrCheckbox checkboxA = new KrCheckbox();
+        checkboxA.setPosition(10, 20);
+        checkboxA.setChecked(true);
+
+        KrCheckbox checkboxB = new KrCheckbox();
+        checkboxB.setPosition(40, 20);
+
+        wrapper.add(label);
+        wrapper.add(checkboxA);
+        wrapper.add(checkboxB);
+
+        wrapper.setBounds(10, 250, 60, 50);
+        return wrapper;
+    }
+
+    private KrWidget createButtons() {
+        KrLabel label = new KrLabel("Buttons");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setName("buttons.label");
+        label.setBounds(0, 0, 100, 20);
+
+        KrButton button = new KrButton("Push Button");
+        button.setName("buttons.button");
+        button.setBounds(0, 20, 100, 26);
+
+        KrToggleButton toggleButton = new KrToggleButton("Toggle Button");
+        toggleButton.setName("buttons.toggleButton");
+        toggleButton.setBounds(0, 50, 100, 26);
+
+        KrLabel groupLabel = new KrLabel("Toggle Button Group");
+        groupLabel.ensureUniqueStyle();
+        ((KrLabel.Style) groupLabel.getStyle()).foregroundColor = lightGray;
+        groupLabel.setName("buttons.groupLabel");
+        groupLabel.setBounds(0, 85, 160, 20);
+
         KrToggleButton first = new KrToggleButton("RGB");
         first.setName("toggle_group.first");
         KrToggleButton second = new KrToggleButton("HSV");
         second.setName("toggle_group.second");
         KrToggleButton third = new KrToggleButton("CMYK");
         third.setName("toggle_group.third");
+
         KrButtonGroup buttonGroup = new KrButtonGroup(first, second, third);
-        buttonGroup.setBounds(10, 260, 160, 26);
+        buttonGroup.setBounds(0, 105, 160, 26);
         buttonGroup.setAllowUncheck(false);
-        return buttonGroup;
+
+        KrPanel panel = new KrPanel();
+        panel.setName("buttons.container");
+        panel.setLayout(new KrAbsoluteLayout());
+        panel.add(label);
+        panel.add(button);
+        panel.add(toggleButton);
+        panel.add(groupLabel);
+        panel.add(buttonGroup);
+        panel.setBounds(10, 10, 160, 140);
+
+        return panel;
     }
 
-
     private KrWidget createSplitPanel() {
-        KrSplitPanel splitPanel = new KrSplitPanel();
-        splitPanel.add(createVerticalFlowLayout(), new KrUnifiedSize(60, 1));
-        splitPanel.add(createVerticalFlowLayout(), new KrUnifiedSize(60, 1));
-        splitPanel.add(createVerticalFlowLayout(), new KrUnifiedSize(60, 1));
+        KrPanel wrapper = new KrPanel();
 
-        splitPanel.setBounds(560, 10, 120, 300);
-        return splitPanel;
+        KrLabel label = new KrLabel("Split Panel");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setBounds(0, 0, 150, 20);
+
+        KrSplitPanel splitPanel = new KrSplitPanel();
+        splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
+        splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
+        splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
+
+        splitPanel.setBounds(0, 20, 150, 300);
+
+        wrapper.add(label);
+        wrapper.add(splitPanel);
+        wrapper.setBounds(560, 10, 150, 320);
+
+        return wrapper;
     }
 
     private KrWidget createScrollPanel() {
-        KrWidget panel = createVerticalFlowLayout();
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel label = new KrLabel("Scroll Panel");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setBounds(0, 0, 150, 20);
+
+        KrWidget panel = createDummyContent();
         panel.setPreferredSize(new Vector2(120, 200));
         KrScrollPanel scrollPanel = new KrScrollPanel(panel);
-        scrollPanel.setBounds(350, 150, 150, 70);
-        return scrollPanel;
+        scrollPanel.setBounds(0, 20, 160, 90);
+
+        wrapper.add(label);
+        wrapper.add(scrollPanel);
+        wrapper.setBounds(385, 140, 160, 120);
+
+        return wrapper;
+    }
+
+    private KrPanel createScrollBarsPanel() {
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel label = new KrLabel("Scroll Bars");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setBounds(0, 0, 150, 20);
+
+        KrPanel verticalScrollBarPanel = createVerticalScrollBarPanel();
+        KrPanel horizontalScrollBarPanel = createHorizontalScrollBarPanel();
+
+        wrapper.add(label);
+        wrapper.add(verticalScrollBarPanel);
+        wrapper.add(horizontalScrollBarPanel);
+
+        wrapper.setBounds(385, 10, 160, 120);
+
+        return wrapper;
     }
 
     private KrPanel createVerticalScrollBarPanel() {
@@ -216,7 +239,7 @@ public class UiDemo extends Game {
         result.setLayout(new KrBorderLayout());
         result.add(scrollBar, KrBorderLayout.Constraint.CENTER);
         result.add(label, KrBorderLayout.Constraint.SOUTH);
-        result.setBounds(400, 10, 30, 100);
+        result.setBounds(0, 20, 30, 100);
 
         return result;
     }
@@ -231,50 +254,26 @@ public class UiDemo extends Game {
         label.setPreferredSize(new Vector2(30, 20));
         label.setName("scrollbar.horizontal.value_label");
 
-        scrollBar.addScrollListener(value -> {
-            label.setText(String.valueOf((int) value));
-        });
+        scrollBar.addScrollListener(value -> label.setText(String.valueOf((int) value)));
 
         KrPanel result = new KrPanel();
         result.setLayout(new KrBorderLayout());
         result.add(scrollBar, KrBorderLayout.Constraint.CENTER);
         result.add(label, KrBorderLayout.Constraint.EAST);
-        result.setBounds(450, 10, 100, 30);
+        result.setBounds(50, 20, 100, 30);
 
         return result;
     }
 
-    private KrWidget createVerticalFlowLayout() {
-        KrWidget panel = new KrPanel();
-        panel.ensureUniqueStyle();
-        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+    private KrWidget createHorizontalFlowLayoutPanel() {
+        KrPanel wrapper = new KrPanel();
 
-        panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
+        KrLabel label = new KrLabel("Horizontal Flow Layout");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setBounds(0, 0, 180, 20);
 
-        KrLabel labelA = new KrLabel("V Flow Label A");
-        labelA.ensureUniqueStyle();
-        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
-        labelA.setName("flowlayoutV.labelA");
-
-        KrLabel labelB = new KrLabel("V Flow Label B - gj");
-        labelB.ensureUniqueStyle();
-        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
-        labelB.setName("flowlayoutV.labelB");
-
-        KrLabel labelC = new KrLabel("V Flow Label C");
-        labelC.ensureUniqueStyle();
-        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
-        labelC.setName("flowlayoutV.labelC");
-
-        panel.add(labelA);
-        panel.add(labelB);
-        panel.add(labelC);
-        panel.setBounds(new Vector2(10, 150), panel.getPreferredSize());
-        return panel;
-    }
-
-    private KrWidget createHorizontalFlowLayout() {
-        KrWidget panel = new KrPanel();
+        KrPanel panel = new KrPanel();
         panel.ensureUniqueStyle();
         ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
 
@@ -298,42 +297,63 @@ public class UiDemo extends Game {
         panel.add(labelA);
         panel.add(labelB);
         panel.add(labelC);
-        panel.setBounds(190, 100, 180, 40);
-        return panel;
+        panel.setBounds(0, 20, 180, 40);
+
+        wrapper.add(label);
+        wrapper.add(panel);
+        wrapper.setBounds(190, 10, 180, 60);
+        return wrapper;
     }
 
-    private KrWidget createGridLayout() {
-        KrWidget form = new KrWidget();
-        KrGridLayout formLayout = new KrGridLayout(2, 5, 3);
-        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(55, 0), new KrUnifiedSize(80, 1)));
-        form.setLayout(formLayout);
+    private KrWidget createVerticalFlowLayoutPanel() {
+        KrPanel wrapper = new KrPanel();
 
-        KrWidget usernameLabel = new KrLabel("Username");
-        usernameLabel.setName("label.username");
-        KrWidget usernameEdit = new KrTextField();
-        usernameEdit.setName("textfield.username");
-        KrWidget weight = new KrLabel("Weight");
-        weight.setName("label.weight");
-        KrSpinner weightEdit = new KrSpinner();
-        weightEdit.setName("spinner.weight");
-        KrWidget weightClone = new KrLabel("Weight 2");
-        weightClone.setName("label.weight_clone");
-        KrSpinner weightEditClone = new KrSpinner();
-        weightEditClone.setName("spinner.weight_clone");
-        weightEditClone.setSpinnerModel(weightEdit.getSpinnerModel());
+        KrLabel label = new KrLabel("Vertical Flow Layout");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setBounds(0, 0, 180, 20);
 
-        form.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        form.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        form.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        form.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        form.add(weightClone, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        form.add(weightEditClone, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        form.setBounds(10, 100, 200, 90);
-        form.setBounds(new Vector2(10, 100), form.getMinSize());
-        return form;
+        KrWidget panel = new KrPanel();
+        panel.ensureUniqueStyle();
+        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+
+        panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
+
+        KrLabel labelA = new KrLabel("First Row");
+        labelA.ensureUniqueStyle();
+        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
+        labelA.setName("flowlayoutV.labelA");
+
+        KrLabel labelB = new KrLabel("Second Row");
+        labelB.ensureUniqueStyle();
+        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
+        labelB.setName("flowlayoutV.labelB");
+
+        KrLabel labelC = new KrLabel("Third Row");
+        labelC.ensureUniqueStyle();
+        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
+        labelC.setName("flowlayoutV.labelC");
+
+        panel.add(labelA);
+        panel.add(labelB);
+        panel.add(labelC);
+        panel.setBounds(0, 20, 180, 120);
+
+        wrapper.add(label);
+        wrapper.add(panel);
+        wrapper.setBounds(190, 80, 180, 140);
+
+        return wrapper;
     }
 
     private KrWidget createBorderLayoutPanel() {
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel label = new KrLabel("Border Layout");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setBounds(0, 0, 180, 20);
+
         KrWidget panel = new KrPanel();
         panel.ensureUniqueStyle();
         ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
@@ -353,14 +373,14 @@ public class UiDemo extends Game {
         ((KrLabel.Style) bottomWidget.getStyle()).background = DARKER_GRAY;
         bottomWidget.setPreferredSize(new Vector2(100, 20));
 
-        KrLabel leftWidget = new KrLabel("L");
+        KrLabel leftWidget = new KrLabel("W");
         leftWidget.setName("borderlayout.left");
         leftWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         leftWidget.ensureUniqueStyle();
         ((KrLabel.Style) leftWidget.getStyle()).background = DARKER_GRAY;
         leftWidget.setPreferredSize(new Vector2(30, 20));
 
-        KrLabel rightWidget = new KrLabel("R");
+        KrLabel rightWidget = new KrLabel("E");
         rightWidget.setName("borderlayout.right");
         rightWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         rightWidget.ensureUniqueStyle();
@@ -380,28 +400,86 @@ public class UiDemo extends Game {
         panel.add(rightWidget, KrBorderLayout.Constraint.EAST);
         panel.add(centerWidget, KrBorderLayout.Constraint.CENTER);
 
-        panel.setBounds(new Vector2(180, 180), panel.getPreferredSize());
+        panel.setBounds(0, 20, 180, 120);
+
+        wrapper.add(label);
+        wrapper.add(panel);
+        wrapper.setBounds(190, 230, 180, 140);
+
+        return wrapper;
+    }
+
+    private KrWidget createGridLayout() {
+        KrPanel form = new KrPanel();
+
+        KrLabel formLabel = new KrLabel("Grid Layout / Text Field / Spinner");
+        formLabel.ensureUniqueStyle();
+        ((KrLabel.Style) formLabel.getStyle()).foregroundColor = lightGray;
+        formLabel.setName("grid_layout.form_label");
+        formLabel.setPosition(0, 0);
+
+        KrPanel fields = new KrPanel();
+        KrGridLayout formLayout = new KrGridLayout(2, 5, 3);
+        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(55, 0), new KrUnifiedSize(80, 1)));
+        fields.setLayout(formLayout);
+
+        KrWidget usernameLabel = new KrLabel("Username");
+        usernameLabel.setName("grid_layout.label.username");
+        KrWidget usernameEdit = new KrTextField();
+        usernameEdit.setName("grid_layout.textfield.username");
+        KrWidget weight = new KrLabel("Weight");
+        weight.setName("grid_layout.label.weight");
+        KrSpinner weightEdit = new KrSpinner();
+        weightEdit.setName("grid_layout.spinner.weight");
+        KrWidget weightClone = new KrLabel("Weight 2");
+        weightClone.setName("grid_layout.label.weight_clone");
+        KrSpinner weightEditClone = new KrSpinner();
+        weightEditClone.setName("grid_layout.spinner.weight_clone");
+        weightEditClone.setSpinnerModel(weightEdit.getSpinnerModel());
+
+        fields.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+        fields.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
+        fields.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+        fields.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
+        fields.add(weightClone, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+        fields.add(weightEditClone, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
+        fields.setBounds(new Vector2(0, 20), fields.getMinSize());
+
+        form.add(formLabel);
+        form.add(fields);
+
+        form.setBounds(10, 150, 1200, 110);
+
+        return form;
+    }
+
+    public KrPanel createDummyContent() {
+        KrPanel panel = new KrPanel();
+        panel.ensureUniqueStyle();
+        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+
+        panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
+
+        KrLabel labelA = new KrLabel("First Row");
+        labelA.ensureUniqueStyle();
+        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
+        labelA.setName("flowlayoutV.labelA");
+
+        KrLabel labelB = new KrLabel("Second Row");
+        labelB.ensureUniqueStyle();
+        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
+        labelB.setName("flowlayoutV.labelB");
+
+        KrLabel labelC = new KrLabel("Third Row");
+        labelC.ensureUniqueStyle();
+        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
+        labelC.setName("flowlayoutV.labelC");
+
+        panel.add(labelA);
+        panel.add(labelB);
+        panel.add(labelC);
 
         return panel;
-    }
-
-    private KrCollapsiblePanel createKrCollapsiblePanel(KrContext uiContext, int x, int y, int w, int h) {
-        Table table = createTable(uiContext, "Property ", 10);
-        KrCollapsiblePanel collapsiblePanel = new KrCollapsiblePanel(uiContext, "Game Object");
-        collapsiblePanel.setBounds(x, y, w, h);
-        collapsiblePanel.setContent(table);
-        collapsiblePanel.setBackground(WIDGET_BACKGROUND);
-        return collapsiblePanel;
-    }
-
-    private Table createTable(KrContext uiContext, String prefix, int rows) {
-        Table table = new Table(uiContext.getSkin());
-        for (int i = 0; i < rows; ++i) {
-            Label label = new Label(prefix + " " + i, uiContext.getSkin());
-            KrToolkit.ensureUniqueStyle(label);
-            table.add(label).fillX().expandX().padLeft(4).row();
-        }
-        return table;
     }
 
     @Override
