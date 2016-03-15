@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
@@ -21,11 +18,10 @@ import com.google.common.collect.ImmutableMap;
 import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrButtonGroup;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
-import com.katzstudio.kreativity.ui.component.KrComboBox;
 import com.katzstudio.kreativity.ui.component.KrLabel;
-import com.katzstudio.kreativity.ui.component.KrList;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrScrollBar;
+import com.katzstudio.kreativity.ui.component.KrSplitPanel;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import lombok.Getter;
 import lombok.Setter;
@@ -86,6 +82,8 @@ public class KrSkin {
 
     @Getter @Setter private KrScrollBar.Style horizontalScrollBarStyle;
 
+    @Getter @Setter private KrSplitPanel.Style splitPanelStyle;
+
     @Getter private Texture skinTexture;
 
     private KrSkin() {
@@ -96,12 +94,11 @@ public class KrSkin {
     }
 
     public void install() {
-
-//        loadScene2DSkin(assetPath);
-
-//        loadCursors();
-
         loadKreativitySkin();
+    }
+
+    public Drawable getDrawable(String name) {
+        return drawablePatches.get(name);
     }
 
     private void loadKreativitySkin() {
@@ -226,6 +223,10 @@ public class KrSkin {
                 buttonGroupMiddleButtonStyle,
                 buttonGroupLastButtonStyle);
 
+        splitPanelStyle = new KrSplitPanel.Style(
+                KrToolkit.createColorDrawable(getColor(BACKGROUND_LIGHT)),
+                KrToolkit.createColorDrawable(getColor(BACKGROUND_LIGHT)),
+                getDrawable("split_panel.splitter_grip"));
     }
 
     private void loadCursors() {
@@ -234,50 +235,6 @@ public class KrSkin {
         }
 
         KrToolkit.setCursor(Cursor.POINTER);
-    }
-
-    private void loadScene2DSkin(String assetPath) {
-        skin = new Skin(Gdx.files.internal(assetPath + "ui/skin.json"));
-
-        // Scroll Pane Style
-        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle(
-                new NinePatchDrawable(skin.getPatch("scrollpanel-background")),
-                new NinePatchDrawable(skin.getPatch("scrollpanel.scroll.track")),
-                new NinePatchDrawable(skin.getPatch("scrollpanel.scroll.thumb")),
-                new NinePatchDrawable(skin.getPatch("scrollpanel.scroll.track")),
-                new NinePatchDrawable(skin.getPatch("scrollpanel.scroll.thumb")));
-        scrollPaneStyle.vScrollKnob.setMinWidth(9);
-        scrollPaneStyle.vScroll.setMinWidth(9);
-
-        // Label Style
-        Label.LabelStyle oldLabelStyle = new Label.LabelStyle(defaultFont, colors.get(ColorKey.FOREGROUND));
-
-        // Item List Style
-        KrList.Style itemListStyle = KrList.Style.builder()
-                .background(new NinePatchDrawable(skin.getPatch("list-background")))
-                .selection(new NinePatchDrawable(skin.getPatch("selection")))
-                .paddingLeft(4)
-                .font(defaultFont)
-                .build();
-
-        // ComboBox Style
-        ScrollPane.ScrollPaneStyle comboBoxScrollStyle = new ScrollPane.ScrollPaneStyle(scrollPaneStyle);
-        comboBoxScrollStyle.background = new NinePatchDrawable(new NinePatch(skin.getPatch("combobox-list")));
-
-        KrComboBox.Style comboBoxStyle = KrComboBox.Style.builder()
-                .background(new NinePatchDrawable(skin.getPatch("default-select")))
-                .itemListStyle(itemListStyle)
-                .scrollStyle(comboBoxScrollStyle)
-                .font(defaultFont)
-                .build();
-
-        TextField.TextFieldStyle textFieldStyle = skin.get("default", TextField.TextFieldStyle.class);
-        textFieldStyle.font = defaultFont;
-
-        skin.add("default", oldLabelStyle);
-        skin.add("default", itemListStyle);
-        skin.add("default", comboBoxStyle);
-        skin.add("default", scrollPaneStyle);
     }
 
     private Rectangle jsonArrayToRectangle(JsonValue jsonValue) {

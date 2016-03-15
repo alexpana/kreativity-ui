@@ -2,26 +2,32 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.KrColor;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
-import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
+import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.katzstudio.kreativity.ui.KrAlignment.MIDDLE_CENTER;
+import static com.katzstudio.kreativity.ui.KrAlignmentTool.alignRectangles;
+
 /**
  * Container panel that splits it's area between children. Areas can be resized.
  */
 public class KrSplitPanel extends KrWidget {
 
-    private static final int SEPARATOR_SIZE = 1;
+    private static final int SEPARATOR_SIZE = 2;
 
     private final List<KrWidget> separatorList = Lists.newArrayList();
 
@@ -29,8 +35,11 @@ public class KrSplitPanel extends KrWidget {
 
     private final CellSizePolicyModel cellSizePolicyModel = new CellSizePolicyModel();
 
+    @Setter private Style style;
+
     public KrSplitPanel() {
         setLayout(new LayoutManager());
+        setStyle(KrSkin.instance().getSplitPanelStyle());
     }
 
     public void add(KrWidget widget, KrUnifiedSize preferredSize) {
@@ -52,9 +61,7 @@ public class KrSplitPanel extends KrWidget {
             final Cell topCell = cells.get(i - 1);
             final Cell bottomCell = cells.get(i);
 
-            KrPanel separator = new KrPanel();
-            separator.ensureUniqueStyle();
-            ((KrPanel.Style) separator.getStyle()).background = KrToolkit.createColorDrawable(KrColor.rgb(0xff0000));
+            KrPanel separator = createSplitterPanel();
 
             separator.addMouseListener(new KrMouseListener.KrMouseAdapter() {
                 private float deltaY = 0;
@@ -98,6 +105,22 @@ public class KrSplitPanel extends KrWidget {
         }
 
         validate();
+    }
+
+    private KrPanel createSplitterPanel() {
+        return new SplitterPanel();
+    }
+
+    @Override
+    public Object getStyle() {
+        return style;
+    }
+
+    @Override
+    public void ensureUniqueStyle() {
+        if (style == KrSkin.instance().getSplitPanelStyle()) {
+            style = style.copy();
+        }
     }
 
     @Override
@@ -179,6 +202,24 @@ public class KrSplitPanel extends KrWidget {
         }
     }
 
+    private final class SplitterPanel extends KrPanel {
+
+        @Override
+        protected void drawSelf(KrRenderer renderer) {
+            Drawable grip = style.splitterGrip;
+
+            Rectangle gripRectangle = new Rectangle(0, 0, grip.getMinWidth(), grip.getMinHeight());
+            Rectangle geometryRectangle = new Rectangle(0, 0, getWidth(), getHeight());
+            gripRectangle.setPosition(alignRectangles(gripRectangle, geometryRectangle, MIDDLE_CENTER));
+
+            renderer.setBrush(new KrDrawableBrush(style.splitterBackground));
+            renderer.fillRect(geometryRectangle);
+
+            renderer.setBrush(new KrDrawableBrush(grip));
+            renderer.fillRect(gripRectangle);
+        }
+    }
+
     private final class CellSizePolicyModel extends KrSizePolicyModel {
         @Override
         public Stream<KrUnifiedSize> stream() {
@@ -206,6 +247,20 @@ public class KrSplitPanel extends KrWidget {
 
         public float getHeight() {
             return component.getHeight();
+        }
+    }
+
+    @AllArgsConstructor
+    public static class Style {
+
+        public Drawable background;
+
+        public Drawable splitterBackground;
+
+        public Drawable splitterGrip;
+
+        public Style copy() {
+            return new Style(background, splitterBackground, splitterGrip);
         }
     }
 }

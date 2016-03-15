@@ -104,6 +104,10 @@
         "button_group_last.background_armed": {
             "region": [212, 88, 20, 21],
             "split": [4, 4, 4, 4]
+        },
+        "split_panel.splitter_grip": {
+            "region": [1, 52, 18, 2],
+            "split": [0, 0, 0, 0]
         }
     }
 }
