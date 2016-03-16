@@ -69,8 +69,10 @@ public class KrSplitPanel extends KrWidget {
                 private float topCellOffset = 0;
                 private float bottomCellOffset = 0;
 
-                private float maxDelta;
-                private float minDelta;
+                private int maxDelta;
+                private int minDelta;
+
+                private float startY;
 
                 @Override
                 public void mousePressed(KrMouseEvent event) {
@@ -78,9 +80,11 @@ public class KrSplitPanel extends KrWidget {
                     topCellOffset = topCell.getOffset();
                     bottomCellOffset = bottomCell.getOffset();
 
-                    minDelta = Math.min(0, topCell.getPreferredHeight() - topCell.getHeight());
-                    maxDelta = Math.max(0, bottomCell.getHeight() - bottomCell.getPreferredHeight());
+                    minDelta = (int) Math.min(0, topCell.getPreferredHeight() - topCell.getHeight());
+                    maxDelta = (int) Math.max(0, bottomCell.getHeight() - bottomCell.getPreferredHeight());
                     dragging = true;
+
+                    startY = event.getScreenPosition().y;
                 }
 
                 @Override
@@ -91,11 +95,11 @@ public class KrSplitPanel extends KrWidget {
                 @Override
                 public void mouseMoved(KrMouseEvent event) {
                     if (dragging) {
-                        deltaY += event.getDeltaMove().y;
+                        deltaY = event.getScreenPosition().y - startY;
                         int actualDelta = (int) Math.max(minDelta, Math.min(maxDelta, deltaY));
                         topCell.setOffset(topCellOffset + actualDelta);
                         bottomCell.setOffset(bottomCellOffset - actualDelta);
-                        validate();
+                        invalidate();
                     }
                 }
             });
@@ -104,7 +108,7 @@ public class KrSplitPanel extends KrWidget {
             add(separator);
         }
 
-        validate();
+        invalidate();
     }
 
     private KrPanel createSplitterPanel() {
