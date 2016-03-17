@@ -121,7 +121,7 @@ public class KrCanvas implements InputProcessor {
     public void draw() {
         renderer.beginFrame();
         renderer.setFont(KrSkin.instance().getDefaultFont());
-        renderer.setPen(new KrPen(1, KrSkin.getColor(KrSkin.ColorKey.FOREGROUND)));
+        renderer.setPen(new KrPen(1, KrSkin.instance().getColor(KrSkin.ColorKey.FOREGROUND)));
         rootComponent.draw(renderer);
         renderer.endFrame();
     }

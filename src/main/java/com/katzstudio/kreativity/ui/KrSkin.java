@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
@@ -42,7 +41,7 @@ public class KrSkin {
 
     private static final KrSkin KREATIVITY_SKIN = new KrSkin();
 
-    private final static ImmutableMap<ColorKey, Color> colors = ImmutableMap.<ColorKey, Color>builder()
+    private final ImmutableMap<ColorKey, Color> colors = ImmutableMap.<ColorKey, Color>builder()
             .put(BACKGROUND_LIGHT, new Color(0x424242ff))
             .put(BACKGROUND_DARK, new Color(0x353535ff))
             .put(FOREGROUND, new Color(0xDDDDDDFF))
@@ -50,8 +49,6 @@ public class KrSkin {
             .build();
 
     private final Map<String, Drawable> drawablePatches = new HashMap<>();
-
-    @Getter private Skin skin;
 
     @Getter private BitmapFont fontAwesome;
 
@@ -244,7 +241,7 @@ public class KrSkin {
         return new Rectangle(jsonValue.get(0).asInt(), jsonValue.get(1).asInt(), jsonValue.get(2).asInt(), jsonValue.get(3).asInt());
     }
 
-    public static Color getColor(ColorKey key) {
+    public Color getColor(ColorKey key) {
         return colors.get(key);
     }
 
