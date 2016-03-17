@@ -27,3 +27,11 @@ A: This framework was built to be very similar to existing frameworks (swing, qt
 new components can be created very easily and work as expected. New widgets are added with every release and we currently
 have ~300 unit tests. Plans include support for tree views, tables and tabbed panels, which aren't supported by any other
 framework, and cannot be easily implemented in those frameworks.
+
+
+**Q: Why prefix all classes with Kr prefix? That's so yesterday.**
+
+A: It's lame, I know. Nobody uses prefixes anymore. Or do they? Whether for legacy reasons or otherwise Qt, Unreal Engine,
+java's Swing all use prefixes. The reason I'm using them is because of autocomplete. If I didn't use a prefix, my trusty 
+IDE would fill my autocomplete list with components from other frameworks and hinder my development by just a tiny bit 
+(just like it does with List because libgdx also implements a list class). So yeah, that's the reason.
