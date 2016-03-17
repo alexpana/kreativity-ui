@@ -1,11 +1,11 @@
-package com.katzstudio.kreativity.ui;
+package com.katzstudio.kreativity.ui.component.model;
 
 /**
  * Generic model used by Kreativity components. It contains callbacks for edit begin / end so implementations
  * can implement undo / redo while skipping intermediate changes (such as dragging a spinner or entering characters
  * in a text field).
  */
-public interface KrModel<T> {
+public interface KrValueModel<T> {
 
     /**
      * Returns the current value of the model.
@@ -31,7 +31,7 @@ public interface KrModel<T> {
      */
     void ephemeralChangesEnd();
 
-    class Default<T> implements KrModel<T> {
+    class Default<T> implements KrValueModel<T> {
 
         public T value;
 

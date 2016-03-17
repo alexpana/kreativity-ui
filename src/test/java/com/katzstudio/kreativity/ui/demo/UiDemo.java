@@ -37,7 +37,7 @@ import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
 import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
 import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
-import static com.katzstudio.kreativity.ui.KrToolkit.createColorDrawable;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDrawable;
 import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICAL;
 
@@ -70,9 +70,9 @@ public class UiDemo extends Game {
         gl.glDepthMask(true);
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        DARK_GRAY = createColorDrawable(rgb(0x434343));
+        DARK_GRAY = getDrawable(rgb(0x434343));
 
-        DARKER_GRAY = createColorDrawable(rgb(0x393939));
+        DARKER_GRAY = getDrawable(rgb(0x393939));
 
         lightGray = rgb(0xaaaaaa);
 

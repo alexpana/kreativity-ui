@@ -3,9 +3,9 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.KrModel;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.component.model.KrValueModel;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import lombok.Getter;
@@ -30,7 +30,7 @@ public class KrSpinner extends KrTextField {
 
     private final List<EditListener> editListeners = Lists.newArrayList();
 
-    @Getter @Setter private KrModel<Float> spinnerModel = new KrModel.Default<>(0.0f);
+    @Getter @Setter private KrValueModel<Float> spinnerModel = new KrValueModel.Default<>(0.0f);
 
     private boolean dragStarted;
 

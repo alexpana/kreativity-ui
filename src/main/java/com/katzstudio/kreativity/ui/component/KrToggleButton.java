@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.katzstudio.kreativity.ui.KrModel;
+import com.katzstudio.kreativity.ui.component.model.KrValueModel;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -18,7 +18,7 @@ public class KrToggleButton extends KrButton {
 
     private final List<KrToggleButtonListener> listeners = new ArrayList<>();
 
-    @Getter @Setter KrModel<Boolean> model = new KrModel.Default<>(false);
+    @Getter @Setter KrValueModel<Boolean> model = new KrValueModel.Default<>(false);
 
     public KrToggleButton(String text) {
         super(text);

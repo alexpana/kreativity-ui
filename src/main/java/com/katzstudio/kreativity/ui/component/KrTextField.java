@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrFontMetrics;
-import com.katzstudio.kreativity.ui.KrModel;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.component.model.KrValueModel;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -40,7 +40,7 @@ public class KrTextField extends KrWidget {
 
     protected final KrTextDocument textDocument;
 
-    @Getter @Setter private KrModel<String> model = new KrModel.Default<>("");
+    @Getter @Setter private KrValueModel<String> model = new KrValueModel.Default<>("");
 
     private int textOffset;
 

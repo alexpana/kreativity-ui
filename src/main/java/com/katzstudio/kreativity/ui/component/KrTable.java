@@ -117,9 +117,6 @@ public class KrTable extends Table {
             for (int rowIndex = 0; rowIndex <= model.getRowCount(); ++rowIndex) {
                 Object cellValue = rowIndex == 0 ? model.getColumnName(columnIndex) : model.getValueAt(rowIndex - 1, columnIndex);
                 Actor cellComponent = renderer.getComponentFor(this, rowIndex, columnIndex, cellValue);
-                if (rowIndex > 0) {
-                    KrToolkit.addInputListener(cellComponent, createCellInputListener(rowIndex, columnIndex));
-                }
                 cells.add(new Cell(rowIndex, columnIndex, cellComponent));
             }
         }
@@ -364,7 +361,7 @@ public class KrTable extends Table {
             this.uiContext = uiContext;
 
             cellStyle = new Label.LabelStyle(uiContext.getSkin().get(Label.LabelStyle.class));
-            cellStyle.background = KrToolkit.createColorDrawable(new Color(0x00000000));
+            cellStyle.background = KrToolkit.getDrawable(new Color(0x00000000));
             cellStyle.background.setLeftWidth(4);
         }
 

@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
-import com.katzstudio.kreativity.ui.KrToolkit;
 import lombok.Getter;
 
 /**
@@ -53,7 +52,6 @@ public class KrCollapsiblePanel extends Table {
         this.title = title;
 
         titleLabel = new Label(title, uiContext.getSkin());
-        KrToolkit.ensureUniqueStyle(titleLabel);
         titleLabel.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -188,7 +186,7 @@ public class KrCollapsiblePanel extends Table {
     @Override
     protected void childrenChanged() {
         super.childrenChanged();
-        realPreferredHeight = (isCollapsed() ? COLLAPSED_HEIGHT : HEADER_HEIGHT) + (content != null ? KrToolkit.getPreferredSize(content).y : 0) + 2 * CONTENT_PADDING;
+//        realPreferredHeight = (isCollapsed() ? COLLAPSED_HEIGHT : HEADER_HEIGHT) + (content != null ? KrToolkit.getPreferredSize(content).y : 0) + 2 * CONTENT_PADDING;
 
         if (!isCollapsed()) {
             actualHeight = realPreferredHeight;

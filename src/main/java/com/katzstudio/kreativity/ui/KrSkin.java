@@ -19,6 +19,7 @@ import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrButtonGroup;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrLabel;
+import com.katzstudio.kreativity.ui.component.KrListView;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrScrollBar;
 import com.katzstudio.kreativity.ui.component.KrSplitPanel;
@@ -84,6 +85,8 @@ public class KrSkin {
 
     @Getter @Setter private KrSplitPanel.Style splitPanelStyle;
 
+    @Getter @Setter private KrListView.Style listViewStyle;
+
     @Getter private Texture skinTexture;
 
     private KrSkin() {
@@ -131,10 +134,10 @@ public class KrSkin {
             drawablePatches.put(patchName, ninePatchDrawable);
         }
 
-        panelStyle = new KrPanel.Style(KrToolkit.createColorDrawable(KrColor.TRANSPARENT));
+        panelStyle = new KrPanel.Style(KrToolkit.getDrawable(KrColor.TRANSPARENT));
 
         labelStyle = new KrLabel.Style(
-                KrToolkit.createColorDrawable(KrColor.TRANSPARENT),
+                KrToolkit.getDrawable(KrColor.TRANSPARENT),
                 defaultFont,
                 KrColor.rgb(0xffffff));
 
@@ -224,8 +227,8 @@ public class KrSkin {
                 buttonGroupLastButtonStyle);
 
         splitPanelStyle = new KrSplitPanel.Style(
-                KrToolkit.createColorDrawable(getColor(BACKGROUND_LIGHT)),
-                KrToolkit.createColorDrawable(getColor(BACKGROUND_LIGHT)),
+                KrToolkit.getDrawable(getColor(BACKGROUND_LIGHT)),
+                KrToolkit.getDrawable(getColor(BACKGROUND_LIGHT)),
                 getDrawable("split_panel.splitter_grip"));
     }
 

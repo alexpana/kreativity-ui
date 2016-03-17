@@ -161,7 +161,7 @@ public class KrMenu extends Table {
 
         private static final Color HOVER_COLOR = new Color(0x00000033);
 
-        private static final Drawable hoveredBackground = KrToolkit.createColorDrawable(HOVER_COLOR);
+        private static final Drawable hoveredBackground = KrToolkit.getDrawable(HOVER_COLOR);
 
         // Apparently we receive an exit event after a click.
         boolean ignoreNextExitEvent = false;
