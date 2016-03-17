@@ -79,7 +79,7 @@ public class TestObjectFactory {
 
     public static KrWidget createWidget(String name, int x, int y, int width, int height) {
         KrWidget widgetA = new KrWidget(name);
-        widgetA.setBounds(x, y, width, height);
+        widgetA.setGeometry(x, y, width, height);
         return widgetA;
     }
 }

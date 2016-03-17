@@ -166,10 +166,10 @@ public class KrSplitPanel extends KrWidget {
             for (Cell cell : cells) {
                 final int cellHeight = (int) (sizes.get(cellIndex) + cell.getOffset());
 
-                cell.getComponent().setBounds(0, topOffset, cellWidth, cellHeight);
+                cell.getComponent().setGeometry(0, topOffset, cellWidth, cellHeight);
 
                 if (cellIndex < separatorList.size()) {
-                    separatorList.get(cellIndex).setBounds(0, topOffset + cellHeight - 1, cellWidth, SEPARATOR_SIZE + 2);
+                    separatorList.get(cellIndex).setGeometry(0, topOffset + cellHeight - 1, cellWidth, SEPARATOR_SIZE + 2);
                 }
                 cellIndex += 1;
                 topOffset += cellHeight + SEPARATOR_SIZE;

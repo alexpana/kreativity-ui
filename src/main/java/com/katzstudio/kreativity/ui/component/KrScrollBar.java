@@ -199,8 +199,8 @@ public class KrScrollBar extends KrWidget {
     }
 
     @Override
-    public void setBounds(float x, float y, float width, float height) {
-        super.setBounds(x, y, width, height);
+    public void setGeometry(float x, float y, float width, float height) {
+        super.setGeometry(x, y, width, height);
         updateThumbLength();
     }
 

@@ -102,9 +102,9 @@ public class KrScrollPanel extends KrPanel {
                 verticalScrollBar.setValueRange(0, overflow);
             }
 
-            innerComponent.setBounds(0, 0, childWidth, childHeight);
-            verticalScrollBar.setBounds(geometry.width - vScrollBarSize, 0, vScrollBarSize, geometry.height);
-            horizontalScrollBar.setBounds(0, geometry.height - hScrollBarSize, geometry.width - vScrollBarSize, hScrollBarSize);
+            innerComponent.setGeometry(0, 0, childWidth, childHeight);
+            verticalScrollBar.setGeometry(geometry.width - vScrollBarSize, 0, vScrollBarSize, geometry.height);
+            horizontalScrollBar.setGeometry(0, geometry.height - hScrollBarSize, geometry.width - vScrollBarSize, hScrollBarSize);
         }
 
         @Override

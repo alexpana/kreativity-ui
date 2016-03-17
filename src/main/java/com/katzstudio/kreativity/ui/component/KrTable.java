@@ -220,18 +220,18 @@ public class KrTable extends Table {
             if (requiresScrollBar()) {
                 width -= SCROLLBAR_WIDTH + 1;
             }
-//            selectionHighlight.setBounds(0, getHeight() - top + getScrollOffset(), width, ROW_HEIGHT);
+//            selectionHighlight.setGeometry(0, getHeight() - top + getScrollOffset(), width, ROW_HEIGHT);
 //            selectionHighlight.setVisible(true);
         } else {
 //            selectionHighlight.setVisible(false);
         }
 
         // layout the header background
-        headerBackground.setBounds(0, getHeight() - ROW_HEIGHT - ROW_PADDING, getWidth(), ROW_HEIGHT + ROW_PADDING);
+        headerBackground.setGeometry(0, getHeight() - ROW_HEIGHT - ROW_PADDING, getWidth(), ROW_HEIGHT + ROW_PADDING);
 
         // layout the scroll bar
         if (requiresScrollBar()) {
-            scrollBar.setBounds(getRowWidth() - SCROLLBAR_WIDTH, 0, SCROLLBAR_WIDTH, getHeight() - ROW_HEIGHT - 1);
+            scrollBar.setGeometry(getRowWidth() - SCROLLBAR_WIDTH, 0, SCROLLBAR_WIDTH, getHeight() - ROW_HEIGHT - 1);
             scrollBar.setVisible(true);
         } else {
             scrollBar.setVisible(false);

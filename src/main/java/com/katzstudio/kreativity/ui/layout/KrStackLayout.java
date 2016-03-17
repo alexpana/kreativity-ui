@@ -17,7 +17,7 @@ public class KrStackLayout implements KrLayout {
 
     @Override
     public void setGeometry(Rectangle geometry) {
-        widgets.forEach(widget -> widget.setBounds(geometry));
+        widgets.forEach(widget -> widget.setGeometry(geometry));
     }
 
     @Override

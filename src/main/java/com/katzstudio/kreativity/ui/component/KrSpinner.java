@@ -5,9 +5,9 @@ import com.badlogic.gdx.Input;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.component.model.KrValueModel;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.model.KrValueModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -151,15 +151,6 @@ public class KrSpinner extends KrTextField {
     public void setText(String str) {
         super.setText(str);
     }
-
-//    @Override
-//    public void draw(Batch batch, float parentAlpha) {
-//        if (model != null && model.getValue() != value) {
-//            setValue(model.getValue());
-//        }
-//
-//        super.draw(batch, parentAlpha);
-//    }
 
     public void addEditListener(EditListener editListener) {
         editListeners.add(editListener);

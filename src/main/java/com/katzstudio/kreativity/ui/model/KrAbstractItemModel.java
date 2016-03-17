@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.component.model;
+package com.katzstudio.kreativity.ui.model;
 
 import lombok.Data;
 import lombok.Getter;
@@ -64,6 +64,20 @@ public class KrAbstractItemModel {
         @Getter private final int column;
 
         @Getter private final KrModelIndex parentIndex;
+
+        public KrModelIndex(int row) {
+            this(row, 0, ROOT);
+        }
+
+        public KrModelIndex(int row, int column) {
+            this(row, column, ROOT);
+        }
+
+        public KrModelIndex(int row, int column, KrModelIndex parent) {
+            this.row = row;
+            this.column = column;
+            this.parentIndex = parent;
+        }
     }
 
     public interface Listener {

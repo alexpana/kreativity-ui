@@ -169,9 +169,9 @@ public class KrCanvasTest {
         first.add(second);
         canvas.getRootComponent().add(first);
 
-        first.setBounds(50, 50, 100, 100);
+        first.setGeometry(50, 50, 100, 100);
 
-        second.setBounds(8, 4, 10, 10);
+        second.setGeometry(8, 4, 10, 10);
 
         assertThat(KrCanvas.convertPointToScreen(new Vector2(4, 2), second), is(new Vector2(62, 56)));
     }

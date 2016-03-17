@@ -100,7 +100,7 @@ public class UiDemo extends Game {
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
         label.setName("buttons.label");
-        label.setBounds(0, 0, 60, 20);
+        label.setGeometry(0, 0, 60, 20);
 
         KrCheckbox checkboxA = new KrCheckbox();
         checkboxA.setPosition(10, 20);
@@ -113,7 +113,7 @@ public class UiDemo extends Game {
         wrapper.add(checkboxA);
         wrapper.add(checkboxB);
 
-        wrapper.setBounds(10, 250, 60, 50);
+        wrapper.setGeometry(10, 250, 60, 50);
         return wrapper;
     }
 
@@ -122,21 +122,21 @@ public class UiDemo extends Game {
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
         label.setName("buttons.label");
-        label.setBounds(0, 0, 100, 20);
+        label.setGeometry(0, 0, 100, 20);
 
         KrButton button = new KrButton("Push Button");
         button.setName("buttons.button");
-        button.setBounds(0, 20, 100, 26);
+        button.setGeometry(0, 20, 100, 26);
 
         KrToggleButton toggleButton = new KrToggleButton("Toggle Button");
         toggleButton.setName("buttons.toggleButton");
-        toggleButton.setBounds(0, 50, 100, 26);
+        toggleButton.setGeometry(0, 50, 100, 26);
 
         KrLabel groupLabel = new KrLabel("Toggle Button Group");
         groupLabel.ensureUniqueStyle();
         ((KrLabel.Style) groupLabel.getStyle()).foregroundColor = lightGray;
         groupLabel.setName("buttons.groupLabel");
-        groupLabel.setBounds(0, 85, 160, 20);
+        groupLabel.setGeometry(0, 85, 160, 20);
 
         KrToggleButton first = new KrToggleButton("RGB");
         first.setName("toggle_group.first");
@@ -146,7 +146,7 @@ public class UiDemo extends Game {
         third.setName("toggle_group.third");
 
         KrButtonGroup buttonGroup = new KrButtonGroup(first, second, third);
-        buttonGroup.setBounds(0, 105, 160, 26);
+        buttonGroup.setGeometry(0, 105, 160, 26);
         buttonGroup.setAllowUncheck(false);
 
         KrPanel panel = new KrPanel();
@@ -157,7 +157,7 @@ public class UiDemo extends Game {
         panel.add(toggleButton);
         panel.add(groupLabel);
         panel.add(buttonGroup);
-        panel.setBounds(10, 10, 160, 140);
+        panel.setGeometry(10, 10, 160, 140);
 
         return panel;
     }
@@ -168,18 +168,18 @@ public class UiDemo extends Game {
         KrLabel label = new KrLabel("Split Panel");
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
-        label.setBounds(0, 0, 150, 20);
+        label.setGeometry(0, 0, 150, 20);
 
         KrSplitPanel splitPanel = new KrSplitPanel();
         splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
         splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
         splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
 
-        splitPanel.setBounds(0, 20, 150, 300);
+        splitPanel.setGeometry(0, 20, 150, 300);
 
         wrapper.add(label);
         wrapper.add(splitPanel);
-        wrapper.setBounds(560, 10, 150, 320);
+        wrapper.setGeometry(560, 10, 150, 320);
 
         return wrapper;
     }
@@ -190,16 +190,16 @@ public class UiDemo extends Game {
         KrLabel label = new KrLabel("Scroll Panel");
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
-        label.setBounds(0, 0, 150, 20);
+        label.setGeometry(0, 0, 150, 20);
 
         KrWidget panel = createDummyContent();
         panel.setPreferredSize(new Vector2(120, 200));
         KrScrollPanel scrollPanel = new KrScrollPanel(panel);
-        scrollPanel.setBounds(0, 20, 160, 90);
+        scrollPanel.setGeometry(0, 20, 160, 90);
 
         wrapper.add(label);
         wrapper.add(scrollPanel);
-        wrapper.setBounds(385, 140, 160, 120);
+        wrapper.setGeometry(385, 140, 160, 120);
 
         return wrapper;
     }
@@ -210,7 +210,7 @@ public class UiDemo extends Game {
         KrLabel label = new KrLabel("Scroll Bars");
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
-        label.setBounds(0, 0, 150, 20);
+        label.setGeometry(0, 0, 150, 20);
 
         KrPanel verticalScrollBarPanel = createVerticalScrollBarPanel();
         KrPanel horizontalScrollBarPanel = createHorizontalScrollBarPanel();
@@ -219,7 +219,7 @@ public class UiDemo extends Game {
         wrapper.add(verticalScrollBarPanel);
         wrapper.add(horizontalScrollBarPanel);
 
-        wrapper.setBounds(385, 10, 160, 120);
+        wrapper.setGeometry(385, 10, 160, 120);
 
         return wrapper;
     }
@@ -239,7 +239,7 @@ public class UiDemo extends Game {
         result.setLayout(new KrBorderLayout());
         result.add(scrollBar, KrBorderLayout.Constraint.CENTER);
         result.add(label, KrBorderLayout.Constraint.SOUTH);
-        result.setBounds(0, 20, 30, 100);
+        result.setGeometry(0, 20, 30, 100);
 
         return result;
     }
@@ -260,7 +260,7 @@ public class UiDemo extends Game {
         result.setLayout(new KrBorderLayout());
         result.add(scrollBar, KrBorderLayout.Constraint.CENTER);
         result.add(label, KrBorderLayout.Constraint.EAST);
-        result.setBounds(50, 20, 100, 30);
+        result.setGeometry(50, 20, 100, 30);
 
         return result;
     }
@@ -271,7 +271,7 @@ public class UiDemo extends Game {
         KrLabel label = new KrLabel("Horizontal Flow Layout");
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
-        label.setBounds(0, 0, 180, 20);
+        label.setGeometry(0, 0, 180, 20);
 
         KrPanel panel = new KrPanel();
         panel.ensureUniqueStyle();
@@ -297,11 +297,11 @@ public class UiDemo extends Game {
         panel.add(labelA);
         panel.add(labelB);
         panel.add(labelC);
-        panel.setBounds(0, 20, 180, 40);
+        panel.setGeometry(0, 20, 180, 40);
 
         wrapper.add(label);
         wrapper.add(panel);
-        wrapper.setBounds(190, 10, 180, 60);
+        wrapper.setGeometry(190, 10, 180, 60);
         return wrapper;
     }
 
@@ -311,7 +311,7 @@ public class UiDemo extends Game {
         KrLabel label = new KrLabel("Vertical Flow Layout");
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
-        label.setBounds(0, 0, 180, 20);
+        label.setGeometry(0, 0, 180, 20);
 
         KrWidget panel = new KrPanel();
         panel.ensureUniqueStyle();
@@ -337,11 +337,11 @@ public class UiDemo extends Game {
         panel.add(labelA);
         panel.add(labelB);
         panel.add(labelC);
-        panel.setBounds(0, 20, 180, 120);
+        panel.setGeometry(0, 20, 180, 120);
 
         wrapper.add(label);
         wrapper.add(panel);
-        wrapper.setBounds(190, 80, 180, 140);
+        wrapper.setGeometry(190, 80, 180, 140);
 
         return wrapper;
     }
@@ -352,7 +352,7 @@ public class UiDemo extends Game {
         KrLabel label = new KrLabel("Border Layout");
         label.ensureUniqueStyle();
         ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
-        label.setBounds(0, 0, 180, 20);
+        label.setGeometry(0, 0, 180, 20);
 
         KrWidget panel = new KrPanel();
         panel.ensureUniqueStyle();
@@ -400,11 +400,11 @@ public class UiDemo extends Game {
         panel.add(rightWidget, KrBorderLayout.Constraint.EAST);
         panel.add(centerWidget, KrBorderLayout.Constraint.CENTER);
 
-        panel.setBounds(0, 20, 180, 120);
+        panel.setGeometry(0, 20, 180, 120);
 
         wrapper.add(label);
         wrapper.add(panel);
-        wrapper.setBounds(190, 230, 180, 140);
+        wrapper.setGeometry(190, 230, 180, 140);
 
         return wrapper;
     }
@@ -443,12 +443,12 @@ public class UiDemo extends Game {
         fields.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
         fields.add(weightClone, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         fields.add(weightEditClone, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        fields.setBounds(new Vector2(0, 20), fields.getMinSize());
+        fields.setGeometry(new Vector2(0, 20), fields.getMinSize());
 
         form.add(formLabel);
         form.add(fields);
 
-        form.setBounds(10, 150, 1200, 110);
+        form.setGeometry(10, 150, 1200, 110);
 
         return form;
     }

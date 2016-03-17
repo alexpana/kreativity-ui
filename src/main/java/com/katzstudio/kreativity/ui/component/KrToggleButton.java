@@ -1,9 +1,9 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.katzstudio.kreativity.ui.component.model.KrValueModel;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.model.KrValueModel;
 import lombok.Getter;
 import lombok.Setter;
 

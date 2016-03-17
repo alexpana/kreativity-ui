@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.component.model;
+package com.katzstudio.kreativity.ui.model;
 
 /**
  * Generic model used by Kreativity components. It contains callbacks for edit begin / end so implementations

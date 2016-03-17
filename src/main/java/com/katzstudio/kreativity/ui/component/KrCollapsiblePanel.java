@@ -85,7 +85,7 @@ public class KrCollapsiblePanel extends Table {
     @Override
     public void layout() {
         titleLabel.setBounds(20, getHeight() - HEADER_HEIGHT, getWidth(), HEADER_HEIGHT);
-        iconPanel.setBounds(2, getHeight() - HEADER_HEIGHT + 1, HEADER_HEIGHT - 5, HEADER_HEIGHT);
+        iconPanel.setGeometry(2, getHeight() - HEADER_HEIGHT + 1, HEADER_HEIGHT - 5, HEADER_HEIGHT);
         content.setBounds(0, 0, getWidth(), getHeight() - HEADER_HEIGHT - CONTENT_PADDING);
     }
 

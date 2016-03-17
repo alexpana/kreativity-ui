@@ -110,7 +110,7 @@ public class KrGridLayout implements KrLayout {
 
         Vector2 widgetPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, widgetWidth, widgetHeight), cellBounds, constraint.alignment);
 
-        widget.setBounds((int) widgetPosition.x, (int) widgetPosition.y, widgetWidth, widgetHeight);
+        widget.setGeometry((int) widgetPosition.x, (int) widgetPosition.y, widgetWidth, widgetHeight);
     }
 
     @Override

@@ -88,6 +88,10 @@ public class KrWidget {
         this.name = name;
     }
 
+    private void setParent(KrWidget parent) {
+        this.parent = parent;
+    }
+
     public int getChildCount() {
         return children.size();
     }
@@ -96,13 +100,34 @@ public class KrWidget {
         return children.get(index);
     }
 
+    /**
+     * Ensures that the style instance owned by this widget is not shared with other widgets.
+     * <p>
+     * Changes to the style of this widget after calling {@code ensureUniqueStyle} will only
+     * affect this widget instance
+     */
     public void ensureUniqueStyle() {
     }
 
+    public Object getStyle() {
+        return null;
+    }
+
+    /**
+     * Adds a child to this widget
+     *
+     * @param child the child to be added
+     */
     public void add(KrWidget child) {
         add(child, null);
     }
 
+    /**
+     * Adds a child widget to this widget and to this widget's layout
+     *
+     * @param child            the child to be added
+     * @param layoutConstraint the layout constraint
+     */
     public void add(KrWidget child, Object layoutConstraint) {
         if (child.getParent() != null) {
             throw new IllegalArgumentException("Widget already has a parent: " + child.getParent());
@@ -116,6 +141,11 @@ public class KrWidget {
         invalidate();
     }
 
+    /**
+     * Removes a child of this widget
+     *
+     * @param child the child to be removed
+     */
     public void remove(KrWidget child) {
 
         layout.removeWidget(child);
@@ -131,10 +161,20 @@ public class KrWidget {
         invalidate();
     }
 
-    private void setParent(KrWidget parent) {
-        this.parent = parent;
+    /**
+     * Removes all the children of this widget
+     */
+    public void clear() {
+        children.forEach(this::remove);
     }
 
+    /**
+     * Changes the position of this widget. The position of the widget is relative
+     * to its parent (parent space).
+     *
+     * @param x the new X coordinate
+     * @param y the new Y coordinate
+     */
     public void setPosition(float x, float y) {
         if (this.x != x || this.y != y) {
             this.x = x;
@@ -143,10 +183,22 @@ public class KrWidget {
         }
     }
 
+    /**
+     * Changes the position of this widget. The position of the widget is relative
+     * to its parent (parent space).
+     *
+     * @param position the new position of the widget in parent space
+     */
     public void setPosition(Vector2 position) {
         this.setPosition(position.x, position.y);
     }
 
+    /**
+     * Sets the size of the widget. This size has no connection to the min / max / preferred sizes.
+     *
+     * @param w the new width
+     * @param h the new height
+     */
     public void setSize(float w, float h) {
         if (this.width != w || this.height != h) {
             this.width = w;
@@ -155,11 +207,24 @@ public class KrWidget {
         }
     }
 
+    /**
+     * Sets the size of the widget. This size has no connection to the min / max / preferred sizes.
+     *
+     * @param size the new widget size
+     */
     public void setSize(Vector2 size) {
         setSize(size.x, size.y);
     }
 
-    public void setBounds(float x, float y, float width, float height) {
+    /**
+     * Sets the position and size of the widget in parent space.
+     *
+     * @param x      the new X coordinate
+     * @param y      thew new Y coordinate
+     * @param width  the new width
+     * @param height the new height
+     */
+    public void setGeometry(float x, float y, float width, float height) {
         if (this.x == x && this.y == y && this.width == width && this.height == height) {
             return;
         }
@@ -171,35 +236,55 @@ public class KrWidget {
         invalidate();
     }
 
-    public void setBounds(Vector2 position, Vector2 size) {
-        this.setBounds(position.x, position.y, size.x, size.y);
+    /**
+     * Sets the position and size of this widget
+     *
+     * @param position the new position
+     * @param size     the new size
+     */
+    public void setGeometry(Vector2 position, Vector2 size) {
+        this.setGeometry(position.x, position.y, size.x, size.y);
     }
 
-    public void setBounds(Rectangle bounds) {
-        this.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    /**
+     * Sets the position and size of this widget
+     *
+     * @param geometry a rectangle describing the new position and size of the widget
+     */
+    public void setGeometry(Rectangle geometry) {
+        this.setGeometry(geometry.x, geometry.y, geometry.width, geometry.height);
     }
 
-    public Object getStyle() {
-        return null;
-    }
-
+    /**
+     * Validates the widget by layouting its children
+     */
     public void validate() {
         layout.setGeometry(new Rectangle(0, 0, getWidth(), getHeight()));
         isValid = true;
     }
 
+    /**
+     * Invalidating a widget requires the widget to be validated as soon as possible.
+     * This is usually done by children when changing sizes to request the parent to re layout itself
+     */
     public void invalidate() {
         isValid = false;
         notifyWidgetInvalidated();
         invalidateParent();
     }
 
-    public void invalidateParent() {
+
+    private void invalidateParent() {
         if (parent != null) {
             parent.invalidate();
         }
     }
 
+    /**
+     * Renders this widget and all its children
+     *
+     * @param renderer the renderer used to draw the widget
+     */
     public void draw(KrRenderer renderer) {
         renderer.translate(getX(), getY());
         boolean clipped = false;
