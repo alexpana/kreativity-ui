@@ -2,6 +2,7 @@ package com.katzstudio.kreativity.ui.layout;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.KrOrientation;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.component.KrWidget;
@@ -12,20 +13,24 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.HORIZONTAL;
-import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 
 /**
- * A
+ * A flow layout is used to arrange widgets in a row or a column.
+ * <p>
+ * A vertical flow layout distributes all widgets in a single column.
+ * All widgets have the same width, but preferred heights are taken
+ * into consideration.
+ * <p>
+ * A horizontal flow layout distributes all widgets in a single row.
+ * All widgets have the same height, but preferred widths are taken
+ * into consideration.
  */
 @RequiredArgsConstructor
 public class KrFlowLayout implements KrLayout {
 
-    public enum Direction {
-        HORIZONTAL, VERTICAL
-    }
-
-    private final Direction direction;
+    private final KrOrientation orientation;
 
     private final int horizontalPadding;
 
@@ -33,11 +38,12 @@ public class KrFlowLayout implements KrLayout {
 
     private final List<KrWidget> widgets = new ArrayList<>();
 
+    @SuppressWarnings("unused")
     public KrFlowLayout() {
-        this(Direction.HORIZONTAL, 0, 0);
+        this(HORIZONTAL, 0, 0);
     }
 
-    public KrFlowLayout(Direction direction) {
+    public KrFlowLayout(KrOrientation direction) {
         this(direction, 0, 0);
     }
 
@@ -45,7 +51,7 @@ public class KrFlowLayout implements KrLayout {
     public void setGeometry(Rectangle geometry) {
         KrSizePolicyModel sizePolicyModel;
 
-        if (direction == HORIZONTAL) {
+        if (orientation == HORIZONTAL) {
             sizePolicyModel = new KrSizePolicyModel(widgets.stream()
                     .map(w -> new KrUnifiedSize(w.getPreferredSize().x, 1))
                     .collect(Collectors.toList()));
@@ -55,7 +61,7 @@ public class KrFlowLayout implements KrLayout {
                     .collect(Collectors.toList()));
         }
 
-        float widgetAvailableSpace = direction == HORIZONTAL ?
+        float widgetAvailableSpace = orientation == HORIZONTAL ?
                 geometry.getWidth() - (getCols() + 1) * horizontalPadding :
                 geometry.getHeight() - (getRows() + 1) * verticalPadding;
 
@@ -67,14 +73,14 @@ public class KrFlowLayout implements KrLayout {
         float cellWidth = 0;
         int widgetIndex = 0;
 
-        if (direction == HORIZONTAL) {
+        if (orientation == HORIZONTAL) {
             cellHeight = geometry.getHeight() - 2 * verticalPadding;
         } else {
             cellWidth = geometry.getWidth() - 2 * horizontalPadding;
         }
 
         for (KrWidget widget : widgets) {
-            if (direction == HORIZONTAL) {
+            if (orientation == HORIZONTAL) {
                 cellWidth = sizes.get(widgetIndex);
             } else {
                 cellHeight = sizes.get(widgetIndex);
@@ -83,7 +89,7 @@ public class KrFlowLayout implements KrLayout {
             layoutInsideCell(widget, new Rectangle(cellX, cellY, cellWidth, cellHeight));
 
             widgetIndex += 1;
-            if (direction == HORIZONTAL) {
+            if (orientation == HORIZONTAL) {
                 cellX += cellWidth + horizontalPadding;
             } else {
                 cellY += cellHeight + verticalPadding;
@@ -122,7 +128,7 @@ public class KrFlowLayout implements KrLayout {
         float widgetHorizontalSize;
         float widgetVerticalSize;
 
-        if (direction == HORIZONTAL) {
+        if (orientation == HORIZONTAL) {
             widgetHorizontalSize = widgets.stream().map(widgetSizeFunction).map(v -> v.x).reduce(Float::sum).orElse(0.0f);
             widgetVerticalSize = widgets.stream().map(widgetSizeFunction).map(v -> v.y).max(Float::compare).orElse(0.0f);
         } else {
@@ -134,11 +140,11 @@ public class KrFlowLayout implements KrLayout {
     }
 
     private int getRows() {
-        return direction == VERTICAL ? widgets.size() : 1;
+        return orientation == VERTICAL ? widgets.size() : 1;
     }
 
     private int getCols() {
-        return direction == HORIZONTAL ? widgets.size() : 1;
+        return orientation == HORIZONTAL ? widgets.size() : 1;
     }
 
     @Override

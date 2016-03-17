@@ -3,6 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.katzstudio.kreativity.ui.KrOrientation;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
-import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.VERTICAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 
 /**
  * Scroll bar component which can be embedded into other components to enable scrolling
@@ -27,7 +28,7 @@ public class KrScrollBar extends KrWidget {
 
     private final List<Listener> listeners = new ArrayList<>();
 
-    @Getter private final Orientation orientation;
+    @Getter private final KrOrientation orientation;
 
     @Getter @Setter private float scrollStep = 10;
 
@@ -51,7 +52,7 @@ public class KrScrollBar extends KrWidget {
      */
     private float dragPosition;
 
-    public KrScrollBar(Orientation orientation) {
+    public KrScrollBar(KrOrientation orientation) {
         this.orientation = orientation;
 
         style = getDefaultStyle();
@@ -204,14 +205,11 @@ public class KrScrollBar extends KrWidget {
         updateThumbLength();
     }
 
-    private boolean isOverThumb(float x, float y) {
-        return getThumbGeometry().contains(x, y);
-    }
-
     public void addScrollListener(Listener listener) {
         listeners.add(listener);
     }
 
+    @SuppressWarnings("unused")
     public void removeScrollListener(Listener listener) {
         listeners.remove(listener);
     }
@@ -240,10 +238,6 @@ public class KrScrollBar extends KrWidget {
 
     public interface Listener {
         void scrolled(float newScrollValue);
-    }
-
-    public enum Orientation {
-        HORIZONTAL, VERTICAL
     }
 
     @AllArgsConstructor

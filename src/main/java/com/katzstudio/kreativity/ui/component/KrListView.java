@@ -8,7 +8,7 @@ import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import lombok.AllArgsConstructor;
 
-import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 
 /**
  * A list widget displays items in a vertical list. Items can be selected.
@@ -22,6 +22,8 @@ public class KrListView extends KrWidget {
     private final KrPanel innerPanel;
 
     private final Renderer renderer;
+
+    private KrScrollBar verticalScrollBar = new KrScrollBar(VERTICAL);
 
     public KrListView(KrAbstractItemModel model) {
         this(model, new KrListViewCellRenderer());

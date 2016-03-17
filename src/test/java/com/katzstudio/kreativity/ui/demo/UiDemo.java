@@ -37,9 +37,9 @@ import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
 import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
 import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
+import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDrawable;
-import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.HORIZONTAL;
-import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.VERTICAL;
 
 /**
  * Demo / testing application.
@@ -225,7 +225,7 @@ public class UiDemo extends Game {
     }
 
     private KrPanel createVerticalScrollBarPanel() {
-        KrScrollBar scrollBar = new KrScrollBar(KrScrollBar.Orientation.VERTICAL);
+        KrScrollBar scrollBar = new KrScrollBar(VERTICAL);
         scrollBar.setPreferredSize(new Vector2(6, 100));
         scrollBar.setName("scrollbar.vertical");
 
@@ -245,7 +245,7 @@ public class UiDemo extends Game {
     }
 
     private KrPanel createHorizontalScrollBarPanel() {
-        KrScrollBar scrollBar = new KrScrollBar(KrScrollBar.Orientation.HORIZONTAL);
+        KrScrollBar scrollBar = new KrScrollBar(HORIZONTAL);
         scrollBar.setPreferredSize(new Vector2(100, 6));
         scrollBar.setName("scrollbar.horizontal");
 

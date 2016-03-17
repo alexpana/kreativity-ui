@@ -7,8 +7,8 @@ import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.math.KrRange;
 import lombok.Getter;
 
-import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.HORIZONTAL;
-import static com.katzstudio.kreativity.ui.component.KrScrollBar.Orientation.VERTICAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 
 /**
  * A panel component that displays scrollBars when it's size is smaller then its children.

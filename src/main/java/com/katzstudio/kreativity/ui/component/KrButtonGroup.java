@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.katzstudio.kreativity.ui.layout.KrFlowLayout.Direction.HORIZONTAL;
+import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 
 /**
  * A button group contains a list of horizontal buttons, aligned and glued together. Only one button may be
