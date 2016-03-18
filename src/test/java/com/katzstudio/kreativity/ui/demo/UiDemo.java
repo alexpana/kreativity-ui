@@ -16,6 +16,7 @@ import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrButtonGroup;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
 import com.katzstudio.kreativity.ui.component.KrLabel;
+import com.katzstudio.kreativity.ui.component.KrListView;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrScrollBar;
 import com.katzstudio.kreativity.ui.component.KrScrollPanel;
@@ -29,6 +30,10 @@ import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
+import com.katzstudio.kreativity.ui.model.KrListItemModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.badlogic.gdx.Gdx.gl;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
@@ -91,7 +96,32 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(createScrollBarsPanel());
         canvas.getRootComponent().add(createScrollPanel());
         canvas.getRootComponent().add(createSplitPanel());
+        canvas.getRootComponent().add(createListView());
     }
+
+    private KrPanel createListView() {
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel label = new KrLabel("List View");
+        label.ensureUniqueStyle();
+        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setName("list_view.label");
+        label.setGeometry(0, 0, 60, 20);
+
+        List<String> itemValues = new ArrayList<>(15);
+        for (int i = 0; i < 15; ++i) {
+            itemValues.add("Item " + i);
+        }
+        KrListItemModel<String> model = new KrListItemModel<>(itemValues);
+        KrListView listView = new KrListView(model);
+        listView.setGeometry(0, 20, 160, 100);
+
+        wrapper.add(label);
+        wrapper.add(listView);
+        wrapper.setGeometry(385, 260, 160, 120);
+        return wrapper;
+    }
+
 
     private KrPanel createCheckboxes() {
         KrPanel wrapper = new KrPanel();
