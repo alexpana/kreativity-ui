@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.component.renderer.KrListViewCellRenderer;
+import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
@@ -26,6 +27,8 @@ public class KrListView extends KrWidget {
 
     private final Renderer renderer;
 
+    private int listGeometryOffset = 0;
+
     private KrScrollBar verticalScrollBar = new KrScrollBar(VERTICAL);
 
     public KrListView(KrAbstractItemModel model) {
@@ -37,12 +40,24 @@ public class KrListView extends KrWidget {
         this.renderer = renderer;
         this.innerPanel = new KrPanel(new KrFlowLayout(VERTICAL));
 
-        this.model.addListener(this::onModelDataChanged);
+        model.addListener(this::onModelDataChanged);
+        verticalScrollBar.addScrollListener(this::onScroll);
 
         setLayout(new Layout());
         add(innerPanel);
+        add(verticalScrollBar);
 
         onModelDataChanged();
+    }
+
+    private void onScroll(float v) {
+        listGeometryOffset = (int) v;
+        invalidate();
+    }
+
+    @Override
+    protected boolean scrollEvent(KrScrollEvent event) {
+        return verticalScrollBar.scrollEvent(event);
     }
 
     @Override
@@ -75,20 +90,23 @@ public class KrListView extends KrWidget {
 
     private class Layout implements KrLayout {
 
-        private float height;
-
         @Override
         public void setGeometry(Rectangle geometry) {
             int width = (int) geometry.getWidth();
             int height = (int) geometry.getHeight();
 
-            innerPanel.setGeometry(0, 0, width, innerPanel.getPreferredHeight());
+            float preferredHeight = innerPanel.getPreferredHeight();
+            innerPanel.setGeometry(0, -listGeometryOffset, width, preferredHeight);
 
-            if (innerPanel.getHeight() > geometry.getHeight()) {
+            int requiredScrollSize = (int) (preferredHeight - geometry.getHeight());
+
+            if (requiredScrollSize > 0) {
                 int scrollBarWidth = (int) verticalScrollBar.getPreferredWidth();
                 verticalScrollBar.setGeometry(width - scrollBarWidth, 0, scrollBarWidth, height);
+                verticalScrollBar.setValueRange(0, requiredScrollSize);
             } else {
                 verticalScrollBar.setSize(0, 0);
+                verticalScrollBar.setValueRange(0, 0);
             }
         }
 
