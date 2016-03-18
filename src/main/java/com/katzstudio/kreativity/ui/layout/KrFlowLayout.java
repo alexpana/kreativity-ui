@@ -98,7 +98,6 @@ public class KrFlowLayout implements KrLayout {
     }
 
     private void layoutInsideCell(KrWidget widget, Rectangle bounds) {
-        // do the actual layout based on the widget constraints
         widget.setGeometry(bounds);
     }
 
