@@ -40,21 +40,27 @@ public class KrCanvas implements InputProcessor {
 
     private static final float KEY_REPEAT_TIME = 0.1f;
 
-    @Getter private final KrPanel rootComponent;
+    @Getter
+    private final KrPanel rootComponent;
 
-    @Getter private final Clipboard clipboard;
+    @Getter
+    private final Clipboard clipboard;
 
     private final KrRenderer renderer;
 
     private final KeyRepeatTask keyRepeatTask = new KeyRepeatTask();
 
-    @Getter private float width;
+    @Getter
+    private float width;
 
-    @Getter private float height;
+    @Getter
+    private float height;
 
-    @Getter private KrWidget keyboardFocusHolder;
+    @Getter
+    private KrWidget keyboardFocusHolder;
 
-    @Getter private KrWidget mouseFocusHolder;
+    @Getter
+    private KrWidget mouseFocusHolder;
 
     private KrWidget currentlyHoveredWidget = null;
 
@@ -66,7 +72,12 @@ public class KrCanvas implements InputProcessor {
 
     private int pressedKeyCode = 0;
 
-    @Getter private final KrFocusManager focusManager;
+    private float lastMousePressedTime = 0;
+
+    private KrMouseEvent.Button lastMousePressedButton = null;
+
+    @Getter
+    private final KrFocusManager focusManager;
 
     public KrCanvas() {
         this(new KrRenderer(), Gdx.app.getClipboard(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -207,12 +218,30 @@ public class KrCanvas implements InputProcessor {
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.PRESSED, screenX, screenY, button);
+    public boolean touchDown(int screenX, int screenY, int pointer, int buttonIndex) {
+        KrMouseEvent.Button button = getButtonFor(buttonIndex);
+
+        KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.PRESSED, screenX, screenY, buttonIndex);
         mouseFocusHolder = findWidgetAt(rootComponent, screenX, screenY);
         if (mouseFocusHolder != keyboardFocusHolder) {
             requestFocus(mouseFocusHolder);
         }
+
+
+        long nanoTime = System.nanoTime();
+        if (lastMousePressedTime == 0) {
+            lastMousePressedTime = nanoTime;
+            lastMousePressedButton = button;
+        } else {
+            float deltaTime = nanoTime - lastMousePressedTime;
+            if (button == lastMousePressedButton && deltaTime < 200000000) {
+                mouseEvent = createMouseEvent(KrMouseEvent.Type.DOUBLE_CLICK, screenX, screenY, buttonIndex);
+            }
+            lastMousePressedButton = button;
+            lastMousePressedTime = nanoTime;
+        }
+
+
         dispatchEvent(mouseFocusHolder, mouseEvent);
         return mouseEvent.handled();
     }

@@ -485,6 +485,8 @@ public class KrWidget {
                     return mousePressedEvent(mouseEvent);
                 case RELEASED:
                     return mouseReleasedEvent(mouseEvent);
+                case DOUBLE_CLICK:
+                    return mouseDoubleClickEvent(mouseEvent);
             }
         }
 
@@ -553,6 +555,11 @@ public class KrWidget {
         return event.handled();
     }
 
+    protected boolean mouseDoubleClickEvent(KrMouseEvent mouseEvent) {
+        notifyMouseDoubleClicked(mouseEvent);
+        return mouseEvent.handled();
+    }
+
     protected boolean enterEvent(KrEnterEvent event) {
         notifyMouseEnter(event);
         return event.handled();
@@ -609,6 +616,10 @@ public class KrWidget {
 
     protected void notifyMousePressed(KrMouseEvent event) {
         mouseListeners.forEach(l -> l.mousePressed(event));
+    }
+
+    protected void notifyMouseDoubleClicked(KrMouseEvent event) {
+        mouseListeners.forEach(l -> l.mouseDoubleClicked(event));
     }
 
     protected void notifyMouseReleased(KrMouseEvent event) {

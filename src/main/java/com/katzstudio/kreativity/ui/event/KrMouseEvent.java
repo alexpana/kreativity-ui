@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 public class KrMouseEvent extends KrEvent {
     public enum Type {
-        MOVED, PRESSED, RELEASED
+        MOVED, PRESSED, RELEASED, DOUBLE_CLICK
     }
 
     public enum Button {

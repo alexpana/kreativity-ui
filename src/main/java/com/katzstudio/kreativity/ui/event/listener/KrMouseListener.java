@@ -16,6 +16,8 @@ public interface KrMouseListener {
 
     void mousePressed(KrMouseEvent event);
 
+    void mouseDoubleClicked(KrMouseEvent event);
+
     void mouseReleased(KrMouseEvent event);
 
     void enter(KrEnterEvent event);
@@ -33,6 +35,10 @@ public interface KrMouseListener {
 
         @Override
         public void mousePressed(KrMouseEvent event) {
+        }
+
+        @Override
+        public void mouseDoubleClicked(KrMouseEvent event) {
         }
 
         @Override

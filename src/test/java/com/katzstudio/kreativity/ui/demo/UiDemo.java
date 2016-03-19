@@ -25,6 +25,8 @@ import com.katzstudio.kreativity.ui.component.KrSplitPanel;
 import com.katzstudio.kreativity.ui.component.KrTextField;
 import com.katzstudio.kreativity.ui.component.KrToggleButton;
 import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
@@ -157,6 +159,12 @@ public class UiDemo extends Game {
         KrButton button = new KrButton("Push Button");
         button.setName("buttons.button");
         button.setGeometry(0, 20, 100, 26);
+        button.addMouseListener(new KrMouseListener.KrMouseAdapter() {
+            @Override
+            public void mouseDoubleClicked(KrMouseEvent event) {
+                System.out.println("event = " + event);
+            }
+        });
 
         KrToggleButton toggleButton = new KrToggleButton("Toggle Button");
         toggleButton.setName("buttons.toggleButton");
