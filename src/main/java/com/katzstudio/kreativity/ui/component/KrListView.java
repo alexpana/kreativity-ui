@@ -11,6 +11,8 @@ import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
+import com.katzstudio.kreativity.ui.model.KrSelection;
+import com.katzstudio.kreativity.ui.model.KrSelectionModel;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -35,9 +37,9 @@ public class KrListView extends KrWidget {
 
     private KrScrollBar verticalScrollBar = new KrScrollBar(VERTICAL);
 
-    private List<KrItemDelegate> delegateList = new ArrayList<>();
+    private List<KrItemDelegate> delegates = new ArrayList<>();
 
-    private int selectionIndex = -1;
+    private KrSelectionModel selectionModel = new KrSelectionModel();
 
     public KrListView(KrAbstractItemModel model) {
         this(model, new KrListViewCellRenderer());
@@ -50,6 +52,7 @@ public class KrListView extends KrWidget {
 
         model.addListener(this::onModelDataChanged);
         verticalScrollBar.addScrollListener(this::onScroll);
+        selectionModel.addSelectionListener(this::onSelectionChanged);
 
         setLayout(new Layout());
         add(innerPanel);
@@ -63,18 +66,20 @@ public class KrListView extends KrWidget {
         invalidate();
     }
 
+    private void onSelectionChanged(KrSelection oldSelection, KrSelection newSelection) {
+        for (KrModelIndex index : oldSelection) {
+            delegates.get(index.getRow()).setSelected(false);
+        }
+
+        for (KrModelIndex index : newSelection) {
+            delegates.get(index.getRow()).setSelected(true);
+        }
+    }
+
     @Override
     protected boolean mousePressedEvent(KrMouseEvent event) {
-        int newSelectionIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
-        if (newSelectionIndex != selectionIndex) {
-            if (selectionIndex != -1) {
-                delegateList.get(selectionIndex).setSelected(false);
-            }
-            selectionIndex = newSelectionIndex;
-            if (selectionIndex != -1) {
-                delegateList.get(selectionIndex).setSelected(true);
-            }
-        }
+        KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
+        selectionModel.setSelection(KrSelection.of(itemIndex));
         return true;
     }
 
@@ -97,31 +102,31 @@ public class KrListView extends KrWidget {
 
     private void onModelDataChanged() {
         innerPanel.clear();
-        delegateList.clear();
+        delegates.clear();
 
         for (int i = 0; i < model.getRowCount(); ++i) {
             KrModelIndex index = new KrModelIndex(i);
             KrItemDelegate itemDelegate = renderer.getComponent(index, model);
-            delegateList.add(itemDelegate);
+            delegates.add(itemDelegate);
             innerPanel.add(itemDelegate.getWidget());
         }
 
         invalidate();
     }
 
-    private int findItemIndexAt(Vector2 position) {
+    private KrModelIndex findItemIndexAt(Vector2 position) {
         return findItemIndexAt((int) position.x, (int) position.y);
     }
 
-    private int findItemIndexAt(int x, int y) {
+    private KrModelIndex findItemIndexAt(int x, int y) {
         int itemIndex = 0;
-        for (KrItemDelegate delegate : delegateList) {
+        for (KrItemDelegate delegate : delegates) {
             if (delegate.getWidget().getGeometry().contains(x, y + listGeometryOffset)) {
-                return itemIndex;
+                return new KrModelIndex(itemIndex);
             }
             itemIndex += 1;
         }
-        return -1;
+        return null;
     }
 
 

@@ -22,7 +22,7 @@ public class KrSelectionTest {
     public void testSingleSelection() throws Exception {
         KrAbstractItemModel.KrModelIndex selectedIndex = new KrAbstractItemModel.KrModelIndex(2, 3, null);
 
-        KrSelection selection = new KrSelection(selectedIndex);
+        KrSelection selection = KrSelection.of(selectedIndex);
         assertThat(selection.size(), is(1));
         assertThat(selection.getSelectedIndexes().get(0), is(selectedIndex));
         assertThat(selection.getSelectedIndexes().contains(selectedIndex), is(true));
