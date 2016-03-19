@@ -71,7 +71,9 @@ public class KrListView extends KrWidget {
                 delegateList.get(selectionIndex).setSelected(false);
             }
             selectionIndex = newSelectionIndex;
-            delegateList.get(selectionIndex).setSelected(true);
+            if (selectionIndex != -1) {
+                delegateList.get(selectionIndex).setSelected(true);
+            }
         }
         return true;
     }
