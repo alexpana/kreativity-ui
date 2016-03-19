@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui.component.renderer;
 
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrListView;
@@ -31,6 +32,7 @@ public class KrListViewCellRenderer implements KrListView.Renderer {
         public ItemDelegate(String value) {
             label = new KrLabel(value);
             label.ensureUniqueStyle();
+            label.setPadding(new KrPadding(4, 4, 4, 4));
             unselectedBackground = ((KrLabel.Style) label.getStyle()).background;
             selectedBackground = getDrawable(KrSkin.instance().getColor(SELECTION_BACKGROUND));
         }
