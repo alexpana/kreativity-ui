@@ -5,13 +5,14 @@ import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * A selection represents a collections of indexes from a model.
  */
 @EqualsAndHashCode
-public class KrSelection {
+public class KrSelection implements Iterable<KrModelIndex> {
 
     public static final KrSelection EMPTY = new KrSelection();
 
@@ -21,12 +22,20 @@ public class KrSelection {
         selectedIndexes = ImmutableList.of();
     }
 
-    public KrSelection(KrModelIndex singleIndex) {
+    private KrSelection(KrModelIndex singleIndex) {
         selectedIndexes = ImmutableList.of(singleIndex);
     }
 
     public KrSelection(List<KrModelIndex> selectedIndexes) {
         this.selectedIndexes = ImmutableList.copyOf(selectedIndexes);
+    }
+
+    public static KrSelection of(KrModelIndex index) {
+        if (index == null) {
+            return EMPTY;
+        } else {
+            return new KrSelection(index);
+        }
     }
 
     public boolean contains(KrModelIndex index) {
@@ -35,5 +44,10 @@ public class KrSelection {
 
     public int size() {
         return selectedIndexes.size();
+    }
+
+    @Override
+    public Iterator<KrModelIndex> iterator() {
+        return selectedIndexes.iterator();
     }
 }
