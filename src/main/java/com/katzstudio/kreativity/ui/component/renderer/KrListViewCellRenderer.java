@@ -1,8 +1,10 @@
 package com.katzstudio.kreativity.ui.component.renderer;
 
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrListView;
+import com.katzstudio.kreativity.ui.component.KrListView.KrItemDelegate;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 
@@ -14,14 +16,37 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDrawable;
  */
 public class KrListViewCellRenderer implements KrListView.Renderer {
     @Override
-    public KrWidget getComponent(KrAbstractItemModel.KrModelIndex index, KrAbstractItemModel model, boolean isSelected) {
-        KrLabel label = new KrLabel(model.getValue(index).toString());
-        
-        if (isSelected) {
+    public KrItemDelegate getComponent(KrAbstractItemModel.KrModelIndex index, KrAbstractItemModel model) {
+        return new ItemDelegate(model.getValue(index).toString());
+    }
+
+    private static class ItemDelegate extends KrItemDelegate {
+
+        private final KrLabel label;
+
+        private final Drawable unselectedBackground;
+
+        private final Drawable selectedBackground;
+
+        public ItemDelegate(String value) {
+            label = new KrLabel(value);
             label.ensureUniqueStyle();
-            KrSkin skin = KrSkin.instance();
-            ((KrLabel.Style) label.getStyle()).background = getDrawable(skin.getColor(SELECTION_BACKGROUND));
+            unselectedBackground = ((KrLabel.Style) label.getStyle()).background;
+            selectedBackground = getDrawable(KrSkin.instance().getColor(SELECTION_BACKGROUND));
         }
-        return label;
+
+        @Override
+        public void setSelected(boolean selected) {
+            if (selected) {
+                ((KrLabel.Style) label.getStyle()).background = selectedBackground;
+            } else {
+                ((KrLabel.Style) label.getStyle()).background = unselectedBackground;
+            }
+        }
+
+        @Override
+        public KrWidget getWidget() {
+            return label;
+        }
     }
 }
