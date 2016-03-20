@@ -326,7 +326,7 @@ public class KrCanvas implements InputProcessor {
     }
 
     /**
-     * Finds the topmost widget (a leaf in the hierarchy) whose geometry contain the requested screen coordinates.
+     * Finds the topmost widget (a leaf in the hierarchy) whose geometry contains the requested screen coordinates.
      *
      * @param root the root of the widget hierarchy
      * @param x    the requested x position relative to the root widget
@@ -337,7 +337,7 @@ public class KrCanvas implements InputProcessor {
         ArrayList<KrWidget> childList = root.getChildren();
         for (int i = childList.size() - 1; i >= 0; --i) {
             KrWidget child = childList.get(i);
-            if (getScreenGeometry(child).contains(x, y)) {
+            if (getScreenGeometry(child).contains(x, y) && child.isVisible()) {
                 return findWidgetAt(child, x, y);
             }
         }
