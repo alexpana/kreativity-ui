@@ -280,6 +280,10 @@ public class KrWidget {
      * @param renderer the renderer used to draw the widget
      */
     public void draw(KrRenderer renderer) {
+        if (!isVisible()) {
+            return;
+        }
+        
         renderer.translate(getX(), getY());
         boolean clipped = false;
         if (clipRendering) {
