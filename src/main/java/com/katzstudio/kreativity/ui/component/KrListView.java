@@ -132,6 +132,7 @@ public class KrListView extends KrWidget {
 
     @Override
     protected boolean scrollEvent(KrScrollEvent event) {
+        super.scrollEvent(event);
         return verticalScrollBar.scrollEvent(event);
     }
 

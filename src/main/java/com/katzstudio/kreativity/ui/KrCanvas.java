@@ -13,6 +13,7 @@ import com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -28,27 +29,23 @@ public class KrCanvas implements InputProcessor {
 
     private static final float KEY_REPEAT_TIME = 0.1f;
 
-    @Getter
-    private final KrPanel rootComponent;
+    @Getter private final KrPanel rootComponent;
 
-    @Getter
-    private final Clipboard clipboard;
+    @Getter private final Clipboard clipboard;
 
     private final KrRenderer renderer;
 
-    private final KeyRepeatTask keyRepeatTask = new KeyRepeatTask();
+    private KeyRepeatTask keyRepeatTask;
 
-    @Getter
-    private float width;
+    @Getter @Setter private boolean keyRepeat = true;
 
-    @Getter
-    private float height;
+    @Getter private float width;
 
-    @Getter
-    private KrWidget keyboardFocusHolder;
+    @Getter private float height;
 
-    @Getter
-    private KrWidget mouseFocusHolder;
+    @Getter private KrWidget keyboardFocusHolder;
+
+    @Getter private KrWidget mouseFocusHolder;
 
     private KrWidget currentlyHoveredWidget = null;
 
@@ -64,8 +61,7 @@ public class KrCanvas implements InputProcessor {
 
     private KrMouseEvent.Button lastMousePressedButton = null;
 
-    @Getter
-    private final KrFocusManager focusManager;
+    @Getter private final KrFocusManager focusManager;
 
     public KrCanvas() {
         this(new KrRenderer(), Gdx.app.getClipboard(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -114,6 +110,13 @@ public class KrCanvas implements InputProcessor {
         rootComponent.update(deltaSeconds);
     }
 
+    private KeyRepeatTask getKeyRepeatTask() {
+        if (keyRepeatTask == null) {
+            keyRepeatTask = new KeyRepeatTask();
+        }
+        return keyRepeatTask;
+    }
+
     /**
      * Draws the UI.
      */
@@ -157,7 +160,6 @@ public class KrCanvas implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
-        System.out.println("character = " + character);
         if (keyboardFocusHolder == null) {
             return false;
         }
@@ -176,7 +178,9 @@ public class KrCanvas implements InputProcessor {
         isCtrlDown = isCtrlDown && !isCtrl(keycode);
         isShiftDown = isShiftDown && !isShift(keycode);
 
-        keyRepeatTask.cancel();
+        if (isKeyRepeat()) {
+            getKeyRepeatTask().cancel();
+        }
 
         KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.RELEASED, keycode);
         if (isShiftDown) {
@@ -294,6 +298,11 @@ public class KrCanvas implements InputProcessor {
     }
 
     public void scheduleKeyRepeatTask(int keycode) {
+        if (!isKeyRepeat()) {
+            return;
+        }
+
+        KeyRepeatTask keyRepeatTask = getKeyRepeatTask();
         if (!keyRepeatTask.isScheduled() || keyRepeatTask.keycode != keycode) {
             keyRepeatTask.keycode = keycode;
             keyRepeatTask.cancel();

@@ -1,10 +1,13 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.katzstudio.kreativity.ui.KrSkin;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
+import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +16,11 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static com.katzstudio.kreativity.ui.KrToolkit.setDefault;
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createButtonStyle;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static com.katzstudio.kreativity.ui.TestObjectFactory.createLabelStyle;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests that kreativity components notify input listeners
@@ -29,16 +34,31 @@ public class InputListenerDispatchTest {
 
     private final KrWidget testObject;
 
+    static {
+        KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
+        when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
+        KrToolkit toolkit = mock(KrToolkit.class);
+        when(toolkit.fontMetrics()).thenReturn(fontMetricsMock);
+        setDefault(toolkit);
+
+        KrSkin.instance().setButtonStyle(createButtonStyle());
+        KrSkin.instance().setLabelStyle(createLabelStyle());
+    }
+
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object[]> testCases() {
-        KrSkin.instance().setButtonStyle(createButtonStyle());
-
         return Arrays.asList(new Object[][]{
                 {"KrWidget", new KrWidget()},
+                {"KrLabel", new KrLabel("")},
                 {"KrButton", new KrButton("")},
                 {"KrCheckbox", new KrCheckbox()},
-//                {"KrIconPanel", new KrIconPanel(KrFontAwesomeGlyph.FONT)},
+                {"KrIconPanel", new KrIconPanel(KrFontAwesomeGlyph.FONT)},
                 {"KrTextField", new KrTextField()},
+                {"KrSpinner", new KrSpinner()},
+                {"KrListView", new KrListView(mock(KrAbstractItemModel.class))},
+                {"KrPanel", new KrPanel()},
+                {"KrScrollBar", new KrScrollBar(KrOrientation.VERTICAL)},
+                {"KrToggleButton", new KrToggleButton("")},
         });
     }
 
@@ -78,7 +98,7 @@ public class InputListenerDispatchTest {
     @Test
     public void testMousePressedListener() {
         KrMouseListener listener = mock(KrMouseListener.class);
-        KrMouseEvent event = new KrMouseEvent(KrMouseEvent.Type.PRESSED, null, null, null);
+        KrMouseEvent event = new KrMouseEvent(KrMouseEvent.Type.PRESSED, KrMouseEvent.Button.LEFT, new Vector2(10, 10), new Vector2(100, 200));
 
         testObject.addMouseListener(listener);
         testObject.handle(event);
@@ -150,5 +170,16 @@ public class InputListenerDispatchTest {
         testObject.handle(event);
 
         verify(listener).focusLost(event);
+    }
+
+    @Test
+    public void testDoubleClickListener() {
+        KrMouseListener listener = mock(KrMouseListener.class);
+        KrMouseEvent event = new KrMouseEvent(KrMouseEvent.Type.DOUBLE_CLICK, KrMouseEvent.Button.LEFT, new Vector2(10, 10), new Vector2(200, 200));
+
+        testObject.addMouseListener(listener);
+        testObject.handle(event);
+
+        verify(listener).mouseDoubleClicked(event);
     }
 }

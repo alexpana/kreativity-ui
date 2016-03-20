@@ -22,7 +22,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-import static com.katzstudio.kreativity.ui.KrFontMetrics.metrics;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A push button component.
@@ -81,7 +81,7 @@ public class KrButton extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        Rectangle textBounds = metrics(style.font).bounds(text);
+        Rectangle textBounds = getDefaultToolkit().fontMetrics().bounds(style.font, text);
         return expandSizeWithPadding(new Vector2(textBounds.width, textBounds.height), getPadding());
     }
 
@@ -125,7 +125,7 @@ public class KrButton extends KrWidget {
         renderer.setBrush(new KrDrawableBrush(background));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        Rectangle textBounds = metrics(style.font).bounds(getText());
+        Rectangle textBounds = getDefaultToolkit().fontMetrics().bounds(style.font, getText());
         float textWidth = textBounds.width;
         float textHeight = textBounds.height;
         Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight),

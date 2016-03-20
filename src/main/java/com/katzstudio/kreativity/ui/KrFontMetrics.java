@@ -15,28 +15,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KrFontMetrics {
 
-    private final static Map<BitmapFont, KrFontMetrics> CACHE = new HashMap<>();
-
-    private final BitmapFont bitmapFont;
-
-    public static KrFontMetrics metrics(BitmapFont bitmapFont) {
-        if (!CACHE.containsKey(bitmapFont)) {
-            CACHE.put(bitmapFont, new KrFontMetrics(bitmapFont));
-        }
-        return CACHE.get(bitmapFont);
-    }
-
-    public Rectangle bounds(String text) {
-        GlyphLayout layout = new GlyphLayout(bitmapFont, text);
+    public Rectangle bounds(BitmapFont font, String text) {
+        GlyphLayout layout = new GlyphLayout(font, text);
         return new Rectangle(0, 0, layout.width, layout.height);
-    }
-
-    public float lineHeight() {
-        return bitmapFont.getLineHeight();
-    }
-
-    public float textHeight() {
-        // TODO(alex): figure out what libgdx thinks these numbers mean
-        return bitmapFont.getCapHeight();
     }
 }

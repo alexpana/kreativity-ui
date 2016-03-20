@@ -26,7 +26,9 @@ public class KrToolkit {
 
     private KrCursor currentCursor;
 
-    public static KrToolkit getDefault() {
+    private KrFontMetrics fontMetrics = new KrFontMetrics();
+
+    public static KrToolkit getDefaultToolkit() {
         if (INSTANCE == null) {
             INSTANCE = new KrToolkit();
         }
@@ -34,7 +36,15 @@ public class KrToolkit {
         return INSTANCE;
     }
 
+    public static void setDefault(KrToolkit toolkit) {
+        INSTANCE = toolkit;
+    }
+
     private KrToolkit() {
+    }
+
+    public KrFontMetrics fontMetrics() {
+        return fontMetrics;
     }
 
     public void setCursor(KrCursor cursor) {

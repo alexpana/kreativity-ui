@@ -141,12 +141,13 @@ public class KrCanvasTest {
         KrWidget widget = mock(KrWidget.class);
         when(widget.getCanvas()).thenReturn(canvas);
 
+        canvas.setKeyRepeat(false);
         canvas.requestFocus(widget);
         reset(widget);
 
         canvas.keyUp(52);
 
-        verify(widget).handle(eq(new KrKeyEvent(KrKeyEvent.Type.RELEASED, 52, "x")));
+        verify(widget).handle(eq(new KrKeyEvent(KrKeyEvent.Type.RELEASED, 52, "")));
     }
 
     @Test

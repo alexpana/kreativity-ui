@@ -1,9 +1,12 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -32,6 +35,12 @@ public class KrButtonTest {
     public void setUp() {
         buttonStyle = createButtonStyle();
         KrSkin.instance().setButtonStyle(buttonStyle);
+
+        KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
+        when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
+        KrToolkit toolkit = mock(KrToolkit.class);
+        when(toolkit.fontMetrics()).thenReturn(fontMetricsMock);
+        KrToolkit.setDefault(toolkit);
 
         button = new KrButton("button");
         renderer = mock(KrRenderer.class);

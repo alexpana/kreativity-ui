@@ -9,7 +9,7 @@ import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 import lombok.Setter;
 
-import static com.katzstudio.kreativity.ui.KrFontMetrics.metrics;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A transparent panel that renders an icon.
@@ -31,13 +31,13 @@ public class KrIconPanel extends KrWidget {
     @Override
     public Vector2 calculatePreferredSize() {
         BitmapFont fontAwesome = KrSkin.instance().getFontAwesome();
-        Rectangle bounds = metrics(fontAwesome).bounds(iconGlyph.getRepresentation());
+        Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation());
         return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
     }
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        Rectangle bounds = metrics(fontAwesome).bounds(iconGlyph.getRepresentation());
+        Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation());
         renderer.setFont(KrSkin.instance().getFontAwesome());
         renderer.drawText(iconGlyph.getRepresentation(), getX() + (getWidth() - bounds.width) / 2, getY() + getHeight() + (getHeight() - bounds.height) / 2);
     }

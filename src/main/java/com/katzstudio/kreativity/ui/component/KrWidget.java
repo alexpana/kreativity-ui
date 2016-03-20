@@ -555,15 +555,15 @@ public class KrWidget {
     }
 
     protected boolean enterEvent(KrEnterEvent event) {
-        if (KrToolkit.getDefault().getCursor() != cursor) {
-            KrToolkit.getDefault().setCursor(cursor);
+        if (KrToolkit.getDefaultToolkit().getCursor() != cursor) {
+            KrToolkit.getDefaultToolkit().setCursor(cursor);
         }
         notifyMouseEnter(event);
         return event.handled();
     }
 
     protected boolean exitEvent(KrExitEvent event) {
-        KrToolkit.getDefault().setCursor(KrCursor.ARROW);
+        KrToolkit.getDefaultToolkit().setCursor(KrCursor.ARROW);
         notifyMouseExit(event);
         return event.handled();
     }

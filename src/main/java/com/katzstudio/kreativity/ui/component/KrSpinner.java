@@ -60,6 +60,7 @@ public class KrSpinner extends KrTextField {
 
     @Override
     protected boolean mousePressedEvent(KrMouseEvent event) {
+        super.mousePressedEvent(event);
         wasDragged = false;
 
         if (event.getButton() == RIGHT) {
@@ -80,6 +81,7 @@ public class KrSpinner extends KrTextField {
 
     @Override
     protected boolean mouseMoveEvent(KrMouseEvent event) {
+        super.mouseMoveEvent(event);
         if (dragStarted) {
             wasDragged = true;
             incrementValue(Gdx.input.getDeltaX());
@@ -90,6 +92,7 @@ public class KrSpinner extends KrTextField {
 
     @Override
     protected boolean mouseReleasedEvent(KrMouseEvent event) {
+        super.mouseReleasedEvent(event);
         dragStarted = false;
         if (!wasDragged && event.getButton() == LEFT) {
             requestFocus();
