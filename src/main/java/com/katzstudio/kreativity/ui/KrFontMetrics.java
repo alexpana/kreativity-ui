@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +27,8 @@ public class KrFontMetrics {
     }
 
     public Rectangle bounds(String text) {
-        BitmapFont.TextBounds bounds = bitmapFont.getBounds(text);
-        return new Rectangle(0, 0, bounds.width, bounds.height);
+        GlyphLayout layout = new GlyphLayout(bitmapFont, text);
+        return new Rectangle(0, 0, layout.width, layout.height);
     }
 
     public float lineHeight() {

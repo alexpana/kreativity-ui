@@ -2,9 +2,10 @@ package com.katzstudio.kreativity.ui.demo;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.*;
@@ -33,6 +34,8 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDrawable;
  */
 public class UiDemo extends Game {
 
+    private final FPSLogger fpsLogger = new FPSLogger();
+
     private Drawable DARK_GRAY;
 
     private Drawable DARKER_GRAY;
@@ -42,13 +45,11 @@ public class UiDemo extends Game {
     private KrCanvas canvas;
 
     public static void main(String[] args) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = 840;
-        config.height = 600;
-        config.fullscreen = false;
-        config.vSyncEnabled = true;
-        config.title = "Kreativity UI Demo";
-        new LwjglApplication(new UiDemo(), config);
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setWindowedMode(840, 600);
+        config.setTitle("Kreativity UI Demo");
+        config.useVsync(false);
+        new Lwjgl3Application(new UiDemo(), config);
     }
 
     @Override
@@ -508,6 +509,7 @@ public class UiDemo extends Game {
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         canvas.update(Gdx.graphics.getDeltaTime());
         canvas.draw();
+//        fpsLogger.log();
     }
 
     @Override

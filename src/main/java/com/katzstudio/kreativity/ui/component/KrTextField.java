@@ -133,11 +133,11 @@ public class KrTextField extends KrWidget {
             }
         }
 
-        if (event.getKeycode() == Input.Keys.HOME) {
+        if (event.getKeycode() == Input.Keys.HOME || event.getKeycode() == Input.Keys.NUMPAD_7) {
             textDocument.moveCaretHome();
         }
 
-        if (event.getKeycode() == Input.Keys.END) {
+        if (event.getKeycode() == Input.Keys.END || event.getKeycode() == Input.Keys.NUMPAD_1) {
             textDocument.moveCaretEnd();
         }
 

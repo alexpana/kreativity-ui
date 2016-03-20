@@ -1,19 +1,15 @@
 package com.katzstudio.kreativity.ui.demo;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import static com.badlogic.gdx.Gdx.gl;
-import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
-import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
+import static com.badlogic.gdx.graphics.GL20.*;
 
 /**
  */
@@ -22,13 +18,10 @@ public class RendererDemo extends Game {
     private KrRenderer renderer;
 
     public static void main(String[] args) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = 500;
-        config.height = 500;
-        config.fullscreen = false;
-        config.vSyncEnabled = true;
-        config.title = "Kreativity Renderer Demo";
-        new LwjglApplication(new RendererDemo(), config);
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setWindowedMode(500, 500);
+        config.setTitle("Kreativity Renderer Demo");
+        new Lwjgl3Application(new RendererDemo(), config);
     }
 
     @Override

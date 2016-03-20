@@ -37,9 +37,13 @@ public class KrButton extends KrWidget {
 
     @Setter private Style style;
 
-    @Getter @Setter private String text;
+    @Getter
+    @Setter
+    private String text;
 
-    @Getter @Setter private KrAlignment textAlignment;
+    @Getter
+    @Setter
+    private KrAlignment textAlignment;
 
     private final List<Listener> listeners = Lists.newArrayList();
 
@@ -77,7 +81,7 @@ public class KrButton extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        BitmapFont.TextBounds textBounds = style.font.getBounds(text);
+        Rectangle textBounds = metrics(style.font).bounds(text);
         return expandSizeWithPadding(new Vector2(textBounds.width, textBounds.height), getPadding());
     }
 
@@ -121,8 +125,9 @@ public class KrButton extends KrWidget {
         renderer.setBrush(new KrDrawableBrush(background));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        float textWidth = style.font.getBounds(getText()).width;
-        float textHeight = metrics(style.font).textHeight();
+        Rectangle textBounds = metrics(style.font).bounds(getText());
+        float textWidth = textBounds.width;
+        float textHeight = textBounds.height;
         Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight),
                 new Rectangle(0, 0, getWidth(), getHeight()), getTextAlignment());
         Vector2 textOffset = state == State.ARMED ? Vector2.Y : Vector2.Zero;

@@ -26,14 +26,7 @@ public class TestObjectFactory {
     }
 
     public static BitmapFont createBitmapFont() {
-        BitmapFont bitmapFontMock = mock(BitmapFont.class);
-        when(bitmapFontMock.getBounds(any())).then(invocation -> {
-            BitmapFont.TextBounds bounds = new BitmapFont.TextBounds();
-            bounds.width = ((String) invocation.getArguments()[0]).length() * 10;
-            bounds.height = 12;
-            return bounds;
-        });
-        return bitmapFontMock;
+        return mock(BitmapFont.class);
     }
 
     public static KrPanel.Style createPanelStyle() {

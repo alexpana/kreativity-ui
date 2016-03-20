@@ -233,8 +233,6 @@ public class KrSkin {
         for (Cursor cursor : Cursor.values()) {
             cursor.setPixmap(new Pixmap(Gdx.files.internal(cursor.filePath)));
         }
-
-        KrToolkit.setCursor(Cursor.POINTER);
     }
 
     private Rectangle jsonArrayToRectangle(JsonValue jsonValue) {

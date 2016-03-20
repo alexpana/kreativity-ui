@@ -132,11 +132,6 @@ public class KrCanvas implements InputProcessor {
         isShiftDown = isShiftDown || isShift(keycode);
         pressedKeyCode = keycode;
 
-        return keyboardFocusHolder != null;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
         if (keyboardFocusHolder == null) {
             return false;
         }
@@ -152,7 +147,19 @@ public class KrCanvas implements InputProcessor {
         }
 
         if (pressedKeyCode == LEFT || pressedKeyCode == RIGHT) {
-            scheduleKeyRepeatTask(character);
+            scheduleKeyRepeatTask(keycode);
+        }
+
+        // dispatch special key
+        KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, pressedKeyCode);
+        return dispatchEvent(keyboardFocusHolder, keyEvent);
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        System.out.println("character = " + character);
+        if (keyboardFocusHolder == null) {
+            return false;
         }
 
         // dispatch visible key
@@ -160,10 +167,7 @@ public class KrCanvas implements InputProcessor {
             KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character).toBuilder().keycode(pressedKeyCode).build();
             return dispatchEvent(keyboardFocusHolder, keyEvent);
         }
-
-        // dispatch special key
-        KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, pressedKeyCode);
-        return dispatchEvent(keyboardFocusHolder, keyEvent);
+        return true;
     }
 
     @Override
@@ -256,7 +260,7 @@ public class KrCanvas implements InputProcessor {
         return KrKeyEvent.builder()
                 .type(type)
                 .keycode(keycode)
-                .value(getRepresentation(keycode))
+                .value("")
                 .isAltDown(isAltDown)
                 .isCtrlDown(isCtrlDown)
                 .isShiftDown(isShiftDown)
@@ -289,9 +293,9 @@ public class KrCanvas implements InputProcessor {
                 .build();
     }
 
-    public void scheduleKeyRepeatTask(char keyChar) {
-        if (!keyRepeatTask.isScheduled() || keyRepeatTask.keyChar != keyChar) {
-            keyRepeatTask.keyChar = keyChar;
+    public void scheduleKeyRepeatTask(int keycode) {
+        if (!keyRepeatTask.isScheduled() || keyRepeatTask.keycode != keycode) {
+            keyRepeatTask.keycode = keycode;
             keyRepeatTask.cancel();
             Timer.schedule(keyRepeatTask, KEY_REPEAT_INITIAL_TIME, KEY_REPEAT_TIME);
         }
@@ -399,10 +403,10 @@ public class KrCanvas implements InputProcessor {
      * Used to schedule repeated key presses for arrows
      */
     private class KeyRepeatTask extends Timer.Task {
-        public char keyChar;
+        public int keycode;
 
         public void run() {
-            keyTyped(keyChar);
+            keyDown(keycode);
         }
     }
 }
