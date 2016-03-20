@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui.model;
 
 import com.google.common.collect.ImmutableList;
+import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -20,7 +21,7 @@ public class KrSelectionTest {
 
     @Test
     public void testSingleSelection() throws Exception {
-        KrAbstractItemModel.KrModelIndex selectedIndex = new KrAbstractItemModel.KrModelIndex(2, 3, null);
+        KrModelIndex selectedIndex = new KrModelIndex(2, 3, null);
 
         KrSelection selection = KrSelection.of(selectedIndex);
         assertThat(selection.size(), is(1));
@@ -30,14 +31,39 @@ public class KrSelectionTest {
 
     @Test
     public void testMultipleSelection() throws Exception {
-        KrAbstractItemModel.KrModelIndex indexA = new KrAbstractItemModel.KrModelIndex(2, 3, null);
-        KrAbstractItemModel.KrModelIndex indexB = new KrAbstractItemModel.KrModelIndex(4, 3, null);
-        KrAbstractItemModel.KrModelIndex indexC = new KrAbstractItemModel.KrModelIndex(6, 3, null);
+        KrModelIndex indexA = new KrModelIndex(2, 3, null);
+        KrModelIndex indexB = new KrModelIndex(4, 3, null);
+        KrModelIndex indexC = new KrModelIndex(6, 3, null);
 
         KrSelection selection = new KrSelection(ImmutableList.of(indexA, indexB, indexC));
         assertThat(selection.size(), is(3));
         assertThat(selection.contains(indexA), is(true));
         assertThat(selection.contains(indexB), is(true));
         assertThat(selection.contains(indexC), is(true));
+    }
+
+    @Test
+    public void testExpandSelection() throws Exception {
+
+        KrSelection selection = new KrSelection(ImmutableList.of(new KrModelIndex(0), new KrModelIndex(1)));
+
+        KrModelIndex newIndex = new KrModelIndex(2);
+        KrSelection newSelection = selection.expand(newIndex);
+
+        assertThat(selection.size(), is(2));
+        assertThat(newSelection.size(), is(3));
+        assertThat(newSelection.contains(newIndex), is(true));
+    }
+
+    @Test
+    public void testRemoveSelection() throws Exception {
+        KrModelIndex removedIndex = new KrModelIndex(2);
+        KrSelection selection = new KrSelection(ImmutableList.of(new KrModelIndex(0), new KrModelIndex(1), removedIndex));
+
+        KrSelection newSelection = selection.shrink(removedIndex);
+
+        assertThat(selection.size(), is(3));
+        assertThat(newSelection.size(), is(2));
+        assertThat(newSelection.contains(removedIndex), is(false));
     }
 }

@@ -7,6 +7,8 @@ import lombok.Getter;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A selection represents a collections of indexes from a model.
@@ -44,6 +46,16 @@ public class KrSelection implements Iterable<KrModelIndex> {
 
     public int size() {
         return selectedIndexes.size();
+    }
+
+    public KrSelection expand(KrModelIndex index) {
+        ImmutableList<KrModelIndex> newSelection = ImmutableList.<KrModelIndex>builder().add(index).addAll(selectedIndexes).build();
+        return new KrSelection(newSelection);
+    }
+
+    public KrSelection shrink(KrModelIndex index) {
+        List<KrModelIndex> newSelection = selectedIndexes.stream().filter(i -> !Objects.equals(i, index)).collect(Collectors.toList());
+        return new KrSelection(newSelection);
     }
 
     @Override
