@@ -43,9 +43,9 @@ public class KrWidget {
 
     @Getter private boolean isFocused;
 
-    @Getter @Setter private boolean isVisible;
+    @Getter @Setter private boolean isVisible = true;
 
-    @Getter @Setter private boolean isEnabled;
+    @Getter @Setter private boolean isEnabled = true;
 
     @Getter @Setter private String name;
 
@@ -283,7 +283,7 @@ public class KrWidget {
         if (!isVisible()) {
             return;
         }
-        
+
         renderer.translate(getX(), getY());
         boolean clipped = false;
         if (clipRendering) {
