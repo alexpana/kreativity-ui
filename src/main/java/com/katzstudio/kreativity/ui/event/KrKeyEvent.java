@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 public class KrKeyEvent extends KrEvent {
     public enum Type {
-        PRESSED, RELEASED, TYPED
+        PRESSED, RELEASED
     }
 
     @Getter private final Type type;
