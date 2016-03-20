@@ -41,7 +41,7 @@ public class KrListView extends KrWidget {
 
     private List<KrItemDelegate> delegates = new ArrayList<>();
 
-    private KrSelectionModel selectionModel = new KrSelectionModel();
+    @Getter private KrSelectionModel selectionModel = new KrSelectionModel();
 
     @Getter private KrSelectionMode selectionMode = KrSelectionMode.EXTENDED;
 

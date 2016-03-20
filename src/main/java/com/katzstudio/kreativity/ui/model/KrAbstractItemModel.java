@@ -78,6 +78,12 @@ public class KrAbstractItemModel {
             this.column = column;
             this.parentIndex = parent;
         }
+
+
+        @Override
+        public String toString() {
+            return "KrModelIndex(row: " + row + ", col: " + column + ")";
+        }
     }
 
     public interface Listener {

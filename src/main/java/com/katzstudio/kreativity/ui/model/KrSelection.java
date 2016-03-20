@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -61,5 +62,16 @@ public class KrSelection implements Iterable<KrModelIndex> {
     @Override
     public Iterator<KrModelIndex> iterator() {
         return selectedIndexes.iterator();
+    }
+
+    @Override
+    public String toString() {
+        BiFunction<String, KrModelIndex, String> acc = (a, x) -> {
+            if (a.length() > 0) {
+                a += ", ";
+            }
+            return a + x.toString();
+        };
+        return "KrSelection[" + selectedIndexes.stream().reduce("", acc, String::concat) + "]";
     }
 }

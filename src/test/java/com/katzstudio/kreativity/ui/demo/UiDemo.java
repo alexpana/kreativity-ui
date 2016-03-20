@@ -7,24 +7,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrAlignment;
-import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrSizePolicyModel;
-import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.KrUnifiedSize;
-import com.katzstudio.kreativity.ui.component.KrButton;
-import com.katzstudio.kreativity.ui.component.KrButtonGroup;
-import com.katzstudio.kreativity.ui.component.KrCheckbox;
-import com.katzstudio.kreativity.ui.component.KrLabel;
-import com.katzstudio.kreativity.ui.component.KrListView;
-import com.katzstudio.kreativity.ui.component.KrPanel;
-import com.katzstudio.kreativity.ui.component.KrScrollBar;
-import com.katzstudio.kreativity.ui.component.KrScrollPanel;
-import com.katzstudio.kreativity.ui.component.KrSpinner;
-import com.katzstudio.kreativity.ui.component.KrSplitPanel;
-import com.katzstudio.kreativity.ui.component.KrTextField;
-import com.katzstudio.kreativity.ui.component.KrToggleButton;
-import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
@@ -38,11 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.gl;
-import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
-import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
+import static com.badlogic.gdx.graphics.GL20.*;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
@@ -117,6 +97,8 @@ public class UiDemo extends Game {
         KrListItemModel<String> model = new KrListItemModel<>(itemValues);
         KrListView listView = new KrListView(model);
         listView.setGeometry(0, 20, 160, 100);
+        listView.getSelectionModel().addSelectionListener((oldSelection, newSelection) ->
+                System.out.println("newSelection = " + newSelection));
 
         wrapper.add(label);
         wrapper.add(listView);
