@@ -92,19 +92,19 @@ public class KrSkin {
 
     private void loadKreativitySkin() {
         JsonReader jsonReader = new JsonReader();
-        JsonValue jsonSkin = jsonReader.parse(Gdx.files.internal("ui/skin.json"));
+        JsonValue jsonSkin = jsonReader.parse(Gdx.files.classpath("ui/skin.json"));
 
         String textureName = jsonSkin.get("texture").asString();
-        skinTexture = new Texture(Gdx.files.internal("ui/" + textureName));
+        skinTexture = new Texture(Gdx.files.classpath("ui/" + textureName));
 
         String defaultFontPath = jsonSkin.get("fonts").get("default").asString();
-        defaultFont = new BitmapFont(Gdx.files.internal("ui/" + defaultFontPath));
+        defaultFont = new BitmapFont(Gdx.files.classpath("ui/" + defaultFontPath));
 
         String boldFontPath = jsonSkin.get("fonts").get("bold").asString();
-        defaultFontBold = new BitmapFont(Gdx.files.internal("ui/" + boldFontPath));
+        defaultFontBold = new BitmapFont(Gdx.files.classpath("ui/" + boldFontPath));
 
         String fontAwesomePath = jsonSkin.get("fonts").get("fontawesome").asString();
-        fontAwesome = new BitmapFont(Gdx.files.internal("ui/" + fontAwesomePath));
+        fontAwesome = new BitmapFont(Gdx.files.classpath("ui/" + fontAwesomePath));
 
         JsonValue patches = jsonSkin.get("patches");
         for (JsonValue patch : patches) {
@@ -220,7 +220,7 @@ public class KrSkin {
 
     private void loadCursors() {
         for (Cursor cursor : Cursor.values()) {
-            cursor.setPixmap(new Pixmap(Gdx.files.internal(cursor.filePath)));
+            cursor.setPixmap(new Pixmap(Gdx.files.classpath(cursor.filePath)));
         }
     }
 

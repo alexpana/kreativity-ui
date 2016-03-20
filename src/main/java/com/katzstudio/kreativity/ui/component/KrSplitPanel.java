@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
+import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
@@ -207,6 +208,10 @@ public class KrSplitPanel extends KrWidget {
     }
 
     private final class SplitterPanel extends KrPanel {
+
+        public SplitterPanel() {
+            setCursor(KrCursor.VERTICAL_RESIZE);
+        }
 
         @Override
         protected void drawSelf(KrRenderer renderer) {

@@ -46,6 +46,7 @@ public class KrTextField extends KrWidget {
         setFocusable(true);
         setStyle(KrSkin.instance().getTextFieldStyle());
         setPadding(new KrPadding(1, 4, 4, 4));
+        setCursor(KrCursor.IBEAM);
     }
 
     private void onDocumentTextChanged(String oldValue, String newValue) {

@@ -39,6 +39,7 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 #### [Unreleased]
 - Migrated to libgdx 1.9.1 and backend lwjgl3
 - Added support for system cursors (arrow, hand, beam, crosshair, h/w resize)
+- Moved resource files inside jar for easier distribution
 
 #### [0.1.0] - 2016-03-20
 - Added KrListView together with a Qt inspired abstract item model and selection model

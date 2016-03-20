@@ -3,9 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
+import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
@@ -74,6 +72,8 @@ public class KrWidget {
     @Getter private boolean isFocusable = false;
 
     @Getter @Setter private boolean clipRendering = true;
+
+    @Getter @Setter private KrCursor cursor;
 
     public KrWidget() {
     }
@@ -555,11 +555,15 @@ public class KrWidget {
     }
 
     protected boolean enterEvent(KrEnterEvent event) {
+        if (KrToolkit.getDefault().getCursor() != cursor) {
+            KrToolkit.getDefault().setCursor(cursor);
+        }
         notifyMouseEnter(event);
         return event.handled();
     }
 
     protected boolean exitEvent(KrExitEvent event) {
+        KrToolkit.getDefault().setCursor(KrCursor.ARROW);
         notifyMouseExit(event);
         return event.handled();
     }
