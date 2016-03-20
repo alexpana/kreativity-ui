@@ -3,6 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.katzstudio.kreativity.ui.KrSelectionMode;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.component.renderer.KrListViewCellRenderer;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -14,6 +15,7 @@ import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import com.katzstudio.kreativity.ui.model.KrSelection;
 import com.katzstudio.kreativity.ui.model.KrSelectionModel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,8 @@ public class KrListView extends KrWidget {
     private List<KrItemDelegate> delegates = new ArrayList<>();
 
     private KrSelectionModel selectionModel = new KrSelectionModel();
+
+    @Getter private KrSelectionMode selectionMode = KrSelectionMode.EXTENDED;
 
     public KrListView(KrAbstractItemModel model) {
         this(model, new KrListViewCellRenderer());
@@ -76,10 +80,38 @@ public class KrListView extends KrWidget {
         }
     }
 
+    public void setSelectionMode(KrSelectionMode newSelectionMode) {
+        if (newSelectionMode != selectionMode) {
+            selectionMode = newSelectionMode;
+            selectionModel.clearSelection();
+        }
+    }
+
     @Override
     protected boolean mousePressedEvent(KrMouseEvent event) {
+        if (selectionMode == KrSelectionMode.NONE) {
+            return false;
+        }
+
         KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
-        selectionModel.setSelection(KrSelection.of(itemIndex));
+        if (selectionMode == KrSelectionMode.SINGLE) {
+            if (event.isCtrlDown() && selectionModel.getCurrentSelection().contains(itemIndex)) {
+                selectionModel.setSelection(KrSelection.EMPTY);
+            } else {
+                selectionModel.setSelection(KrSelection.of(itemIndex));
+            }
+            return true;
+        }
+
+        if (event.isCtrlDown()) {
+            if (selectionModel.getCurrentSelection().contains(itemIndex)) {
+                selectionModel.remove(itemIndex);
+            } else {
+                selectionModel.add(itemIndex);
+            }
+        } else {
+            selectionModel.setSelection(KrSelection.of(itemIndex));
+        }
         return true;
     }
 

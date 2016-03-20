@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui.model;
 
 import com.katzstudio.kreativity.ui.component.KrListView;
+import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -19,15 +20,20 @@ public class KrSelectionModel {
 
     @Getter private KrSelection currentSelection = KrSelection.EMPTY;
 
-    public KrSelectionModel() {
-    }
-
     public void setSelection(KrSelection newSelection) {
         if (!Objects.equals(currentSelection, newSelection)) {
             KrSelection oldSelection = currentSelection;
             currentSelection = newSelection;
             notifySelectionChanged(oldSelection, newSelection);
         }
+    }
+
+    public void add(KrModelIndex index) {
+        setSelection(currentSelection.expand(index));
+    }
+
+    public void remove(KrModelIndex index) {
+        setSelection(currentSelection.shrink(index));
     }
 
     public void clearSelection() {
