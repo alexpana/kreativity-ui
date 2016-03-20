@@ -99,6 +99,7 @@ public class UiDemo extends Game {
         listView.setGeometry(0, 20, 160, 100);
         listView.getSelectionModel().addSelectionListener((oldSelection, newSelection) ->
                 System.out.println("newSelection = " + newSelection));
+        listView.addDoubleClickListener(itemIndex -> System.out.println("2x clicked itemIndex: " + itemIndex));
 
         wrapper.add(label);
         wrapper.add(listView);

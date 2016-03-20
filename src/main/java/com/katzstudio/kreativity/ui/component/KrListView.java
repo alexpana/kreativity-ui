@@ -41,6 +41,8 @@ public class KrListView extends KrWidget {
 
     private List<KrItemDelegate> delegates = new ArrayList<>();
 
+    private List<KrDoubleClickListener> doubleClickListeners = new ArrayList<>();
+
     @Getter private KrSelectionModel selectionModel = new KrSelectionModel();
 
     @Getter private KrSelectionMode selectionMode = KrSelectionMode.EXTENDED;
@@ -89,6 +91,8 @@ public class KrListView extends KrWidget {
 
     @Override
     protected boolean mousePressedEvent(KrMouseEvent event) {
+        super.mousePressedEvent(event);
+
         if (selectionMode == KrSelectionMode.NONE) {
             return false;
         }
@@ -111,6 +115,17 @@ public class KrListView extends KrWidget {
             }
         } else {
             selectionModel.setSelection(KrSelection.of(itemIndex));
+        }
+        return true;
+    }
+
+    @Override
+    protected boolean mouseDoubleClickEvent(KrMouseEvent event) {
+        super.mouseDoubleClickEvent(event);
+
+        KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
+        if (itemIndex != null) {
+            notifyItemDoubleClicked(itemIndex);
         }
         return true;
     }
@@ -161,6 +176,17 @@ public class KrListView extends KrWidget {
         return null;
     }
 
+    public void addDoubleClickListener(KrDoubleClickListener listener) {
+        doubleClickListeners.add(listener);
+    }
+
+    public void removeDoubleClickListener(KrDoubleClickListener listener) {
+        doubleClickListeners.remove(listener);
+    }
+
+    protected void notifyItemDoubleClicked(KrModelIndex itemIndex) {
+        doubleClickListeners.forEach(l -> l.itemDoubleClicked(itemIndex));
+    }
 
     public interface Renderer {
         KrItemDelegate getComponent(KrModelIndex index, KrAbstractItemModel model);
@@ -212,12 +238,16 @@ public class KrListView extends KrWidget {
         }
     }
 
+    public interface KrDoubleClickListener {
+        void itemDoubleClicked(KrModelIndex itemIndex);
+    }
+
     /**
      * The item delegate wraps the {@link KrWidget} displayed in the list view.
      * The delegate can alter the widget in various ways, depending on what the list view
      * requests. For instance, it can change the widget's appearance when selected.
      */
-    static public abstract class KrItemDelegate {
+    public static abstract class KrItemDelegate {
 
         /**
          * Sets whether or not the underlying widget is selected or not
@@ -235,7 +265,7 @@ public class KrListView extends KrWidget {
     }
 
     @AllArgsConstructor
-    static public class Style {
+    public static class Style {
         public final Drawable background;
 
         public Style copy() {
