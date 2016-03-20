@@ -8,13 +8,7 @@ import com.badlogic.gdx.utils.Clipboard;
 import com.badlogic.gdx.utils.Timer;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
-import com.katzstudio.kreativity.ui.event.KrEnterEvent;
-import com.katzstudio.kreativity.ui.event.KrEvent;
-import com.katzstudio.kreativity.ui.event.KrExitEvent;
-import com.katzstudio.kreativity.ui.event.KrFocusEvent;
-import com.katzstudio.kreativity.ui.event.KrKeyEvent;
-import com.katzstudio.kreativity.ui.event.KrMouseEvent;
-import com.katzstudio.kreativity.ui.event.KrScrollEvent;
+import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -22,14 +16,8 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.Input.Keys.LEFT;
-import static com.badlogic.gdx.Input.Keys.RIGHT;
-import static com.badlogic.gdx.Input.Keys.TAB;
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getButtonFor;
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.getRepresentation;
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isAlt;
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isCtrl;
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.isShift;
+import static com.badlogic.gdx.Input.Keys.*;
+import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.*;
 
 /**
  * Top level container for UI elements. Delegates input events to top level components.
@@ -195,28 +183,6 @@ public class KrCanvas implements InputProcessor {
         return keyEvent.handled();
     }
 
-    private KrKeyEvent createKeyEvent(KrKeyEvent.Type type, int keycode) {
-        return KrKeyEvent.builder()
-                .type(type)
-                .keycode(keycode)
-                .value(getRepresentation(keycode))
-                .isAltDown(isAltDown)
-                .isCtrlDown(isCtrlDown)
-                .isShiftDown(isShiftDown)
-                .build();
-    }
-
-    private KrKeyEvent createKeyEvent(KrKeyEvent.Type type, char character) {
-        return KrKeyEvent.builder()
-                .type(type)
-                .keycode(character)
-                .value(String.valueOf(character))
-                .isAltDown(isAltDown)
-                .isCtrlDown(isCtrlDown)
-                .isShiftDown(isShiftDown)
-                .build();
-    }
-
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int buttonIndex) {
         KrMouseEvent.Button button = getButtonFor(buttonIndex);
@@ -286,11 +252,41 @@ public class KrCanvas implements InputProcessor {
         return scrollEvent.handled();
     }
 
+    private KrKeyEvent createKeyEvent(KrKeyEvent.Type type, int keycode) {
+        return KrKeyEvent.builder()
+                .type(type)
+                .keycode(keycode)
+                .value(getRepresentation(keycode))
+                .isAltDown(isAltDown)
+                .isCtrlDown(isCtrlDown)
+                .isShiftDown(isShiftDown)
+                .build();
+    }
+
+    private KrKeyEvent createKeyEvent(KrKeyEvent.Type type, char character) {
+        return KrKeyEvent.builder()
+                .type(type)
+                .keycode(character)
+                .value(String.valueOf(character))
+                .isAltDown(isAltDown)
+                .isCtrlDown(isCtrlDown)
+                .isShiftDown(isShiftDown)
+                .build();
+    }
+
     private KrMouseEvent createMouseEvent(KrMouseEvent.Type type, int screenX, int screenY, int button) {
         KrMouseEvent.Button eventButton = getButtonFor(button);
         Vector2 mousePosition = new Vector2(screenX, screenY);
         Vector2 mouseDelta = new Vector2(Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
-        return new KrMouseEvent(type, eventButton, mouseDelta, mousePosition);
+        return KrMouseEvent.builder()
+                .type(type)
+                .button(eventButton)
+                .screenPosition(mousePosition)
+                .deltaMove(mouseDelta)
+                .isAltDown(isAltDown)
+                .isCtrlDown(isCtrlDown)
+                .isShiftDown(isShiftDown)
+                .build();
     }
 
     public void scheduleKeyRepeatTask(char keyChar) {
