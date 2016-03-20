@@ -3,12 +3,8 @@ package com.katzstudio.kreativity.ui;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import static com.katzstudio.kreativity.ui.KrAlignment.Horizontal.CENTER;
-import static com.katzstudio.kreativity.ui.KrAlignment.Horizontal.LEFT;
-import static com.katzstudio.kreativity.ui.KrAlignment.Horizontal.RIGHT;
-import static com.katzstudio.kreativity.ui.KrAlignment.Vertical.BOTTOM;
-import static com.katzstudio.kreativity.ui.KrAlignment.Vertical.MIDDLE;
-import static com.katzstudio.kreativity.ui.KrAlignment.Vertical.TOP;
+import static com.katzstudio.kreativity.ui.KrAlignment.Horizontal.*;
+import static com.katzstudio.kreativity.ui.KrAlignment.Vertical.*;
 
 /**
  * Alignment anchors

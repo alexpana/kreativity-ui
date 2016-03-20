@@ -6,11 +6,7 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createButtonStyle;
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createCheckBoxStyle;
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createLabelStyle;
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createPanelStyle;
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createTextFieldStyle;
+import static com.katzstudio.kreativity.ui.TestObjectFactory.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 

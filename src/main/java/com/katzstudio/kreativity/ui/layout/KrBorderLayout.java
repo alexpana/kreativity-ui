@@ -7,11 +7,7 @@ import com.katzstudio.kreativity.ui.component.KrWidget;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.CENTER;
-import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.EAST;
-import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.NORTH;
-import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.SOUTH;
-import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.WEST;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.*;
 
 /**
  * Layout manager that can place widgets either in the center of the area (stretched) or on

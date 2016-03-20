@@ -8,11 +8,10 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class KrUnifiedSize {
-    @Getter
-    private final float absolute;
 
-    @Getter
-    private final float relative;
+    @Getter private final float absolute;
+
+    @Getter private final float relative;
 
     public static KrUnifiedSize absolute(float value) {
         return new KrUnifiedSize(value, 0);

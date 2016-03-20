@@ -14,25 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.google.common.collect.ImmutableMap;
-import com.katzstudio.kreativity.ui.component.KrButton;
-import com.katzstudio.kreativity.ui.component.KrButtonGroup;
-import com.katzstudio.kreativity.ui.component.KrCheckbox;
-import com.katzstudio.kreativity.ui.component.KrLabel;
-import com.katzstudio.kreativity.ui.component.KrListView;
-import com.katzstudio.kreativity.ui.component.KrPanel;
-import com.katzstudio.kreativity.ui.component.KrScrollBar;
-import com.katzstudio.kreativity.ui.component.KrSplitPanel;
-import com.katzstudio.kreativity.ui.component.KrTextField;
+import com.katzstudio.kreativity.ui.component.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_LIGHT;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.FOREGROUND;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SELECTION_BACKGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.*;
 
 /**
  * Kreativity Skin

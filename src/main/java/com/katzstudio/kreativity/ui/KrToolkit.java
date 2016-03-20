@@ -22,9 +22,9 @@ public class KrToolkit {
 
     private static final Map<Color, Drawable> DRAWABLE_CACHE = new HashMap<>();
 
-    private KrCursor currentCursor;
-
     private static KrToolkit INSTANCE;
+
+    private KrCursor currentCursor;
 
     public static KrToolkit getDefault() {
         if (INSTANCE == null) {

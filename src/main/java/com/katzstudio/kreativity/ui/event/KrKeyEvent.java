@@ -1,11 +1,6 @@
 package com.katzstudio.kreativity.ui.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * The {@link KrKeyEvent} class contains parameters that describe keyboard events.

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class KrColor {
     public static final Color TRANSPARENT = new Color(0x00000000);
-    
+
     public static Color rgb(int rgb) {
         return new Color((rgb << 8) + 0xff);
     }

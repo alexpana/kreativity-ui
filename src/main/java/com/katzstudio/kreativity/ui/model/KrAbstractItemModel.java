@@ -13,15 +13,15 @@ import java.util.List;
  * @see <a href="http://doc.qt.io/qt-4.8/qabstractitemmodel.html#details">QAbstractItemModel Class</a>
  */
 @SuppressWarnings("WeakerAccess")
-public class KrAbstractItemModel {
+public class KrAbstractItemModel<T> {
 
     protected final List<Listener> listeners = new ArrayList<>();
 
-    public Object getValue(KrModelIndex index) {
+    public T getValue(KrModelIndex index) {
         return null;
     }
 
-    public void setValue(KrModelIndex index, Object value) {
+    public void setValue(KrModelIndex index, T value) {
 
     }
 

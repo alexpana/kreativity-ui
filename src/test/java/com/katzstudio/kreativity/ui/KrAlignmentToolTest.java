@@ -34,6 +34,7 @@ public class KrAlignmentToolTest {
     }
 
     // Data provider
+    @SuppressWarnings("RedundantArrayCreation")
     @Parameterized.Parameters(name = "{2}, {3}")
     public static Collection parameters() {
         Rectangle innerA = new Rectangle(40, 40, 50, 50);

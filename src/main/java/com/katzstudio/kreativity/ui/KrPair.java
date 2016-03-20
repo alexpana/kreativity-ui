@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class KrPair<F, S> {
+
     @Getter private final F first;
+
     @Getter private final S second;
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class KrColorBrush extends KrBrush {
+
     @Getter private final Color color;
 
     public KrColorBrush(int color) {

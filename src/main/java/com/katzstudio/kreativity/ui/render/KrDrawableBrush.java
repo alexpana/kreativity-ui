@@ -11,5 +11,6 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
 public class KrDrawableBrush extends KrBrush {
+
     @Getter private final Drawable drawable;
 }

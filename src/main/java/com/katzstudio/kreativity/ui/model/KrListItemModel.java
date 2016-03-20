@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A {@link KrListItemModel} is a convenience class that's specialized for {@link KrListView}
  */
-public class KrListItemModel<T> extends KrAbstractItemModel {
+public class KrListItemModel<T> extends KrAbstractItemModel<T> {
 
     private final List<T> items = new ArrayList<>();
 
@@ -20,14 +20,14 @@ public class KrListItemModel<T> extends KrAbstractItemModel {
     }
 
     @Override
-    public Object getValue(KrModelIndex index) {
+    public T getValue(KrModelIndex index) {
         // completely ignore parent index / column
         return items.get(index.getRow());
     }
 
     @Override
-    public void setValue(KrModelIndex index, Object value) {
-        items.set(index.getRow(), (T) value);
+    public void setValue(KrModelIndex index, T value) {
+        items.set(index.getRow(), value);
         notifyDataChanged();
     }
 

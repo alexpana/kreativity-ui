@@ -15,9 +15,7 @@ import org.junit.Test;
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createButtonStyle;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link KrButton}

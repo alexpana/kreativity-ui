@@ -5,17 +5,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Clipboard;
-import com.katzstudio.kreativity.ui.component.KrButton;
-import com.katzstudio.kreativity.ui.component.KrCheckbox;
-import com.katzstudio.kreativity.ui.component.KrLabel;
-import com.katzstudio.kreativity.ui.component.KrPanel;
-import com.katzstudio.kreativity.ui.component.KrTextField;
-import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Factory for various test objects

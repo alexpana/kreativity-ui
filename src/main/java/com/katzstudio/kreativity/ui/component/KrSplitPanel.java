@@ -178,7 +178,7 @@ public class KrSplitPanel extends KrWidget {
 
         @Override
         public Vector2 getMinSize() {
-            float minWidth = cells.stream().map(cell -> cell.component.getMinWidth()).max(Float::compare).get();
+            float minWidth = cells.stream().map(cell -> cell.component.getMinWidth()).max(Float::compare).orElse(0.0f);
             float minHeight = cells.stream().map(cell -> cell.component.getMinHeight()).reduce(0f, Float::sum);
 
             return new Vector2(minWidth, minHeight + (cells.size() - 1) * SEPARATOR_SIZE);
@@ -191,7 +191,7 @@ public class KrSplitPanel extends KrWidget {
 
         @Override
         public Vector2 getPreferredSize() {
-            float prefWidth = cells.stream().map(cell -> cell.component.getPreferredWidth()).max(Float::compare).get();
+            float prefWidth = cells.stream().map(cell -> cell.component.getPreferredWidth()).max(Float::compare).orElse(0.0f);
             float prefHeight = cells.stream().map(cell -> cell.component.getPreferredHeight()).reduce(0f, Float::sum);
 
             return new Vector2(prefWidth, prefHeight + (cells.size() - 1) * SEPARATOR_SIZE);
