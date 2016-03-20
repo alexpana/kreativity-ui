@@ -1,14 +1,12 @@
 [![Build Status](https://travis-ci.org/alexpana/kreativity-ui.svg?branch=master)](https://travis-ci.org/alexpana/kreativity-ui)
 
-Kreativity UI (under heavy development)
-=======================================
+# Kreativity UI (under heavy development)
 
 UI framework built on top of libgdx. It focuses on elegant design and extensibility. Inspired by Qt. 
 
 ![Screenshot showcasing available widgets](https://raw.githubusercontent.com/alexpana/kreativity-ui/master/screenshot.png)
 
-Frequently Asked Questions
-==========================
+## Frequently Asked Questions
 **Q: What is this?**
 
 A: This is a UI framework written in java on top of libgdx (opengl). It's similar to swing or javafx but works with libgdx.
@@ -35,3 +33,17 @@ A: It's lame, I know. Nobody uses prefixes anymore. Or do they? Whether for lega
 java's Swing all use prefixes. The reason I'm using them is because of autocomplete. If I didn't use a prefix, my trusty 
 IDE would fill my autocomplete list with components from other frameworks and hinder my development by just a tiny bit 
 (just like it does with List because libgdx also implements a list class). So yeah, that's the reason.
+
+## Change Log
+
+#### [Unreleased]
+
+
+#### [0.1.0] - 2016-03-20
+- Added KrListView together with a Qt inspired abstract item model and selection model
+- Added model support for all edit widgets
+- Added style for KrSplitPanel
+- Added KrStackLayout
+- Added KrOrientation which replaces specialized orientation enums
+- Added support for double click events
+- Added ctrl / alt / shift down flags to mouse events
