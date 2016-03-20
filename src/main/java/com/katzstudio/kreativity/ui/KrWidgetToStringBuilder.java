@@ -6,10 +6,15 @@ import com.badlogic.gdx.math.Rectangle;
  * Helper class for building widget string representations
  */
 public class KrWidgetToStringBuilder {
+
     private String name = "Unnamed";
+
     private String type = "KrWidget";
-    private Rectangle bounds = new Rectangle(0, 0, 0, 0);
+
+    private Rectangle geometry = new Rectangle(0, 0, 0, 0);
+
     private boolean visible = true;
+
     private boolean enabled = true;
 
     private KrWidgetToStringBuilder() {
@@ -29,8 +34,8 @@ public class KrWidgetToStringBuilder {
         return this;
     }
 
-    public KrWidgetToStringBuilder bounds(Rectangle bounds) {
-        this.bounds = bounds;
+    public KrWidgetToStringBuilder geometry(Rectangle bounds) {
+        this.geometry = bounds;
         return this;
     }
 
@@ -45,7 +50,7 @@ public class KrWidgetToStringBuilder {
     }
 
     public String toString() {
-        return String.format("%s(\"%s\", bounds: %s, visible: %s, enabled: %s)", type, name, rectangleToString(bounds), boolToString(visible), boolToString(enabled));
+        return String.format("%s(\"%s\", geometry: %s, visible: %s, enabled: %s)", type, name, rectangleToString(geometry), boolToString(visible), boolToString(enabled));
     }
 
     private static String rectangleToString(Rectangle rectangle) {

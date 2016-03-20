@@ -313,7 +313,7 @@ public class KrCanvas implements InputProcessor {
     }
 
     /**
-     * Finds the topmost widget (a leaf in the hierarchy) whose bounds contain the requested screen coordinates.
+     * Finds the topmost widget (a leaf in the hierarchy) whose geometry contain the requested screen coordinates.
      *
      * @param root the root of the widget hierarchy
      * @param x    the requested x position relative to the root widget
@@ -324,7 +324,7 @@ public class KrCanvas implements InputProcessor {
         ArrayList<KrWidget> childList = root.getChildren();
         for (int i = childList.size() - 1; i >= 0; --i) {
             KrWidget child = childList.get(i);
-            if (getScreenBounds(child).contains(x, y)) {
+            if (getScreenGeometry(child).contains(x, y)) {
                 return findWidgetAt(child, x, y);
             }
         }
@@ -333,22 +333,22 @@ public class KrCanvas implements InputProcessor {
     }
 
     /**
-     * Returns the screen bounds of the widget. This accounts for the widget hierarchy and the relative
+     * Returns the screen geometry of the widget. This accounts for the widget hierarchy and the relative
      * positions of the parents.
      *
-     * @param widget the widget whose bounds are queried
-     * @return the screen-space bounds of the queried widget
+     * @param widget the widget whose geometry are queried
+     * @return the screen-space geometry of the queried widget
      */
-    public static Rectangle getScreenBounds(KrWidget widget) {
-        Rectangle widgetBounds = new Rectangle(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight());
+    public static Rectangle getScreenGeometry(KrWidget widget) {
+        Rectangle widgetGeometry = new Rectangle(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight());
 
         while (widget.getParent() != null) {
             widget = widget.getParent();
-            widgetBounds.setX(widget.getX() + widgetBounds.x);
-            widgetBounds.setY(widget.getY() + widgetBounds.y);
+            widgetGeometry.setX(widget.getX() + widgetGeometry.x);
+            widgetGeometry.setY(widget.getY() + widgetGeometry.y);
         }
 
-        return widgetBounds;
+        return widgetGeometry;
     }
 
     /**
@@ -359,8 +359,8 @@ public class KrCanvas implements InputProcessor {
      * @return the point's position in screen space
      */
     public static Vector2 convertPointToScreen(Vector2 point, KrWidget widget) {
-        Rectangle widgetBounds = getScreenBounds(widget);
-        return widgetBounds.getPosition(new Vector2()).add(point);
+        Rectangle widgetGeometry = getScreenGeometry(widget);
+        return widgetGeometry.getPosition(new Vector2()).add(point);
     }
 
     public boolean clearFocus() {

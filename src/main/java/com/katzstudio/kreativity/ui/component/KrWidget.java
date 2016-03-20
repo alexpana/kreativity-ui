@@ -419,13 +419,13 @@ public class KrWidget {
         setPreferredSize(new Vector2(preferredSize.x, preferredHeight));
     }
 
-    private Rectangle getScreenBounds() {
+    private Rectangle getScreenGeometry() {
         float offsetX = 0;
         float offsetY = 0;
         if (parent != null) {
-            Rectangle parentBounds = parent.getScreenBounds();
-            offsetX = parentBounds.x;
-            offsetY = parentBounds.y;
+            Rectangle parentGeometry = parent.getScreenGeometry();
+            offsetX = parentGeometry.x;
+            offsetY = parentGeometry.y;
         }
         return new Rectangle(offsetX + getX(), offsetY + getY(), getWidth(), getHeight());
     }
@@ -682,9 +682,9 @@ public class KrWidget {
     }
 
     public Vector2 screenToLocal(float screenX, float screenY) {
-        Rectangle screenBounds = KrCanvas.getScreenBounds(this);
-        float localX = screenBounds.x;
-        float localY = screenBounds.y;
+        Rectangle screenGeometry = KrCanvas.getScreenGeometry(this);
+        float localX = screenGeometry.x;
+        float localY = screenGeometry.y;
         return new Vector2(screenX - localX, screenY - localY);
     }
 
@@ -694,7 +694,7 @@ public class KrWidget {
     }
 
     public KrWidgetToStringBuilder toStringBuilder() {
-        return KrWidgetToStringBuilder.builder().name(name).bounds(getGeometry()).enabled(true).visible(true);
+        return KrWidgetToStringBuilder.builder().name(name).geometry(getGeometry()).enabled(true).visible(true);
     }
 
     /**

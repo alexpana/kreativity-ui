@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@link KrStackLayout} arranges all widgets on top of each other, with the same bounds as
+ * The {@link KrStackLayout} arranges all widgets on top of each other, with the same geometry as
  * the parent.
  */
 public class KrStackLayout implements KrLayout {
@@ -22,22 +22,22 @@ public class KrStackLayout implements KrLayout {
 
     @Override
     public Vector2 getMinSize() {
-        float minWidth = widgets.stream().map(KrWidget::getMinWidth).max(Float::compare).get();
-        float minHeight = widgets.stream().map(KrWidget::getMinHeight).max(Float::compare).get();
+        float minWidth = widgets.stream().map(KrWidget::getMinWidth).max(Float::compare).orElse(0.0f);
+        float minHeight = widgets.stream().map(KrWidget::getMinHeight).max(Float::compare).orElse(0.0f);
         return new Vector2(minWidth, minHeight);
     }
 
     @Override
     public Vector2 getMaxSize() {
-        float maxWidth = widgets.stream().map(KrWidget::getMaxWidth).min(Float::compare).get();
-        float maxHeight = widgets.stream().map(KrWidget::getMaxHeight).min(Float::compare).get();
+        float maxWidth = widgets.stream().map(KrWidget::getMaxWidth).min(Float::compare).orElse(0.0f);
+        float maxHeight = widgets.stream().map(KrWidget::getMaxHeight).min(Float::compare).orElse(0.0f);
         return new Vector2(maxWidth, maxHeight);
     }
 
     @Override
     public Vector2 getPreferredSize() {
-        float prefWidth = widgets.stream().map(KrWidget::getPreferredWidth).max(Float::compare).get();
-        float prefHeight = widgets.stream().map(KrWidget::getPreferredHeight).max(Float::compare).get();
+        float prefWidth = widgets.stream().map(KrWidget::getPreferredWidth).max(Float::compare).orElse(0.0f);
+        float prefHeight = widgets.stream().map(KrWidget::getPreferredHeight).max(Float::compare).orElse(0.0f);
         return new Vector2(prefWidth, prefHeight);
     }
 

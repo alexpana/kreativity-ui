@@ -66,15 +66,15 @@ public class KrCanvasTest {
     }
 
     @Test
-    public void testScreenBoundsOneParent() {
+    public void testScreenGeometryOneParent() {
         KrWidget parent = createWidget("parent", 50, 50, 100, 100);
         KrWidget child = createWidget("child", 20, 20, 10, 10);
 
-        assertThat(KrCanvas.getScreenBounds(child), is(new Rectangle(20, 20, 10, 10)));
+        assertThat(KrCanvas.getScreenGeometry(child), is(new Rectangle(20, 20, 10, 10)));
 
         parent.add(child);
 
-        assertThat(KrCanvas.getScreenBounds(child), is(new Rectangle(70, 70, 10, 10)));
+        assertThat(KrCanvas.getScreenGeometry(child), is(new Rectangle(70, 70, 10, 10)));
     }
 
     @Test

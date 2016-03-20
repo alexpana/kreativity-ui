@@ -97,8 +97,8 @@ public class KrFlowLayout implements KrLayout {
         }
     }
 
-    private void layoutInsideCell(KrWidget widget, Rectangle bounds) {
-        widget.setGeometry(bounds);
+    private void layoutInsideCell(KrWidget widget, Rectangle geometry) {
+        widget.setGeometry(geometry);
     }
 
     @Override

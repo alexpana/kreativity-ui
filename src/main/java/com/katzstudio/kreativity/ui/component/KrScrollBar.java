@@ -48,7 +48,7 @@ public class KrScrollBar extends KrWidget {
 
     /**
      * The drag position is allowed to go over the thumb position threshold. It is used to prevent the thumb from
-     * moving while the mouse is outside the bounds of the scrollbar.
+     * moving while the mouse is outside the geometry of the scrollbar.
      */
     private float dragPosition;
 

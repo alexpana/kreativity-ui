@@ -77,8 +77,8 @@ public class KrButton extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        BitmapFont.TextBounds bounds = style.font.getBounds(text);
-        return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
+        BitmapFont.TextBounds textBounds = style.font.getBounds(text);
+        return expandSizeWithPadding(new Vector2(textBounds.width, textBounds.height), getPadding());
     }
 
     @Override

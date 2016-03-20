@@ -87,9 +87,9 @@ public class KrBorderLayout implements KrLayout {
         layoutInsideCell(southWidget, southCell);
     }
 
-    private void layoutInsideCell(KrWidget widget, Rectangle cellBounds) {
+    private void layoutInsideCell(KrWidget widget, Rectangle cellGeometry) {
         if (widget != null) {
-            widget.setGeometry(cellBounds);
+            widget.setGeometry(cellGeometry);
         }
     }
 
