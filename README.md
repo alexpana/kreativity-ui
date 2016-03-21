@@ -41,6 +41,7 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 - Added support for system cursors (arrow, hand, beam, crosshair, h/w resize)
 - Moved resource files inside jar for easier distribution
 - Added support for widget visibility
+- Added support for rendering rounded rectangles (radius from 2 to 6)
 
 #### [0.1.0] - 2016-03-20
 - Added KrListView together with a Qt inspired abstract item model and selection model
