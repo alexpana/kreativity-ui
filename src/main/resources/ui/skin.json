@@ -9,355 +9,125 @@
     "background": "0x323334"
   },
   "patches": {
+    "rounded_rect_2": {
+      "region": [29, 51, 5, 5],
+      "split": [2, 2, 2, 2]
+    },
+    "rounded_rect_3": {
+      "region": [35, 51, 7, 7],
+      "split": [3, 3, 3, 3]
+    },
+    "rounded_rect_4": {
+      "region": [43, 51, 9, 9],
+      "split": [4, 4, 4, 4]
+    },
+    "rounded_rect_5": {
+      "region": [53 , 51, 11, 11],
+      "split": [5, 5, 5, 5]
+    },
+    "rounded_rect_6": {
+      "region": [65, 51, 13, 13],
+      "split": [6, 6, 6, 6]
+    },
     "spinner.background_normal": {
-      "region": [
-        197,
-        1,
-        24,
-        21
-      ],
-      "split": [
-        4,
-        16,
-        2,
-        2
-      ]
+      "region": [197, 1, 24, 21],
+      "split": [4, 16, 2, 2]
     },
     "spinner.background_focused": {
-      "region": [
-        170,
-        1,
-        24,
-        21
-      ],
-      "split": [
-        4,
-        16,
-        2,
-        2
-      ]
+      "region": [170, 1, 24, 21],
+      "split": [4, 16, 2, 2]
     },
     "collapsible_panel.background": {
-      "region": [
-        224,
-        1,
-        19,
-        31
-      ],
-      "split": [
-        4,
-        4,
-        22,
-        4
-      ]
+      "region": [224, 1, 19, 31],
+      "split": [4, 4, 22, 4]
     },
     "checkbox.background": {
-      "region": [
-        223,
-        1,
-        14,
-        15
-      ],
-      "split": [
-        4,
-        4,
-        5,
-        4
-      ]
+      "region": [223, 1, 14, 15],
+      "split": [4, 4, 5, 4]
     },
     "checkbox.mark": {
-      "region": [
-        239,
-        1,
-        14,
-        15
-      ],
-      "split": [
-        1,
-        1,
-        1,
-        1
-      ]
+      "region": [239, 1, 14, 15],
+      "split": [1, 1, 1, 1]
     },
     "button.background_normal": {
-      "region": [
-        168,
-        22,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [168, 22, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button.background_hovered": {
-      "region": [
-        190,
-        22,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [190, 22, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button.background_armed": {
-      "region": [
-        212,
-        22,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [212, 22, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "textfield.background_normal": {
-      "region": [
-        120,
-        23,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [120, 23, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "textfield.background_hovered": {
-      "region": [
-        120,
-        23,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [120, 23, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "textfield.background_focused": {
-      "region": [
-        145,
-        23,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [145, 23, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "scrollbar.vertical.track": {
-      "region": [
-        1,
-        1,
-        4,
-        4
-      ],
-      "split": [
-        0,
-        0,
-        0,
-        0
-      ]
+      "region": [1, 1, 4, 4],
+      "split": [0, 0, 0, 0]
     },
     "scrollbar.vertical.thumb": {
-      "region": [
-        6,
-        1,
-        4,
-        4
-      ],
-      "split": [
-        0,
-        0,
-        0,
-        0
-      ]
+      "region": [6, 1, 4, 4],
+      "split": [0, 0, 0, 0]
     },
     "scrollbar.horizontal.track": {
-      "region": [
-        1,
-        1,
-        4,
-        4
-      ],
-      "split": [
-        0,
-        0,
-        0,
-        0
-      ]
+      "region": [1, 1, 4, 4],
+      "split": [0, 0, 0, 0]
     },
     "scrollbar.horizontal.thumb": {
-      "region": [
-        6,
-        1,
-        4,
-        4
-      ],
-      "split": [
-        0,
-        0,
-        0,
-        0
-      ]
+      "region": [6, 1, 4, 4],
+      "split": [0, 0, 0, 0]
     },
     "button_group_first.background_normal": {
-      "region": [
-        168,
-        44,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [168, 44, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_first.background_hovered": {
-      "region": [
-        190,
-        44,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [190, 44, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_first.background_armed": {
-      "region": [
-        212,
-        44,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [212, 44, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_middle.background_normal": {
-      "region": [
-        168,
-        66,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [168, 66, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_middle.background_hovered": {
-      "region": [
-        190,
-        66,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [190, 66, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_middle.background_armed": {
-      "region": [
-        212,
-        66,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [212, 66, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_last.background_normal": {
-      "region": [
-        168,
-        88,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [168, 88, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_last.background_hovered": {
-      "region": [
-        190,
-        88,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [190, 88, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "button_group_last.background_armed": {
-      "region": [
-        212,
-        88,
-        20,
-        21
-      ],
-      "split": [
-        4,
-        4,
-        4,
-        4
-      ]
+      "region": [212, 88, 20, 21],
+      "split": [4, 4, 4, 4]
     },
     "split_panel.splitter_grip": {
-      "region": [
-        1,
-        52,
-        18,
-        2
-      ],
-      "split": [
-        0,
-        0,
-        0,
-        0
-      ]
+      "region": [1, 52, 18, 2],
+      "split": [0, 0, 0, 0]
     }
   }
 }

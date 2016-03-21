@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrColor;
+import com.katzstudio.kreativity.ui.KrSkin;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -149,6 +151,38 @@ public class KrRenderer {
             ensureShapeRendererOpen(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(colorBrush.getColor());
             shapeRenderer.rect(x, viewportSize.y - y - h, w, h);
+        }
+    }
+
+    public void fillRoundedRect(int x, int y, int w, int h, int cornerRadius) {
+        Drawable drawable = getRoundedRectDrawable(cornerRadius);
+
+        ensureSpriteBatchOpen();
+        if (brush instanceof KrColorBrush) {
+            KrColorBrush colorBrush = (KrColorBrush) brush;
+            spriteBatch.setColor(colorBrush.getColor());
+        }
+
+        drawable.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
+
+        spriteBatch.setColor(Color.WHITE);
+    }
+
+    private Drawable getRoundedRectDrawable(int radius) {
+        switch (radius) {
+            case 1:
+            case 2:
+                return KrSkin.instance().getDrawable("rounded_rect_2");
+            case 3:
+                return KrSkin.instance().getDrawable("rounded_rect_3");
+            case 4:
+                return KrSkin.instance().getDrawable("rounded_rect_4");
+            case 5:
+                return KrSkin.instance().getDrawable("rounded_rect_5");
+            case 6:
+                return KrSkin.instance().getDrawable("rounded_rect_6");
+            default:
+                return KrSkin.instance().getDrawable("rounded_rect_2");
         }
     }
 

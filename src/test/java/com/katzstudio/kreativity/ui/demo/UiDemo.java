@@ -18,6 +18,9 @@ import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
+import com.katzstudio.kreativity.ui.render.KrColorBrush;
+import com.katzstudio.kreativity.ui.render.KrPen;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public class UiDemo extends Game {
         config.setWindowedMode(840, 600);
         config.setTitle("Kreativity UI Demo");
         config.useVsync(false);
+        config.setBackBufferConfig(255, 255, 255, 255, 32, 255, 4);
         new Lwjgl3Application(new UiDemo(), config);
     }
 
@@ -80,6 +84,24 @@ public class UiDemo extends Game {
         canvas.getRootComponent().add(createScrollPanel());
         canvas.getRootComponent().add(createSplitPanel());
         canvas.getRootComponent().add(createListView());
+        canvas.getRootComponent().add(createCanvas());
+    }
+
+    private KrWidget createCanvas() {
+        KrPanel canvas = new KrPanel() {
+            @Override
+            protected void drawSelf(KrRenderer renderer) {
+                renderer.setBrush(new KrColorBrush(0x000000, 0.3f));
+                int radius = 3;
+                renderer.fillRoundedRect(0, 0, 75, 26, radius);
+
+                renderer.setPen(new KrPen(1, KrColor.rgb(0x909090)));
+                renderer.drawTextWithShadow("Tooltip text", new Vector2(10, 9), new Vector2(0, 1), KrColor.rgb(0x202020));
+            }
+        };
+
+        canvas.setGeometry(10, 300, 200, 200);
+        return canvas;
     }
 
     private KrPanel createListView() {
