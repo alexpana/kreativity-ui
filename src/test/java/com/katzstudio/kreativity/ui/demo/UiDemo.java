@@ -52,7 +52,6 @@ public class UiDemo extends Game {
         config.setWindowedMode(840, 600);
         config.setTitle("Kreativity UI Demo");
         config.useVsync(false);
-        config.setBackBufferConfig(255, 255, 255, 255, 32, 255, 4);
         new Lwjgl3Application(new UiDemo(), config);
     }
 
@@ -536,6 +535,7 @@ public class UiDemo extends Game {
 
     @Override
     public void resize(int width, int height) {
+        gl.glViewport(0, 0, width, height);
         canvas.setSize(width, height);
     }
 }
