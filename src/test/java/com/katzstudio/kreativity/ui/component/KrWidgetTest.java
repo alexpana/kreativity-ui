@@ -62,7 +62,7 @@ public class KrWidgetTest {
         assertThat(widget.getCanvas(), is((KrCanvas) null));
 
         KrCanvas canvas = createCanvas();
-        canvas.getRootComponent().add(widget);
+        canvas.getRootPanel().add(widget);
         assertThat(widget.getCanvas(), is(canvas));
     }
 
@@ -74,7 +74,7 @@ public class KrWidgetTest {
         KrWidget child = new KrWidget();
 
         parent.add(child);
-        canvas.getRootComponent().add(parent);
+        canvas.getRootPanel().add(parent);
 
         assertThat(child.requestFocus(), is(true));
         assertThat(child.isFocused(), is(true));

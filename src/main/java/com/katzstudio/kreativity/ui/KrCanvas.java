@@ -29,7 +29,9 @@ public class KrCanvas implements InputProcessor {
 
     private static final float KEY_REPEAT_TIME = 0.1f;
 
-    @Getter private final KrPanel rootComponent;
+    @Getter private final KrPanel rootPanel;
+
+    @Getter private final KrPanel overlayPanel;
 
     @Getter private final Clipboard clipboard;
 
@@ -70,13 +72,17 @@ public class KrCanvas implements InputProcessor {
     public KrCanvas(KrRenderer renderer, Clipboard clipboard, float width, float height) {
         this.clipboard = clipboard;
 
-        rootComponent = new KrPanel();
-        rootComponent.setName("root");
-        rootComponent.setCanvas(this);
+        rootPanel = new KrPanel();
+        rootPanel.setName("root");
+        rootPanel.setCanvas(this);
 
-        focusManager = new KrFocusManager(rootComponent);
+        overlayPanel = new KrPanel();
+        overlayPanel.setName("overlay");
+        overlayPanel.setCanvas(this);
 
-        rootComponent.addWidgetListener(new KrWidget.KrWidgetListener.KrAbstractWidgetListener() {
+        focusManager = new KrFocusManager(rootPanel);
+
+        rootPanel.addWidgetListener(new KrWidget.KrWidgetListener.KrAbstractWidgetListener() {
             @Override
             public void invalidated() {
                 focusManager.refresh();
@@ -96,7 +102,8 @@ public class KrCanvas implements InputProcessor {
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
-        rootComponent.setSize(width, height);
+        rootPanel.setSize(width, height);
+        overlayPanel.setSize(width, height);
         renderer.setViewportSize(width, height);
     }
 
@@ -107,7 +114,7 @@ public class KrCanvas implements InputProcessor {
      */
     public void update(float deltaSeconds) {
         // TODO(alex): call update for each widget
-        rootComponent.update(deltaSeconds);
+        rootPanel.update(deltaSeconds);
     }
 
     private KeyRepeatTask getKeyRepeatTask() {
@@ -124,7 +131,10 @@ public class KrCanvas implements InputProcessor {
         renderer.beginFrame();
         renderer.setFont(KrSkin.instance().getDefaultFont());
         renderer.setPen(new KrPen(1, KrSkin.instance().getColor(KrSkin.ColorKey.FOREGROUND)));
-        rootComponent.draw(renderer);
+
+        rootPanel.draw(renderer);
+        overlayPanel.draw(renderer);
+        
         renderer.endFrame();
     }
 
@@ -196,7 +206,7 @@ public class KrCanvas implements InputProcessor {
         KrMouseEvent.Button button = getButtonFor(buttonIndex);
 
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.PRESSED, screenX, screenY, buttonIndex);
-        mouseFocusHolder = findWidgetAt(rootComponent, screenX, screenY);
+        mouseFocusHolder = findWidgetAt(rootPanel, screenX, screenY);
         if (mouseFocusHolder != keyboardFocusHolder) {
             requestFocus(mouseFocusHolder);
         }
@@ -236,7 +246,7 @@ public class KrCanvas implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        KrWidget hoveredWidget = findWidgetAt(rootComponent, screenX, screenY);
+        KrWidget hoveredWidget = findWidgetAt(rootPanel, screenX, screenY);
 
         if (hoveredWidget != currentlyHoveredWidget) {
             if (currentlyHoveredWidget != null) {
@@ -255,7 +265,7 @@ public class KrCanvas implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         KrScrollEvent scrollEvent = new KrScrollEvent(amount);
-        KrWidget destinationWidget = findWidgetAt(rootComponent, Gdx.input.getX(), Gdx.input.getY());
+        KrWidget destinationWidget = findWidgetAt(rootPanel, Gdx.input.getX(), Gdx.input.getY());
         dispatchEvent(destinationWidget, scrollEvent);
         return scrollEvent.handled();
     }

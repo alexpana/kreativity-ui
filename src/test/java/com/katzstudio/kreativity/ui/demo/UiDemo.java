@@ -46,6 +46,7 @@ public class UiDemo extends Game {
     private Color lightGray;
 
     private KrCanvas canvas;
+    private KrWidget tooltip;
 
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -73,29 +74,31 @@ public class UiDemo extends Game {
         canvas = new KrCanvas();
         Gdx.input.setInputProcessor(canvas);
 
-        canvas.getRootComponent().add(createButtons());
-        canvas.getRootComponent().add(createGridLayout());
-        canvas.getRootComponent().add(createCheckboxes());
-        canvas.getRootComponent().add(createHorizontalFlowLayoutPanel());
-        canvas.getRootComponent().add(createVerticalFlowLayoutPanel());
-        canvas.getRootComponent().add(createBorderLayoutPanel());
-        canvas.getRootComponent().add(createScrollBarsPanel());
-        canvas.getRootComponent().add(createScrollPanel());
-        canvas.getRootComponent().add(createSplitPanel());
-        canvas.getRootComponent().add(createListView());
-        canvas.getRootComponent().add(createCanvas());
+        tooltip = createCanvas();
+
+        canvas.getOverlayPanel().add(tooltip);
+        canvas.getRootPanel().add(createButtons());
+        canvas.getRootPanel().add(createGridLayout());
+        canvas.getRootPanel().add(createCheckboxes());
+        canvas.getRootPanel().add(createHorizontalFlowLayoutPanel());
+        canvas.getRootPanel().add(createVerticalFlowLayoutPanel());
+        canvas.getRootPanel().add(createBorderLayoutPanel());
+        canvas.getRootPanel().add(createScrollBarsPanel());
+        canvas.getRootPanel().add(createScrollPanel());
+        canvas.getRootPanel().add(createSplitPanel());
+        canvas.getRootPanel().add(createListView());
     }
 
     private KrWidget createCanvas() {
         KrPanel canvas = new KrPanel() {
             @Override
             protected void drawSelf(KrRenderer renderer) {
-                renderer.setBrush(new KrColorBrush(0x000000, 0.3f));
+                renderer.setBrush(new KrColorBrush(0x202020, 0.95f));
                 int radius = 3;
                 renderer.fillRoundedRect(0, 0, 75, 26, radius);
 
                 renderer.setPen(new KrPen(1, KrColor.rgb(0x909090)));
-                renderer.drawTextWithShadow("Tooltip text", new Vector2(10, 9), new Vector2(0, 1), KrColor.rgb(0x202020));
+                renderer.drawTextWithShadow("Tooltip text", new Vector2(10, 9), new Vector2(0, 1), KrColor.rgb(0x101010));
             }
         };
 
@@ -527,6 +530,8 @@ public class UiDemo extends Game {
 
     @Override
     public void render() {
+        tooltip.setPosition(Gdx.input.getX(), Gdx.input.getY() + 20);
+
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         canvas.update(Gdx.graphics.getDeltaTime());
         canvas.draw();

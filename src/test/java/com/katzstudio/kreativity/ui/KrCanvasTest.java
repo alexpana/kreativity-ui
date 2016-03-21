@@ -79,7 +79,7 @@ public class KrCanvasTest {
         KrCanvas canvas = createCanvas();
 
         KrWidget widget = new KrWidget();
-        canvas.getRootComponent().add(widget);
+        canvas.getRootPanel().add(widget);
 
         assertThat(canvas.requestFocus(widget), is(true));
         assertThat(canvas.getKeyboardFocusHolder(), is(widget));
@@ -90,7 +90,7 @@ public class KrCanvasTest {
         KrCanvas canvas = createCanvas();
 
         KrWidget widget = new KrWidget();
-        canvas.getRootComponent().add(widget);
+        canvas.getRootPanel().add(widget);
 
         canvas.requestFocus(widget);
         assertThat(canvas.getKeyboardFocusHolder(), is(widget));
@@ -165,7 +165,7 @@ public class KrCanvasTest {
         KrWidget second = new KrWidget();
 
         first.add(second);
-        canvas.getRootComponent().add(first);
+        canvas.getRootPanel().add(first);
 
         first.setGeometry(50, 50, 100, 100);
 
