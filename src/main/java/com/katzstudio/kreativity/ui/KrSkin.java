@@ -34,7 +34,7 @@ public class KrSkin {
             .put(BACKGROUND_LIGHT, new Color(0x424242ff))
             .put(BACKGROUND_DARK, new Color(0x353535ff))
             .put(FOREGROUND, new Color(0xDDDDDDFF))
-            .put(SELECTION_BACKGROUND, new Color(0x505050FF))
+            .put(SELECTION_BACKGROUND, new Color(0x547496FF))
             .build();
 
     private final Map<String, Drawable> drawablePatches = new HashMap<>();
