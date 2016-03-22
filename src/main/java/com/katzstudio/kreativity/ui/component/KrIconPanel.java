@@ -16,9 +16,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrIconPanel extends KrWidget {
 
-    @Getter
-    @Setter
-    private KrFontAwesomeGlyph iconGlyph;
+    @Getter @Setter private KrFontAwesomeGlyph iconGlyph;
 
     private final BitmapFont fontAwesome;
 
@@ -33,6 +31,11 @@ public class KrIconPanel extends KrWidget {
         BitmapFont fontAwesome = KrSkin.instance().getFontAwesome();
         Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation());
         return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
+    }
+
+    @Override
+    public void ensureUniqueStyle() {
+        // TODO
     }
 
     @Override

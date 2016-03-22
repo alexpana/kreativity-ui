@@ -2,7 +2,6 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrSelectionMode;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.component.renderer.KrListViewCellRenderer;
@@ -14,7 +13,7 @@ import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import com.katzstudio.kreativity.ui.model.KrSelection;
 import com.katzstudio.kreativity.ui.model.KrSelectionModel;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -25,9 +24,7 @@ import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 /**
  * A list widget displays items in a vertical list. Items can be selected.
  */
-public class KrListView extends KrWidget {
-
-    private Style style;
+public class KrListView extends KrWidget<KrWidgetStyle> {
 
     private final KrAbstractItemModel model;
 
@@ -137,14 +134,9 @@ public class KrListView extends KrWidget {
     }
 
     @Override
-    public Object getStyle() {
-        return style;
-    }
-
-    @Override
     public void ensureUniqueStyle() {
         if (style == KrSkin.instance().getListViewStyle()) {
-            style = style.copy();
+            style = new KrWidgetStyle(style);
         }
     }
 
@@ -263,14 +255,5 @@ public class KrListView extends KrWidget {
          * @return the widget managed by this delegate.
          */
         abstract public KrWidget getWidget();
-    }
-
-    @AllArgsConstructor
-    public static class Style {
-        public final Drawable background;
-
-        public Style copy() {
-            return new Style(background);
-        }
     }
 }

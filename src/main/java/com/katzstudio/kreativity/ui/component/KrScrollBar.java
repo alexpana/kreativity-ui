@@ -2,16 +2,14 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrOrientation;
-import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.math.KrRange;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrScrollBarStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,15 +22,13 @@ import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 /**
  * Scroll bar component which can be embedded into other components to enable scrolling
  */
-public class KrScrollBar extends KrWidget {
+public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
 
     private final List<Listener> listeners = new ArrayList<>();
 
     @Getter private final KrOrientation orientation;
 
     @Getter @Setter private float scrollStep = 10;
-
-    @Setter protected Style style;
 
     @Getter protected float currentValue = 0;
 
@@ -61,14 +57,9 @@ public class KrScrollBar extends KrWidget {
     }
 
     @Override
-    public Object getStyle() {
-        return style;
-    }
-
-    @Override
     public void ensureUniqueStyle() {
         if (style == getDefaultStyle()) {
-            style = style.copy();
+            style = new KrScrollBarStyle(style);
         }
     }
 
@@ -86,7 +77,7 @@ public class KrScrollBar extends KrWidget {
         return orientation == VERTICAL ? getHeight() : getWidth();
     }
 
-    private Style getDefaultStyle() {
+    private KrScrollBarStyle getDefaultStyle() {
         KrSkin skin = KrSkin.instance();
         return orientation == VERTICAL ? skin.getVerticalScrollBarStyle() : skin.getHorizontalScrollBarStyle();
     }
@@ -180,10 +171,10 @@ public class KrScrollBar extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(new KrDrawableBrush(style.trackDrawable));
+        renderer.setBrush(new KrDrawableBrush(style.track));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        renderer.setBrush(new KrDrawableBrush(style.thumbDrawable));
+        renderer.setBrush(new KrDrawableBrush(style.thumb));
         renderer.fillRect(getThumbGeometry());
     }
 
@@ -240,18 +231,4 @@ public class KrScrollBar extends KrWidget {
         void scrolled(float newScrollValue);
     }
 
-    @AllArgsConstructor
-    public static class Style {
-        public Drawable trackDrawable;
-
-        public Drawable thumbDrawable;
-
-        public float size;
-
-        public KrPadding padding;
-
-        public Style copy() {
-            return new Style(trackDrawable, thumbDrawable, size, padding);
-        }
-    }
 }

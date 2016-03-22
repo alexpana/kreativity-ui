@@ -1,15 +1,12 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrLabelStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,11 +16,9 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * A simple label component
  */
-public class KrLabel extends KrWidget {
+public class KrLabel extends KrWidget<KrLabelStyle> {
 
     @Getter @Setter private String text;
-
-    @Setter private Style style;
 
     @Setter @Getter private KrAlignment textAlignment;
 
@@ -39,7 +34,7 @@ public class KrLabel extends KrWidget {
     @Override
     public void ensureUniqueStyle() {
         if (style == KrSkin.instance().getLabelStyle()) {
-            style = style.copy();
+            style = new KrLabelStyle(style);
         }
     }
 
@@ -73,7 +68,7 @@ public class KrLabel extends KrWidget {
     }
 
     @Override
-    public Object getStyle() {
+    public KrLabelStyle getStyle() {
         return style;
     }
 
@@ -82,17 +77,4 @@ public class KrLabel extends KrWidget {
         return toStringBuilder().type("KrLabel").toString();
     }
 
-    @AllArgsConstructor
-    public static final class Style {
-
-        public Drawable background;
-
-        public BitmapFont font;
-
-        public Color foregroundColor;
-
-        Style copy() {
-            return new Style(background, font, foregroundColor);
-        }
-    }
 }

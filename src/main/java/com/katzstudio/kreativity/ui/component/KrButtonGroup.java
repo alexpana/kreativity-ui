@@ -2,7 +2,7 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrButtonGroupStyle;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -15,15 +15,13 @@ import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
  * A button group contains a list of horizontal buttons, aligned and glued together. Only one button may be
  * toggled at any time.
  */
-public class KrButtonGroup extends KrPanel {
+public class KrButtonGroup extends KrWidget<KrButtonGroupStyle> {
 
     private final List<KrToggleButton> toggleButtons = new ArrayList<>();
 
     private KrToggleButton currentlyCheckedButton;
 
-    private Style style;
-
-    @Getter private boolean allowUncheck = true;
+    @Getter private boolean allowUnCheck = true;
 
     private boolean isAdjusting = false;
 
@@ -58,7 +56,7 @@ public class KrButtonGroup extends KrPanel {
             }
         } else {
             // unchecked
-            if (allowUncheck) {
+            if (allowUnCheck) {
                 currentlyCheckedButton = null;
             } else {
                 currentlyCheckedButton.setChecked(true);
@@ -79,20 +77,16 @@ public class KrButtonGroup extends KrPanel {
         }
     }
 
-    public void setAllowUncheck(boolean allowUncheck) {
-        this.allowUncheck = allowUncheck;
+    public void setAllowUnCheck(boolean allowUnCheck) {
+        this.allowUnCheck = allowUnCheck;
 
-        if (!allowUncheck && currentlyCheckedButton == null) {
+        if (!allowUnCheck && currentlyCheckedButton == null) {
             toggleButtons.get(0).setChecked(true);
         }
     }
 
     @Override
-    public Object getStyle() {
-        return style;
-    }
-
-    public void setStyle(Style style) {
+    public void setStyle(KrButtonGroupStyle style) {
         this.style = style;
         applyStyle();
     }
@@ -100,23 +94,8 @@ public class KrButtonGroup extends KrPanel {
     @Override
     public void ensureUniqueStyle() {
         if (style == KrSkin.instance().getButtonGroupStyle()) {
-            style = style.copy();
+            style = new KrButtonGroupStyle(style);
         }
     }
 
-    @AllArgsConstructor
-    public static class Style {
-
-        public KrButton.Style singleButtonStyle;
-
-        public KrButton.Style firstButtonStyle;
-
-        public KrButton.Style middleButtonStyle;
-
-        public KrButton.Style lastButtonStyle;
-
-        public Style copy() {
-            return new Style(singleButtonStyle, firstButtonStyle, middleButtonStyle, lastButtonStyle);
-        }
-    }
 }

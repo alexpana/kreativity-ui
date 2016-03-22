@@ -8,6 +8,7 @@ import com.katzstudio.kreativity.ui.component.KrListView;
 import com.katzstudio.kreativity.ui.component.KrListView.KrItemDelegate;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
+import com.katzstudio.kreativity.ui.style.KrLabelStyle;
 
 import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SELECTION_BACKGROUND;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDrawable;
@@ -33,16 +34,16 @@ public class KrListViewCellRenderer implements KrListView.Renderer {
             label = new KrLabel(value);
             label.ensureUniqueStyle();
             label.setPadding(new KrPadding(4, 4, 4, 4));
-            unselectedBackground = ((KrLabel.Style) label.getStyle()).background;
+            unselectedBackground = ((KrLabelStyle) label.getStyle()).background;
             selectedBackground = getDrawable(KrSkin.instance().getColor(SELECTION_BACKGROUND));
         }
 
         @Override
         public void setSelected(boolean selected) {
             if (selected) {
-                ((KrLabel.Style) label.getStyle()).background = selectedBackground;
+                ((KrLabelStyle) label.getStyle()).background = selectedBackground;
             } else {
-                ((KrLabel.Style) label.getStyle()).background = unselectedBackground;
+                ((KrLabelStyle) label.getStyle()).background = unselectedBackground;
             }
         }
 

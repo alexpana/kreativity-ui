@@ -12,6 +12,7 @@ import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
+import com.katzstudio.kreativity.ui.style.KrButtonStyle;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class KrButtonTest {
 
     private KrButton button;
 
-    private KrButton.Style buttonStyle;
+    private KrButtonStyle buttonStyle;
 
     private KrRenderer renderer;
 
@@ -64,7 +65,7 @@ public class KrButtonTest {
     public void testDrawHovered() throws Exception {
         button.handle(new KrEnterEvent());
         button.drawSelf(renderer);
-        verifyRendererCalledWithDrawable(buttonStyle.backgroundHovered);
+        verifyRendererCalledWithDrawable(buttonStyle.backgroundNormal);
     }
 
     @Test
@@ -84,7 +85,7 @@ public class KrButtonTest {
         button.handle(new KrMouseEvent(KrMouseEvent.Type.RELEASED, KrMouseEvent.Button.LEFT, null, null));
 
         button.drawSelf(renderer);
-        verifyRendererCalledWithDrawable(buttonStyle.backgroundHovered);
+        verifyRendererCalledWithDrawable(buttonStyle.backgroundNormal);
     }
 
     @Test

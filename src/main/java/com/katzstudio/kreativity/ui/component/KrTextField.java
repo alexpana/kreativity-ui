@@ -1,8 +1,6 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -15,7 +13,7 @@ import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrTextFieldStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,13 +24,11 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * The {@link KrTextField} class provides a widget that can display and edit plain text.
  */
-public class KrTextField extends KrWidget {
+public class KrTextField extends KrWidget<KrTextFieldStyle> {
 
     public static final int CARET_HEIGHT = 14;
 
     public static final int CARET_TOP_OFFSET = 3;
-
-    @Setter private Style style;
 
     protected final KrTextDocument textDocument;
 
@@ -45,7 +41,6 @@ public class KrTextField extends KrWidget {
         textDocument.addTextListener(this::onDocumentTextChanged);
         setFocusable(true);
         setStyle(KrSkin.instance().getTextFieldStyle());
-        setPadding(new KrPadding(1, 4, 4, 4));
         setCursor(KrCursor.IBEAM);
     }
 
@@ -56,13 +51,8 @@ public class KrTextField extends KrWidget {
     @Override
     public void ensureUniqueStyle() {
         if (style == KrSkin.instance().getTextFieldStyle()) {
-            style = style.copy();
+            style = new KrTextFieldStyle(style);
         }
-    }
-
-    @Override
-    public Object getStyle() {
-        return style;
     }
 
     @Override
@@ -174,7 +164,7 @@ public class KrTextField extends KrWidget {
 
         boolean componentClip = renderer.beginClip(innerGeometry);
 
-        // render background
+        // render checkboxBackground
         renderer.setBrush(new KrDrawableBrush(getBackgroundDrawable()));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
@@ -278,25 +268,4 @@ public class KrTextField extends KrWidget {
         return textDocument.getText();
     }
 
-    @AllArgsConstructor
-    public static class Style {
-
-        public Drawable backgroundNormal;
-
-        public Drawable backgroundHovered;
-
-        public Drawable backgroundFocused;
-
-        public BitmapFont font;
-
-        public Color foregroundColor;
-
-        public Color caretColor;
-
-        public Color selectionColor;
-
-        public Style copy() {
-            return new Style(backgroundNormal, backgroundHovered, backgroundFocused, font, foregroundColor, caretColor, selectionColor);
-        }
-    }
 }

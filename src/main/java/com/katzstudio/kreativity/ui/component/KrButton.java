@@ -1,7 +1,5 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -16,7 +14,7 @@ import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrButtonStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +25,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * A push button component.
  */
-public class KrButton extends KrWidget {
+public class KrButton extends KrWidget<KrButtonStyle> {
 
     protected enum State {
         NORMAL, HOVERED, ARMED
@@ -35,15 +33,9 @@ public class KrButton extends KrWidget {
 
     protected State state = State.NORMAL;
 
-    @Setter private Style style;
+    @Getter @Setter private String text;
 
-    @Getter
-    @Setter
-    private String text;
-
-    @Getter
-    @Setter
-    private KrAlignment textAlignment;
+    @Getter @Setter private KrAlignment textAlignment;
 
     private final List<Listener> listeners = Lists.newArrayList();
 
@@ -56,14 +48,9 @@ public class KrButton extends KrWidget {
     }
 
     @Override
-    public Object getStyle() {
-        return style;
-    }
-
-    @Override
     public void ensureUniqueStyle() {
         if (style == KrSkin.instance().getButtonStyle()) {
-            style = style.copy();
+            style = new KrButtonStyle(style);
         }
     }
 
@@ -148,7 +135,7 @@ public class KrButton extends KrWidget {
             case NORMAL:
                 return style.backgroundNormal;
             case HOVERED:
-                return style.backgroundHovered;
+                return style.backgroundNormal;
             case ARMED:
                 return style.backgroundArmed;
         }
@@ -164,29 +151,4 @@ public class KrButton extends KrWidget {
     public interface Listener {
         void clicked();
     }
-
-    @AllArgsConstructor
-    public static class Style {
-
-        public Drawable backgroundNormal;
-
-        public Drawable backgroundHovered;
-
-        public Drawable backgroundArmed;
-
-        public BitmapFont font;
-
-        public Color foregroundColor;
-
-        public Vector2 textShadowOffset;
-
-        public Color textShadowColor;
-
-        // TODO: icon
-
-        public Style copy() {
-            return new Style(backgroundNormal, backgroundHovered, backgroundArmed, font, foregroundColor, textShadowOffset, textShadowColor);
-        }
-    }
-
 }

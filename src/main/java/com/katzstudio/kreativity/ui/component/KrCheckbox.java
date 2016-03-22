@@ -1,13 +1,12 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrCheckboxStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +16,7 @@ import java.util.List;
 /**
  * A simple checkbox component that can be either checked or unchecked.
  */
-public class KrCheckbox extends KrWidget {
-
-    @Setter private Style style;
+public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
 
     @Getter @Setter private String text;
 
@@ -33,14 +30,9 @@ public class KrCheckbox extends KrWidget {
     }
 
     @Override
-    public Object getStyle() {
-        return style;
-    }
-
-    @Override
     public void ensureUniqueStyle() {
         if (style == KrSkin.instance().getCheckboxStyle()) {
-            style = style.copy();
+            style = new KrCheckboxStyle(style);
         }
     }
 
@@ -72,7 +64,7 @@ public class KrCheckbox extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(new KrDrawableBrush(style.background));
+        renderer.setBrush(new KrDrawableBrush(style.checkboxBackground));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
         if (model.getValue()) {
@@ -96,18 +88,6 @@ public class KrCheckbox extends KrWidget {
     @Override
     public String toString() {
         return toStringBuilder().type("KrCheckbox").toString();
-    }
-
-    @AllArgsConstructor
-    public static class Style {
-
-        public Drawable background;
-
-        public Drawable mark;
-
-        public Style copy() {
-            return new Style(background, mark);
-        }
     }
 
     public interface ValueListener {

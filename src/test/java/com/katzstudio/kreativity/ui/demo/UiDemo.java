@@ -46,6 +46,7 @@ public class UiDemo extends Game {
     private Color lightGray;
 
     private KrCanvas canvas;
+
     private KrWidget tooltip;
 
     public static void main(String[] args) {
@@ -115,8 +116,7 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("List View");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setName("list_view.label");
         label.setGeometry(0, 0, 60, 20);
 
@@ -142,8 +142,7 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Checkboxes");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setName("buttons.label");
         label.setGeometry(0, 0, 60, 20);
 
@@ -164,8 +163,7 @@ public class UiDemo extends Game {
 
     private KrWidget createButtons() {
         KrLabel label = new KrLabel("Buttons");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setName("buttons.label");
         label.setGeometry(0, 0, 100, 20);
 
@@ -184,8 +182,7 @@ public class UiDemo extends Game {
         toggleButton.setGeometry(0, 50, 100, 26);
 
         KrLabel groupLabel = new KrLabel("Toggle Button Group");
-        groupLabel.ensureUniqueStyle();
-        ((KrLabel.Style) groupLabel.getStyle()).foregroundColor = lightGray;
+        groupLabel.setForeground(lightGray);
         groupLabel.setName("buttons.groupLabel");
         groupLabel.setGeometry(0, 85, 160, 20);
 
@@ -198,7 +195,7 @@ public class UiDemo extends Game {
 
         KrButtonGroup buttonGroup = new KrButtonGroup(first, second, third);
         buttonGroup.setGeometry(0, 105, 160, 26);
-        buttonGroup.setAllowUncheck(false);
+        buttonGroup.setAllowUnCheck(false);
 
         KrPanel panel = new KrPanel();
         panel.setName("buttons.container");
@@ -217,8 +214,7 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Split Panel");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setGeometry(0, 0, 150, 20);
 
         KrSplitPanel splitPanel = new KrSplitPanel();
@@ -239,8 +235,7 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Scroll Panel");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setGeometry(0, 0, 150, 20);
 
         KrWidget panel = createDummyContent();
@@ -259,8 +254,7 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Scroll Bars");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setGeometry(0, 0, 150, 20);
 
         KrPanel verticalScrollBarPanel = createVerticalScrollBarPanel();
@@ -320,29 +314,24 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Horizontal Flow Layout");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setGeometry(0, 0, 180, 20);
 
         KrPanel panel = new KrPanel();
-        panel.ensureUniqueStyle();
-        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+        panel.setBackground(DARK_GRAY);
 
         panel.setLayout(new KrFlowLayout(HORIZONTAL, 5, 5));
 
         KrLabel labelA = new KrLabel("Label A");
-        labelA.ensureUniqueStyle();
-        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
+        labelA.setBackground(DARKER_GRAY);
         labelA.setName("flowlayoutH.labelA");
 
         KrLabel labelB = new KrLabel("Some very long label");
-        labelB.ensureUniqueStyle();
-        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
+        labelB.setBackground(DARKER_GRAY);
         labelB.setName("flowlayoutH.labelB");
 
         KrLabel labelC = new KrLabel("X");
-        labelC.ensureUniqueStyle();
-        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
+        labelC.setBackground(DARKER_GRAY);
         labelC.setName("flowlayoutH.labelC");
 
         panel.add(labelA);
@@ -360,29 +349,24 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Vertical Flow Layout");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setGeometry(0, 0, 180, 20);
 
         KrWidget panel = new KrPanel();
-        panel.ensureUniqueStyle();
-        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+        panel.setBackground(DARK_GRAY);
 
         panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
 
         KrLabel labelA = new KrLabel("First Row");
-        labelA.ensureUniqueStyle();
-        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
+        labelA.setBackground(DARKER_GRAY);
         labelA.setName("flowlayoutV.labelA");
 
         KrLabel labelB = new KrLabel("Second Row");
-        labelB.ensureUniqueStyle();
-        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
+        labelB.setBackground(DARKER_GRAY);
         labelB.setName("flowlayoutV.labelB");
 
         KrLabel labelC = new KrLabel("Third Row");
-        labelC.ensureUniqueStyle();
-        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
+        labelC.setBackground(DARKER_GRAY);
         labelC.setName("flowlayoutV.labelC");
 
         panel.add(labelA);
@@ -401,48 +385,41 @@ public class UiDemo extends Game {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Border Layout");
-        label.ensureUniqueStyle();
-        ((KrLabel.Style) label.getStyle()).foregroundColor = lightGray;
+        label.setForeground(lightGray);
         label.setGeometry(0, 0, 180, 20);
 
         KrWidget panel = new KrPanel();
-        panel.ensureUniqueStyle();
-        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+        panel.setBackground(DARK_GRAY);
         panel.setLayout(new KrBorderLayout(4, 4));
 
         KrLabel topWidget = new KrLabel("Top");
         topWidget.setName("borderlayout.top");
         topWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        topWidget.ensureUniqueStyle();
-        ((KrLabel.Style) topWidget.getStyle()).background = DARKER_GRAY;
+        topWidget.setBackground(DARKER_GRAY);
         topWidget.setPreferredSize(new Vector2(100, 40));
 
         KrLabel bottomWidget = new KrLabel("Bottom");
         bottomWidget.setName("borderlayout.bottom");
         bottomWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        bottomWidget.ensureUniqueStyle();
-        ((KrLabel.Style) bottomWidget.getStyle()).background = DARKER_GRAY;
+        bottomWidget.setBackground(DARKER_GRAY);
         bottomWidget.setPreferredSize(new Vector2(100, 20));
 
         KrLabel leftWidget = new KrLabel("W");
         leftWidget.setName("borderlayout.left");
         leftWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        leftWidget.ensureUniqueStyle();
-        ((KrLabel.Style) leftWidget.getStyle()).background = DARKER_GRAY;
+        leftWidget.setBackground(DARKER_GRAY);
         leftWidget.setPreferredSize(new Vector2(30, 20));
 
         KrLabel rightWidget = new KrLabel("E");
         rightWidget.setName("borderlayout.right");
         rightWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        rightWidget.ensureUniqueStyle();
-        ((KrLabel.Style) rightWidget.getStyle()).background = DARKER_GRAY;
+        rightWidget.setBackground(DARKER_GRAY);
         rightWidget.setPreferredSize(new Vector2(20, 20));
 
         KrLabel centerWidget = new KrLabel("CENTER");
         centerWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         centerWidget.setName("borderlayout.center");
-        centerWidget.ensureUniqueStyle();
-        ((KrLabel.Style) centerWidget.getStyle()).background = DARKER_GRAY;
+        centerWidget.setBackground(DARKER_GRAY);
         centerWidget.setPreferredSize(new Vector2(100, 20));
 
         panel.add(topWidget, KrBorderLayout.Constraint.NORTH);
@@ -464,8 +441,7 @@ public class UiDemo extends Game {
         KrPanel form = new KrPanel();
 
         KrLabel formLabel = new KrLabel("Grid Layout / Text Field / Spinner");
-        formLabel.ensureUniqueStyle();
-        ((KrLabel.Style) formLabel.getStyle()).foregroundColor = lightGray;
+        formLabel.setForeground(lightGray);
         formLabel.setName("grid_layout.form_label");
         formLabel.setPosition(0, 0);
 
@@ -506,24 +482,20 @@ public class UiDemo extends Game {
 
     public KrPanel createDummyContent() {
         KrPanel panel = new KrPanel();
-        panel.ensureUniqueStyle();
-        ((KrPanel.Style) panel.getStyle()).background = DARK_GRAY;
+        panel.setBackground(DARK_GRAY);
 
         panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
 
         KrLabel labelA = new KrLabel("First Row");
-        labelA.ensureUniqueStyle();
-        ((KrLabel.Style) labelA.getStyle()).background = DARKER_GRAY;
+        labelA.setBackground(DARKER_GRAY);
         labelA.setName("flowlayoutV.labelA");
 
         KrLabel labelB = new KrLabel("Second Row");
-        labelB.ensureUniqueStyle();
-        ((KrLabel.Style) labelB.getStyle()).background = DARKER_GRAY;
+        labelB.setBackground(DARKER_GRAY);
         labelB.setName("flowlayoutV.labelB");
 
         KrLabel labelC = new KrLabel("Third Row");
-        labelC.ensureUniqueStyle();
-        ((KrLabel.Style) labelC.getStyle()).background = DARKER_GRAY;
+        labelC.setBackground(DARKER_GRAY);
         labelC.setName("flowlayoutV.labelC");
 
         panel.add(labelA);

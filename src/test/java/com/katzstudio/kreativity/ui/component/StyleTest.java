@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Style related unit tests
+ * KrWidgetStyle related unit tests
  */
 @RunWith(JUnitParamsRunner.class)
 public class StyleTest {

@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Clipboard;
-import com.katzstudio.kreativity.ui.component.*;
+import com.katzstudio.kreativity.ui.component.KrPanel;
+import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
+import com.katzstudio.kreativity.ui.style.*;
 
 import static org.mockito.Mockito.mock;
 
@@ -22,41 +24,51 @@ public class TestObjectFactory {
         return mock(BitmapFont.class);
     }
 
-    public static KrPanel.Style createPanelStyle() {
-        return new KrPanel.Style(mock(Drawable.class));
+    public static KrPanelStyle createPanelStyle() {
+        KrPanelStyle panelStyle = new KrPanelStyle();
+        panelStyle.background = mock(Drawable.class);
+        return panelStyle;
     }
 
-    public static KrLabel.Style createLabelStyle() {
-        return new KrLabel.Style(mock(Drawable.class),
-                createBitmapFont(),
-                Color.BLACK);
+    public static KrLabelStyle createLabelStyle() {
+        KrLabelStyle labelStyle = new KrLabelStyle();
+        labelStyle.background = mock(Drawable.class);
+        labelStyle.font = createBitmapFont();
+        labelStyle.foregroundColor = Color.BLACK;
+        return labelStyle;
     }
 
-    public static KrButton.Style createButtonStyle() {
-        return new KrButton.Style(mock(Drawable.class),
-                mock(Drawable.class),
-                mock(Drawable.class),
-                createBitmapFont(),
-                Color.BLACK,
-                Vector2.Zero,
-                Color.BLACK);
+    public static KrButtonStyle createButtonStyle() {
+        KrButtonStyle buttonStyle = new KrButtonStyle();
+        buttonStyle.background = mock(Drawable.class);
+        buttonStyle.backgroundNormal = mock(Drawable.class);
+        buttonStyle.backgroundHovered = mock(Drawable.class);
+        buttonStyle.backgroundArmed = mock(Drawable.class);
+        buttonStyle.font = createBitmapFont();
+        buttonStyle.foregroundColor = Color.BLACK;
+        buttonStyle.textShadowColor = Color.BLACK;
+        buttonStyle.textShadowOffset = Vector2.Zero;
+        return buttonStyle;
     }
 
-    public static KrTextField.Style createTextFieldStyle() {
-        return new KrTextField.Style(
-                mock(Drawable.class),
-                mock(Drawable.class),
-                mock(Drawable.class),
-                createBitmapFont(),
-                Color.BLACK,
-                Color.BLACK,
-                Color.BLACK);
+    public static KrTextFieldStyle createTextFieldStyle() {
+        KrTextFieldStyle textFieldStyle = new KrTextFieldStyle();
+        textFieldStyle.background = mock(Drawable.class);
+        textFieldStyle.backgroundNormal = mock(Drawable.class);
+        textFieldStyle.backgroundFocused = mock(Drawable.class);
+        textFieldStyle.backgroundHovered = mock(Drawable.class);
+        textFieldStyle.font = createBitmapFont();
+        textFieldStyle.foregroundColor = Color.BLACK;
+        textFieldStyle.caretColor = Color.BLACK;
+        textFieldStyle.textShadowColor = Color.BLACK;
+        return textFieldStyle;
     }
 
-    public static KrCheckbox.Style createCheckBoxStyle() {
-        return new KrCheckbox.Style(
-                mock(Drawable.class),
-                mock(Drawable.class));
+    public static KrCheckboxStyle createCheckBoxStyle() {
+        KrCheckboxStyle checkboxStyle = new KrCheckboxStyle();
+        checkboxStyle.mark = mock(Drawable.class);
+        checkboxStyle.checkboxBackground = mock(Drawable.class);
+        return checkboxStyle;
     }
 
     public static KrCanvas createCanvas() {
@@ -64,8 +76,9 @@ public class TestObjectFactory {
     }
 
     public static KrWidget createWidget(String name, int x, int y, int width, int height) {
-        KrWidget widgetA = new KrWidget(name);
-        widgetA.setGeometry(x, y, width, height);
-        return widgetA;
+        KrWidget widget = new KrPanel();
+        widget.setName(name);
+        widget.setGeometry(x, y, width, height);
+        return widget;
     }
 }

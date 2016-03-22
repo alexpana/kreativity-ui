@@ -1,7 +1,9 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.event.*;
@@ -11,6 +13,7 @@ import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +24,7 @@ import java.util.List;
  * Base class for all Kreativity Components
  */
 @SuppressWarnings({"UnusedParameters", "unused"})
-public class KrWidget {
+public class KrWidget<S extends KrWidgetStyle> {
 
     public static final String FOCUS_PROPERTY = "property.focus";
 
@@ -33,7 +36,7 @@ public class KrWidget {
 
     @Getter private float height;
 
-    @Getter private final ArrayList<KrWidget> children = Lists.newArrayList();
+    @Getter private final ArrayList<KrWidget<? extends KrWidgetStyle>> children = Lists.newArrayList();
 
     @Getter private KrWidget parent;
 
@@ -47,9 +50,11 @@ public class KrWidget {
 
     @Getter @Setter private boolean isEnabled = true;
 
-    @Getter @Setter private String name;
+    @Getter private boolean isValid = true;
 
-    @Getter @Setter private KrPadding padding = new KrPadding(0);
+    @Getter private boolean isFocusable = false;
+
+    @Getter @Setter private String name;
 
     @Setter private KrCanvas canvas;
 
@@ -67,13 +72,9 @@ public class KrWidget {
 
     @Setter private Vector2 preferredSize;
 
-    @Getter private boolean isValid = true;
-
-    @Getter private boolean isFocusable = false;
-
     @Getter @Setter private boolean clipRendering = true;
 
-    @Getter @Setter private KrCursor cursor;
+    @Getter @Setter protected S style;
 
     public KrWidget() {
     }
@@ -103,8 +104,40 @@ public class KrWidget {
     public void ensureUniqueStyle() {
     }
 
-    public Object getStyle() {
-        return null;
+    public Drawable getBackground() {
+        return style.background;
+    }
+
+    public void setBackground(Drawable background) {
+        ensureUniqueStyle();
+        style.background = background;
+    }
+
+    public Color getForeground() {
+        return style.foregroundColor;
+    }
+
+    public void setForeground(Color foreground) {
+        ensureUniqueStyle();
+        style.foregroundColor = foreground;
+    }
+
+    public KrPadding getPadding() {
+        return style.padding;
+    }
+
+    public void setPadding(KrPadding padding) {
+        ensureUniqueStyle();
+        style.padding = padding;
+    }
+
+    public KrCursor getCursor() {
+        return style.cursor;
+    }
+
+    public void setCursor(KrCursor cursor) {
+        ensureUniqueStyle();
+        style.cursor = cursor;
     }
 
     /**
@@ -559,8 +592,8 @@ public class KrWidget {
     }
 
     protected boolean enterEvent(KrEnterEvent event) {
-        if (KrToolkit.getDefaultToolkit().getCursor() != cursor) {
-            KrToolkit.getDefaultToolkit().setCursor(cursor);
+        if (KrToolkit.getDefaultToolkit().getCursor() != getCursor()) {
+            KrToolkit.getDefaultToolkit().setCursor(getCursor());
         }
         notifyMouseEnter(event);
         return event.handled();

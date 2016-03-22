@@ -13,7 +13,7 @@ import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import lombok.AllArgsConstructor;
+import com.katzstudio.kreativity.ui.style.KrSplitPanelStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +26,7 @@ import static com.katzstudio.kreativity.ui.KrAlignmentTool.alignRectangles;
 /**
  * Container panel that splits it's area between children. Areas can be resized.
  */
-public class KrSplitPanel extends KrWidget {
+public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
 
     private static final int SEPARATOR_SIZE = 2;
 
@@ -35,8 +35,6 @@ public class KrSplitPanel extends KrWidget {
     private final List<Cell> cells = Lists.newArrayList();
 
     private final CellSizePolicyModel cellSizePolicyModel = new CellSizePolicyModel();
-
-    @Setter private Style style;
 
     public KrSplitPanel() {
         setLayout(new LayoutManager());
@@ -117,14 +115,9 @@ public class KrSplitPanel extends KrWidget {
     }
 
     @Override
-    public Object getStyle() {
-        return style;
-    }
-
-    @Override
     public void ensureUniqueStyle() {
         if (style == KrSkin.instance().getSplitPanelStyle()) {
-            style = style.copy();
+            style = new KrSplitPanelStyle(style);
         }
     }
 
@@ -215,13 +208,13 @@ public class KrSplitPanel extends KrWidget {
 
         @Override
         protected void drawSelf(KrRenderer renderer) {
-            Drawable grip = style.splitterGrip;
+            Drawable grip = KrSplitPanel.this.style.splitterGrip;
 
             Rectangle gripRectangle = new Rectangle(0, 0, grip.getMinWidth(), grip.getMinHeight());
             Rectangle geometryRectangle = new Rectangle(0, 0, getWidth(), getHeight());
             gripRectangle.setPosition(alignRectangles(gripRectangle, geometryRectangle, MIDDLE_CENTER));
 
-            renderer.setBrush(new KrDrawableBrush(style.splitterBackground));
+            renderer.setBrush(new KrDrawableBrush(KrSplitPanel.this.style.splitterBackground));
             renderer.fillRect(geometryRectangle);
 
             renderer.setBrush(new KrDrawableBrush(grip));
@@ -259,17 +252,4 @@ public class KrSplitPanel extends KrWidget {
         }
     }
 
-    @AllArgsConstructor
-    public static class Style {
-
-        public Drawable background;
-
-        public Drawable splitterBackground;
-
-        public Drawable splitterGrip;
-
-        public Style copy() {
-            return new Style(background, splitterBackground, splitterGrip);
-        }
-    }
 }

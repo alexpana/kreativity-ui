@@ -62,7 +62,7 @@ public class KrCollapsiblePanel extends Table {
 
         iconPanel = new KrIconPanel(KrFontAwesomeGlyph.CARET_DOWN);
 
-        background(uiContext.getSkin().getDrawable("collapsiblepanel.background"));
+        background(uiContext.getSkin().getDrawable("collapsiblepanel.checkboxBackground"));
         getBackground().setTopHeight(2);
 
         add(titleLabel);
