@@ -16,6 +16,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import static com.badlogic.gdx.Input.Keys.*;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.*;
@@ -113,8 +116,15 @@ public class KrCanvas implements InputProcessor {
      * @param deltaSeconds the time, in seconds, since the last update
      */
     public void update(float deltaSeconds) {
-        // TODO(alex): call update for each widget
-        rootPanel.update(deltaSeconds);
+        Queue<KrWidget> widgets = new LinkedList<>();
+        widgets.add(rootPanel);
+        widgets.add(overlayPanel);
+
+        while (!widgets.isEmpty()) {
+            KrWidget widget = widgets.poll();
+            widget.update(deltaSeconds);
+            widgets.addAll(widget.getChildren());
+        }
     }
 
     private KeyRepeatTask getKeyRepeatTask() {

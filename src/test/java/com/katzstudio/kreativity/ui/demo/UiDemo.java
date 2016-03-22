@@ -100,6 +100,11 @@ public class UiDemo extends Game {
                 renderer.setPen(new KrPen(1, KrColor.rgb(0x909090)));
                 renderer.drawTextWithShadow("Tooltip text", new Vector2(10, 9), new Vector2(0, 1), KrColor.rgb(0x101010));
             }
+
+            @Override
+            public void update(float deltaSeconds) {
+                setPosition(Gdx.input.getX(), Gdx.input.getY() + 20);
+            }
         };
 
         canvas.setGeometry(10, 300, 200, 200);
@@ -530,8 +535,6 @@ public class UiDemo extends Game {
 
     @Override
     public void render() {
-        tooltip.setPosition(Gdx.input.getX(), Gdx.input.getY() + 20);
-
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         canvas.update(Gdx.graphics.getDeltaTime());
         canvas.draw();
