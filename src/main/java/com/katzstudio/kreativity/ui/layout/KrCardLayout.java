@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class KrCardLayout implements KrLayout {
 
-    private final Map<Object, KrPanel> cards = new HashMap<>();
+    private final Map<Object, KrWidget> cards = new HashMap<>();
 
     private final Map<KrWidget, Object> widgetToCardMap = new HashMap<>();
 
@@ -29,8 +29,8 @@ public class KrCardLayout implements KrLayout {
         if (visibleCard != card) {
             visibleCard = card;
 
-            for (KrPanel cardPanel : cards.values()) {
-                cardPanel.setVisible(false);
+            for (KrWidget widget : cards.values()) {
+                widget.setVisible(false);
             }
             cards.get(visibleCard).setVisible(true);
         }
@@ -42,7 +42,7 @@ public class KrCardLayout implements KrLayout {
 
     @Override
     public void setGeometry(Rectangle geometry) {
-        for (KrPanel card : cards.values()) {
+        for (KrWidget card : cards.values()) {
             card.setGeometry(geometry);
         }
     }
@@ -72,14 +72,13 @@ public class KrCardLayout implements KrLayout {
     public void addWidget(KrWidget child, Object layoutConstraint) {
         widgets.add(child);
 
-        KrPanel cardPanel = new KrPanel(new KrBorderLayout());
-        cardPanel.add(child, KrBorderLayout.Constraint.CENTER);
-
-        cards.put(layoutConstraint, cardPanel);
+        cards.put(layoutConstraint, child);
         widgetToCardMap.put(child, layoutConstraint);
 
         if (visibleCard == null) {
             visibleCard = layoutConstraint;
+        } else {
+            child.setVisible(false);
         }
     }
 

@@ -12,10 +12,7 @@ import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
-import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
-import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
-import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
-import com.katzstudio.kreativity.ui.layout.KrGridLayout;
+import com.katzstudio.kreativity.ui.layout.*;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
@@ -88,6 +85,63 @@ public class UiDemo extends Game {
         canvas.getRootPanel().add(createScrollPanel());
         canvas.getRootPanel().add(createSplitPanel());
         canvas.getRootPanel().add(createListView());
+        canvas.getRootPanel().add(createStackLayout());
+    }
+
+    private KrWidget createStackLayout() {
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel titleLabel = new KrLabel("Card Layout");
+        titleLabel.setForeground(lightGray);
+        titleLabel.setName("list_view.titleLabel");
+        titleLabel.setGeometry(0, 0, 180, 20);
+
+        KrCardLayout cardLayout = new KrCardLayout();
+        KrPanel layoutContainer = new KrPanel(cardLayout);
+        layoutContainer.add(createDummyLabel("Card A"), 0);
+        layoutContainer.add(createDummyLabel("Card B"), 1);
+        layoutContainer.add(createDummyLabel("Card C"), 2);
+        layoutContainer.setGeometry(0, 42, 180, 58);
+
+        KrToggleButton cardASelector = new KrToggleButton("Card A");
+        cardASelector.addToggleListener(isChecked -> {
+            if (isChecked) {
+                cardLayout.setCard(0);
+            }
+        });
+
+        KrToggleButton cardBSelector = new KrToggleButton("Card B");
+        cardBSelector.addToggleListener(isChecked -> {
+            if (isChecked) {
+                cardLayout.setCard(1);
+            }
+        });
+
+        KrToggleButton cardCSelector = new KrToggleButton("Card C");
+        cardCSelector.addToggleListener(isChecked -> {
+            if (isChecked) {
+                cardLayout.setCard(2);
+            }
+        });
+
+        KrButtonGroup cardSelector = new KrButtonGroup(cardASelector, cardBSelector, cardCSelector);
+        cardSelector.setAllowUnCheck(false);
+        cardSelector.setGeometry(0, 20, 180, 20);
+
+        wrapper.add(titleLabel);
+        wrapper.add(cardSelector);
+        wrapper.add(layoutContainer);
+
+        wrapper.setGeometry(190, 380, 180, 100);
+
+        return wrapper;
+    }
+
+    private KrLabel createDummyLabel(String text) {
+        KrLabel label = new KrLabel(text);
+        label.setBackground(DARK_GRAY);
+        label.setTextAlignment(KrAlignment.MIDDLE_CENTER);
+        return label;
     }
 
     private KrWidget createCanvas() {
