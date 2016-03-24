@@ -44,8 +44,6 @@ public class UiDemo extends Game {
 
     private KrCanvas canvas;
 
-    private KrWidget tooltip;
-
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setWindowedMode(840, 600);
@@ -71,9 +69,6 @@ public class UiDemo extends Game {
         KrSkin.instance().install();
         canvas = new KrCanvas();
         Gdx.input.setInputProcessor(canvas);
-
-//        tooltip = createCanvas();
-//        canvas.getOverlayPanel().add(tooltip);
 
         canvas.getRootPanel().add(createButtons());
         canvas.getRootPanel().add(createGridLayout());
@@ -157,28 +152,6 @@ public class UiDemo extends Game {
         label.setBackground(DARK_GRAY);
         label.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         return label;
-    }
-
-    private KrWidget createCanvas() {
-        KrPanel canvas = new KrPanel() {
-            @Override
-            protected void drawSelf(KrRenderer renderer) {
-                renderer.setBrush(new KrColorBrush(0x202020, 0.95f));
-                int radius = 3;
-                renderer.fillRoundedRect(0, 0, 75, 26, radius);
-
-                renderer.setPen(new KrPen(1, KrColor.rgb(0x909090)));
-                renderer.drawTextWithShadow("Tooltip text", new Vector2(10, 9), new Vector2(0, 1), KrColor.rgb(0x101010));
-            }
-
-            @Override
-            public void update(float deltaSeconds) {
-                setPosition(Gdx.input.getX(), Gdx.input.getY() + 20);
-            }
-        };
-
-        canvas.setGeometry(10, 300, 200, 200);
-        return canvas;
     }
 
     private KrPanel createListView() {
