@@ -72,9 +72,9 @@ public class UiDemo extends Game {
         canvas = new KrCanvas();
         Gdx.input.setInputProcessor(canvas);
 
-        tooltip = createCanvas();
+//        tooltip = createCanvas();
+//        canvas.getOverlayPanel().add(tooltip);
 
-        canvas.getOverlayPanel().add(tooltip);
         canvas.getRootPanel().add(createButtons());
         canvas.getRootPanel().add(createGridLayout());
         canvas.getRootPanel().add(createCheckboxes());
@@ -109,6 +109,7 @@ public class UiDemo extends Game {
                 cardLayout.setCard(0);
             }
         });
+        cardASelector.setTooltipText("Select first card");
 
         KrToggleButton cardBSelector = new KrToggleButton("Card B");
         cardBSelector.addToggleListener(isChecked -> {
@@ -116,6 +117,7 @@ public class UiDemo extends Game {
                 cardLayout.setCard(1);
             }
         });
+        cardBSelector.setTooltipText("Select second card");
 
         KrToggleButton cardCSelector = new KrToggleButton("Card C");
         cardCSelector.addToggleListener(isChecked -> {

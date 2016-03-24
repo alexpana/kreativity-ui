@@ -76,6 +76,8 @@ public class KrWidget<S extends KrWidgetStyle> {
 
     @Getter @Setter protected S style;
 
+    @Getter @Setter protected String tooltipText;
+
     public KrWidget() {
     }
 

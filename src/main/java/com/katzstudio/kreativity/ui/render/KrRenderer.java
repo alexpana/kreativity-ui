@@ -154,6 +154,10 @@ public class KrRenderer {
         }
     }
 
+    public void fillRoundedRect(Rectangle geometry, int radius) {
+        fillRoundedRect((int) geometry.x, (int) geometry.y, (int) geometry.width, (int) geometry.height, radius);
+    }
+
     public void fillRoundedRect(int x, int y, int w, int h, int cornerRadius) {
         Drawable drawable = getRoundedRectDrawable(cornerRadius);
 

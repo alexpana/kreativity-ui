@@ -15,10 +15,7 @@ import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 import static com.badlogic.gdx.Input.Keys.*;
 import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.*;
@@ -68,6 +65,10 @@ public class KrCanvas implements InputProcessor {
 
     @Getter private final KrFocusManager focusManager;
 
+    private final List<KrInputListener> listeners = new ArrayList<>();
+
+    private KrTooltipManager tooltipManager;
+
     public KrCanvas() {
         this(new KrRenderer(), Gdx.app.getClipboard(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -85,12 +86,16 @@ public class KrCanvas implements InputProcessor {
 
         focusManager = new KrFocusManager(rootPanel);
 
+        tooltipManager = new KrTooltipManager(this);
+
         rootPanel.addWidgetListener(new KrWidget.KrWidgetListener.KrAbstractWidgetListener() {
             @Override
             public void invalidated() {
                 focusManager.refresh();
             }
         });
+
+        overlayPanel.add(tooltipManager.getTooltipWidget());
 
         this.renderer = renderer;
         setSize(width, height);
@@ -335,6 +340,8 @@ public class KrCanvas implements InputProcessor {
             return false;
         }
 
+        notifyEventDispatched(widget, event);
+
         boolean handled = widget.handle(event);
 
         while (!handled && widget.getParent() != null) {
@@ -426,6 +433,22 @@ public class KrCanvas implements InputProcessor {
 
     public void focusPrevious() {
         requestFocus(focusManager.previousFocusable(keyboardFocusHolder));
+    }
+
+    public void addInputListener(KrInputListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(KrInputListener listener) {
+        listeners.remove(listener);
+    }
+
+    protected void notifyEventDispatched(KrWidget widget, KrEvent event) {
+        listeners.forEach(l -> l.eventDispatched(widget, event));
+    }
+
+    public interface KrInputListener {
+        void eventDispatched(KrWidget widget, KrEvent event);
     }
 
     /**
