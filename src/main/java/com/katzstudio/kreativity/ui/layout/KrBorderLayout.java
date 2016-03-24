@@ -130,6 +130,11 @@ public class KrBorderLayout implements KrLayout {
 
     @Override
     public void addWidget(KrWidget child, Object layoutConstraint) {
+
+        if (layoutConstraint == null) {
+            layoutConstraint = CENTER;
+        }
+
         if (!(layoutConstraint instanceof Constraint)) {
             throw new IllegalArgumentException("Unknown constraint: " + layoutConstraint);
         }

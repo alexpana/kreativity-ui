@@ -20,6 +20,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
+
 /**
  * Base class for all Kreativity Components
  */
@@ -77,6 +79,8 @@ public class KrWidget<S extends KrWidgetStyle> {
     @Getter @Setter protected S style;
 
     @Getter @Setter protected String tooltipText;
+
+    @Getter @Setter protected KrWidget tooltipWidget;
 
     public KrWidget() {
     }
@@ -197,8 +201,10 @@ public class KrWidget<S extends KrWidgetStyle> {
     /**
      * Removes all the children of this widget
      */
-    public void clear() {
-        children.forEach(this::remove);
+    public void removeAll() {
+        while (getChildCount() > 0) {
+            remove(getChild(0));
+        }
     }
 
     /**
@@ -434,7 +440,7 @@ public class KrWidget<S extends KrWidgetStyle> {
         }
 
         if (!(layout instanceof KrAbsoluteLayout)) {
-            return layout.getPreferredSize();
+            return rectangles(layout.getPreferredSize()).expand(getPadding()).size();
         }
 
         return calculatePreferredSize();

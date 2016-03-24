@@ -143,7 +143,7 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
     }
 
     private void onModelDataChanged() {
-        innerPanel.clear();
+        innerPanel.removeAll();
         delegates.clear();
 
         for (int i = 0; i < model.getRowCount(); ++i) {

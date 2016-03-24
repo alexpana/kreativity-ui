@@ -125,6 +125,7 @@ public class UiDemo extends Game {
                 cardLayout.setCard(2);
             }
         });
+        cardCSelector.setTooltipWidget(createTooltipWidget());
 
         KrButtonGroup cardSelector = new KrButtonGroup(cardASelector, cardBSelector, cardCSelector);
         cardSelector.setAllowUnCheck(false);
@@ -137,6 +138,18 @@ public class UiDemo extends Game {
         wrapper.setGeometry(190, 380, 180, 100);
 
         return wrapper;
+    }
+
+    private KrWidget createTooltipWidget() {
+        KrPanel tooltipWidget = new KrPanel();
+
+        tooltipWidget.setLayout(new KrFlowLayout(VERTICAL));
+
+        tooltipWidget.add(new KrLabel("First row"));
+        tooltipWidget.add(new KrLabel("Second row"));
+        tooltipWidget.add(new KrLabel("the end"));
+
+        return tooltipWidget;
     }
 
     private KrLabel createDummyLabel(String text) {
