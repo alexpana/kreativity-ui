@@ -79,6 +79,10 @@ public class KrWidget<S extends KrWidgetStyle> {
     public KrWidget() {
     }
 
+    public KrWidget(S style) {
+        setStyle(style);
+    }
+
     public KrWidget(String name) {
         this.name = name;
     }

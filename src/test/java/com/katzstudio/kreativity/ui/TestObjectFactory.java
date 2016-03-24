@@ -24,14 +24,21 @@ public class TestObjectFactory {
         return mock(BitmapFont.class);
     }
 
+    public static KrWidgetStyle createWidgetStyle() {
+        KrWidgetStyle widgetStyle = new KrWidgetStyle();
+        widgetStyle.padding = new KrPadding(0, 0, 0, 0);
+        widgetStyle.cursor = KrCursor.ARROW;
+        return widgetStyle;
+    }
+
     public static KrPanelStyle createPanelStyle() {
-        KrPanelStyle panelStyle = new KrPanelStyle();
+        KrPanelStyle panelStyle = new KrPanelStyle(createWidgetStyle());
         panelStyle.background = mock(Drawable.class);
         return panelStyle;
     }
 
     public static KrLabelStyle createLabelStyle() {
-        KrLabelStyle labelStyle = new KrLabelStyle();
+        KrLabelStyle labelStyle = new KrLabelStyle(createWidgetStyle());
         labelStyle.background = mock(Drawable.class);
         labelStyle.font = createBitmapFont();
         labelStyle.foregroundColor = Color.BLACK;
@@ -39,7 +46,7 @@ public class TestObjectFactory {
     }
 
     public static KrButtonStyle createButtonStyle() {
-        KrButtonStyle buttonStyle = new KrButtonStyle();
+        KrButtonStyle buttonStyle = new KrButtonStyle(createWidgetStyle());
         buttonStyle.background = mock(Drawable.class);
         buttonStyle.backgroundNormal = mock(Drawable.class);
         buttonStyle.backgroundHovered = mock(Drawable.class);
@@ -52,7 +59,7 @@ public class TestObjectFactory {
     }
 
     public static KrTextFieldStyle createTextFieldStyle() {
-        KrTextFieldStyle textFieldStyle = new KrTextFieldStyle();
+        KrTextFieldStyle textFieldStyle = new KrTextFieldStyle(createWidgetStyle());
         textFieldStyle.background = mock(Drawable.class);
         textFieldStyle.backgroundNormal = mock(Drawable.class);
         textFieldStyle.backgroundFocused = mock(Drawable.class);
@@ -64,11 +71,27 @@ public class TestObjectFactory {
         return textFieldStyle;
     }
 
+    public static KrTextFieldStyle createSpinnerStyle() {
+        return createTextFieldStyle();
+    }
+
     public static KrCheckboxStyle createCheckBoxStyle() {
-        KrCheckboxStyle checkboxStyle = new KrCheckboxStyle();
+        KrCheckboxStyle checkboxStyle = new KrCheckboxStyle(createWidgetStyle());
         checkboxStyle.mark = mock(Drawable.class);
         checkboxStyle.checkboxBackground = mock(Drawable.class);
         return checkboxStyle;
+    }
+
+    public static KrScrollBarStyle createVerticalScrollBarStyle() {
+        KrScrollBarStyle style = new KrScrollBarStyle(createWidgetStyle());
+        style.size = 5;
+        style.thumb = mock(Drawable.class);
+        style.track = mock(Drawable.class);
+        return style;
+    }
+
+    public static KrScrollBarStyle createHorizontalScrollBarStyle() {
+        return createVerticalScrollBarStyle();
     }
 
     public static KrCanvas createCanvas() {

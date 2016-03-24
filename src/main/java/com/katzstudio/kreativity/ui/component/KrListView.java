@@ -57,6 +57,8 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
         verticalScrollBar.addScrollListener(this::onScroll);
         selectionModel.addSelectionListener(this::onSelectionChanged);
 
+        setStyle(KrSkin.instance().getListViewStyle());
+
         setLayout(new Layout());
         add(innerPanel);
         add(verticalScrollBar);

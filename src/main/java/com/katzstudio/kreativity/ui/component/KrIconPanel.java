@@ -23,6 +23,7 @@ public class KrIconPanel extends KrWidget {
     public KrIconPanel(KrFontAwesomeGlyph iconGlyph) {
         this.iconGlyph = iconGlyph;
         this.fontAwesome = KrSkin.instance().getFontAwesome();
+        setStyle(KrSkin.instance().getWidgetStyle());
         setSize(calculatePreferredSize());
     }
 

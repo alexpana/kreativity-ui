@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.TestUtils;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
@@ -24,11 +25,7 @@ public class StyleTest {
 
     // Sadly, JUnitParamsRunner calls the parameters before calling @BeforeClass
     static {
-        KrSkin.instance().setPanelStyle(createPanelStyle());
-        KrSkin.instance().setLabelStyle(createLabelStyle());
-        KrSkin.instance().setButtonStyle(createButtonStyle());
-        KrSkin.instance().setTextFieldStyle(createTextFieldStyle());
-        KrSkin.instance().setCheckboxStyle(createCheckBoxStyle());
+        TestUtils.initializeTestStyles();
 
         KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
         when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));

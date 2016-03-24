@@ -8,6 +8,7 @@ import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import static com.katzstudio.kreativity.ui.KrToolkit.setDefault;
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createButtonStyle;
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createLabelStyle;
+import static com.katzstudio.kreativity.ui.TestObjectFactory.createWidgetStyle;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -35,20 +37,19 @@ public class InputListenerDispatchTest {
     private final KrWidget testObject;
 
     static {
+        TestUtils.initializeTestStyles();
+
         KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
         when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
         KrToolkit toolkit = mock(KrToolkit.class);
         when(toolkit.fontMetrics()).thenReturn(fontMetricsMock);
         setDefault(toolkit);
-
-        KrSkin.instance().setButtonStyle(createButtonStyle());
-        KrSkin.instance().setLabelStyle(createLabelStyle());
     }
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object[]> testCases() {
         return Arrays.asList(new Object[][]{
-                {"KrWidget", new KrWidget()},
+                {"KrWidget", new KrWidget<>(createWidgetStyle())},
                 {"KrLabel", new KrLabel("")},
                 {"KrButton", new KrButton("")},
                 {"KrCheckbox", new KrCheckbox()},
