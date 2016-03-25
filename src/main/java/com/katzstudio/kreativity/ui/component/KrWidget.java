@@ -298,7 +298,14 @@ public class KrWidget<S extends KrWidgetStyle> {
      * Validates the widget by layouting its children
      */
     public void validate() {
-        layout.setGeometry(new Rectangle(0, 0, getWidth(), getHeight()));
+        if (isValid) {
+            return;
+        }
+
+        KrPadding padding = getPadding();
+        Rectangle geometry = new Rectangle(0, 0, getWidth(), getHeight());
+        Rectangle layoutRectangle = rectangles(geometry).shrink(padding).value();
+        layout.setGeometry(layoutRectangle);
         isValid = true;
     }
 

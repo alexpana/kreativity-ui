@@ -360,9 +360,8 @@ public class UiDemo extends Game {
         label.setGeometry(0, 0, 180, 20);
 
         KrPanel panel = new KrPanel();
-        panel.setBackground(DARK_GRAY);
-
         panel.setLayout(new KrFlowLayout(HORIZONTAL, 5, 5));
+        panel.setBackground(DARK_GRAY);
 
         KrLabel labelA = new KrLabel("Label A");
         labelA.setBackground(DARKER_GRAY);

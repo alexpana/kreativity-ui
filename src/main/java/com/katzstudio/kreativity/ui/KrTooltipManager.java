@@ -16,6 +16,7 @@ import lombok.Getter;
  * The tooltip manager registers tooltips for each components, and makes sure the
  * correct tooltip is displayed when necessary.
  */
+
 public class KrTooltipManager {
 
     @Getter private final KrTooltipWidget tooltipWidget;

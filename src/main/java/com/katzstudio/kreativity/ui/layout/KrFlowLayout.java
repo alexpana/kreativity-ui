@@ -67,8 +67,8 @@ public class KrFlowLayout implements KrLayout {
 
         List<Integer> sizes = sizePolicyModel.getIntSizes(widgetAvailableSpace);
 
-        float cellX = horizontalPadding;
-        float cellY = verticalPadding;
+        float cellX = horizontalPadding + geometry.x;
+        float cellY = verticalPadding + geometry.y;
         float cellHeight = 0;
         float cellWidth = 0;
         int widgetIndex = 0;

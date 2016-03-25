@@ -41,36 +41,38 @@ public class KrBorderLayout implements KrLayout {
         // NORTH
         KrWidget northWidget = constraints.get(NORTH);
         float northWidgetHeight = northWidget != null ? northWidget.getPreferredSize().y : 0;
-        Rectangle northCell = new Rectangle(horizontalPadding, verticalPadding, geometry.getWidth() - 2 * horizontalPadding, northWidgetHeight);
+        Rectangle northCell = new Rectangle(geometry.x + horizontalPadding, geometry.y + verticalPadding, geometry.getWidth() - 2 * horizontalPadding, northWidgetHeight);
 
         // SOUTH
         KrWidget southWidget = constraints.get(Constraint.SOUTH);
         float southWidgetHeight = southWidget != null ? southWidget.getPreferredSize().y : 0;
-        Rectangle southCell = new Rectangle(horizontalPadding, verticalPadding, geometry.getWidth() - 2 * horizontalPadding, southWidgetHeight);
+        Rectangle southCell = new Rectangle(geometry.x + horizontalPadding, geometry.y + verticalPadding, geometry.getWidth() - 2 * horizontalPadding, southWidgetHeight);
 
         float centerHeight = geometry.getHeight() - 4 * verticalPadding - southCell.height - northCell.height;
 
         // WEST
         KrWidget westWidget = constraints.get(Constraint.WEST);
         float westWidgetWidth = westWidget != null ? westWidget.getPreferredSize().x : 0;
-        Rectangle westCell = new Rectangle(horizontalPadding,
-                verticalPadding * 2 + northCell.getHeight(),
+        Rectangle westCell = new Rectangle(
+                geometry.x + horizontalPadding,
+                geometry.y + verticalPadding * 2 + northCell.getHeight(),
                 westWidgetWidth,
                 centerHeight);
 
         // EAST
         KrWidget eastWidget = constraints.get(Constraint.EAST);
         float eastWidgetWidth = eastWidget != null ? eastWidget.getPreferredSize().x : 0;
-        Rectangle eastCell = new Rectangle(geometry.getWidth() - horizontalPadding - eastWidgetWidth,
-                verticalPadding * 2 + northWidgetHeight,
+        Rectangle eastCell = new Rectangle(
+                geometry.x + geometry.getWidth() - horizontalPadding - eastWidgetWidth,
+                geometry.y + verticalPadding * 2 + northWidgetHeight,
                 eastWidgetWidth,
                 centerHeight);
 
         // CENTER
         KrWidget centerWidget = constraints.get(Constraint.CENTER);
         Rectangle centerCell = new Rectangle(
-                horizontalPadding * 2 + westWidgetWidth,
-                verticalPadding * 2 + northWidgetHeight,
+                geometry.x + horizontalPadding * 2 + westWidgetWidth,
+                geometry.y + verticalPadding * 2 + northWidgetHeight,
                 geometry.getWidth() - 4 * horizontalPadding - westWidgetWidth - eastWidgetWidth,
                 centerHeight);
 
