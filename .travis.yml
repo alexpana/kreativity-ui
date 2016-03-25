@@ -1,4 +1,4 @@
 language: java
 jdk: oraclejdk8
 after_failure:
-  cat build/reports/tests/index.html
+  pwd && cat build/reports/tests/index.html

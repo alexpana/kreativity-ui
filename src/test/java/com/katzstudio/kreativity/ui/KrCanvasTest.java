@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
+import org.junit.Before;
 import org.junit.Test;
 
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createCanvas;
@@ -18,6 +19,11 @@ import static org.mockito.Mockito.*;
  * Unit tests for {@link KrCanvas}
  */
 public class KrCanvasTest {
+
+    @Before
+    public void setUp() throws Exception {
+        TestUtils.initializeTestStyles();
+    }
 
     @Test
     public void testFindWidgetSimple() {
