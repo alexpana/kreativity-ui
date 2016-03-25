@@ -25,6 +25,13 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 }
 
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
+
 dependencies {
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
 
