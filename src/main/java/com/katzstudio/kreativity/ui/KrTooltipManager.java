@@ -13,6 +13,8 @@ import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import com.katzstudio.kreativity.ui.util.KrUpdatable;
 import lombok.Getter;
 
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
+
 /**
  * The tooltip manager registers tooltips for each components, and makes sure the
  * correct tooltip is displayed when necessary.
@@ -77,7 +79,7 @@ public class KrTooltipManager implements KrUpdatable {
             textLabel = new KrLabel("");
             textLabel.setTextAlignment(KrAlignment.MIDDLE_CENTER);
 
-            setStyle(KrSkin.instance().getWidgetStyle());
+            setStyle(getDefaultToolkit().getSkin().getWidgetStyle());
 
             setPadding(new KrPadding(6, 6, 6, 6));
             setLayout(new KrBorderLayout());

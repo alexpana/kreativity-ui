@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
@@ -15,6 +14,7 @@ import lombok.Setter;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 import static com.katzstudio.kreativity.ui.event.KrMouseEvent.Button.LEFT;
 import static com.katzstudio.kreativity.ui.event.KrMouseEvent.Button.RIGHT;
 
@@ -38,7 +38,7 @@ public class KrSpinner extends KrTextField {
     private boolean wasDragged = false;
 
     public KrSpinner() {
-        setStyle(KrSkin.instance().getSpinnerStyle());
+        setStyle(getDefaultToolkit().getSkin().getSpinnerStyle());
 
         KrPadding padding = getPadding();
         padding.right = 17;

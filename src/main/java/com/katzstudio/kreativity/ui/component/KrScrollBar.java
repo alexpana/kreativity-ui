@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * Scroll bar component which can be embedded into other components to enable scrolling
@@ -78,7 +79,7 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
     }
 
     private KrScrollBarStyle getDefaultStyle() {
-        KrSkin skin = KrSkin.instance();
+        KrSkin skin = getDefaultToolkit().getSkin();
         return orientation == VERTICAL ? skin.getVerticalScrollBarStyle() : skin.getHorizontalScrollBarStyle();
     }
 

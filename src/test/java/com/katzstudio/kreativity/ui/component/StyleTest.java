@@ -17,7 +17,6 @@ public class StyleTest {
 
     // Sadly, JUnitParamsRunner calls the parameters before calling @BeforeClass
     static {
-        TestUtils.initializeTestStyles();
         TestUtils.initializeToolkit();
     }
 

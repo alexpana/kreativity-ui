@@ -4,7 +4,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrAlignmentTool;
+import com.katzstudio.kreativity.ui.KrCursor;
+import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -40,7 +43,7 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         textDocument = new KrTextDocument();
         textDocument.addTextListener(this::onDocumentTextChanged);
         setFocusable(true);
-        setStyle(KrSkin.instance().getTextFieldStyle());
+        setStyle(getDefaultToolkit().getSkin().getTextFieldStyle());
         setCursor(KrCursor.IBEAM);
     }
 
@@ -50,7 +53,7 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
 
     @Override
     public void ensureUniqueStyle() {
-        if (style == KrSkin.instance().getTextFieldStyle()) {
+        if (style == getDefaultToolkit().getSkin().getTextFieldStyle()) {
             style = new KrTextFieldStyle(style);
         }
     }

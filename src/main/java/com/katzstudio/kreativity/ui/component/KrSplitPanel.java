@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
-import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
@@ -22,6 +21,7 @@ import java.util.stream.Stream;
 
 import static com.katzstudio.kreativity.ui.KrAlignment.MIDDLE_CENTER;
 import static com.katzstudio.kreativity.ui.KrAlignmentTool.alignRectangles;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * Container panel that splits it's area between children. Areas can be resized.
@@ -38,7 +38,7 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
 
     public KrSplitPanel() {
         setLayout(new LayoutManager());
-        setStyle(KrSkin.instance().getSplitPanelStyle());
+        setStyle(getDefaultToolkit().getSkin().getSplitPanelStyle());
     }
 
     public void add(KrWidget widget, KrUnifiedSize preferredSize) {
@@ -116,7 +116,7 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
 
     @Override
     public void ensureUniqueStyle() {
-        if (style == KrSkin.instance().getSplitPanelStyle()) {
+        if (style == getDefaultToolkit().getSkin().getSplitPanelStyle()) {
             style = new KrSplitPanelStyle(style);
         }
     }

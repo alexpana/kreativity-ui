@@ -12,22 +12,24 @@ import static org.mockito.Mockito.when;
  * Functions used by tests
  */
 public class TestUtils {
-    public static void initializeTestStyles() {
-        KrSkin.instance().setWidgetStyle(createWidgetStyle());
-        KrSkin.instance().setPanelStyle(createPanelStyle());
-        KrSkin.instance().setLabelStyle(createLabelStyle());
-        KrSkin.instance().setButtonStyle(createButtonStyle());
-        KrSkin.instance().setTextFieldStyle(createTextFieldStyle());
-        KrSkin.instance().setCheckboxStyle(createCheckBoxStyle());
-        KrSkin.instance().setSpinnerStyle(createSpinnerStyle());
-        KrSkin.instance().setListViewStyle(createWidgetStyle());
-        KrSkin.instance().setHorizontalScrollBarStyle(createHorizontalScrollBarStyle());
-        KrSkin.instance().setVerticalScrollBarStyle(createVerticalScrollBarStyle());
-    }
-
     public static void initializeToolkit() {
         KrBackend backend = createMockBackend();
-        KrToolkit.initialize(backend);
+        KrToolkit.initialize(backend, mock(KrSkin.class));
+        initializeTestStyles();
+    }
+
+    private static void initializeTestStyles() {
+        KrSkin skin = KrToolkit.getDefaultToolkit().getSkin();
+        when(skin.getWidgetStyle()).thenReturn(createWidgetStyle());
+        when(skin.getPanelStyle()).thenReturn(createPanelStyle());
+        when(skin.getLabelStyle()).thenReturn(createLabelStyle());
+        when(skin.getButtonStyle()).thenReturn(createButtonStyle());
+        when(skin.getTextFieldStyle()).thenReturn(createTextFieldStyle());
+        when(skin.getCheckboxStyle()).thenReturn(createCheckBoxStyle());
+        when(skin.getSpinnerStyle()).thenReturn(createSpinnerStyle());
+        when(skin.getListViewStyle()).thenReturn(createWidgetStyle());
+        when(skin.getHorizontalScrollBarStyle()).thenReturn(createHorizontalScrollBarStyle());
+        when(skin.getVerticalScrollBarStyle()).thenReturn(createVerticalScrollBarStyle());
     }
 
     public static KrBackend createMockBackend() {

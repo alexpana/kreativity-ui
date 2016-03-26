@@ -58,11 +58,8 @@ public class UiDemo extends Game {
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
-        KrLwjgl3Backend backend = new KrLwjgl3Backend();
-        KrToolkit.initialize(backend);
-
-        KrSkin.instance().install(getDefaultToolkit());
-        Gdx.input.setInputProcessor((InputAdapter) backend.getInputSource());
+        KrToolkit.initialize(new KrLwjgl3Backend());
+        Gdx.input.setInputProcessor((InputAdapter) getDefaultToolkit().getInputSource());
         canvas = KrToolkit.getDefaultToolkit().createCanvas();
 
         darkGray = getDefaultToolkit().getDrawable(rgb(0x434343));

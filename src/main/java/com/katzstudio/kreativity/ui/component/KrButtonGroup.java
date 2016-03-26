@@ -1,6 +1,5 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.style.KrButtonGroupStyle;
 import lombok.Getter;
@@ -10,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A button group contains a list of horizontal buttons, aligned and glued together. Only one button may be
@@ -27,7 +27,7 @@ public class KrButtonGroup extends KrWidget<KrButtonGroupStyle> {
 
     public KrButtonGroup(KrToggleButton... buttons) {
 
-        style = KrSkin.instance().getButtonGroupStyle();
+        style = getDefaultToolkit().getSkin().getButtonGroupStyle();
 
         toggleButtons.addAll(Arrays.asList(buttons));
 
@@ -93,7 +93,7 @@ public class KrButtonGroup extends KrWidget<KrButtonGroupStyle> {
 
     @Override
     public void ensureUniqueStyle() {
-        if (style == KrSkin.instance().getButtonGroupStyle()) {
+        if (style == getDefaultToolkit().getSkin().getButtonGroupStyle()) {
             style = new KrButtonGroupStyle(style);
         }
     }

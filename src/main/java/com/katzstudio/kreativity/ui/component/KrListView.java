@@ -3,7 +3,6 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrSelectionMode;
-import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.component.renderer.KrListViewCellRenderer;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A list widget displays items in a vertical list. Items can be selected.
@@ -57,7 +57,7 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
         verticalScrollBar.addScrollListener(this::onScroll);
         selectionModel.addSelectionListener(this::onSelectionChanged);
 
-        setStyle(KrSkin.instance().getListViewStyle());
+        setStyle(getDefaultToolkit().getSkin().getListViewStyle());
 
         setLayout(new Layout());
         add(innerPanel);
@@ -137,7 +137,7 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
 
     @Override
     public void ensureUniqueStyle() {
-        if (style == KrSkin.instance().getListViewStyle()) {
+        if (style == getDefaultToolkit().getSkin().getListViewStyle()) {
             style = new KrWidgetStyle(style);
         }
     }

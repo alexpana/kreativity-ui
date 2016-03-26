@@ -2,7 +2,10 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrAlignmentTool;
+import com.katzstudio.kreativity.ui.KrFontMetrics;
+import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -26,14 +29,14 @@ public class KrLabel extends KrWidget<KrLabelStyle> {
         this.text = text;
         this.textAlignment = KrAlignment.MIDDLE_LEFT;
 
-        setStyle(KrSkin.instance().getLabelStyle());
+        setStyle(getDefaultToolkit().getSkin().getLabelStyle());
         setPadding(new KrPadding(3, 3));
         setSize(calculatePreferredSize());
     }
 
     @Override
     public void ensureUniqueStyle() {
-        if (style == KrSkin.instance().getLabelStyle()) {
+        if (style == getDefaultToolkit().getSkin().getLabelStyle()) {
             style = new KrLabelStyle(style);
         }
     }

@@ -34,7 +34,6 @@ public class InputListenerDispatchTest {
     private final KrWidget testObject;
 
     static {
-        TestUtils.initializeTestStyles();
         TestUtils.initializeToolkit();
     }
 

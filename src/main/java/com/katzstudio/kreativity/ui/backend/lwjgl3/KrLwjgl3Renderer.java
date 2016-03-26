@@ -10,11 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrColor;
-import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.render.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * {@link KrRenderer} implementation for the libgdx lwjgl3 backend
@@ -185,17 +186,17 @@ public class KrLwjgl3Renderer implements KrRenderer {
         switch (radius) {
             case 1:
             case 2:
-                return KrSkin.instance().getDrawable("rounded_rect_2");
+                return getDefaultToolkit().getSkin().getDrawable("rounded_rect_2");
             case 3:
-                return KrSkin.instance().getDrawable("rounded_rect_3");
+                return getDefaultToolkit().getSkin().getDrawable("rounded_rect_3");
             case 4:
-                return KrSkin.instance().getDrawable("rounded_rect_4");
+                return getDefaultToolkit().getSkin().getDrawable("rounded_rect_4");
             case 5:
-                return KrSkin.instance().getDrawable("rounded_rect_5");
+                return getDefaultToolkit().getSkin().getDrawable("rounded_rect_5");
             case 6:
-                return KrSkin.instance().getDrawable("rounded_rect_6");
+                return getDefaultToolkit().getSkin().getDrawable("rounded_rect_6");
             default:
-                return KrSkin.instance().getDrawable("rounded_rect_2");
+                return getDefaultToolkit().getSkin().getDrawable("rounded_rect_2");
         }
     }
 

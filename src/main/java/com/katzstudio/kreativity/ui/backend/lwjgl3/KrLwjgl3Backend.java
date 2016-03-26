@@ -19,7 +19,6 @@ public class KrLwjgl3Backend implements KrBackend {
 
     private final KrLwjgl3FontMetrics fontMetrics;
 
-
     private final KrLwjgl3InputSource inputSource;
 
     private final Clipboard clipboard;

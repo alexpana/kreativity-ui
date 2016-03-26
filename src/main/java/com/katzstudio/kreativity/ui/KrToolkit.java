@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,10 @@ public class KrToolkit {
 
     private final Map<Color, Drawable> drawableCache = new HashMap<>();
 
+    private KrCanvas canvas;
+
+    @Getter private KrSkin skin;
+
     public static KrToolkit getDefaultToolkit() {
         return INSTANCE;
     }
@@ -33,12 +38,25 @@ public class KrToolkit {
         INSTANCE = new KrToolkit(backend);
     }
 
+    public static void initialize(KrBackend backend, KrSkin skin) {
+        INSTANCE = new KrToolkit(backend, skin);
+    }
+
     private KrToolkit(KrBackend backend) {
         this.backend = backend;
+        this.skin = new KrSkin(this);
+    }
+
+    private KrToolkit(KrBackend backend, KrSkin skin) {
+        this.backend = backend;
+        this.skin = skin;
     }
 
     public KrCanvas createCanvas() {
-        return new KrCanvas(getInputSource(), getRenderer(), backend.getScreenWidth(), backend.getScreenHeight());
+        if (canvas == null) {
+            canvas = new KrCanvas(getInputSource(), getRenderer(), backend.getScreenWidth(), backend.getScreenHeight());
+        }
+        return canvas;
     }
 
     public KrFontMetrics fontMetrics() {

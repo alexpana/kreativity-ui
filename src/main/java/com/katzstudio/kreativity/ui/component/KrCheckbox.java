@@ -1,7 +1,6 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Vector2;
-import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
@@ -12,6 +11,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A simple checkbox component that can be either checked or unchecked.
@@ -25,13 +26,13 @@ public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
     private final List<ValueListener> valueListeners = new ArrayList<>();
 
     public KrCheckbox() {
-        setStyle(KrSkin.instance().getCheckboxStyle());
+        setStyle(getDefaultToolkit().getSkin().getCheckboxStyle());
         setSize(calculatePreferredSize());
     }
 
     @Override
     public void ensureUniqueStyle() {
-        if (style == KrSkin.instance().getCheckboxStyle()) {
+        if (style == getDefaultToolkit().getSkin().getCheckboxStyle()) {
             style = new KrCheckboxStyle(style);
         }
     }

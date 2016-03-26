@@ -50,11 +50,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     private KrInputSource input;
 
-    public KrCanvas() {
-        this(getDefaultToolkit().getInputSource(), getDefaultToolkit().getRenderer(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
-    public KrCanvas(KrInputSource input, KrRenderer renderer, float width, float height) {
+    KrCanvas(KrInputSource input, KrRenderer renderer, float width, float height) {
 
         this.input = input;
 
@@ -126,8 +122,8 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
      */
     public void draw() {
         renderer.beginFrame();
-        renderer.setFont(KrSkin.instance().getDefaultFont());
-        renderer.setPen(new KrPen(1, KrSkin.instance().getColor(KrSkin.ColorKey.FOREGROUND)));
+        renderer.setFont(getDefaultToolkit().getSkin().getDefaultFont());
+        renderer.setPen(new KrPen(1, getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.FOREGROUND)));
 
         rootPanel.draw(renderer);
         overlayPanel.draw(renderer);
