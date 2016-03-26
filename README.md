@@ -46,6 +46,8 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 - The update method is now properly called for every widget in the scene
 - Added setters and getters for the background and foreground. Restructured the styles.
 - Added card layout which only displays one of the child widgets, resized to match the parent.
+- Added support for tooltips
+- Abstracted libgdx, so different backends can be implemented
 
 #### [0.1.0] - 2016-03-20
 - Added KrListView together with a Qt inspired abstract item model and selection model
