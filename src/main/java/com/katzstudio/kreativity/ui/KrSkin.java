@@ -83,15 +83,15 @@ public class KrSkin {
         return INSTANCE;
     }
 
-    public void install() {
-        loadDefault();
+    public void install(KrToolkit toolkit) {
+        loadDefault(toolkit);
     }
 
     public Drawable getDrawable(String name) {
         return drawablePatches.get(name);
     }
 
-    private void loadDefault() {
+    private void loadDefault(KrToolkit toolkit) {
         JsonReader jsonReader = new JsonReader();
         JsonValue jsonSkin = jsonReader.parse(Gdx.files.classpath("ui/skin.json"));
 
@@ -122,7 +122,7 @@ public class KrSkin {
         }
 
         widgetStyle = new KrWidgetStyle();
-        widgetStyle.background = KrToolkit.getDrawable(KrColor.TRANSPARENT);
+        widgetStyle.background = toolkit.getDrawable(KrColor.TRANSPARENT);
         widgetStyle.foregroundColor = getColor(FOREGROUND);
         widgetStyle.font = getDefaultFont();
         widgetStyle.textShadowOffset = new Vector2(0, 0);
@@ -196,7 +196,7 @@ public class KrSkin {
         buttonGroupStyle.lastButtonStyle = buttonGroupLastButtonStyle;
 
         splitPanelStyle = new KrSplitPanelStyle(widgetStyle);
-        splitPanelStyle.splitterBackground = KrToolkit.getDrawable(getColor(BACKGROUND_LIGHT));
+        splitPanelStyle.splitterBackground = toolkit.getDrawable(getColor(BACKGROUND_LIGHT));
         splitPanelStyle.splitterGrip = getDrawable("split_panel.splitter_grip");
 
         listViewStyle = new KrWidgetStyle(widgetStyle);

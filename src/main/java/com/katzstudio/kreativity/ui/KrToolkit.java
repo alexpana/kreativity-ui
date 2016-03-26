@@ -1,72 +1,82 @@
 package com.katzstudio.kreativity.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.katzstudio.kreativity.ui.backend.KrBackend;
+import com.katzstudio.kreativity.ui.backend.KrInputSource;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxCursorHelper.systemCursor;
-
 /**
- * The {@link KrToolkit} class offers functionality that is global to the UI framework
+ * The {@link KrToolkit} offers functionality that is global to the UI framework
  * such as changing the cursor, or creating drawables.
  */
-@SuppressWarnings("WeakerAccess")
 public class KrToolkit {
-
-    private static final Map<Color, Drawable> DRAWABLE_CACHE = new HashMap<>();
 
     private static KrToolkit INSTANCE;
 
-    private KrCursor currentCursor;
+    private final KrBackend backend;
 
-    private KrFontMetrics fontMetrics = new KrFontMetrics();
+    private final Map<Color, Drawable> drawableCache = new HashMap<>();
 
     public static KrToolkit getDefaultToolkit() {
-        if (INSTANCE == null) {
-            INSTANCE = new KrToolkit();
-        }
-
         return INSTANCE;
     }
 
-    public static void setDefault(KrToolkit toolkit) {
-        INSTANCE = toolkit;
+    public static void initialize(KrBackend backend) {
+        INSTANCE = new KrToolkit(backend);
     }
 
-    private KrToolkit() {
+    private KrToolkit(KrBackend backend) {
+        this.backend = backend;
+    }
+
+    public KrCanvas createCanvas() {
+        return new KrCanvas(getInputSource(), getRenderer(), backend.getScreenWidth(), backend.getScreenHeight());
     }
 
     public KrFontMetrics fontMetrics() {
-        return fontMetrics;
+        return backend.getFontMetrics();
     }
 
     public void setCursor(KrCursor cursor) {
-        if (cursor == null) {
-            cursor = KrCursor.ARROW;
-        }
-        currentCursor = cursor;
-        Gdx.graphics.setSystemCursor(systemCursor(cursor));
+        backend.setCursor(cursor);
     }
 
     public KrCursor getCursor() {
-        return currentCursor;
+        return backend.getCursor();
     }
 
-    public static Drawable getDrawable(Color color) {
-        if (!DRAWABLE_CACHE.containsKey(color)) {
-            DRAWABLE_CACHE.put(color, createColorDrawable(color));
+    public void writeToClipboard(String value) {
+        backend.writeToClipboard(value);
+    }
+
+    public String readFromClipboard() {
+        return backend.readFromClipboard();
+    }
+
+    public Drawable getDrawable(Color color) {
+        if (!drawableCache.containsKey(color)) {
+            drawableCache.put(color, createColorDrawable(color));
         }
-        return DRAWABLE_CACHE.get(color);
+        return drawableCache.get(color);
     }
 
-    private static Drawable createColorDrawable(Color color) {
+    public KrInputSource getInputSource() {
+        return backend.getInputSource();
+    }
+
+    public KrRenderer getRenderer() {
+        return backend.getRenderer();
+    }
+
+    private Drawable createColorDrawable(Color color) {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(color);
         pixmap.fill();

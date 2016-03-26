@@ -75,12 +75,12 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         }
 
         if (event.getKeycode() == Input.Keys.C && event.isCtrlDown() && textDocument.hasSelection()) {
-            getCanvas().getClipboard().setContents(textDocument.getSelectedText());
+            getDefaultToolkit().writeToClipboard(textDocument.getSelectedText());
             return true;
         }
 
         if (event.getKeycode() == Input.Keys.V && event.isCtrlDown()) {
-            textDocument.insertText(getCanvas().getClipboard().getContents());
+            textDocument.insertText(getDefaultToolkit().readFromClipboard());
             return true;
         }
 

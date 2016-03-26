@@ -138,8 +138,7 @@ public class KrCanvasTest {
         canvas.requestFocus(widget);
         reset(widget);
 
-        canvas.keyDown(120);
-        canvas.keyTyped('x');
+        canvas.keyPressed(new KrKeyEvent(KrKeyEvent.Type.PRESSED, 120, "x", false, false, false));
 
         verify(widget).handle(eq(new KrKeyEvent(KrKeyEvent.Type.PRESSED, 120, "x")));
     }
@@ -150,11 +149,9 @@ public class KrCanvasTest {
         KrWidget widget = mock(KrWidget.class);
         when(widget.getCanvas()).thenReturn(canvas);
 
-        canvas.setKeyRepeat(false);
         canvas.requestFocus(widget);
         reset(widget);
-
-        canvas.keyUp(52);
+        canvas.keyPressed(new KrKeyEvent(KrKeyEvent.Type.RELEASED, 52, "", false, false, false));
 
         verify(widget).handle(eq(new KrKeyEvent(KrKeyEvent.Type.RELEASED, 52, "")));
     }
@@ -163,7 +160,10 @@ public class KrCanvasTest {
     public void testKeyPressWithNoFocus() throws Exception {
         KrCanvas canvas = createCanvas();
 
-        assertThat(canvas.keyDown(32), is(false));
+        KrKeyEvent keyEvent = new KrKeyEvent(KrKeyEvent.Type.RELEASED, 52, "", false, false, false);
+        canvas.keyPressed(keyEvent);
+
+        assertThat(keyEvent.handled(), is(false));
     }
 
     @Test

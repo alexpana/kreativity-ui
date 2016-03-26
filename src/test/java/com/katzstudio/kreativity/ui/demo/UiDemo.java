@@ -2,6 +2,7 @@ package com.katzstudio.kreativity.ui.demo;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
@@ -9,15 +10,13 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.*;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
-import com.katzstudio.kreativity.ui.render.KrColorBrush;
-import com.katzstudio.kreativity.ui.render.KrPen;
-import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import static com.badlogic.gdx.graphics.GL20.*;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
-import static com.katzstudio.kreativity.ui.KrToolkit.getDrawable;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * Demo / testing application.
@@ -36,9 +35,9 @@ public class UiDemo extends Game {
 
     private final FPSLogger fpsLogger = new FPSLogger();
 
-    private Drawable DARK_GRAY;
+    private Drawable darkGray;
 
-    private Drawable DARKER_GRAY;
+    private Drawable darkerGray;
 
     private Color lightGray;
 
@@ -57,18 +56,18 @@ public class UiDemo extends Game {
         gl.glEnable(GL_BLEND);
         gl.glDepthMask(true);
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        DARK_GRAY = getDrawable(rgb(0x434343));
-
-        DARKER_GRAY = getDrawable(rgb(0x393939));
-
-        lightGray = rgb(0xaaaaaa);
-
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
-        KrSkin.instance().install();
-        canvas = new KrCanvas();
-        Gdx.input.setInputProcessor(canvas);
+        KrLwjgl3Backend backend = new KrLwjgl3Backend();
+        KrToolkit.initialize(backend);
+
+        KrSkin.instance().install(getDefaultToolkit());
+        Gdx.input.setInputProcessor((InputAdapter) backend.getInputSource());
+        canvas = KrToolkit.getDefaultToolkit().createCanvas();
+
+        darkGray = getDefaultToolkit().getDrawable(rgb(0x434343));
+        darkerGray = getDefaultToolkit().getDrawable(rgb(0x393939));
+        lightGray = rgb(0xaaaaaa);
 
         canvas.getRootPanel().add(createButtons());
         canvas.getRootPanel().add(createGridLayout());
@@ -149,7 +148,7 @@ public class UiDemo extends Game {
 
     private KrLabel createDummyLabel(String text) {
         KrLabel label = new KrLabel(text);
-        label.setBackground(DARK_GRAY);
+        label.setBackground(darkGray);
         label.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         return label;
     }
@@ -361,18 +360,18 @@ public class UiDemo extends Game {
 
         KrPanel panel = new KrPanel();
         panel.setLayout(new KrFlowLayout(HORIZONTAL, 5, 5));
-        panel.setBackground(DARK_GRAY);
+        panel.setBackground(darkGray);
 
         KrLabel labelA = new KrLabel("Label A");
-        labelA.setBackground(DARKER_GRAY);
+        labelA.setBackground(darkerGray);
         labelA.setName("flowlayoutH.labelA");
 
         KrLabel labelB = new KrLabel("Some very long label");
-        labelB.setBackground(DARKER_GRAY);
+        labelB.setBackground(darkerGray);
         labelB.setName("flowlayoutH.labelB");
 
         KrLabel labelC = new KrLabel("X");
-        labelC.setBackground(DARKER_GRAY);
+        labelC.setBackground(darkerGray);
         labelC.setName("flowlayoutH.labelC");
 
         panel.add(labelA);
@@ -394,20 +393,20 @@ public class UiDemo extends Game {
         label.setGeometry(0, 0, 180, 20);
 
         KrWidget panel = new KrPanel();
-        panel.setBackground(DARK_GRAY);
+        panel.setBackground(darkGray);
 
         panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
 
         KrLabel labelA = new KrLabel("First Row");
-        labelA.setBackground(DARKER_GRAY);
+        labelA.setBackground(darkerGray);
         labelA.setName("flowlayoutV.labelA");
 
         KrLabel labelB = new KrLabel("Second Row");
-        labelB.setBackground(DARKER_GRAY);
+        labelB.setBackground(darkerGray);
         labelB.setName("flowlayoutV.labelB");
 
         KrLabel labelC = new KrLabel("Third Row");
-        labelC.setBackground(DARKER_GRAY);
+        labelC.setBackground(darkerGray);
         labelC.setName("flowlayoutV.labelC");
 
         panel.add(labelA);
@@ -430,37 +429,37 @@ public class UiDemo extends Game {
         label.setGeometry(0, 0, 180, 20);
 
         KrWidget panel = new KrPanel();
-        panel.setBackground(DARK_GRAY);
+        panel.setBackground(darkGray);
         panel.setLayout(new KrBorderLayout(4, 4));
 
         KrLabel topWidget = new KrLabel("Top");
         topWidget.setName("borderlayout.top");
         topWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        topWidget.setBackground(DARKER_GRAY);
+        topWidget.setBackground(darkerGray);
         topWidget.setPreferredSize(new Vector2(100, 40));
 
         KrLabel bottomWidget = new KrLabel("Bottom");
         bottomWidget.setName("borderlayout.bottom");
         bottomWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        bottomWidget.setBackground(DARKER_GRAY);
+        bottomWidget.setBackground(darkerGray);
         bottomWidget.setPreferredSize(new Vector2(100, 20));
 
         KrLabel leftWidget = new KrLabel("W");
         leftWidget.setName("borderlayout.left");
         leftWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        leftWidget.setBackground(DARKER_GRAY);
+        leftWidget.setBackground(darkerGray);
         leftWidget.setPreferredSize(new Vector2(30, 20));
 
         KrLabel rightWidget = new KrLabel("E");
         rightWidget.setName("borderlayout.right");
         rightWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
-        rightWidget.setBackground(DARKER_GRAY);
+        rightWidget.setBackground(darkerGray);
         rightWidget.setPreferredSize(new Vector2(20, 20));
 
         KrLabel centerWidget = new KrLabel("CENTER");
         centerWidget.setTextAlignment(KrAlignment.MIDDLE_CENTER);
         centerWidget.setName("borderlayout.center");
-        centerWidget.setBackground(DARKER_GRAY);
+        centerWidget.setBackground(darkerGray);
         centerWidget.setPreferredSize(new Vector2(100, 20));
 
         panel.add(topWidget, KrBorderLayout.Constraint.NORTH);
@@ -523,20 +522,20 @@ public class UiDemo extends Game {
 
     public KrPanel createDummyContent() {
         KrPanel panel = new KrPanel();
-        panel.setBackground(DARK_GRAY);
+        panel.setBackground(darkGray);
 
         panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
 
         KrLabel labelA = new KrLabel("First Row");
-        labelA.setBackground(DARKER_GRAY);
+        labelA.setBackground(darkerGray);
         labelA.setName("flowlayoutV.labelA");
 
         KrLabel labelB = new KrLabel("Second Row");
-        labelB.setBackground(DARKER_GRAY);
+        labelB.setBackground(darkerGray);
         labelB.setName("flowlayoutV.labelB");
 
         KrLabel labelC = new KrLabel("Third Row");
-        labelC.setBackground(DARKER_GRAY);
+        labelC.setBackground(darkerGray);
         labelC.setName("flowlayoutV.labelC");
 
         panel.add(labelA);

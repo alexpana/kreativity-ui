@@ -15,11 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrContext;
-import com.katzstudio.kreativity.ui.KrToolkit;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A menu widget displays a vertical list of actions that can be
@@ -157,7 +158,7 @@ public class KrMenu extends Table {
 
         private static final Color HOVER_COLOR = new Color(0x00000033);
 
-        private static final Drawable hoveredBackground = KrToolkit.getDrawable(HOVER_COLOR);
+        private static final Drawable hoveredBackground = getDefaultToolkit().getDrawable(HOVER_COLOR);
 
         // Apparently we receive an exit event after a click.
         boolean ignoreNextExitEvent = false;

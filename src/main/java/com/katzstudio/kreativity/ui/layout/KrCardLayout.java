@@ -2,7 +2,6 @@ package com.katzstudio.kreativity.ui.layout;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 
 import java.util.ArrayList;

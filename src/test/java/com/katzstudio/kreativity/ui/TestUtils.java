@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.katzstudio.kreativity.ui.backend.KrBackend;
 
 import static com.katzstudio.kreativity.ui.TestObjectFactory.*;
 import static org.mockito.Matchers.any;
@@ -25,12 +26,16 @@ public class TestUtils {
     }
 
     public static void initializeToolkit() {
+        KrBackend backend = createMockBackend();
+        KrToolkit.initialize(backend);
+    }
+
+    public static KrBackend createMockBackend() {
         KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
         when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
 
-        KrToolkit toolkit = mock(KrToolkit.class);
-        when(toolkit.fontMetrics()).thenReturn(fontMetricsMock);
-
-        KrToolkit.setDefault(toolkit);
+        KrBackend backend = mock(KrBackend.class);
+        when(backend.getFontMetrics()).thenReturn(fontMetricsMock);
+        return backend;
     }
 }

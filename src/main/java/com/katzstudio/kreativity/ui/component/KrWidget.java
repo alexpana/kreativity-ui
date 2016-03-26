@@ -5,7 +5,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrCanvas;
+import com.katzstudio.kreativity.ui.KrCursor;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
 import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
@@ -106,10 +109,10 @@ public class KrWidget<S extends KrWidgetStyle> {
     }
 
     /**
-     * Ensures that the style instance owned by this widget is not shared with other widgets.
+     * Ensures that the style getDefaultToolkit owned by this widget is not shared with other widgets.
      * <p>
      * Changes to the style of this widget after calling {@code ensureUniqueStyle} will only
-     * affect this widget instance
+     * affect this widget getDefaultToolkit
      */
     public void ensureUniqueStyle() {
     }
@@ -616,7 +619,6 @@ public class KrWidget<S extends KrWidgetStyle> {
     }
 
     protected boolean exitEvent(KrExitEvent event) {
-        KrToolkit.getDefaultToolkit().setCursor(KrCursor.ARROW);
         notifyMouseExit(event);
         return event.handled();
     }

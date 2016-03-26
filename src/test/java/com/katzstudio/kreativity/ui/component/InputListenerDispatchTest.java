@@ -1,14 +1,14 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
+import com.katzstudio.kreativity.ui.KrOrientation;
+import com.katzstudio.kreativity.ui.TestUtils;
 import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
-import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +17,9 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.katzstudio.kreativity.ui.KrToolkit.setDefault;
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createButtonStyle;
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createLabelStyle;
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createWidgetStyle;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests that kreativity components notify input listeners
@@ -38,12 +35,7 @@ public class InputListenerDispatchTest {
 
     static {
         TestUtils.initializeTestStyles();
-
-        KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
-        when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
-        KrToolkit toolkit = mock(KrToolkit.class);
-        when(toolkit.fontMetrics()).thenReturn(fontMetricsMock);
-        setDefault(toolkit);
+        TestUtils.initializeToolkit();
     }
 
     @Parameterized.Parameters(name = "{0}")

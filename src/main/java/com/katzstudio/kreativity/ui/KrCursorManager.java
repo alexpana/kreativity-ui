@@ -19,7 +19,6 @@ public class KrCursorManager {
 
     private void onEventDispatched(KrWidget widget, KrEvent event) {
         if (event instanceof KrEnterEvent) {
-            System.out.println("event = " + event);
             setCursor(widget.getCursor());
         }
     }

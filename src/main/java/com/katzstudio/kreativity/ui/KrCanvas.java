@@ -1,45 +1,34 @@
 package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Clipboard;
-import com.badlogic.gdx.utils.Timer;
+import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.*;
-import com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper;
 import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
-import static com.badlogic.gdx.Input.Keys.*;
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.*;
+import static com.badlogic.gdx.Input.Keys.TAB;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * Top level container for UI elements. Delegates input events to top level components.
  */
-public class KrCanvas implements InputProcessor {
-
-    private static final float KEY_REPEAT_INITIAL_TIME = 0.4f;
-
-    private static final float KEY_REPEAT_TIME = 0.1f;
+public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     @Getter private final KrPanel rootPanel;
 
     @Getter private final KrPanel overlayPanel;
 
-    @Getter private final Clipboard clipboard;
-
     private final KrRenderer renderer;
-
-    private KeyRepeatTask keyRepeatTask;
-
-    @Getter @Setter private boolean keyRepeat = true;
 
     @Getter private float width;
 
@@ -51,18 +40,6 @@ public class KrCanvas implements InputProcessor {
 
     private KrWidget currentlyHoveredWidget = null;
 
-    private boolean isAltDown = false;
-
-    private boolean isCtrlDown = false;
-
-    private boolean isShiftDown = false;
-
-    private int pressedKeyCode = 0;
-
-    private float lastMousePressedTime = 0;
-
-    private KrMouseEvent.Button lastMousePressedButton = null;
-
     @Getter private final KrFocusManager focusManager;
 
     private final List<KrInputListener> listeners = new ArrayList<>();
@@ -71,12 +48,17 @@ public class KrCanvas implements InputProcessor {
 
     private KrCursorManager cursorManager;
 
+    private KrInputSource input;
+
     public KrCanvas() {
-        this(new KrRenderer(), Gdx.app.getClipboard(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this(getDefaultToolkit().getInputSource(), getDefaultToolkit().getRenderer(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public KrCanvas(KrRenderer renderer, Clipboard clipboard, float width, float height) {
-        this.clipboard = clipboard;
+    public KrCanvas(KrInputSource input, KrRenderer renderer, float width, float height) {
+
+        this.input = input;
+
+        this.renderer = renderer;
 
         rootPanel = new KrPanel();
         rootPanel.setName("root");
@@ -101,8 +83,9 @@ public class KrCanvas implements InputProcessor {
 
         overlayPanel.add(tooltipManager.getTooltipWidget());
 
-        this.renderer = renderer;
         setSize(width, height);
+
+        input.addEventListener(this);
     }
 
     /**
@@ -138,13 +121,6 @@ public class KrCanvas implements InputProcessor {
         tooltipManager.update(deltaSeconds);
     }
 
-    private KeyRepeatTask getKeyRepeatTask() {
-        if (keyRepeatTask == null) {
-            keyRepeatTask = new KeyRepeatTask();
-        }
-        return keyRepeatTask;
-    }
-
     /**
      * Draws the UI.
      */
@@ -155,190 +131,79 @@ public class KrCanvas implements InputProcessor {
 
         rootPanel.draw(renderer);
         overlayPanel.draw(renderer);
-        
+
         renderer.endFrame();
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        isAltDown = isAltDown || isAlt(keycode);
-        isCtrlDown = isCtrlDown || isCtrl(keycode);
-        isShiftDown = isShiftDown || isShift(keycode);
-        pressedKeyCode = keycode;
-
-        if (keyboardFocusHolder == null) {
-            return false;
-        }
-
-        // handle tab key
-        if (pressedKeyCode == TAB && !keyboardFocusHolder.acceptsTabInput()) {
-            if (isShiftDown) {
-                focusPrevious();
-            } else {
-                focusNext();
-            }
-            return true;
-        }
-
-        if (pressedKeyCode == LEFT || pressedKeyCode == RIGHT) {
-            scheduleKeyRepeatTask(keycode);
-        }
-
-        // dispatch special key
-        KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, pressedKeyCode);
-        return dispatchEvent(keyboardFocusHolder, keyEvent);
-    }
 
     @Override
-    public boolean keyTyped(char character) {
-        if (keyboardFocusHolder == null) {
-            return false;
-        }
+    public void mouseMoved(KrMouseEvent event) {
+        KrWidget hoveredWidget = findWidgetAt(rootPanel, event.getScreenPosition());
 
-        // dispatch visible key
-        if (KrLibGdxInputHelper.hasStringRepresentation(pressedKeyCode)) {
-            KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character).toBuilder().keycode(pressedKeyCode).build();
-            return dispatchEvent(keyboardFocusHolder, keyEvent);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        isAltDown = isAltDown && !isAlt(keycode);
-        isCtrlDown = isCtrlDown && !isCtrl(keycode);
-        isShiftDown = isShiftDown && !isShift(keycode);
-
-        if (isKeyRepeat()) {
-            getKeyRepeatTask().cancel();
-        }
-
-        KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.RELEASED, keycode);
-        if (isShiftDown) {
-            keyEvent = keyEvent.toBuilder().value(keyEvent.getValue().toUpperCase()).build();
-        }
-
-        dispatchEvent(keyboardFocusHolder, keyEvent);
-        return keyEvent.handled();
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int buttonIndex) {
-        KrMouseEvent.Button button = getButtonFor(buttonIndex);
-
-        KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.PRESSED, screenX, screenY, buttonIndex);
-        mouseFocusHolder = findWidgetAt(rootPanel, screenX, screenY);
-        if (mouseFocusHolder != keyboardFocusHolder) {
-            requestFocus(mouseFocusHolder);
-        }
-
-
-        long nanoTime = System.nanoTime();
-        if (lastMousePressedTime == 0) {
-            lastMousePressedTime = nanoTime;
-            lastMousePressedButton = button;
-        } else {
-            float deltaTime = nanoTime - lastMousePressedTime;
-            if (button == lastMousePressedButton && deltaTime < 200000000) {
-                mouseEvent = createMouseEvent(KrMouseEvent.Type.DOUBLE_CLICK, screenX, screenY, buttonIndex);
-            }
-            lastMousePressedButton = button;
-            lastMousePressedTime = nanoTime;
-        }
-
-
-        dispatchEvent(mouseFocusHolder, mouseEvent);
-        return mouseEvent.handled();
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.RELEASED, screenX, screenY, button);
-        dispatchEvent(mouseFocusHolder, mouseEvent);
-        return mouseEvent.handled();
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.MOVED, screenX, screenY, -1);
-        dispatchEvent(mouseFocusHolder, mouseEvent);
-        return mouseEvent.handled();
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        KrWidget hoveredWidget = findWidgetAt(rootPanel, screenX, screenY);
-
-        if (hoveredWidget != currentlyHoveredWidget) {
+        if (!input.isDragging() && hoveredWidget != currentlyHoveredWidget) {
             if (currentlyHoveredWidget != null) {
                 dispatchEventWithoutBubbling(currentlyHoveredWidget, new KrExitEvent());
                 dispatchEventWithoutBubbling(hoveredWidget, new KrEnterEvent());
             }
 
             currentlyHoveredWidget = hoveredWidget;
+        } else {
+            dispatchEvent(currentlyHoveredWidget, event);
         }
-
-        KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.MOVED, screenX, screenY, -1);
-        dispatchEvent(hoveredWidget, mouseEvent);
-        return mouseEvent.handled();
     }
 
     @Override
-    public boolean scrolled(int amount) {
-        KrScrollEvent scrollEvent = new KrScrollEvent(amount);
-        KrWidget destinationWidget = findWidgetAt(rootPanel, Gdx.input.getX(), Gdx.input.getY());
-        dispatchEvent(destinationWidget, scrollEvent);
-        return scrollEvent.handled();
+    public void mousePressed(KrMouseEvent event) {
+        mouseFocusHolder = findWidgetAt(rootPanel, event.getScreenPosition());
+        if (mouseFocusHolder != keyboardFocusHolder) {
+            requestFocus(mouseFocusHolder);
+        }
+
+        dispatchEvent(mouseFocusHolder, event);
     }
 
-    private KrKeyEvent createKeyEvent(KrKeyEvent.Type type, int keycode) {
-        return KrKeyEvent.builder()
-                .type(type)
-                .keycode(keycode)
-                .value("")
-                .isAltDown(isAltDown)
-                .isCtrlDown(isCtrlDown)
-                .isShiftDown(isShiftDown)
-                .build();
+    @Override
+    public void mouseReleased(KrMouseEvent event) {
+        dispatchEvent(mouseFocusHolder, event);
     }
 
-    private KrKeyEvent createKeyEvent(KrKeyEvent.Type type, char character) {
-        return KrKeyEvent.builder()
-                .type(type)
-                .keycode(character)
-                .value(String.valueOf(character))
-                .isAltDown(isAltDown)
-                .isCtrlDown(isCtrlDown)
-                .isShiftDown(isShiftDown)
-                .build();
+    @Override
+    public void mouseDoubleClicked(KrMouseEvent event) {
+        dispatchEvent(mouseFocusHolder, event);
     }
 
-    private KrMouseEvent createMouseEvent(KrMouseEvent.Type type, int screenX, int screenY, int button) {
-        KrMouseEvent.Button eventButton = getButtonFor(button);
-        Vector2 mousePosition = new Vector2(screenX, screenY);
-        Vector2 mouseDelta = new Vector2(Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
-        return KrMouseEvent.builder()
-                .type(type)
-                .button(eventButton)
-                .screenPosition(mousePosition)
-                .deltaMove(mouseDelta)
-                .isAltDown(isAltDown)
-                .isCtrlDown(isCtrlDown)
-                .isShiftDown(isShiftDown)
-                .build();
-    }
-
-    public void scheduleKeyRepeatTask(int keycode) {
-        if (!isKeyRepeat()) {
+    @Override
+    public void keyPressed(KrKeyEvent event) {
+        if (keyboardFocusHolder == null) {
             return;
         }
 
-        KeyRepeatTask keyRepeatTask = getKeyRepeatTask();
-        if (!keyRepeatTask.isScheduled() || keyRepeatTask.keycode != keycode) {
-            keyRepeatTask.keycode = keycode;
-            keyRepeatTask.cancel();
-            Timer.schedule(keyRepeatTask, KEY_REPEAT_INITIAL_TIME, KEY_REPEAT_TIME);
+        if (event.getKeycode() == TAB && !keyboardFocusHolder.acceptsTabInput()) {
+            if (input.isShiftDown()) {
+                focusPrevious();
+            } else {
+                focusNext();
+            }
+            event.accept();
+            return;
         }
+
+        dispatchEvent(keyboardFocusHolder, event);
+    }
+
+    @Override
+    public void keyReleased(KrKeyEvent event) {
+        dispatchEvent(keyboardFocusHolder, event);
+    }
+
+    @Override
+    public void scrolledEvent(KrScrollEvent event) {
+        KrWidget destinationWidget = findWidgetAt(rootPanel, Gdx.input.getX(), Gdx.input.getY());
+        dispatchEvent(destinationWidget, event);
+    }
+
+    public interface KrInputListener {
+        void eventDispatched(KrWidget widget, KrEvent event);
     }
 
     private boolean dispatchEvent(KrWidget widget, KrEvent event) {
@@ -387,6 +252,10 @@ public class KrCanvas implements InputProcessor {
         }
 
         return root;
+    }
+
+    public static KrWidget findWidgetAt(KrWidget root, Vector2 screenPosition) {
+        return findWidgetAt(root, screenPosition.x, screenPosition.y);
     }
 
     /**
@@ -462,20 +331,5 @@ public class KrCanvas implements InputProcessor {
 
     protected void notifyEventDispatched(KrWidget widget, KrEvent event) {
         listeners.forEach(l -> l.eventDispatched(widget, event));
-    }
-
-    public interface KrInputListener {
-        void eventDispatched(KrWidget widget, KrEvent event);
-    }
-
-    /**
-     * Used to schedule repeated key presses for arrows
-     */
-    private class KeyRepeatTask extends Timer.Task {
-        public int keycode;
-
-        public void run() {
-            keyDown(keycode);
-        }
     }
 }

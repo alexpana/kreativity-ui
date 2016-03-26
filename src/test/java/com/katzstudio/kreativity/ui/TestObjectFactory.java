@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Clipboard;
+import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -95,7 +95,7 @@ public class TestObjectFactory {
     }
 
     public static KrCanvas createCanvas() {
-        return new KrCanvas(mock(KrRenderer.class), mock(Clipboard.class), 100, 100);
+        return new KrCanvas(mock(KrInputSource.class), mock(KrRenderer.class), 100, 100);
     }
 
     public static KrWidget createWidget(String name, int x, int y, int width, int height) {

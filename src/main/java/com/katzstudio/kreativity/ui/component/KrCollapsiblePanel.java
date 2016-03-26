@@ -186,7 +186,7 @@ public class KrCollapsiblePanel extends Table {
     @Override
     protected void childrenChanged() {
         super.childrenChanged();
-//        realPreferredHeight = (isCollapsed() ? COLLAPSED_HEIGHT : HEADER_HEIGHT) + (content != null ? KrToolkit.getPreferredSize(content).y : 0) + 2 * CONTENT_PADDING;
+//        realPreferredHeight = (isCollapsed() ? COLLAPSED_HEIGHT : HEADER_HEIGHT) + (content != null ? getPreferredSize(content).y : 0) + 2 * CONTENT_PADDING;
 
         if (!isCollapsed()) {
             actualHeight = realPreferredHeight;
