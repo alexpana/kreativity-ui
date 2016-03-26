@@ -69,6 +69,8 @@ public class KrCanvas implements InputProcessor {
 
     private KrTooltipManager tooltipManager;
 
+    private KrCursorManager cursorManager;
+
     public KrCanvas() {
         this(new KrRenderer(), Gdx.app.getClipboard(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -87,6 +89,8 @@ public class KrCanvas implements InputProcessor {
         focusManager = new KrFocusManager(rootPanel);
 
         tooltipManager = new KrTooltipManager(this);
+
+        cursorManager = new KrCursorManager(this);
 
         rootPanel.addWidgetListener(new KrWidget.KrWidgetListener.KrAbstractWidgetListener() {
             @Override
@@ -130,6 +134,8 @@ public class KrCanvas implements InputProcessor {
             widget.update(deltaSeconds);
             widgets.addAll(widget.getChildren());
         }
+
+        tooltipManager.update(deltaSeconds);
     }
 
     private KeyRepeatTask getKeyRepeatTask() {
@@ -265,8 +271,8 @@ public class KrCanvas implements InputProcessor {
 
         if (hoveredWidget != currentlyHoveredWidget) {
             if (currentlyHoveredWidget != null) {
-                currentlyHoveredWidget.handle(new KrExitEvent());
-                hoveredWidget.handle(new KrEnterEvent());
+                dispatchEventWithoutBubbling(currentlyHoveredWidget, new KrExitEvent());
+                dispatchEventWithoutBubbling(hoveredWidget, new KrEnterEvent());
             }
 
             currentlyHoveredWidget = hoveredWidget;
@@ -352,6 +358,17 @@ public class KrCanvas implements InputProcessor {
         return handled;
     }
 
+    private boolean dispatchEventWithoutBubbling(KrWidget widget, KrEvent event) {
+        if (widget == null) {
+            return false;
+        }
+
+        notifyEventDispatched(widget, event);
+        widget.handle(event);
+
+        return event.handled();
+    }
+
     /**
      * Finds the topmost widget (a leaf in the hierarchy) whose geometry contains the requested screen coordinates.
      *
@@ -414,11 +431,11 @@ public class KrCanvas implements InputProcessor {
 
         if (keyboardFocusHolder != widget) {
             if (keyboardFocusHolder != null) {
-                keyboardFocusHolder.handle(new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST));
+                dispatchEventWithoutBubbling(keyboardFocusHolder, new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST));
             }
 
             if (widget != null) {
-                widget.handle(new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED));
+                dispatchEventWithoutBubbling(widget, new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED));
             }
             keyboardFocusHolder = widget;
             return true;

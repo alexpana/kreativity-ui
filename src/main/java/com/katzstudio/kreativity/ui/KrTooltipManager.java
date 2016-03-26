@@ -10,6 +10,7 @@ import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
+import com.katzstudio.kreativity.ui.util.KrUpdatable;
 import lombok.Getter;
 
 /**
@@ -17,7 +18,7 @@ import lombok.Getter;
  * correct tooltip is displayed when necessary.
  */
 
-public class KrTooltipManager {
+public class KrTooltipManager implements KrUpdatable {
 
     @Getter private final KrTooltipWidget tooltipWidget;
 
@@ -61,6 +62,11 @@ public class KrTooltipManager {
 
     private void hideTooltip() {
         tooltipWidget.setVisible(false);
+    }
+
+    @Override
+    public void update(float deltaSeconds) {
+        // pass
     }
 
     private class KrTooltipWidget extends KrWidget<KrWidgetStyle> {

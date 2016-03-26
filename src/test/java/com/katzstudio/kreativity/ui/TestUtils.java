@@ -24,11 +24,13 @@ public class TestUtils {
         KrSkin.instance().setVerticalScrollBarStyle(createVerticalScrollBarStyle());
     }
 
-    public static void mockToolkit() {
+    public static void initializeToolkit() {
         KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
         when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
+
         KrToolkit toolkit = mock(KrToolkit.class);
         when(toolkit.fontMetrics()).thenReturn(fontMetricsMock);
+
         KrToolkit.setDefault(toolkit);
     }
 }

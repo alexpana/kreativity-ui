@@ -1,13 +1,9 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.TestUtils;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -18,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createButtonStyle;
-import static com.katzstudio.kreativity.ui.TestUtils.mockToolkit;
+import static com.katzstudio.kreativity.ui.TestUtils.initializeToolkit;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -39,7 +35,7 @@ public class KrButtonTest {
         buttonStyle = createButtonStyle();
         KrSkin.instance().setButtonStyle(buttonStyle);
 
-        mockToolkit();
+        initializeToolkit();
 
         button = new KrButton("button");
         renderer = mock(KrRenderer.class);

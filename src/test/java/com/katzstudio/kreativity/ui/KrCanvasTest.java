@@ -11,7 +11,7 @@ import org.junit.Test;
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createCanvas;
 import static com.katzstudio.kreativity.ui.TestObjectFactory.createWidget;
 import static com.katzstudio.kreativity.ui.TestUtils.initializeTestStyles;
-import static com.katzstudio.kreativity.ui.TestUtils.mockToolkit;
+import static com.katzstudio.kreativity.ui.TestUtils.initializeToolkit;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
@@ -25,7 +25,7 @@ public class KrCanvasTest {
     @Before
     public void setUp() throws Exception {
         initializeTestStyles();
-        mockToolkit();
+        initializeToolkit();
     }
 
     @Test

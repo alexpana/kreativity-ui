@@ -611,9 +611,6 @@ public class KrWidget<S extends KrWidgetStyle> {
     }
 
     protected boolean enterEvent(KrEnterEvent event) {
-        if (KrToolkit.getDefaultToolkit().getCursor() != getCursor()) {
-            KrToolkit.getDefaultToolkit().setCursor(getCursor());
-        }
         notifyMouseEnter(event);
         return event.handled();
     }

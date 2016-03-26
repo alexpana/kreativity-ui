@@ -27,13 +27,12 @@ import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.*;
  */
 public class KrSkin {
 
-    private static final KrSkin KREATIVITY_SKIN = new KrSkin();
+    private static final KrSkin INSTANCE = new KrSkin();
 
     private final ImmutableMap<ColorKey, Color> colors = ImmutableMap.<ColorKey, Color>builder()
             .put(BACKGROUND_LIGHT, new Color(0x424242ff))
             .put(BACKGROUND_DARK, new Color(0x353535ff))
             .put(FOREGROUND, new Color(0xDDDDDDFF))
-//            .put(SELECTION_BACKGROUND, new Color(0x547496FF))
             .put(SELECTION_BACKGROUND, new Color(0x38466bff))
             .build();
 
@@ -81,18 +80,18 @@ public class KrSkin {
     }
 
     public static KrSkin instance() {
-        return KREATIVITY_SKIN;
+        return INSTANCE;
     }
 
     public void install() {
-        loadKreativitySkin();
+        loadDefault();
     }
 
     public Drawable getDrawable(String name) {
         return drawablePatches.get(name);
     }
 
-    private void loadKreativitySkin() {
+    private void loadDefault() {
         JsonReader jsonReader = new JsonReader();
         JsonValue jsonSkin = jsonReader.parse(Gdx.files.classpath("ui/skin.json"));
 
