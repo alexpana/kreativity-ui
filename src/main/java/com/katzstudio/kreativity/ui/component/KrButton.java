@@ -36,7 +36,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
 
     @Getter @Setter private KrAlignment textAlignment;
 
-    private final List<Listener> listeners = Lists.newArrayList();
+    private final List<KrButtonListener> listeners = Lists.newArrayList();
 
     public KrButton(String text) {
         this.text = text;
@@ -53,16 +53,16 @@ public class KrButton extends KrWidget<KrButtonStyle> {
         }
     }
 
-    public void addListener(Listener listener) {
+    public void addListener(KrButtonListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(Listener listener) {
+    public void removeListener(KrButtonListener listener) {
         listeners.remove(listener);
     }
 
     protected void notifyClicked() {
-        listeners.forEach(Listener::clicked);
+        listeners.forEach(KrButtonListener::clicked);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
         }
     }
 
-    public interface Listener {
+    public interface KrButtonListener {
         void clicked();
     }
 }

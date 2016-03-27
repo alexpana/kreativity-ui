@@ -17,9 +17,11 @@ import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.*;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
+import com.katzstudio.kreativity.ui.util.KrTimer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.badlogic.gdx.Gdx.gl;
 import static com.badlogic.gdx.graphics.GL20.*;
@@ -212,6 +214,78 @@ public class UiDemo extends Game {
             @Override
             public void mouseDoubleClicked(KrMouseEvent event) {
                 System.out.println("event = " + event);
+            }
+        });
+
+//        button.addListener(() -> {
+//            Runnable timerAction = () -> System.out.println("One second has passed");
+//            KrTimer timer = new KrTimer(1.0f, timerAction);
+//            timer.start();
+//        });
+
+//        final KrUpdateListener updateListener = new KrUpdateListener() {
+//            private final Random random = new Random();
+//
+//            @Override
+//            public void update(float deltaSeconds) {
+//                button.setText(createRandomText(10));
+//            }
+//
+//            private String createRandomText(int i) {
+//                StringBuilder builder = new StringBuilder();
+//                while (i > 0) {
+//                    builder.append((char) ('a' + random.nextInt(24)));
+//                    i -= 1;
+//                }
+//                return builder.toString();
+//            }
+//        };
+//
+//        button.addListener(
+//                new KrButton.KrButtonListener() {
+//                    boolean toggle = false;
+//
+//                    @Override
+//                    public void clicked() {
+//                        if (!toggle) {
+//                            getDefaultToolkit().registerUpdateListener(updateListener);
+//                            toggle = true;
+//                        } else {
+//                            getDefaultToolkit().unregisterUpdateListener(updateListener);
+//                            toggle = false;
+//                        }
+//                    }
+//                });
+
+        KrTimer timer = new KrTimer(0, 0.1f, new Runnable() {
+            private final Random random = new Random();
+
+            @Override
+            public void run() {
+                button.setText(createRandomText(10));
+            }
+
+            private String createRandomText(int i) {
+
+                StringBuilder builder = new StringBuilder();
+                while (i > 0) {
+                    builder.append((char) ('a' + random.nextInt(24)));
+                    i -= 1;
+                }
+                return builder.toString();
+            }
+        });
+
+        button.addListener(new KrButton.KrButtonListener() {
+            private boolean toggle = false;
+            @Override
+            public void clicked() {
+                if (!toggle) {
+                    timer.start();
+                } else {
+                    timer.stop();
+                }
+                toggle = !toggle;
             }
         });
 
@@ -545,7 +619,7 @@ public class UiDemo extends Game {
     @Override
     public void render() {
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        canvas.update(Gdx.graphics.getDeltaTime());
+        getDefaultToolkit().update(Gdx.graphics.getDeltaTime());
         canvas.draw();
 //        fpsLogger.log();
     }

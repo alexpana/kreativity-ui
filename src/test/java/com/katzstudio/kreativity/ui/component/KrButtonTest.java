@@ -84,7 +84,7 @@ public class KrButtonTest {
 
     @Test
     public void testClickEvent() throws Exception {
-        KrButton.Listener listener = mock(KrButton.Listener.class);
+        KrButton.KrButtonListener listener = mock(KrButton.KrButtonListener.class);
         button.addListener(listener);
         button.handle(new KrMouseEvent(KrMouseEvent.Type.PRESSED, KrMouseEvent.Button.LEFT, null, null));
         button.handle(new KrMouseEvent(KrMouseEvent.Type.RELEASED, KrMouseEvent.Button.LEFT, null, null));

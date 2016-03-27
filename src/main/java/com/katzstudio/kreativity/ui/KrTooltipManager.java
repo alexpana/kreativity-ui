@@ -10,7 +10,7 @@ import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
-import com.katzstudio.kreativity.ui.util.KrUpdatable;
+import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
@@ -20,7 +20,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  * correct tooltip is displayed when necessary.
  */
 
-public class KrTooltipManager implements KrUpdatable {
+public class KrTooltipManager implements KrUpdateListener {
 
     @Getter private final KrTooltipWidget tooltipWidget;
 

@@ -9,9 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
+import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +28,8 @@ public class KrToolkit {
     private final KrBackend backend;
 
     private final Map<Color, Drawable> drawableCache = new HashMap<>();
+
+    private final List<KrUpdateListener> updateListeners = new ArrayList<>();
 
     private KrCanvas canvas;
 
@@ -93,6 +98,22 @@ public class KrToolkit {
     public KrRenderer getRenderer() {
         return backend.getRenderer();
     }
+
+    public void registerUpdateListener(KrUpdateListener updateListener) {
+        updateListeners.add(updateListener);
+    }
+
+    public void unregisterUpdateListener(KrUpdateListener updateListener) {
+        updateListeners.remove(updateListener);
+    }
+
+    public void update(float deltaSeconds) {
+        if (canvas != null) {
+            canvas.update(deltaSeconds);
+        }
+        new ArrayList<>(updateListeners).forEach(l -> l.update(deltaSeconds));
+    }
+
 
     private Drawable createColorDrawable(Color color) {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
