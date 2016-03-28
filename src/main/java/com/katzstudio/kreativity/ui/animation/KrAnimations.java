@@ -52,6 +52,14 @@ public class KrAnimations implements KrUpdateListener {
         }
     }
 
+    /**
+     * Runs an animation to set the opacity of the widget to targetOpacity.
+     * The default animation duration is used.
+     *
+     * @param widget        the widget affected by the animation
+     * @param targetOpacity the final opacity of the widget at the end of the animation
+     * @return the animation instance
+     */
     public KrAnimation setOpacity(KrWidget widget, float targetOpacity) {
         KrWidgetOpacityAnimation animation = new KrWidgetOpacityAnimation(widget, targetOpacity, DEFAULT_ANIMATION_LENGTH, KrAnimationEasing.EASE_IN);
         runAnimation(animation);
