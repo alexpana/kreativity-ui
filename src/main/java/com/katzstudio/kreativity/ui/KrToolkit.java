@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.katzstudio.kreativity.ui.animation.KrAnimations;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -31,6 +32,8 @@ public class KrToolkit {
 
     private final List<KrUpdateListener> updateListeners = new ArrayList<>();
 
+    private final KrAnimations animations;
+
     private KrCanvas canvas;
 
     @Getter private KrSkin skin;
@@ -50,11 +53,13 @@ public class KrToolkit {
     private KrToolkit(KrBackend backend) {
         this.backend = backend;
         this.skin = new KrSkin(this);
+        this.animations = new KrAnimations();
     }
 
     private KrToolkit(KrBackend backend, KrSkin skin) {
         this.backend = backend;
         this.skin = skin;
+        this.animations = new KrAnimations();
     }
 
     public KrCanvas createCanvas() {
@@ -99,6 +104,10 @@ public class KrToolkit {
         return backend.getRenderer();
     }
 
+    public static KrAnimations animations() {
+        return getDefaultToolkit().animations;
+    }
+
     public void registerUpdateListener(KrUpdateListener updateListener) {
         updateListeners.add(updateListener);
     }
@@ -112,8 +121,8 @@ public class KrToolkit {
             canvas.update(deltaSeconds);
         }
         new ArrayList<>(updateListeners).forEach(l -> l.update(deltaSeconds));
+        animations.update(deltaSeconds);
     }
-
 
     private Drawable createColorDrawable(Color color) {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);

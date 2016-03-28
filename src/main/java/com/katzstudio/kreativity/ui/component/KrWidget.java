@@ -85,6 +85,8 @@ public class KrWidget<S extends KrWidgetStyle> {
 
     @Getter @Setter protected KrWidget tooltipWidget;
 
+    @Getter @Setter private float opacity = 1;
+
     public KrWidget() {
     }
 

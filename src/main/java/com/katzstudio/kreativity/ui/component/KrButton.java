@@ -108,7 +108,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
     protected void drawSelf(KrRenderer renderer) {
         Drawable background = getBackgroundForState(state);
 
-        renderer.setBrush(new KrDrawableBrush(background));
+        renderer.setBrush(new KrDrawableBrush(background, getOpacity()));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
         Rectangle textBounds = getDefaultToolkit().fontMetrics().bounds(style.font, getText());

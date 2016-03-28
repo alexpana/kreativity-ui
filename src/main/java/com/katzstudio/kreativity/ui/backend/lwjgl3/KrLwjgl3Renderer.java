@@ -150,6 +150,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
         if (brush instanceof KrDrawableBrush) {
             ensureSpriteBatchOpen();
             KrDrawableBrush drawableBrush = (KrDrawableBrush) brush;
+            spriteBatch.setColor(1, 1, 1, ((KrDrawableBrush) brush).getOpacity());
             drawableBrush.getDrawable().draw(spriteBatch, x, viewportSize.y - y - h, w, h);
         }
 

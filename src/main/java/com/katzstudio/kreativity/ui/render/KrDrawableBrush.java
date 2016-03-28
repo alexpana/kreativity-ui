@@ -13,4 +13,11 @@ import lombok.RequiredArgsConstructor;
 public class KrDrawableBrush extends KrBrush {
 
     @Getter private final Drawable drawable;
+
+    @Getter private final float opacity;
+
+    public KrDrawableBrush(Drawable drawable) {
+        this.drawable = drawable;
+        this.opacity = 1;
+    }
 }

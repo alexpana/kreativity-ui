@@ -17,17 +17,16 @@ import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.*;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
-import com.katzstudio.kreativity.ui.util.KrTimer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.badlogic.gdx.Gdx.gl;
 import static com.badlogic.gdx.graphics.GL20.*;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
+import static com.katzstudio.kreativity.ui.KrToolkit.animations;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
@@ -256,37 +255,43 @@ public class UiDemo extends Game {
 //                        }
 //                    }
 //                });
+//
+//        KrTimer timer = new KrTimer(0, 0.1f, new Runnable() {
+//            private final Random random = new Random();
+//
+//            @Override
+//            public void run() {
+//                button.setText(createRandomText(10));
+//            }
+//
+//            private String createRandomText(int i) {
+//
+//                StringBuilder builder = new StringBuilder();
+//                while (i > 0) {
+//                    builder.append((char) ('a' + random.nextInt(24)));
+//                    i -= 1;
+//                }
+//                return builder.toString();
+//            }
+//        });
+//
+//        button.addListener(new KrButton.KrButtonListener() {
+//            private boolean toggle = false;
+//            @Override
+//            public void clicked() {
+//                if (!toggle) {
+//                    timer.start();
+//                } else {
+//                    timer.stop();
+//                }
+//                toggle = !toggle;
+//            }
+//        });
 
-        KrTimer timer = new KrTimer(0, 0.1f, new Runnable() {
-            private final Random random = new Random();
-
-            @Override
-            public void run() {
-                button.setText(createRandomText(10));
-            }
-
-            private String createRandomText(int i) {
-
-                StringBuilder builder = new StringBuilder();
-                while (i > 0) {
-                    builder.append((char) ('a' + random.nextInt(24)));
-                    i -= 1;
-                }
-                return builder.toString();
-            }
-        });
-
-        button.addListener(new KrButton.KrButtonListener() {
-            private boolean toggle = false;
-            @Override
-            public void clicked() {
-                if (!toggle) {
-                    timer.start();
-                } else {
-                    timer.stop();
-                }
-                toggle = !toggle;
-            }
+        button.addListener(() -> {
+            button.setOpacity(0);
+            animations().setOpacity(button, 1)
+                    .onFinish(() -> System.out.println("Finished animation"));
         });
 
         KrToggleButton toggleButton = new KrToggleButton("Toggle Button");
