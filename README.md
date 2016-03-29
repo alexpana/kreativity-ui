@@ -38,6 +38,7 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 
 #### [Unreleased]
 - Added support for animations
+- Added support for widget opacity
 - Added opacity animation
 - Added delay + opacity animation for tooltips
 - Custom tooltips can be forced to show despite the currently hovered widget.
