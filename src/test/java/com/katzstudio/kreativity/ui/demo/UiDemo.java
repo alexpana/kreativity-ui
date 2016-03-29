@@ -297,6 +297,13 @@ public class UiDemo extends Game {
         KrToggleButton toggleButton = new KrToggleButton("Toggle Button");
         toggleButton.setName("buttons.toggleButton");
         toggleButton.setGeometry(0, 50, 100, 26);
+        toggleButton.addToggleListener(active -> {
+            if (active) {
+                canvas.getTooltipManager().showCustomTooltip(createDummyContent());
+            } else {
+                canvas.getTooltipManager().stopShowingCustomTooltip();
+            }
+        });
 
         KrLabel groupLabel = new KrLabel("Toggle Button Group");
         groupLabel.setForeground(lightGray);

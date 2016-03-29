@@ -31,6 +31,8 @@ public class KrTooltipManager implements KrUpdateListener {
 
     private boolean tooltipReady = false;
 
+    private boolean tooltipForced = false;
+
     private final KrTimer delayTimer;
 
     public KrTooltipManager(KrCanvas canvas) {
@@ -41,22 +43,57 @@ public class KrTooltipManager implements KrUpdateListener {
         delayTimer = new KrTimer(tooltipDelay, this::onDelayFinished);
     }
 
+    /**
+     * Forces the tooltip manager to display a tooltip containing the tooltip widget
+     * regardless of the currently hovered widget.
+     *
+     * @param tooltipWidget the widget to be displayed inside the tooltip
+     */
+    public void showCustomTooltip(KrWidget tooltipWidget) {
+        tooltipForced = true;
+        prepareTooltip(tooltipWidget);
+        showTooltip();
+    }
+
+    /**
+     * Stops forcing the tooltip manager to display a custom tooltip
+     */
+    public void stopShowingCustomTooltip() {
+        tooltipForced = false;
+        hideTooltip();
+    }
+
     private void onDelayFinished() {
-        if (tooltipReady) {
-            tooltipWidget.setOpacity(0);
-            tooltipWidget.setVisible(true);
-            animations().setOpacity(tooltipWidget, 1);
+        if (tooltipReady && !tooltipForced) {
+            showTooltip();
         }
+    }
+
+    private void showTooltip() {
+        tooltipWidget.setOpacity(0);
+        tooltipWidget.setVisible(true);
+        animations().setOpacity(tooltipWidget, 1);
+    }
+
+    private void hideTooltip() {
+        tooltipWidget.setVisible(false);
+        tooltipReady = false;
     }
 
     private void onEventDispatched(KrWidget widget, KrEvent event) {
         if (event instanceof KrMouseEvent && ((KrMouseEvent) event).getType() == KrMouseEvent.Type.MOVED) {
+            updateTooltipPosition(((KrMouseEvent) event).getScreenPosition());
+
+            if (tooltipForced) {
+                return;
+            }
+
             hideTooltip();
 
             if (hasTooltipText(widget)) {
-                prepareTooltip(((KrMouseEvent) event).getScreenPosition(), widget.getTooltipText());
+                prepareTooltip(widget.getTooltipText());
             } else if (hasTooltipWidget(widget)) {
-                prepareTooltip(((KrMouseEvent) event).getScreenPosition(), widget.getTooltipWidget());
+                prepareTooltip(widget.getTooltipWidget());
             }
 
             delayTimer.restart();
@@ -71,21 +108,18 @@ public class KrTooltipManager implements KrUpdateListener {
         return widget.getTooltipWidget() != null;
     }
 
-    private void prepareTooltip(Vector2 screenPosition, String tooltipText) {
-        tooltipWidget.setPosition(screenPosition.add(0, 20));
+    private void prepareTooltip(String tooltipText) {
         tooltipWidget.setText(tooltipText);
         tooltipReady = true;
     }
 
-    private void prepareTooltip(Vector2 screenPosition, KrWidget tooltip) {
-        tooltipWidget.setPosition(screenPosition.add(0, 20));
+    private void prepareTooltip(KrWidget tooltip) {
         tooltipWidget.setWidget(tooltip);
         tooltipReady = true;
     }
 
-    private void hideTooltip() {
-        tooltipWidget.setVisible(false);
-        tooltipReady = false;
+    private void updateTooltipPosition(Vector2 screenPosition) {
+        tooltipWidget.setPosition(screenPosition.add(0, 20));
     }
 
     @Override

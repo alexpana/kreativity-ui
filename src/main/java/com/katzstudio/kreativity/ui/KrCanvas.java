@@ -44,7 +44,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     private final List<KrInputListener> listeners = new ArrayList<>();
 
-    private KrTooltipManager tooltipManager;
+    @Getter private KrTooltipManager tooltipManager;
 
     private KrCursorManager cursorManager;
 
