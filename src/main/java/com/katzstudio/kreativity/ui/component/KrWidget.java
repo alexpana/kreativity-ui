@@ -9,7 +9,13 @@ import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
-import com.katzstudio.kreativity.ui.event.*;
+import com.katzstudio.kreativity.ui.event.KrEnterEvent;
+import com.katzstudio.kreativity.ui.event.KrEvent;
+import com.katzstudio.kreativity.ui.event.KrExitEvent;
+import com.katzstudio.kreativity.ui.event.KrFocusEvent;
+import com.katzstudio.kreativity.ui.event.KrKeyEvent;
+import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
@@ -356,15 +362,6 @@ public class KrWidget<S extends KrWidgetStyle> {
         if (clipped) {
             renderer.endClip();
         }
-    }
-
-    /**
-     * Returns the opacity of this widget.
-     *
-     * @return the opacity of this widget
-     */
-    public float getOpacity() {
-        return this.opacity;
     }
 
     /**
