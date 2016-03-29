@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.animation;
 
-import com.katzstudio.kreativity.ui.animation.easing.KrAnimationEasing.KrEaseFunction;
+import com.katzstudio.kreativity.ui.animation.KrAnimationEasing.KrEaseFunction;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 
 /**

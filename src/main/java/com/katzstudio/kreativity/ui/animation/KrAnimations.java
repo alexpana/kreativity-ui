@@ -1,6 +1,5 @@
 package com.katzstudio.kreativity.ui.animation;
 
-import com.katzstudio.kreativity.ui.animation.easing.KrAnimationEasing;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 

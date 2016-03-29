@@ -46,7 +46,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
     @Getter @Setter private KrPen pen;
 
-    private float opacity = 1;
+    @Getter private float opacity = 1;
 
     public KrLwjgl3Renderer() {
         spriteBatch = new SpriteBatch(100);
@@ -247,11 +247,6 @@ public class KrLwjgl3Renderer implements KrRenderer {
         float oldOpacity = this.opacity;
         this.opacity = opacity;
         return oldOpacity;
-    }
-
-    @Override
-    public float getOpacity() {
-        return this.opacity;
     }
 
     private Color multiplyAlpha(Color color) {

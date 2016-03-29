@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.animation.easing;
+package com.katzstudio.kreativity.ui.animation;
 
 /**
  * The easing function is used as to make animations more realistic.
@@ -19,6 +19,7 @@ public class KrAnimationEasing {
 
     public static final KrEaseFunction EASE_OUT = v -> (-v * v + 2 * v);
 
+    // TODO(alex): this doesn't work!
     public static final KrEaseFunction EASE_IN_OUT = v -> {
         if (v < 0.5) {
             return EASE_IN.apply(v);
