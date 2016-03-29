@@ -4,6 +4,10 @@ import com.katzstudio.kreativity.ui.animation.easing.KrAnimationEasing.KrEaseFun
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 
 /**
+ * An animation describes a gradual change over time. The animation class
+ * is designed to be extended, and implementations must implement the
+ * {@code doUpdate(float currentValue)} method, which receives values
+ * from 0 to 1, linearly distributed along the duration of the animation.
  */
 public abstract class KrAnimation implements KrUpdateListener {
 

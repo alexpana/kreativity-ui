@@ -624,9 +624,9 @@ public class UiDemo extends Game {
     @Override
     public void render() {
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        getDefaultToolkit().update(Gdx.graphics.getDeltaTime());
+        float deltaTime = Gdx.graphics.getRawDeltaTime();
+        getDefaultToolkit().update(deltaTime);
         canvas.draw();
-//        fpsLogger.log();
     }
 
     @Override
