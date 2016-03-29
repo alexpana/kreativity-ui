@@ -13,6 +13,7 @@ import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import com.katzstudio.kreativity.ui.util.KrTimer;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
+import lombok.Setter;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.animations;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
@@ -24,7 +25,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 public class KrTooltipManager implements KrUpdateListener {
 
-    public static final float TOOLTIP_SHOW_DELAY = 0.5f;
+    @Getter @Setter private float tooltipDelay = 0.5f;
 
     @Getter private final KrTooltipWidget tooltipWidget;
 
@@ -37,7 +38,7 @@ public class KrTooltipManager implements KrUpdateListener {
         tooltipWidget = new KrTooltipWidget();
         tooltipWidget.setVisible(false);
 
-        delayTimer = new KrTimer(TOOLTIP_SHOW_DELAY, this::onDelayFinished);
+        delayTimer = new KrTimer(tooltipDelay, this::onDelayFinished);
     }
 
     private void onDelayFinished() {
