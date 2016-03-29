@@ -10,9 +10,11 @@ import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
+import com.katzstudio.kreativity.ui.util.KrTimer;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
 
+import static com.katzstudio.kreativity.ui.KrToolkit.animations;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
@@ -22,23 +24,41 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 public class KrTooltipManager implements KrUpdateListener {
 
+    public static final float TOOLTIP_SHOW_DELAY = 0.5f;
+
     @Getter private final KrTooltipWidget tooltipWidget;
+
+    private boolean tooltipReady = false;
+
+    private final KrTimer delayTimer;
 
     public KrTooltipManager(KrCanvas canvas) {
         canvas.addInputListener(this::onEventDispatched);
         tooltipWidget = new KrTooltipWidget();
         tooltipWidget.setVisible(false);
+
+        delayTimer = new KrTimer(TOOLTIP_SHOW_DELAY, this::onDelayFinished);
+    }
+
+    private void onDelayFinished() {
+        if (tooltipReady) {
+            tooltipWidget.setOpacity(0);
+            tooltipWidget.setVisible(true);
+            animations().setOpacity(tooltipWidget, 1);
+        }
     }
 
     private void onEventDispatched(KrWidget widget, KrEvent event) {
         if (event instanceof KrMouseEvent && ((KrMouseEvent) event).getType() == KrMouseEvent.Type.MOVED) {
+            hideTooltip();
+
             if (hasTooltipText(widget)) {
-                showTooltip(((KrMouseEvent) event).getScreenPosition(), widget.getTooltipText());
+                prepareTooltip(((KrMouseEvent) event).getScreenPosition(), widget.getTooltipText());
             } else if (hasTooltipWidget(widget)) {
-                showTooltip(((KrMouseEvent) event).getScreenPosition(), widget.getTooltipWidget());
-            } else {
-                hideTooltip();
+                prepareTooltip(((KrMouseEvent) event).getScreenPosition(), widget.getTooltipWidget());
             }
+
+            delayTimer.restart();
         }
     }
 
@@ -50,20 +70,21 @@ public class KrTooltipManager implements KrUpdateListener {
         return widget.getTooltipWidget() != null;
     }
 
-    private void showTooltip(Vector2 screenPosition, String tooltipText) {
+    private void prepareTooltip(Vector2 screenPosition, String tooltipText) {
         tooltipWidget.setPosition(screenPosition.add(0, 20));
         tooltipWidget.setText(tooltipText);
-        tooltipWidget.setVisible(true);
+        tooltipReady = true;
     }
 
-    private void showTooltip(Vector2 screenPosition, KrWidget tooltip) {
+    private void prepareTooltip(Vector2 screenPosition, KrWidget tooltip) {
         tooltipWidget.setPosition(screenPosition.add(0, 20));
         tooltipWidget.setWidget(tooltip);
-        tooltipWidget.setVisible(true);
+        tooltipReady = true;
     }
 
     private void hideTooltip() {
         tooltipWidget.setVisible(false);
+        tooltipReady = false;
     }
 
     @Override

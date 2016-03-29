@@ -346,12 +346,36 @@ public class KrWidget<S extends KrWidgetStyle> {
         if (clipRendering) {
             clipped = renderer.beginClip(0, 0, getWidth(), getHeight());
         }
+        float oldOpacity = renderer.setOpacity(getDrawOpacity());
+
         drawSelf(renderer);
         drawChildren(renderer);
+
+        renderer.setOpacity(oldOpacity);
         renderer.translate(-getX(), -getY());
         if (clipped) {
             renderer.endClip();
         }
+    }
+
+    /**
+     * Returns the opacity of this widget.
+     *
+     * @return the opacity of this widget
+     */
+    public float getOpacity() {
+        return this.opacity;
+    }
+
+    /**
+     * Returns the opacity used when rendering this widget.
+     * This opacity takes into consideration the opacity of the
+     * widget hierarchy.
+     *
+     * @return the drawing opacity
+     */
+    public float getDrawOpacity() {
+        return (parent != null ? parent.getDrawOpacity() : 1) * opacity;
     }
 
     public void update(float deltaSeconds) {

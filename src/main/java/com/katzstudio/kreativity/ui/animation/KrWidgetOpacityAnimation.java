@@ -26,6 +26,5 @@ public class KrWidgetOpacityAnimation extends KrAnimation {
     @Override
     public void doUpdate(float currentValue) {
         widget.setOpacity(interpolate(easing.apply(currentValue), startOpacity, endOpacity));
-        System.out.println(currentValue);
     }
 }

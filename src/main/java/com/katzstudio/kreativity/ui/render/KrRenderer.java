@@ -46,6 +46,10 @@ public interface KrRenderer {
 
     void setViewportSize(float width, float height);
 
+    float setOpacity(float opacity);
+
+    float getOpacity();
+
     void popState();
 
     void pushState();

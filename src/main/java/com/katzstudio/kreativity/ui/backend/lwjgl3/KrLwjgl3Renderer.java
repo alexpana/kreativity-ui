@@ -46,6 +46,8 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
     @Getter @Setter private KrPen pen;
 
+    private float opacity = 1;
+
     public KrLwjgl3Renderer() {
         spriteBatch = new SpriteBatch(100);
         shapeRenderer = new ShapeRenderer(100);
@@ -85,7 +87,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
         Color originalFontColor = font.getColor();
 
-        font.setColor(pen.getColor());
+        font.setColor(multiplyAlpha(pen.getColor()));
         font.draw(spriteBatch, text, x, viewportSize.y - y);
 
         font.setColor(originalFontColor);
@@ -103,11 +105,11 @@ public class KrLwjgl3Renderer implements KrRenderer {
         ensureSpriteBatchOpen();
 
         // render shadow
-        font.setColor(shadowColor);
+        font.setColor(multiplyAlpha(shadowColor));
         font.draw(spriteBatch, text, position.x + shadowOffset.x, viewportSize.y - position.y - shadowOffset.y);
 
         // render text
-        font.setColor(pen.getColor());
+        font.setColor(multiplyAlpha(pen.getColor()));
         font.draw(spriteBatch, text, position.x, viewportSize.y - position.y);
 
         font.setColor(originalFontColor);
@@ -121,7 +123,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
     @Override
     public void drawRect(float x, float y, float w, float h) {
         ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(pen.getColor());
+        shapeRenderer.setColor(multiplyAlpha(pen.getColor()));
 
         drawLineInternal(x, y, x + w - 1, y);
         drawLineInternal(x, y, x, y + h - 1);
@@ -132,7 +134,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
     @Override
     public void drawLine(float x1, float y1, float x2, float y2) {
         ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(pen.getColor());
+        shapeRenderer.setColor(multiplyAlpha(pen.getColor()));
         drawLineInternal(x1, y1, x2, y2);
     }
 
@@ -158,7 +160,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
             KrColorBrush colorBrush = (KrColorBrush) brush;
 
             ensureShapeRendererOpen(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(colorBrush.getColor());
+            shapeRenderer.setColor(multiplyAlpha(colorBrush.getColor()));
             shapeRenderer.rect(x, viewportSize.y - y - h, w, h);
         }
     }
@@ -175,7 +177,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
         ensureSpriteBatchOpen();
         if (brush instanceof KrColorBrush) {
             KrColorBrush colorBrush = (KrColorBrush) brush;
-            spriteBatch.setColor(colorBrush.getColor());
+            spriteBatch.setColor(multiplyAlpha(colorBrush.getColor()));
         }
 
         drawable.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
@@ -238,6 +240,24 @@ public class KrLwjgl3Renderer implements KrRenderer {
         viewportSize.set(width, height);
         spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
         shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+    }
+
+    @Override
+    public float setOpacity(float opacity) {
+        float oldOpacity = this.opacity;
+        this.opacity = opacity;
+        return oldOpacity;
+    }
+
+    @Override
+    public float getOpacity() {
+        return this.opacity;
+    }
+
+    private Color multiplyAlpha(Color color) {
+        Color newColor = new Color(color);
+        newColor.a *= this.opacity;
+        return newColor;
     }
 
     @Override
