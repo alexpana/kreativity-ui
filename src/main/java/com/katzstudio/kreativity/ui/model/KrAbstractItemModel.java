@@ -18,11 +18,22 @@ public class KrAbstractItemModel<T> {
     protected final List<Listener> listeners = new ArrayList<>();
 
     public T getValue(KrModelIndex index) {
+        return getValue(index.row, index.column, index.parentIndex);
+    }
+
+    public T getValue(int row) {
+        return getValue(row, 0, null);
+    }
+
+    public T getValue(int row, int column) {
+        return getValue(row, column, null);
+    }
+
+    public T getValue(int row, int column, KrModelIndex parent) {
         return null;
     }
 
     public void setValue(KrModelIndex index, T value) {
-
     }
 
     public int getColumnCount() {

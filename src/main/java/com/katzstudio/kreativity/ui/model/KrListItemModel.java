@@ -20,9 +20,9 @@ public class KrListItemModel<T> extends KrAbstractItemModel<T> {
     }
 
     @Override
-    public T getValue(KrModelIndex index) {
+    public T getValue(int row, int column, KrModelIndex parentIndex) {
         // completely ignore parent index / column
-        return items.get(index.getRow());
+        return items.get(row);
     }
 
     @Override

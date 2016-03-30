@@ -3,15 +3,16 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrSelectionMode;
+import com.katzstudio.kreativity.ui.component.renderer.KrCellRenderer;
 import com.katzstudio.kreativity.ui.component.renderer.KrListViewCellRenderer;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
-import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import com.katzstudio.kreativity.ui.model.KrSelection;
 import com.katzstudio.kreativity.ui.model.KrSelectionModel;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 
@@ -26,17 +27,13 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrListView extends KrWidget<KrWidgetStyle> {
 
+    private final static int ROW_HEIGHT = 20;
+
     private final KrAbstractItemModel model;
 
-    private final KrPanel innerPanel;
-
-    private final Renderer renderer;
-
-    private int listGeometryOffset = 0;
+    private final KrCellRenderer cellRenderer;
 
     private KrScrollBar verticalScrollBar = new KrScrollBar(VERTICAL);
-
-    private List<KrItemDelegate> delegates = new ArrayList<>();
 
     private List<KrDoubleClickListener> doubleClickListeners = new ArrayList<>();
 
@@ -48,37 +45,26 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
         this(model, new KrListViewCellRenderer());
     }
 
-    public KrListView(KrAbstractItemModel model, Renderer renderer) {
+    public KrListView(KrAbstractItemModel model, KrCellRenderer renderer) {
         this.model = model;
-        this.renderer = renderer;
-        this.innerPanel = new KrPanel(new KrFlowLayout(VERTICAL));
+        this.cellRenderer = renderer;
 
         model.addListener(this::onModelDataChanged);
         verticalScrollBar.addScrollListener(this::onScroll);
         selectionModel.addSelectionListener(this::onSelectionChanged);
 
         setStyle(getDefaultToolkit().getSkin().getListViewStyle());
-
         setLayout(new Layout());
-        add(innerPanel);
         add(verticalScrollBar);
 
         onModelDataChanged();
     }
 
     private void onScroll(float v) {
-        listGeometryOffset = (int) v;
         invalidate();
     }
 
     private void onSelectionChanged(KrSelection oldSelection, KrSelection newSelection) {
-        for (KrModelIndex index : oldSelection) {
-            delegates.get(index.getRow()).setSelected(false);
-        }
-
-        for (KrModelIndex index : newSelection) {
-            delegates.get(index.getRow()).setSelected(true);
-        }
     }
 
     public void setSelectionMode(KrSelectionMode newSelectionMode) {
@@ -142,17 +128,32 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
         }
     }
 
-    private void onModelDataChanged() {
-        innerPanel.removeAll();
-        delegates.clear();
-
+    @Override
+    protected void drawSelf(KrRenderer renderer) {
+        int cellY = (int) -verticalScrollBar.getCurrentValue();
+        int cellHeight = ROW_HEIGHT;
+        int cellWidth = (int) getWidth();
         for (int i = 0; i < model.getRowCount(); ++i) {
             KrModelIndex index = new KrModelIndex(i);
-            KrItemDelegate itemDelegate = renderer.getComponent(index, model);
-            delegates.add(itemDelegate);
-            innerPanel.add(itemDelegate.getWidget());
+            KrWidget item = cellRenderer.getComponent(index, model, selectionModel.getCurrentSelection().contains(new KrModelIndex(i)));
+            item.setGeometry(0, cellY, cellWidth, cellHeight);
+            item.draw(renderer);
+            cellY += cellHeight;
         }
+    }
 
+    @Override
+    public void validate() {
+        super.validate();
+        this.verticalScrollBar.setValueRange(0, Math.max(getPreferredHeight() - getHeight(), 0));
+    }
+
+    @Override
+    public Vector2 calculatePreferredSize() {
+        return new Vector2(100, model.getRowCount() * ROW_HEIGHT);
+    }
+
+    private void onModelDataChanged() {
         invalidate();
     }
 
@@ -161,14 +162,11 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
     }
 
     private KrModelIndex findItemIndexAt(int x, int y) {
-        int itemIndex = 0;
-        for (KrItemDelegate delegate : delegates) {
-            if (delegate.getWidget().getGeometry().contains(x, y + listGeometryOffset)) {
-                return new KrModelIndex(itemIndex);
-            }
-            itemIndex += 1;
-        }
-        return null;
+        int index = (int) ((y + verticalScrollBar.getCurrentValue()) / ROW_HEIGHT);
+        System.out.println("y = " + y);
+        System.out.println("verticalScrollBar.getCurrentValue() = " + verticalScrollBar.getCurrentValue());
+        System.out.println("index = " + index);
+        return new KrModelIndex(index);
     }
 
     public void addDoubleClickListener(KrDoubleClickListener listener) {
@@ -183,10 +181,6 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
         doubleClickListeners.forEach(l -> l.itemDoubleClicked(itemIndex));
     }
 
-    public interface Renderer {
-        KrItemDelegate getComponent(KrModelIndex index, KrAbstractItemModel model);
-    }
-
     private class Layout implements KrLayout {
 
         @Override
@@ -194,9 +188,7 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
             int width = (int) geometry.getWidth();
             int height = (int) geometry.getHeight();
 
-            float preferredHeight = innerPanel.getPreferredHeight();
-            innerPanel.setGeometry(0, -listGeometryOffset, width, preferredHeight);
-
+            float preferredHeight = getPreferredHeight();
             int requiredScrollSize = (int) (preferredHeight - geometry.getHeight());
 
             if (requiredScrollSize > 0) {
@@ -211,17 +203,17 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
 
         @Override
         public Vector2 getMinSize() {
-            return innerPanel.getMinSize();
+            return KrListView.this.calculatePreferredSize();
         }
 
         @Override
         public Vector2 getMaxSize() {
-            return innerPanel.getMaxSize();
+            return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
         }
 
         @Override
         public Vector2 getPreferredSize() {
-            return innerPanel.getPreferredSize();
+            return KrListView.this.calculatePreferredSize();
         }
 
         @Override
@@ -237,25 +229,4 @@ public class KrListView extends KrWidget<KrWidgetStyle> {
         void itemDoubleClicked(KrModelIndex itemIndex);
     }
 
-    /**
-     * The item delegate wraps the {@link KrWidget} displayed in the list view.
-     * The delegate can alter the widget in various ways, depending on what the list view
-     * requests. For instance, it can change the widget's appearance when selected.
-     */
-    public static abstract class KrItemDelegate {
-
-        /**
-         * Sets whether or not the underlying widget is selected or not
-         *
-         * @param selected the selection status of the widget
-         */
-        abstract public void setSelected(boolean selected);
-
-        /**
-         * Returns the widget that's used by the list view to display an item.
-         *
-         * @return the widget managed by this delegate.
-         */
-        abstract public KrWidget getWidget();
-    }
 }

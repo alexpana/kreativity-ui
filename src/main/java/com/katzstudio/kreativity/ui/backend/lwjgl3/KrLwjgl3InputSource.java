@@ -57,6 +57,18 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     private KeyRepeatTask keyRepeatTask;
 
+    private int inputOffsetX = 0;
+
+    private int inputOffsetY = 0;
+
+    public KrLwjgl3InputSource() {
+        // TODO: investigate pointer offset on MAC OSX. Compensating here with a small hack
+        if (((String) System.getProperties().get("os.name")).contains("Mac")) {
+            inputOffsetX = -4;
+            inputOffsetY = -3;
+        }
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         isAltDown = isAltDown || isAlt(keycode);
@@ -108,6 +120,10 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int buttonIndex) {
+
+        screenX += inputOffsetX;
+        screenY += inputOffsetY;
+
         isDragging = true;
         KrMouseEvent.Button button = getButtonFor(buttonIndex);
 
@@ -137,6 +153,10 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        screenX += inputOffsetX;
+        screenY += inputOffsetY;
+
         isDragging = false;
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.RELEASED, screenX, screenY, button);
 
@@ -147,6 +167,10 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+
+        screenX += inputOffsetX;
+        screenY += inputOffsetY;
+
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.MOVED, screenX, screenY, -1);
 
         notifyMouseMoved(mouseEvent);
@@ -156,6 +180,10 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+
+        screenX += inputOffsetX;
+        screenY += inputOffsetY;
+
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.MOVED, screenX, screenY, -1);
 
         notifyMouseMoved(mouseEvent);
