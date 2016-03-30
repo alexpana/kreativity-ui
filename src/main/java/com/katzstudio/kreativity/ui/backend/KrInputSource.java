@@ -5,6 +5,9 @@ import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 
 /**
+ * The input source abstracts the underlying IO backend and offers
+ * support for registering event listeners, as well as polling for
+ * some states.
  */
 public interface KrInputSource {
 
