@@ -1,21 +1,20 @@
 package com.katzstudio.kreativity.ui.backend.lwjgl3;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
+import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
-import com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.badlogic.gdx.Input.Keys.LEFT;
-import static com.badlogic.gdx.Input.Keys.RIGHT;
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxInputHelper.*;
+import static com.badlogic.gdx.Input.Keys.*;
 
 /**
  * {@link KrInputSource} implementation for libgdx lwjgl3 backend.
@@ -25,6 +24,18 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
     private static final float KEY_REPEAT_INITIAL_TIME = 0.4f;
 
     private static final float KEY_REPEAT_TIME = 0.1f;
+
+    private static final List<Integer> metaKeys = Lists.newArrayList(
+            ALT_LEFT, ALT_RIGHT, CONTROL_LEFT, CONTROL_RIGHT, SHIFT_LEFT, SHIFT_RIGHT);
+
+    private static final List<Integer> textModifierKeys = Lists.newArrayList(
+            DEL, BACKSPACE, FORWARD_DEL, ENTER, TAB);
+
+    private static final List<Integer> navigationKeys = Lists.newArrayList(
+            LEFT, RIGHT, UP, DOWN, PAGE_DOWN, PAGE_UP, HOME, END, ESCAPE);
+
+    private static final List<Integer> functionKeys = Lists.newArrayList(
+            F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12);
 
     private final List<KrInputEventListener> listeners = new ArrayList<>();
 
@@ -67,7 +78,7 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     @Override
     public boolean keyTyped(char character) {
-        if (KrLibGdxInputHelper.hasStringRepresentation(pressedKeyCode)) {
+        if (hasStringRepresentation(pressedKeyCode)) {
             KrKeyEvent keyEvent = createKeyEvent(KrKeyEvent.Type.PRESSED, character).toBuilder().keycode(pressedKeyCode).build();
             notifyKeyPressed(keyEvent);
             return keyEvent.handled();
@@ -274,6 +285,39 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     private void notifyScrolledEvent(KrScrollEvent event) {
         listeners.forEach(l -> l.scrolledEvent(event));
+    }
+
+    private static KrMouseEvent.Button getButtonFor(int button) {
+        switch (button) {
+            case Input.Buttons.LEFT:
+                return KrMouseEvent.Button.LEFT;
+            case Input.Buttons.RIGHT:
+                return KrMouseEvent.Button.RIGHT;
+            case Input.Buttons.MIDDLE:
+                return KrMouseEvent.Button.MIDDLE;
+        }
+
+        return KrMouseEvent.Button.NONE;
+    }
+
+
+    private static boolean hasStringRepresentation(int keycode) {
+        return !metaKeys.contains(keycode) &&
+                !textModifierKeys.contains(keycode) &&
+                !navigationKeys.contains(keycode) &&
+                !functionKeys.contains(keycode);
+    }
+
+    private static boolean isAlt(int keycode) {
+        return keycode == ALT_LEFT || keycode == ALT_RIGHT;
+    }
+
+    private static boolean isCtrl(int keycode) {
+        return keycode == CONTROL_LEFT || keycode == CONTROL_RIGHT;
+    }
+
+    private static boolean isShift(int keycode) {
+        return keycode == SHIFT_LEFT || keycode == SHIFT_RIGHT;
     }
 
     /**

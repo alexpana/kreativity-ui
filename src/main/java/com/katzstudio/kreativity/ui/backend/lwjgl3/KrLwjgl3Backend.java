@@ -1,14 +1,13 @@
 package com.katzstudio.kreativity.ui.backend.lwjgl3;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.utils.Clipboard;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-
-import static com.katzstudio.kreativity.ui.libgdx.KrLibGdxCursorHelper.systemCursor;
 
 /**
  * This backed works with the libgdx Lwjgl3 backend.
@@ -79,5 +78,24 @@ public class KrLwjgl3Backend implements KrBackend {
     @Override
     public int getScreenHeight() {
         return Gdx.graphics.getHeight();
+    }
+
+    private static Cursor.SystemCursor systemCursor(KrCursor cursor) {
+        switch (cursor) {
+            case ARROW:
+                return Cursor.SystemCursor.Arrow;
+            case IBEAM:
+                return Cursor.SystemCursor.Ibeam;
+            case CROSSHAIR:
+                return Cursor.SystemCursor.Crosshair;
+            case HAND:
+                return Cursor.SystemCursor.Hand;
+            case HORIZONTAL_RESIZE:
+                return Cursor.SystemCursor.HorizontalResize;
+            case VERTICAL_RESIZE:
+                return Cursor.SystemCursor.VerticalResize;
+            default:
+                return Cursor.SystemCursor.Arrow;
+        }
     }
 }
