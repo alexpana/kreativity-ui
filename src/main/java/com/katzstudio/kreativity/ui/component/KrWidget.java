@@ -1,14 +1,12 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.common.collect.Lists;
-import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrCursor;
-import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
+import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
@@ -88,6 +86,8 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     @Getter @Setter private float opacity = 1;
 
+    protected final KrMeasuredString text = new KrMeasuredString("");
+
     public KrWidget() {
     }
 
@@ -154,6 +154,24 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     public void setCursor(KrCursor cursor) {
         ensureUniqueStyle();
         style.cursor = cursor;
+    }
+
+    public void setFont(BitmapFont font) {
+        ensureUniqueStyle();
+        style.font = font;
+        text.setFont(font);
+    }
+
+    public BitmapFont getFont() {
+        return style.font;
+    }
+
+    public void setText(String text) {
+        this.text.setString(text);
+    }
+
+    public String getText() {
+        return this.text.getString();
     }
 
     /**

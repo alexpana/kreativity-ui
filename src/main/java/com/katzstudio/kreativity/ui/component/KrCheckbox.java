@@ -19,8 +19,6 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
 
-    @Getter @Setter private String text;
-
     @Getter @Setter private KrValueModel<Boolean> model = new KrValueModel.Default<>(false);
 
     private final List<ValueListener> valueListeners = new ArrayList<>();

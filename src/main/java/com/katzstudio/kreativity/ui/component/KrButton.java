@@ -32,14 +32,12 @@ public class KrButton extends KrWidget<KrButtonStyle> {
 
     protected State state = State.NORMAL;
 
-    @Getter @Setter private String text;
-
     @Getter @Setter private KrAlignment textAlignment;
 
     private final List<KrButtonListener> listeners = Lists.newArrayList();
 
     public KrButton(String text) {
-        this.text = text;
+        setText(text);
         setStyle(getDefaultToolkit().getSkin().getButtonStyle());
         setPadding(new KrPadding(5, 4));
         setTextAlignment(KrAlignment.MIDDLE_CENTER);
@@ -67,7 +65,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        Rectangle textBounds = getDefaultToolkit().fontMetrics().bounds(style.font, text);
+        Rectangle textBounds = text.getBounds();
         return expandSizeWithPadding(new Vector2(textBounds.width, textBounds.height), getPadding());
     }
 
@@ -111,7 +109,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
         renderer.setBrush(new KrDrawableBrush(background, getOpacity()));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        Rectangle textBounds = getDefaultToolkit().fontMetrics().bounds(style.font, getText());
+        Rectangle textBounds = text.getBounds();
         float textWidth = textBounds.width;
         float textHeight = textBounds.height;
         Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight),
@@ -121,7 +119,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
 
         renderer.setPen(new KrPen(1, style.foregroundColor));
         renderer.setFont(style.font);
-        renderer.drawTextWithShadow(text, textPosition, style.textShadowOffset, style.textShadowColor);
+        renderer.drawTextWithShadow(text.getString(), textPosition, style.textShadowOffset, style.textShadowColor);
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
-import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrPen;
@@ -21,12 +20,10 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrLabel extends KrWidget<KrLabelStyle> {
 
-    @Getter @Setter private String text;
-
     @Setter @Getter private KrAlignment textAlignment;
 
     public KrLabel(String text) {
-        this.text = text;
+        setText(text);
         this.textAlignment = KrAlignment.MIDDLE_LEFT;
 
         setStyle(getDefaultToolkit().getSkin().getLabelStyle());
@@ -43,7 +40,7 @@ public class KrLabel extends KrWidget<KrLabelStyle> {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        return rectangles(getTextBounds()).expand(getPadding()).size();
+        return rectangles(text.getBounds()).expand(getPadding()).size();
     }
 
     @Override
@@ -53,21 +50,16 @@ public class KrLabel extends KrWidget<KrLabelStyle> {
         renderer.setBrush(new KrDrawableBrush(style.background));
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        Vector2 textBounds = getTextBounds();
+        Rectangle textBounds = text.getBounds();
         Rectangle alignmentReference = rectangles(new Rectangle(0, 0, getWidth(), getHeight())).shrink(getPadding()).value();
-        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textBounds.x, textBounds.y), alignmentReference, getTextAlignment());
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(textBounds, alignmentReference, getTextAlignment());
         renderer.setPen(new KrPen(1, style.foregroundColor));
         renderer.setFont(style.font);
-        renderer.drawText(text, textPosition);
+        renderer.drawText(text.getString(), textPosition);
 
         if (componentClip) {
             renderer.endClip();
         }
-    }
-
-    protected Vector2 getTextBounds() {
-        KrFontMetrics metrics = getDefaultToolkit().fontMetrics();
-        return metrics.bounds(style.font, text).getSize(new Vector2());
     }
 
     @Override

@@ -142,7 +142,9 @@ public class KrTooltipManager implements KrUpdateListener {
             add(textLabel);
         }
 
-        void setText(String text) {
+        @Override
+        public void setText(String text) {
+            super.setText(text);
             if (!(getChild(0) == textLabel)) {
                 removeAll();
                 add(textLabel);
