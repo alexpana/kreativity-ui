@@ -16,6 +16,7 @@ import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.*;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
+import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
 
 import java.util.ArrayList;
@@ -76,7 +77,8 @@ public class UiDemo extends Game {
         canvas.getRootPanel().add(createScrollBarsPanel());
         canvas.getRootPanel().add(createScrollPanel());
         canvas.getRootPanel().add(createSplitPanel());
-        canvas.getRootPanel().add(createListView());
+        canvas.getRootPanel().add(createTableView());
+//        canvas.getRootPanel().add(createListView());
         canvas.getRootPanel().add(createStackLayout());
     }
 
@@ -172,6 +174,64 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(listView);
+        wrapper.setGeometry(385, 260, 160, 120);
+        return wrapper;
+    }
+
+    private KrPanel createTableView() {
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel label = new KrLabel("Table View");
+        label.setForeground(lightGray);
+        label.setName("list_view.label");
+        label.setGeometry(0, 0, 60, 20);
+
+//        KrListView listView = new KrListView(model);
+//        listView.setGeometry(0, 20, 160, 100);
+//        listView.getSelectionModel().addSelectionListener((oldSelection, newSelection) ->
+//                System.out.println("newSelection = " + newSelection));
+//        listView.addDoubleClickListener(itemIndex -> System.out.println("2x clicked itemIndex: " + itemIndex));
+
+        KrTableView.KrTableColumnModel columnModel = new KrTableView.KrTableColumnModel() {
+            @Override
+            public int getColumnCount() {
+                return 3;
+            }
+
+            @Override
+            public String getColumnName(int index) {
+                return "Col " + index;
+            }
+
+            @Override
+            public int getModelIndex(int index) {
+                return index;
+            }
+        };
+
+        KrAbstractItemModel model = new KrAbstractItemModel() {
+            @Override
+            public int getRowCount() {
+                return 20;
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 3;
+            }
+
+            @Override
+            public Object getValue(int row, int column, KrModelIndex parent) {
+                return "Val " + row + ":" + column;
+            }
+        };
+
+        KrTableView table = new KrTableView(model);
+        table.setColumnModel(columnModel);
+        table.setGeometry(0, 20, 160, 100);
+
+        wrapper.add(label);
+        wrapper.add(table);
         wrapper.setGeometry(385, 260, 160, 120);
         return wrapper;
     }

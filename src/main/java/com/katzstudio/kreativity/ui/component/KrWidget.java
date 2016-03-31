@@ -9,13 +9,7 @@ import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
-import com.katzstudio.kreativity.ui.event.KrEnterEvent;
-import com.katzstudio.kreativity.ui.event.KrEvent;
-import com.katzstudio.kreativity.ui.event.KrExitEvent;
-import com.katzstudio.kreativity.ui.event.KrFocusEvent;
-import com.katzstudio.kreativity.ui.event.KrKeyEvent;
-import com.katzstudio.kreativity.ui.event.KrMouseEvent;
-import com.katzstudio.kreativity.ui.event.KrScrollEvent;
+import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
@@ -23,6 +17,7 @@ import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
+import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +30,7 @@ import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
  * Base class for all Kreativity Components
  */
 @SuppressWarnings({"UnusedParameters", "unused"})
-public class KrWidget<S extends KrWidgetStyle> {
+public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     public static final String FOCUS_PROPERTY = "property.focus";
 
@@ -180,6 +175,7 @@ public class KrWidget<S extends KrWidgetStyle> {
         if (child.getParent() != null) {
             throw new IllegalArgumentException("Widget already has a parent: " + child.getParent());
         }
+        //noinspection unchecked
         children.add(child);
         child.setParent(this);
         child.setCanvas(this.canvas);
@@ -375,6 +371,7 @@ public class KrWidget<S extends KrWidgetStyle> {
         return (parent != null ? parent.getDrawOpacity() : 1) * opacity;
     }
 
+    @Override
     public void update(float deltaSeconds) {
         if (!isValid) {
             validate();

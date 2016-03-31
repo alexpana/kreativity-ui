@@ -70,7 +70,9 @@ public class KrSkin {
 
     @Getter @Setter private KrSplitPanelStyle splitPanelStyle;
 
-    @Getter @Setter private KrWidgetStyle listViewStyle;
+    @Getter @Setter private KrItemViewStyle listViewStyle;
+
+    @Getter @Setter private KrItemViewStyle tableViewStyle;
 
     @Getter private Texture skinTexture;
 
@@ -190,7 +192,13 @@ public class KrSkin {
         splitPanelStyle.splitterBackground = toolkit.getDrawable(getColor(BACKGROUND_LIGHT));
         splitPanelStyle.splitterGrip = getDrawable("split_panel.splitter_grip");
 
-        listViewStyle = new KrWidgetStyle(widgetStyle);
+        listViewStyle = new KrItemViewStyle(widgetStyle);
+        listViewStyle.gridColor = getColor(FOREGROUND);
+        listViewStyle.gridVisible = false;
+
+        tableViewStyle = new KrItemViewStyle(widgetStyle);
+        tableViewStyle.gridColor = getColor(FOREGROUND);
+        tableViewStyle.gridVisible = false;
     }
 
     private Rectangle jsonArrayToRectangle(JsonValue jsonValue) {

@@ -42,6 +42,7 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 - Added opacity animation
 - Added delay + opacity animation for tooltips
 - Custom tooltips can be forced to show despite the currently hovered widget.
+- Implemented KrTableView
 
 #### [0.2.0] - 2016-03-27
 - Migrated to libgdx 1.9.1 and backend lwjgl3

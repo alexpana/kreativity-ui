@@ -13,7 +13,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * A simple list view renderer implementation
  */
-public class KrListViewCellRenderer implements KrCellRenderer {
+public class KrDefaultCellRenderer implements KrCellRenderer {
 
     private final KrLabel label;
 
@@ -21,7 +21,7 @@ public class KrListViewCellRenderer implements KrCellRenderer {
 
     private final Drawable selectedBackground;
 
-    public KrListViewCellRenderer() {
+    public KrDefaultCellRenderer() {
         label = new KrLabel("");
         label.ensureUniqueStyle();
         label.setPadding(new KrPadding(4, 4, 4, 4));

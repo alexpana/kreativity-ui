@@ -27,7 +27,7 @@ public class TestUtils {
         when(skin.getTextFieldStyle()).thenReturn(createTextFieldStyle());
         when(skin.getCheckboxStyle()).thenReturn(createCheckBoxStyle());
         when(skin.getSpinnerStyle()).thenReturn(createSpinnerStyle());
-        when(skin.getListViewStyle()).thenReturn(createWidgetStyle());
+        when(skin.getListViewStyle()).thenReturn(createItemViewStyle());
         when(skin.getHorizontalScrollBarStyle()).thenReturn(createHorizontalScrollBarStyle());
         when(skin.getVerticalScrollBarStyle()).thenReturn(createVerticalScrollBarStyle());
     }

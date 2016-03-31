@@ -94,6 +94,12 @@ public class TestObjectFactory {
         return createVerticalScrollBarStyle();
     }
 
+    public static KrItemViewStyle createItemViewStyle() {
+        KrItemViewStyle itemViewStyle = new KrItemViewStyle(createWidgetStyle());
+        itemViewStyle.gridColor = Color.BLACK;
+        return itemViewStyle;
+    }
+
     public static KrCanvas createCanvas() {
         return new KrCanvas(mock(KrInputSource.class), mock(KrRenderer.class), 100, 100);
     }
