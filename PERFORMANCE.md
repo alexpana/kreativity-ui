@@ -11,12 +11,13 @@ This should ensure we're only getting minor GCs every ~10 minutes.
 
 ### Allocation rules
 
-- Never, ever, ever allocate objects in the `update` methods.
-- When absolutely necessary, use an object pool to allocate objects in the `update` methods,
+- Never, ever, ever allocate objects in the `update` method. This holds for `draw` methods
+since they get called each frame, for each widget.
+- When absolutely necessary, use an object pool to allocate objects in the `update` method,
 and release them before returning from the method. Using fields for temporary values is
 encouraged.
-- Don't use lambdas in the `update` methods. They generate A LOT of junk.
-- Don't iterate using for each in the `update` methods (avoids the allocation of iterators).
+- Don't use lambdas in the `update` method. They generate A LOT of junk.
+- Don't iterate using for each in the `update` method (avoids the allocation of iterators).
 - When arrays are needed create one array, and empty it each frame.
 Emptying the array doesn't change its capacity, which avoids allocations.
 - Overload methods which require data objects with methods that take as arguments
