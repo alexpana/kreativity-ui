@@ -49,7 +49,6 @@ public class KrTableView extends KrAbstractItemView<KrItemViewStyle> {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-
         boolean clipped = false;
         boolean drawHeader = columnModel != null;
         int columnCount = columnModel != null ? columnModel.getColumnCount() : model.getColumnCount();
@@ -78,8 +77,7 @@ public class KrTableView extends KrAbstractItemView<KrItemViewStyle> {
         for (int i = 0; i < columnCount; ++i) {
             y = (int) -verticalScrollBar.getCurrentValue() + (drawHeader ? rowHeight : 0);
             for (int j = 0; j < model.getRowCount(); ++j) {
-                // TODO: calculate selection flag
-                KrWidget cellWidget = cellRenderer.getComponent(new KrModelIndex(j, i, null), model, selectionModel.getCurrentSelection().contains(new KrModelIndex(j)));
+                KrWidget cellWidget = cellRenderer.getComponent(j, i, null, model, selectionModel.getCurrentSelection().containsRow(j));
                 cellWidget.setGeometry(x, y, columnWidth - gridSize, rowHeight - gridSize);
                 cellWidget.draw(renderer);
                 y += rowHeight;

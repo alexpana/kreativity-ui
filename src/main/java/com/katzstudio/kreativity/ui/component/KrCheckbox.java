@@ -3,7 +3,6 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrCheckboxStyle;
 import lombok.Getter;
@@ -63,11 +62,11 @@ public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(new KrDrawableBrush(style.checkboxBackground));
+        renderer.setBrush(style.checkboxBackground);
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
         if (model.getValue()) {
-            renderer.setBrush(new KrDrawableBrush(style.mark));
+            renderer.setBrush(style.mark);
             renderer.fillRect(0, 0, getWidth(), getHeight());
         }
     }

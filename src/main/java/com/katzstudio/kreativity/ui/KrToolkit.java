@@ -120,6 +120,7 @@ public class KrToolkit {
         if (canvas != null) {
             canvas.update(deltaSeconds);
         }
+        // TODO(perf): replace this with a copy on write array
         new ArrayList<>(updateListeners).forEach(l -> l.update(deltaSeconds));
         animations.update(deltaSeconds);
     }

@@ -7,7 +7,6 @@ import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.math.KrRange;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrScrollBarStyle;
 import lombok.Getter;
@@ -172,10 +171,10 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(new KrDrawableBrush(style.track));
+        renderer.setBrush(style.track);
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        renderer.setBrush(new KrDrawableBrush(style.thumb));
+        renderer.setBrush(style.thumb);
         renderer.fillRect(getThumbGeometry());
     }
 

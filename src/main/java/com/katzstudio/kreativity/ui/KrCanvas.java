@@ -7,14 +7,11 @@ import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.component.KrPanel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.*;
-import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import static com.badlogic.gdx.Input.Keys.TAB;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
@@ -46,9 +43,9 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     @Getter private KrTooltipManager tooltipManager;
 
-    private KrCursorManager cursorManager;
-
     private KrInputSource input;
+
+    private ArrayList<KrWidget> widgets = new ArrayList<>();
 
     KrCanvas(KrInputSource input, KrRenderer renderer, float width, float height) {
 
@@ -67,8 +64,6 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         focusManager = new KrFocusManager(rootPanel);
 
         tooltipManager = new KrTooltipManager(this);
-
-        cursorManager = new KrCursorManager(this);
 
         rootPanel.addWidgetListener(new KrWidget.KrWidgetListener.KrAbstractWidgetListener() {
             @Override
@@ -104,14 +99,17 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
      * @param deltaSeconds the time, in seconds, since the last update
      */
     public void update(float deltaSeconds) {
-        Queue<KrWidget> widgets = new LinkedList<>();
+        widgets.clear();
         widgets.add(rootPanel);
         widgets.add(overlayPanel);
-
-        while (!widgets.isEmpty()) {
-            KrWidget widget = widgets.poll();
+        int index = 0;
+        while (index < widgets.size()) {
+            KrWidget widget = widgets.get(index);
             widget.update(deltaSeconds);
-            widgets.addAll(widget.getChildren());
+            for (int i = 0; i < widget.getChildCount(); ++i) {
+                widgets.add(widget.getChild(i));
+            }
+            index += 1;
         }
 
         tooltipManager.update(deltaSeconds);
@@ -123,7 +121,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
     public void draw() {
         renderer.beginFrame();
         renderer.setFont(getDefaultToolkit().getSkin().getDefaultFont());
-        renderer.setPen(new KrPen(1, getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.FOREGROUND)));
+        renderer.setPen(1, getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.FOREGROUND));
 
         rootPanel.draw(renderer);
         overlayPanel.draw(renderer);

@@ -3,6 +3,7 @@ package com.katzstudio.kreativity.ui.render;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
  * The {@link KrRenderer} takes care of rendering various parts of the interface.
@@ -64,5 +65,11 @@ public interface KrRenderer {
 
     void setBrush(KrBrush brush);
 
+    void setBrush(Drawable drawable);
+
+    void setBrush(Color color);
+
     void setPen(KrPen pen);
+
+    void setPen(int size, Color color);
 }

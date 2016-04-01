@@ -2,11 +2,10 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
-import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrLabelStyle;
 import lombok.Getter;
@@ -47,19 +46,22 @@ public class KrLabel extends KrWidget<KrLabelStyle> {
     protected void drawSelf(KrRenderer renderer) {
         boolean componentClip = renderer.beginClip(0, 0, getWidth(), getHeight());
 
-        renderer.setBrush(new KrDrawableBrush(style.background));
+        renderer.setBrush(style.background);
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        Rectangle textBounds = text.getBounds();
-        Rectangle alignmentReference = rectangles(new Rectangle(0, 0, getWidth(), getHeight())).shrink(getPadding()).value();
-        Vector2 textPosition = KrAlignmentTool.alignRectangles(textBounds, alignmentReference, getTextAlignment());
-        renderer.setPen(new KrPen(1, style.foregroundColor));
+        text.getBounds(tmpRect);
+        Rectangle alignmentReference = rectangles(0.0f, 0.0f, getWidth(), getHeight()).shrink(getPadding()).value();
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(tmpRect, alignmentReference, getTextAlignment());
+        renderer.setPen(1, style.foregroundColor);
         renderer.setFont(style.font);
         renderer.drawText(text.getString(), textPosition);
 
         if (componentClip) {
             renderer.endClip();
         }
+
+        Pools.free(textPosition);
+        Pools.free(alignmentReference);
     }
 
     @Override

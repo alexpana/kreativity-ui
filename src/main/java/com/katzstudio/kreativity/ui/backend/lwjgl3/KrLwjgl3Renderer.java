@@ -42,9 +42,13 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
     @Getter private Vector2 viewportSize = new Vector2(0, 0);
 
-    @Getter @Setter private KrBrush brush;
+    private Color penColor;
 
-    @Getter @Setter private KrPen pen;
+    private Color colorBrush;
+
+    private Drawable drawableBrush;
+
+    private BrushType brushType;
 
     @Getter private float opacity = 1;
 
@@ -61,8 +65,9 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
         currentRenderMode = nullRenderMode;
 
-        pen = new KrPen(1.0f, Color.BLACK);
-        brush = new KrColorBrush(KrColor.TRANSPARENT);
+        penColor = Color.BLACK;
+        colorBrush = KrColor.TRANSPARENT;
+        brushType = BrushType.COLOR;
     }
 
     @Override
@@ -83,14 +88,29 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
     @Override
     public void drawText(String text, float x, float y) {
+        Color color = getAlphaMultiplied(penColor);
+
         ensureSpriteBatchOpen();
 
         Color originalFontColor = font.getColor();
 
-        font.setColor(multiplyAlpha(pen.getColor()));
+        font.setColor(color);
         font.draw(spriteBatch, text, x, viewportSize.y - y);
 
         font.setColor(originalFontColor);
+
+        Pools.get(Color.class).free(color);
+    }
+
+    private Color getAlphaMultiplied(Color color) {
+        Color multipliedColor = Pools.get(Color.class).obtain();
+        multipliedColor.set(color);
+        multipliedColor.a *= getOpacity();
+        return multipliedColor;
+    }
+
+    private void freeColor(Color color) {
+        Pools.get(Color.class).free(color);
     }
 
     @Override
@@ -105,12 +125,16 @@ public class KrLwjgl3Renderer implements KrRenderer {
         ensureSpriteBatchOpen();
 
         // render shadow
-        font.setColor(multiplyAlpha(shadowColor));
+        Color color = getAlphaMultiplied(shadowColor);
+        font.setColor(color);
         font.draw(spriteBatch, text, position.x + shadowOffset.x, viewportSize.y - position.y - shadowOffset.y);
+        freeColor(color);
 
         // render text
-        font.setColor(multiplyAlpha(pen.getColor()));
+        color = getAlphaMultiplied(penColor);
+        font.setColor(color);
         font.draw(spriteBatch, text, position.x, viewportSize.y - position.y);
+        freeColor(color);
 
         font.setColor(originalFontColor);
     }
@@ -122,20 +146,28 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
     @Override
     public void drawRect(float x, float y, float w, float h) {
+        Color color = getAlphaMultiplied(penColor);
+
         ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(multiplyAlpha(pen.getColor()));
+        shapeRenderer.setColor(color);
 
         drawLineInternal(x, y, x + w - 1, y);
         drawLineInternal(x, y, x, y + h - 1);
         drawLineInternal(x + w - 1, y, x + w - 1, y + h - 1);
         drawLineInternal(x, y + h - 1, x + w - 1, y + h - 1);
+
+        freeColor(color);
     }
 
     @Override
     public void drawLine(float x1, float y1, float x2, float y2) {
+        Color color = getAlphaMultiplied(penColor);
+
         ensureShapeRendererOpen(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(multiplyAlpha(pen.getColor()));
+        shapeRenderer.setColor(color);
         drawLineInternal(x1, y1, x2, y2);
+
+        freeColor(color);
     }
 
     private void drawLineInternal(float x1, float y1, float x2, float y2) {
@@ -149,19 +181,18 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
     @Override
     public void fillRect(float x, float y, float w, float h) {
-        if (brush instanceof KrDrawableBrush) {
+        if (brushType == BrushType.DRAWABLE) {
             ensureSpriteBatchOpen();
-            KrDrawableBrush drawableBrush = (KrDrawableBrush) brush;
-            spriteBatch.setColor(1, 1, 1, ((KrDrawableBrush) brush).getOpacity());
-            drawableBrush.getDrawable().draw(spriteBatch, x, viewportSize.y - y - h, w, h);
+            spriteBatch.setColor(1, 1, 1, getOpacity());
+            drawableBrush.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
         }
 
-        if (brush instanceof KrColorBrush) {
-            KrColorBrush colorBrush = (KrColorBrush) brush;
-
+        if (brushType == BrushType.COLOR) {
+            Color color = getAlphaMultiplied(colorBrush);
             ensureShapeRendererOpen(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(multiplyAlpha(colorBrush.getColor()));
+            shapeRenderer.setColor(color);
             shapeRenderer.rect(x, viewportSize.y - y - h, w, h);
+            freeColor(color);
         }
     }
 
@@ -175,9 +206,10 @@ public class KrLwjgl3Renderer implements KrRenderer {
         Drawable drawable = getRoundedRectDrawable(cornerRadius);
 
         ensureSpriteBatchOpen();
-        if (brush instanceof KrColorBrush) {
-            KrColorBrush colorBrush = (KrColorBrush) brush;
-            spriteBatch.setColor(multiplyAlpha(colorBrush.getColor()));
+        if (brushType == BrushType.COLOR) {
+            Color color = getAlphaMultiplied(colorBrush);
+            spriteBatch.setColor(color);
+            freeColor(color);
         }
 
         drawable.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
@@ -249,10 +281,49 @@ public class KrLwjgl3Renderer implements KrRenderer {
         return oldOpacity;
     }
 
-    private Color multiplyAlpha(Color color) {
-        Color newColor = new Color(color);
-        newColor.a *= this.opacity;
-        return newColor;
+    @Override
+    public KrPen getPen() {
+        return new KrPen(1, penColor);
+    }
+
+    @Override
+    public void setBrush(KrBrush brush) {
+        if (brush instanceof KrDrawableBrush) {
+            brushType = BrushType.DRAWABLE;
+            drawableBrush = ((KrDrawableBrush) drawableBrush).getDrawable();
+        }
+
+        if (brush instanceof KrColorBrush) {
+            brushType = BrushType.COLOR;
+            colorBrush = ((KrColorBrush) brush).getColor();
+        }
+    }
+
+    @Override
+    public void setBrush(Drawable drawable) {
+        brushType = BrushType.DRAWABLE;
+        drawableBrush = drawable;
+    }
+
+    @Override
+    public void setBrush(Color color) {
+        brushType = BrushType.COLOR;
+        colorBrush = color;
+    }
+
+    @Override
+    public KrBrush getBrush() {
+        return null;
+    }
+
+    @Override
+    public void setPen(KrPen pen) {
+        penColor = pen.getColor();
+    }
+
+    @Override
+    public void setPen(int size, Color color) {
+        penColor = color;
     }
 
     @Override
@@ -285,6 +356,10 @@ public class KrLwjgl3Renderer implements KrRenderer {
     private void flush() {
         currentRenderMode.end();
         currentRenderMode = nullRenderMode;
+    }
+
+    private enum BrushType {
+        DRAWABLE, COLOR
     }
 
     private interface RenderMode {

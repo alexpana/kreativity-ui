@@ -6,7 +6,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Renderer;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
-import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import static com.badlogic.gdx.Gdx.gl;
@@ -40,7 +39,7 @@ public class RendererDemo extends Game {
         renderer.beginFrame();
 
         renderer.setBrush(new KrColorBrush(0x9090ff));
-        renderer.setPen(new KrPen(1, Color.WHITE));
+        renderer.setPen(1, Color.WHITE);
 
         // draw clipRendering rectangle
 //        renderer.beginClip(3, 3, 5, 5);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Pools;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.event.*;
@@ -85,6 +86,8 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     @Getter @Setter protected KrWidget tooltipWidget;
 
     @Getter @Setter private float opacity = 1;
+
+    protected Rectangle tmpRect = new Rectangle();
 
     protected final KrMeasuredString text = new KrMeasuredString("");
 
@@ -332,6 +335,7 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         Rectangle layoutRectangle = rectangles(geometry).shrink(padding).value();
         layout.setGeometry(layoutRectangle);
         isValid = true;
+        Pools.free(layoutRectangle);
     }
 
     /**
@@ -397,16 +401,20 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         updateChildren(deltaSeconds);
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     public void updateChildren(float deltaSeconds) {
-        children.forEach(child -> child.update(deltaSeconds));
+        for (int i = 0; i < children.size(); ++i) {
+            children.get(i).update(deltaSeconds);
+        }
     }
 
     protected void drawSelf(KrRenderer renderer) {
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void drawChildren(KrRenderer renderer) {
-        for (KrWidget child : children) {
-            child.draw(renderer);
+        for (int i = 0; i < children.size(); ++i) {
+            children.get(i).draw(renderer);
         }
     }
 

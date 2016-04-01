@@ -1,5 +1,6 @@
 package com.katzstudio.kreativity.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.google.common.base.Strings;
 import com.katzstudio.kreativity.ui.component.KrLabel;
@@ -7,7 +8,6 @@ import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.KrEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
-import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import com.katzstudio.kreativity.ui.util.KrTimer;
@@ -129,6 +129,8 @@ public class KrTooltipManager implements KrUpdateListener {
 
     private class KrTooltipWidget extends KrWidget<KrWidgetStyle> {
 
+        public final Color background = new Color(0x202020ff);
+
         private final KrLabel textLabel;
 
         KrTooltipWidget() {
@@ -163,7 +165,8 @@ public class KrTooltipManager implements KrUpdateListener {
 
         @Override
         protected void drawSelf(KrRenderer renderer) {
-            renderer.setBrush(new KrColorBrush(0x202020, 0.95f));
+            renderer.setBrush(background);
+            renderer.setOpacity(getOpacity() * 0.95f);
             int radius = 3;
             renderer.fillRoundedRect(0, 0, (int) getWidth(), (int) getHeight(), radius);
         }

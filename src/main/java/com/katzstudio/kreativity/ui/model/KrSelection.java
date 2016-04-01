@@ -45,6 +45,17 @@ public class KrSelection implements Iterable<KrModelIndex> {
         return selectedIndexes.contains(index);
     }
 
+    public boolean containsRow(int row) {
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < selectedIndexes.size(); ++i) {
+            if (selectedIndexes.get(i).getRow() == row) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public int size() {
         return selectedIndexes.size();
     }

@@ -2,6 +2,7 @@ package com.katzstudio.kreativity.ui.layout;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
@@ -111,6 +112,7 @@ public class KrGridLayout implements KrLayout {
         Vector2 widgetPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, widgetWidth, widgetHeight), cellBounds, constraint.alignment);
 
         widget.setGeometry((int) widgetPosition.x, (int) widgetPosition.y, widgetWidth, widgetHeight);
+        Pools.free(widgetPosition);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.google.common.collect.ImmutableList;
 import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
@@ -193,6 +194,8 @@ public class UiDemo extends Game {
 //        listView.addDoubleClickListener(itemIndex -> System.out.println("2x clicked itemIndex: " + itemIndex));
 
         KrTableView.KrTableColumnModel columnModel = new KrTableView.KrTableColumnModel() {
+            private List<String> columns = ImmutableList.of("Col 0", "Col 1", "Col 2");
+
             @Override
             public int getColumnCount() {
                 return 3;
@@ -200,7 +203,7 @@ public class UiDemo extends Game {
 
             @Override
             public String getColumnName(int index) {
-                return "Col " + index;
+                return columns.get(index);
             }
 
             @Override
@@ -210,6 +213,16 @@ public class UiDemo extends Game {
         };
 
         KrAbstractItemModel model = new KrAbstractItemModel() {
+            private String[][] values = new String[20][3];
+
+            {
+                for (int i = 0; i < 20; ++i) {
+                    for (int j = 0; j < 3; ++j) {
+                        values[i][j] = "val " + i + ":" + j;
+                    }
+                }
+            }
+
             @Override
             public int getRowCount() {
                 return 20;
@@ -222,7 +235,7 @@ public class UiDemo extends Game {
 
             @Override
             public Object getValue(int row, int column, KrModelIndex parent) {
-                return "Val " + row + ":" + column;
+                return values[row][column];
             }
         };
 

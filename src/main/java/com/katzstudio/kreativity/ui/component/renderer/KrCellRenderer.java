@@ -21,4 +21,9 @@ public interface KrCellRenderer {
      * @return a widget used to render the cell that holds the data at the requested index
      */
     KrWidget getComponent(KrModelIndex index, KrAbstractItemModel model, boolean isSelected);
+
+    /**
+     * Overloaded method which avoids creating model index objects
+     */
+    KrWidget getComponent(int row, int col, KrModelIndex parent, KrAbstractItemModel model, boolean isSelected);
 }

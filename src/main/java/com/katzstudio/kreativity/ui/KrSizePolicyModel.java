@@ -2,6 +2,7 @@ package com.katzstudio.kreativity.ui;
 
 import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
  */
 public class KrSizePolicyModel {
 
-    private final List<KrUnifiedSize> sizePolicies = Lists.newArrayList();
+    private final List<KrUnifiedSize> sizePolicies = new ArrayList<>();
 
     public KrSizePolicyModel(int size) {
         for (int i = 0; i < size; ++i) {

@@ -2,72 +2,99 @@ package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
+import com.katzstudio.kreativity.ui.util.ReturnsPooledObject;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 /**
  * The {@link KrRectangles} class offers functionality for manipulating {@link Rectangle} objects.
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class KrRectangles {
 
-    private Rectangle rectangle;
+    private float x, y, w, h;
 
     public static KrRectangles rectangles(Rectangle rectangle) {
-        return new KrRectangles(rectangle);
-    }
-
-    public static KrRectangles rectangles(float width, float height) {
-        return new KrRectangles(new Rectangle(0, 0, width, height));
+        return rectangles(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
     public static KrRectangles rectangles(Vector2 size) {
-        return new KrRectangles(new Rectangle(0, 0, size.x, size.y));
+        return rectangles(0, 0, size.x, size.y);
+    }
+
+    public static KrRectangles rectangles(float width, float height) {
+        return rectangles(0, 0, width, height);
+    }
+
+    public static KrRectangles rectangles(float x, float y, float width, float height) {
+        return Pools.obtain(KrRectangles.class).set(x, y, width, height);
+    }
+
+    /**
+     * Used by the cache to create new objects.
+     */
+    @SuppressWarnings("unused")
+    public KrRectangles() {
+        x = y = w = h = 0;
+    }
+
+    public KrRectangles set(float x, float y, float w, float h) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        return this;
     }
 
     public KrRectangles shrink(KrPadding padding) {
-        rectangle.x += padding.left;
-        rectangle.y += padding.top;
-        rectangle.width -= padding.getHorizontalPadding();
-        rectangle.height -= padding.getVerticalPadding();
+        x += padding.left;
+        y += padding.top;
+        w -= padding.getHorizontalPadding();
+        h -= padding.getVerticalPadding();
         return this;
     }
 
     public KrRectangles expand(KrPadding padding) {
-        rectangle.x -= padding.left;
-        rectangle.y -= padding.top;
-        rectangle.width += padding.getHorizontalPadding();
-        rectangle.height += padding.getVerticalPadding();
+        x -= padding.left;
+        y -= padding.top;
+        w += padding.getHorizontalPadding();
+        h += padding.getVerticalPadding();
         return this;
     }
 
     public KrRectangles intersect(Rectangle other) {
-        Segment horizontalIntersectionProjection = project(horizontalProjection(rectangle), horizontalProjection(other));
-        Segment verticalIntersectionProjection = project(verticalProjection(rectangle), verticalProjection(other));
-        rectangle = rectangleFromProjections(horizontalIntersectionProjection, verticalIntersectionProjection);
+        Segment horizontalProjection = project(horizontalProjection(x, y, w, h), horizontalProjection(other));
+        Segment verticalProjection = project(verticalProjection(x, y, w, h), verticalProjection(other));
+
+        w = horizontalProjection.getSecond() - horizontalProjection.getFirst();
+        h = verticalProjection.getSecond() - verticalProjection.getFirst();
+
+        if (w == 0 || h == 0) {
+            x = 0;
+            y = 0;
+        } else {
+            x = horizontalProjection.getFirst();
+            y = verticalProjection.getFirst();
+        }
+
         return this;
     }
 
     private static Segment verticalProjection(Rectangle rectangle) {
-        return new Segment(rectangle.y, rectangle.y + rectangle.height);
+        return verticalProjection(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+
+    private static Segment verticalProjection(float x, float y, float w, float h) {
+        return new Segment(y, y + h);
     }
 
     private static Segment horizontalProjection(Rectangle rectangle) {
-        return new Segment(rectangle.x, rectangle.x + rectangle.width);
+        return horizontalProjection(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
-    private static Rectangle rectangleFromProjections(Segment horizontalProjection, Segment verticalProjection) {
-        float width = horizontalProjection.getSecond() - horizontalProjection.getFirst();
-        float height = verticalProjection.getSecond() - verticalProjection.getFirst();
-
-        if (width == 0 || height == 0) {
-            return new Rectangle(0, 0, 0, 0);
-        }
-
-        return new Rectangle(horizontalProjection.getFirst(),
-                verticalProjection.getFirst(),
-                width,
-                height);
+    private static Segment horizontalProjection(float x, float y, float w, float h) {
+        return new Segment(x, x + w);
     }
 
     private static Segment project(Segment first, Segment second) {
@@ -83,12 +110,16 @@ public class KrRectangles {
         return new Segment(second.getFirst(), Math.min(second.getSecond(), first.getSecond()));
     }
 
+    @ReturnsPooledObject
     public Rectangle value() {
-        return rectangle;
+        Rectangle result = Pools.obtain(Rectangle.class);
+        result.set(x, y, w, h);
+        Pools.free(this);
+        return result;
     }
 
     public Vector2 size() {
-        return new Vector2(rectangle.width, rectangle.height);
+        return new Vector2(w, h);
     }
 
     private static class Segment extends KrPair<Float, Float> {

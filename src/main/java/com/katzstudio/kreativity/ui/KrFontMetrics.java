@@ -10,4 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 public interface KrFontMetrics {
 
     Rectangle bounds(BitmapFont font, String text);
+
+    void getBounds(BitmapFont font, String text, Rectangle bounds);
 }

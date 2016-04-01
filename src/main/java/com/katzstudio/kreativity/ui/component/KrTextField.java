@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrCursor;
@@ -12,11 +13,9 @@ import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
-import com.katzstudio.kreativity.ui.render.KrColorBrush;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
-import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrTextFieldStyle;
+import com.katzstudio.kreativity.ui.util.ReturnsPooledObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -163,12 +162,12 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
     protected void drawSelf(KrRenderer renderer) {
         recalculateTextOffset();
 
-        Rectangle innerGeometry = new Rectangle(0, 0, getWidth(), getHeight());
+        Rectangle innerGeometry = Pools.obtain(Rectangle.class).set(0, 0, getWidth(), getHeight());
 
         boolean componentClip = renderer.beginClip(innerGeometry);
 
         // render checkboxBackground
-        renderer.setBrush(new KrDrawableBrush(getBackgroundDrawable()));
+        renderer.setBrush(getBackgroundDrawable());
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
         Rectangle innerViewport = rectangles(innerGeometry).shrink(getPadding()).value();
@@ -185,8 +184,9 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         // render selection
         if (isFocused() && textDocument.hasSelection()) {
             Rectangle selectionRect = getSelectionRect(textPosition.x);
-            renderer.setBrush(new KrColorBrush(style.selectionColor));
+            renderer.setBrush(style.selectionColor);
             renderer.fillRect(selectionRect);
+            Pools.free(selectionRect);
         }
 
         // render text
@@ -196,7 +196,7 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         if (isFocused()) {
             int caretPosition = textDocument.getCaretPosition();
             float caretX = textPosition.x + metrics.bounds(style.font, text.substring(0, caretPosition)).getWidth();
-            renderer.setPen(new KrPen(1, style.caretColor));
+            renderer.setPen(1, style.caretColor);
             renderer.drawLine(caretX, CARET_TOP_OFFSET, caretX, CARET_TOP_OFFSET + CARET_HEIGHT);
         }
 
@@ -207,6 +207,10 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         if (componentClip) {
             renderer.endClip();
         }
+
+        Pools.free(textPosition);
+        Pools.free(innerViewport);
+        Pools.free(innerGeometry);
     }
 
     @Override
@@ -226,6 +230,7 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         return background;
     }
 
+    @ReturnsPooledObject
     private Rectangle getSelectionRect(float textPositionX) {
 
         KrFontMetrics metrics = getDefaultToolkit().fontMetrics();
@@ -235,7 +240,7 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         float selectionEndX = textPositionX + metrics.bounds(style.font, text.substring(0, textDocument.getSelectionEnd())).getWidth();
         float selectionWidth = selectionEndX - selectionStartX;
 
-        return new Rectangle(
+        return Pools.obtain(Rectangle.class).set(
                 selectionStartX,
                 CARET_TOP_OFFSET,
                 selectionWidth + 1,
@@ -261,6 +266,8 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
         if (caretXPosition >= innerViewport.x + innerViewport.width) {
             textOffset += caretXPosition - (innerViewport.x + innerViewport.width) + 1;
         }
+
+        Pools.free(innerViewport);
     }
 
     public void setText(String text) {

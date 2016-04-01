@@ -3,6 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Pools;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
@@ -10,8 +11,6 @@ import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
-import com.katzstudio.kreativity.ui.render.KrPen;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrButtonStyle;
 import lombok.Getter;
@@ -106,20 +105,21 @@ public class KrButton extends KrWidget<KrButtonStyle> {
     protected void drawSelf(KrRenderer renderer) {
         Drawable background = getBackgroundForState(state);
 
-        renderer.setBrush(new KrDrawableBrush(background, getOpacity()));
+        renderer.setBrush(background);
+        renderer.setOpacity(getOpacity());
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
         Rectangle textBounds = text.getBounds();
         float textWidth = textBounds.width;
         float textHeight = textBounds.height;
-        Vector2 textPosition = KrAlignmentTool.alignRectangles(new Rectangle(0, 0, textWidth, textHeight),
-                new Rectangle(0, 0, getWidth(), getHeight()), getTextAlignment());
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(0, 0, textWidth, textHeight, 0, 0, getWidth(), getHeight(), getTextAlignment());
         Vector2 textOffset = state == State.ARMED ? Vector2.Y : Vector2.Zero;
         textPosition.add(textOffset);
 
-        renderer.setPen(new KrPen(1, style.foregroundColor));
+        renderer.setPen(1, style.foregroundColor);
         renderer.setFont(style.font);
         renderer.drawTextWithShadow(text.getString(), textPosition, style.textShadowOffset, style.textShadowColor);
+        Pools.free(textPosition);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Pools;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
@@ -10,7 +11,6 @@ import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrSplitPanelStyle;
 import lombok.Getter;
@@ -210,15 +210,20 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
         protected void drawSelf(KrRenderer renderer) {
             Drawable grip = KrSplitPanel.this.style.splitterGrip;
 
-            Rectangle gripRectangle = new Rectangle(0, 0, grip.getMinWidth(), grip.getMinHeight());
-            Rectangle geometryRectangle = new Rectangle(0, 0, getWidth(), getHeight());
-            gripRectangle.setPosition(alignRectangles(gripRectangle, geometryRectangle, MIDDLE_CENTER));
+            Rectangle gripRectangle = Pools.obtain(Rectangle.class).set(0, 0, grip.getMinWidth(), grip.getMinHeight());
+            Rectangle geometryRectangle = Pools.obtain(Rectangle.class).set(0, 0, getWidth(), getHeight());
+            Vector2 gripPosition = alignRectangles(gripRectangle, geometryRectangle, MIDDLE_CENTER);
+            gripRectangle.setPosition(gripPosition);
 
-            renderer.setBrush(new KrDrawableBrush(KrSplitPanel.this.style.splitterBackground));
+            renderer.setBrush(KrSplitPanel.this.style.splitterBackground);
             renderer.fillRect(geometryRectangle);
 
-            renderer.setBrush(new KrDrawableBrush(grip));
+            renderer.setBrush(grip);
             renderer.fillRect(gripRectangle);
+
+            Pools.free(gripPosition);
+            Pools.free(geometryRectangle);
+            Pools.free(gripRectangle);
         }
     }
 

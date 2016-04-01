@@ -10,9 +10,17 @@ import com.katzstudio.kreativity.ui.KrFontMetrics;
  */
 public class KrLwjgl3FontMetrics implements KrFontMetrics {
 
+    private GlyphLayout layout = new GlyphLayout();
+
     @Override
     public Rectangle bounds(BitmapFont font, String text) {
-        GlyphLayout layout = new GlyphLayout(font, text);
+        layout.setText(font, text);
         return new Rectangle(0, 0, layout.width, layout.height);
+    }
+
+    public void getBounds(BitmapFont font, String text, Rectangle bounds) {
+        layout.setText(font, text);
+        bounds.setWidth(layout.width);
+        bounds.setHeight(layout.height);
     }
 }

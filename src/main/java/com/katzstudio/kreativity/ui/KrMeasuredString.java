@@ -49,11 +49,16 @@ public class KrMeasuredString {
         return new Rectangle(bounds);
     }
 
+    public Rectangle getBounds(Rectangle bounds) {
+        bounds.set(this.bounds);
+        return bounds;
+    }
+
     private void updateBounds() {
         if (string.isEmpty()) {
             bounds = new Rectangle(0, 0, 0, 0);
             return;
         }
-        bounds = getDefaultToolkit().fontMetrics().bounds(font, string);
+        getDefaultToolkit().fontMetrics().getBounds(font, string, bounds);
     }
 }

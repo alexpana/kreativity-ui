@@ -25,7 +25,9 @@ public class KrSpinner extends KrTextField {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.##");
 
-//    private float value = 0;
+    private String formattedValue;
+
+    private float modelValue;
 
     @Getter @Setter private float increment = 0.1f;
 
@@ -142,8 +144,12 @@ public class KrSpinner extends KrTextField {
 
     @Override
     public void update(float deltaSeconds) {
+        if (spinnerModel.getValue() != modelValue) {
+            modelValue = spinnerModel.getValue();
+            formattedValue = FORMAT.format(modelValue);
+        }
         if (!isFocused()) {
-            setText(FORMAT.format(spinnerModel.getValue()));
+            setText(formattedValue);
         }
         super.update(deltaSeconds);
     }

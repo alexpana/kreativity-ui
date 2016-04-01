@@ -3,7 +3,6 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrPanelStyle;
 
@@ -32,7 +31,7 @@ public class KrPanel extends KrWidget<KrPanelStyle> {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(new KrDrawableBrush(style.background));
+        renderer.setBrush(style.background);
         renderer.fillRect(0, 0, getWidth(), getHeight());
     }
 
