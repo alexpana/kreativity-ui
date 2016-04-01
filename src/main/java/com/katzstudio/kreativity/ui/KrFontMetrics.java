@@ -11,5 +11,5 @@ public interface KrFontMetrics {
 
     Rectangle bounds(BitmapFont font, String text);
 
-    void getBounds(BitmapFont font, String text, Rectangle bounds);
+    Rectangle bounds(BitmapFont font, String text, Rectangle bounds);
 }

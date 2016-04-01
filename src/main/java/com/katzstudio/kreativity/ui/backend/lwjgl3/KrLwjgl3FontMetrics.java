@@ -18,9 +18,10 @@ public class KrLwjgl3FontMetrics implements KrFontMetrics {
         return new Rectangle(0, 0, layout.width, layout.height);
     }
 
-    public void getBounds(BitmapFont font, String text, Rectangle bounds) {
+    public Rectangle bounds(BitmapFont font, String text, Rectangle bounds) {
         layout.setText(font, text);
         bounds.setWidth(layout.width);
         bounds.setHeight(layout.height);
+        return bounds;
     }
 }

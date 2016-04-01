@@ -29,7 +29,7 @@ public class KrIconPanel extends KrWidget {
     @Override
     public Vector2 calculatePreferredSize() {
         BitmapFont fontAwesome = getDefaultToolkit().getSkin().getFontAwesome();
-        Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation());
+        Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation(), tmpRect);
         return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
     }
 
@@ -40,7 +40,7 @@ public class KrIconPanel extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation());
+        Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation(), tmpRect);
         renderer.setFont(getDefaultToolkit().getSkin().getFontAwesome());
         renderer.drawText(iconGlyph.getRepresentation(), getX() + (getWidth() - bounds.width) / 2, getY() + getHeight() + (getHeight() - bounds.height) / 2);
     }

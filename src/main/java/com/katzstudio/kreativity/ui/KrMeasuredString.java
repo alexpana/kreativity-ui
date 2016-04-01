@@ -46,7 +46,7 @@ public class KrMeasuredString {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(bounds);
+        return bounds;
     }
 
     public Rectangle getBounds(Rectangle bounds) {
@@ -59,6 +59,6 @@ public class KrMeasuredString {
             bounds = new Rectangle(0, 0, 0, 0);
             return;
         }
-        getDefaultToolkit().fontMetrics().getBounds(font, string, bounds);
+        getDefaultToolkit().fontMetrics().bounds(font, string, bounds);
     }
 }

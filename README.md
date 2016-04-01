@@ -44,7 +44,7 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 - Custom tooltips can be forced to show despite the currently hovered widget.
 - Implemented KrTableView
 - Added KrMeasuredString which caches the font metrics
-- Garbage reduced from 300K/s to ~10K/s (30x improvement). The demo now requires only one minor GC / minute.
+- Garbage reduced from 300K/s to ~5K/s (60x improvement). The demo now requires only one minor GC / minute.
 
 #### [0.2.0] - 2016-03-27
 - Migrated to libgdx 1.9.1 and backend lwjgl3

@@ -66,11 +66,13 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
     /**
      * Returns the geometry of the thumb in local space
      */
-    protected Rectangle getThumbGeometry() {
-        return orientation == VERTICAL ?
-                new Rectangle(0, thumbPosition, getWidth(), thumbLength) :
-                new Rectangle(thumbPosition, 0, thumbLength, getHeight());
-
+    protected Rectangle getThumbGeometry(Rectangle thumbGeometry) {
+        if (orientation == VERTICAL) {
+            thumbGeometry.set(0, thumbPosition, getWidth(), thumbLength);
+        } else {
+            thumbGeometry.set(thumbPosition, 0, thumbLength, getHeight());
+        }
+        return thumbGeometry;
     }
 
     protected float getTrackLength() {
@@ -121,7 +123,7 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
 
         Vector2 localMouseLocation = screenToLocal(event.getScreenPosition());
 
-        if (!getThumbGeometry().contains(localMouseLocation)) {
+        if (!getThumbGeometry(tmpRect).contains(localMouseLocation)) {
             float positionOnTrack = orientation == VERTICAL ? localMouseLocation.y : localMouseLocation.x;
             dragPosition = positionOnTrack - thumbLength / 2;
             setThumbPosition(dragPosition);
@@ -175,7 +177,7 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
         renderer.setBrush(style.thumb);
-        renderer.fillRect(getThumbGeometry());
+        renderer.fillRect(getThumbGeometry(tmpRect));
     }
 
     @Override
