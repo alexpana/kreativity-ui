@@ -13,10 +13,10 @@ import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * The {@link KrToolkit} offers functionality that is global to the UI framework
@@ -30,7 +30,7 @@ public class KrToolkit {
 
     private final Map<Color, Drawable> drawableCache = new HashMap<>();
 
-    private final List<KrUpdateListener> updateListeners = new ArrayList<>();
+    private final List<KrUpdateListener> updateListeners = new CopyOnWriteArrayList<>();
 
     private final KrAnimations animations;
 
@@ -120,8 +120,10 @@ public class KrToolkit {
         if (canvas != null) {
             canvas.update(deltaSeconds);
         }
-        // TODO(perf): replace this with a copy on write array
-        new ArrayList<>(updateListeners).forEach(l -> l.update(deltaSeconds));
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < updateListeners.size(); ++i) {
+            updateListeners.get(i).update(deltaSeconds);
+        }
         animations.update(deltaSeconds);
     }
 

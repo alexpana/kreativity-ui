@@ -533,6 +533,10 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
+    public Rectangle getGeometry(Rectangle geometry) {
+        return geometry.set(getX(), getY(), getWidth(), getHeight());
+    }
+
     public Vector2 getSize() {
         return new Vector2(getWidth(), getHeight());
     }

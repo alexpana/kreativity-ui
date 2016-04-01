@@ -27,6 +27,9 @@ public class KrAnimations implements KrUpdateListener {
 
     @Override
     public void update(float deltaSeconds) {
+        if (animations.isEmpty()) {
+            return;
+        }
         Iterator<KrAnimation> iterator = animations.iterator();
         while (iterator.hasNext()) {
             KrAnimation animation = iterator.next();
