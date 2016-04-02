@@ -154,6 +154,7 @@ public class KrSkin {
         spinnerStyle.backgroundNormal = drawablePatches.get("spinner.background_normal");
         spinnerStyle.backgroundHovered = drawablePatches.get("spinner.background_hovered");
         spinnerStyle.backgroundFocused = drawablePatches.get("spinner.background_focused");
+        spinnerStyle.padding = new KrPadding(1, 17, 4, 4);
 
         verticalScrollBarStyle = new KrScrollBarStyle(widgetStyle);
         verticalScrollBarStyle.track = drawablePatches.get("scrollbar.vertical.track");

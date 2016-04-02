@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCursor;
-import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
@@ -41,10 +40,6 @@ public class KrSpinner extends KrTextField {
 
     public KrSpinner() {
         setStyle(getDefaultToolkit().getSkin().getSpinnerStyle());
-
-        KrPadding padding = getPadding();
-        padding.right = 17;
-        setPadding(padding);
         setCursor(KrCursor.ARROW);
     }
 

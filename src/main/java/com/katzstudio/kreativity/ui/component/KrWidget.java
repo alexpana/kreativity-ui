@@ -142,6 +142,7 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     public KrPadding getPadding() {
+        ensureUniqueStyle();
         return style.padding;
     }
 
