@@ -39,6 +39,7 @@ public class KrTooltipManager implements KrUpdateListener {
         canvas.addInputListener(this::onEventDispatched);
         tooltipWidget = new KrTooltipWidget();
         tooltipWidget.setVisible(false);
+        canvas.getTooltipPanel().add(tooltipWidget);
 
         delayTimer = new KrTimer(tooltipDelay, this::onDelayFinished);
     }

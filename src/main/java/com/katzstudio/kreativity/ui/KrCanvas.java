@@ -25,6 +25,8 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     @Getter private final KrPanel overlayPanel;
 
+    @Getter private final KrPanel tooltipPanel;
+
     private final KrRenderer renderer;
 
     @Getter private float width;
@@ -56,12 +58,16 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         this.renderer = renderer;
 
         rootPanel = new KrPanel();
-        rootPanel.setName("root");
+        rootPanel.setName("canvas.root");
         rootPanel.setCanvas(this);
 
         overlayPanel = new KrPanel();
-        overlayPanel.setName("overlay");
+        overlayPanel.setName("canvas.overlay");
         overlayPanel.setCanvas(this);
+
+        tooltipPanel = new KrPanel();
+        tooltipPanel.setName("canvas.tooltip");
+        tooltipPanel.setCanvas(this);
 
         focusManager = new KrFocusManager(rootPanel);
 
@@ -75,8 +81,6 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
                 focusManager.refresh();
             }
         });
-
-        overlayPanel.add(tooltipManager.getTooltipWidget());
 
         setSize(width, height);
 
@@ -106,6 +110,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         widgets.clear();
         widgets.add(rootPanel);
         widgets.add(overlayPanel);
+        widgets.add(tooltipPanel);
         int index = 0;
         while (index < widgets.size()) {
             KrWidget widget = widgets.get(index);
@@ -129,6 +134,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
         rootPanel.draw(renderer);
         overlayPanel.draw(renderer);
+        tooltipPanel.draw(renderer);
 
         renderer.endFrame();
     }
@@ -136,7 +142,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     @Override
     public void mouseMoved(KrMouseEvent event) {
-        KrWidget hoveredWidget = findWidgetAt(rootPanel, event.getScreenPosition());
+        KrWidget hoveredWidget = findWidgetAt(event.getScreenPosition());
 
         if (!input.isDragging() && hoveredWidget != currentlyHoveredWidget) {
             if (currentlyHoveredWidget != null) {
@@ -152,7 +158,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     @Override
     public void mousePressed(KrMouseEvent event) {
-        mouseFocusHolder = findWidgetAt(rootPanel, event.getScreenPosition());
+        mouseFocusHolder = findWidgetAt(event.getScreenPosition());
         if (mouseFocusHolder != keyboardFocusHolder) {
             requestFocus(mouseFocusHolder);
         }
@@ -196,7 +202,7 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     @Override
     public void scrolledEvent(KrScrollEvent event) {
-        KrWidget destinationWidget = findWidgetAt(rootPanel, Gdx.input.getX(), Gdx.input.getY());
+        KrWidget destinationWidget = findWidgetAt(Gdx.input.getX(), Gdx.input.getY());
         dispatchEvent(destinationWidget, event);
     }
 
@@ -205,20 +211,26 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
     }
 
     private boolean dispatchEvent(KrWidget widget, KrEvent event) {
-        if (widget == null) {
+        try {
+
+            if (widget == null) {
+                return false;
+            }
+
+            notifyEventDispatched(widget, event);
+
+            boolean handled = widget.handle(event);
+
+            while (!handled && widget.getParent() != null) {
+                widget = widget.getParent();
+                handled = widget.handle(event);
+            }
+
+            return handled;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
-
-        notifyEventDispatched(widget, event);
-
-        boolean handled = widget.handle(event);
-
-        while (!handled && widget.getParent() != null) {
-            widget = widget.getParent();
-            handled = widget.handle(event);
-        }
-
-        return handled;
     }
 
     private boolean dispatchEventWithoutBubbling(KrWidget widget, KrEvent event) {
@@ -230,6 +242,19 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         widget.handle(event);
 
         return event.handled();
+    }
+
+    public KrWidget findWidgetAt(Vector2 screenPosition) {
+        return findWidgetAt(screenPosition.x, screenPosition.y);
+    }
+
+    public KrWidget findWidgetAt(float x, float y) {
+        KrWidget widget = findWidgetAt(overlayPanel, x, y);
+        if (widget != overlayPanel) {
+            return widget;
+        }
+
+        return findWidgetAt(rootPanel, x, y);
     }
 
     /**

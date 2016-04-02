@@ -54,7 +54,7 @@ public class KrToolkit {
         this.animations = new KrAnimations();
     }
 
-    public KrCanvas createCanvas() {
+    public KrCanvas getCanvas() {
         if (canvas == null) {
             canvas = new KrCanvas(getInputSource(), getRenderer(), backend.getScreenWidth(), backend.getScreenHeight());
         }

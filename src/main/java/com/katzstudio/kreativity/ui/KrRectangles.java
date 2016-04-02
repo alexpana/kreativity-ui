@@ -126,6 +126,10 @@ public class KrRectangles {
         return new Vector2(w, h);
     }
 
+    public Vector2 size(Vector2 size) {
+        return size.set(w, h);
+    }
+
     private static class Segment extends KrPair<Float, Float> {
         public static final Segment ZERO = new Segment(0.0f, 0.0f);
 

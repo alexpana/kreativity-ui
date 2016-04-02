@@ -46,6 +46,8 @@ public class UiDemo extends Game {
 
     private KrCanvas canvas;
 
+    private KrPopup testPopup;
+
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setWindowedMode(840, 600);
@@ -63,11 +65,25 @@ public class UiDemo extends Game {
 
         KrToolkit.initialize(new KrLwjgl3Backend());
         Gdx.input.setInputProcessor((InputAdapter) getDefaultToolkit().getInputSource());
-        canvas = KrToolkit.getDefaultToolkit().createCanvas();
+        canvas = KrToolkit.getDefaultToolkit().getCanvas();
 
         darkGray = getDefaultToolkit().getDrawable(rgb(0x434343));
         darkerGray = getDefaultToolkit().getDrawable(rgb(0x393939));
         lightGray = rgb(0xaaaaaa);
+
+        testPopup = createPopup();
+
+        canvas.addInputListener((widget, event) -> {
+            if (event instanceof KrMouseEvent) {
+                KrMouseEvent mouseEvent = (KrMouseEvent) event;
+                if (mouseEvent.getType() == KrMouseEvent.Type.PRESSED && mouseEvent.getButton() == KrMouseEvent.Button.RIGHT) {
+                    testPopup.show(mouseEvent.getScreenPosition());
+                }
+                if (widget == canvas.getRootPanel() && mouseEvent.getType() == KrMouseEvent.Type.PRESSED && mouseEvent.getButton() == KrMouseEvent.Button.LEFT) {
+                    testPopup.hide();
+                }
+            }
+        });
 
         canvas.getRootPanel().add(createButtons());
         canvas.getRootPanel().add(createGridLayout());
@@ -81,6 +97,19 @@ public class UiDemo extends Game {
         canvas.getRootPanel().add(createTableView());
 //        canvas.getRootPanel().add(createListView());
         canvas.getRootPanel().add(createStackLayout());
+    }
+
+    private KrPopup createPopup() {
+        KrToolkit toolkit = getDefaultToolkit();
+
+        KrPopup popup = new KrPopup();
+        KrWidget stackLayout = createStackLayout();
+        stackLayout.ensureUniqueStyle();
+        stackLayout.getStyle().background = toolkit.getDrawable(toolkit.getSkin().getColor(KrSkin.ColorKey.BACKGROUND_DARK));
+        stackLayout.setPreferredSize(new Vector2(180, 100));
+        stackLayout.setPadding(new KrPadding(4, 4, 4, 4));
+        popup.setContentWidget(stackLayout);
+        return popup;
     }
 
     private KrWidget createStackLayout() {
