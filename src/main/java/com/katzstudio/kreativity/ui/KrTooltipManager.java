@@ -119,7 +119,7 @@ public class KrTooltipManager implements KrUpdateListener {
     }
 
     private void updateTooltipPosition(Vector2 screenPosition) {
-        tooltipWidget.setPosition(screenPosition.add(0, 20));
+        tooltipWidget.setPosition(screenPosition.x, screenPosition.y + 20);
     }
 
     @Override
