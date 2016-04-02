@@ -43,6 +43,8 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
 
     @Getter private KrTooltipManager tooltipManager;
 
+    @Getter private KrCursorManager cursorManager;
+
     private KrInputSource input;
 
     private ArrayList<KrWidget> widgets = new ArrayList<>();
@@ -64,6 +66,8 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         focusManager = new KrFocusManager(rootPanel);
 
         tooltipManager = new KrTooltipManager(this);
+
+        cursorManager = new KrCursorManager(this);
 
         rootPanel.addWidgetListener(new KrWidget.KrWidgetListener.KrAbstractWidgetListener() {
             @Override
