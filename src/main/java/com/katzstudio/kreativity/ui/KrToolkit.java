@@ -1,11 +1,7 @@
 package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.katzstudio.kreativity.ui.animation.KrAnimations;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
@@ -13,9 +9,7 @@ import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -27,8 +21,6 @@ public class KrToolkit {
     private static KrToolkit INSTANCE;
 
     private final KrBackend backend;
-
-    private final Map<Color, Drawable> drawableCache = new HashMap<>();
 
     private final List<KrUpdateListener> updateListeners = new CopyOnWriteArrayList<>();
 
@@ -90,10 +82,7 @@ public class KrToolkit {
     }
 
     public Drawable getDrawable(Color color) {
-        if (!drawableCache.containsKey(color)) {
-            drawableCache.put(color, createColorDrawable(color));
-        }
-        return drawableCache.get(color);
+        return backend.createColorDrawable(color);
     }
 
     public KrInputSource getInputSource() {
@@ -125,12 +114,5 @@ public class KrToolkit {
             updateListeners.get(i).update(deltaSeconds);
         }
         animations.update(deltaSeconds);
-    }
-
-    private Drawable createColorDrawable(Color color) {
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        return new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
     }
 }

@@ -1,5 +1,7 @@
 package com.katzstudio.kreativity.ui.backend;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrFontMetrics;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -23,6 +25,8 @@ public interface KrBackend {
     void writeToClipboard(String value);
 
     String readFromClipboard();
+
+    Drawable createColorDrawable(Color color);
 
     int getScreenWidth();
 

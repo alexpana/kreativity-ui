@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
-import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrButtonStyle;
 import org.junit.Before;
@@ -104,7 +103,7 @@ public class KrButtonTest {
     }
 
     public void verifyRendererCalledWithDrawable(Drawable drawable) {
-        verify(renderer).setBrush(eq(new KrDrawableBrush(drawable)));
+        verify(renderer).setBrush(eq(drawable));
         verify(renderer).fillRect(any(Float.class), any(Float.class), any(Float.class), any(Float.class));
     }
 }

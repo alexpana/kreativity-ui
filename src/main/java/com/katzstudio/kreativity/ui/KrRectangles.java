@@ -113,7 +113,11 @@ public class KrRectangles {
     @ReturnsPooledObject
     public Rectangle value() {
         Rectangle result = Pools.obtain(Rectangle.class);
-        result.set(x, y, w, h);
+        if (w == 0 || h == 0) {
+            result.set(x, y, 0, 0);
+        } else {
+            result.set(x, y, w, h);
+        }
         Pools.free(this);
         return result;
     }

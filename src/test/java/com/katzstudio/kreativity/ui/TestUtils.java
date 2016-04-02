@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
 
 import static com.katzstudio.kreativity.ui.TestObjectFactory.*;
@@ -35,9 +36,11 @@ public class TestUtils {
     public static KrBackend createMockBackend() {
         KrFontMetrics fontMetricsMock = mock(KrFontMetrics.class);
         when(fontMetricsMock.bounds(any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
+        when(fontMetricsMock.bounds(any(), any(), any())).thenReturn(new Rectangle(0, 0, 100, 10));
 
         KrBackend backend = mock(KrBackend.class);
         when(backend.getFontMetrics()).thenReturn(fontMetricsMock);
+        when(backend.createColorDrawable(any())).thenReturn(mock(Drawable.class));
         return backend;
     }
 }
