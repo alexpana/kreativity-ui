@@ -197,8 +197,8 @@ public class KrSkin {
         listViewStyle.gridVisible = false;
 
         tableViewStyle = new KrItemViewStyle(widgetStyle);
-        tableViewStyle.gridColor = getColor(FOREGROUND);
-        tableViewStyle.gridVisible = false;
+        tableViewStyle.gridColor = getColor(BACKGROUND_LIGHT);
+        tableViewStyle.gridVisible = true;
     }
 
     private Rectangle jsonArrayToRectangle(JsonValue jsonValue) {

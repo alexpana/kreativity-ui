@@ -85,8 +85,26 @@ public class KrTableView extends KrAbstractItemView<KrItemViewStyle> {
             x += columnWidth;
         }
 
-        // draw grid
+        if (clipped) {
+            clipped = false;
+            renderer.endClip();
+        }
 
+        // draw grid
+        if (style.gridVisible) {
+            renderer.setPen(1, style.gridColor);
+
+            for (int i = 1; i < columnCount; ++i) {
+                renderer.drawLine(i * columnWidth - 1, 0, i * columnWidth - 1, getHeight());
+            }
+
+            clipped = renderer.beginClip(0, ROW_HEIGHT, getWidth(), getHeight() - ROW_HEIGHT);
+            int rowCount = model.getRowCount();
+            for (int i = 1; i < rowCount + (drawHeader ? 1 : 0); ++i) {
+                int offset = (int) -verticalScrollBar.getCurrentValue();
+                renderer.drawLine(0, i * rowHeight - 1 + offset, getWidth(), i * rowHeight - 1 + offset);
+            }
+        }
         if (clipped) {
             renderer.endClip();
         }
