@@ -111,7 +111,7 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
     }
 
     private KrPanel createSplitterPanel() {
-        return new SplitterPanel();
+        return new KrSplitterGrip();
     }
 
     @Override
@@ -200,10 +200,14 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
         }
     }
 
-    private final class SplitterPanel extends KrPanel {
+    private final class KrSplitterGrip extends KrPanel {
 
-        public SplitterPanel() {
-            setCursor(KrCursor.VERTICAL_RESIZE);
+        public KrSplitterGrip() {
+            this(KrCursor.VERTICAL_RESIZE);
+        }
+
+        public KrSplitterGrip(KrCursor cursor) {
+            setCursor(cursor);
         }
 
         @Override
