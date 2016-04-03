@@ -9,12 +9,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrCanvas;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSizePolicyModel;
+import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
-import com.katzstudio.kreativity.ui.layout.*;
+import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
+import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
+import com.katzstudio.kreativity.ui.layout.KrCardLayout;
+import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
+import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
@@ -24,7 +34,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.gl;
-import static com.badlogic.gdx.graphics.GL20.*;
+import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
+import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
@@ -33,8 +47,10 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * Demo / testing application.
  */
+@SuppressWarnings("unused")
 public class UiDemo extends Game {
 
+    @SuppressWarnings("unused")
     private final FPSLogger fpsLogger = new FPSLogger();
 
     private Drawable darkGray;
@@ -94,7 +110,6 @@ public class UiDemo extends Game {
         canvas.getRootPanel().add(createScrollPanel());
         canvas.getRootPanel().add(createSplitPanel());
         canvas.getRootPanel().add(createTableView());
-//        canvas.getRootPanel().add(createListView());
         canvas.getRootPanel().add(createStackLayout());
     }
 

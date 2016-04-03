@@ -5,7 +5,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrAlignmentTool;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -42,6 +46,8 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
 
         setStyle(getDefaultToolkit().getSkin().getWidgetStyle());
         setLayout(new KrFlowLayout(VERTICAL, 0, 0));
+        setPadding(new KrPadding(1));
+        setBackground(getDefaultToolkit().getDrawable(getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER)));
     }
 
     public void setTitle(String title) {
@@ -107,7 +113,7 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
             defaultBackground = toolkit.getDrawable(toolkit.getSkin().getColor(KrSkin.ColorKey.BACKGROUND_LIGHT));
 
             setBackground(defaultBackground);
-            setPadding(new KrPadding(4));
+            setPadding(new KrPadding(5, 6));
         }
 
         @Override

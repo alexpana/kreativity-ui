@@ -12,14 +12,28 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.katzstudio.kreativity.ui.style.*;
+import com.katzstudio.kreativity.ui.style.KrButtonGroupStyle;
+import com.katzstudio.kreativity.ui.style.KrButtonStyle;
+import com.katzstudio.kreativity.ui.style.KrCheckboxStyle;
+import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
+import com.katzstudio.kreativity.ui.style.KrLabelStyle;
+import com.katzstudio.kreativity.ui.style.KrPanelStyle;
+import com.katzstudio.kreativity.ui.style.KrScrollBarStyle;
+import com.katzstudio.kreativity.ui.style.KrSplitPanelStyle;
+import com.katzstudio.kreativity.ui.style.KrTextFieldStyle;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.*;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_LIGHT;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BORDER;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.FOREGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SELECTION_BACKGROUND;
 
 /**
  * Kreativity Skin
@@ -32,8 +46,9 @@ public class KrSkin {
         colors.put(BACKGROUND, new Color(0x4C4C4Cff));
         colors.put(BACKGROUND_LIGHT, new Color(0x424242ff));
         colors.put(BACKGROUND_DARK, new Color(0x353535ff));
+        colors.put(BORDER, new Color(0x323232ff));
         colors.put(FOREGROUND, new Color(0xDDDDDDFF));
-        colors.put(SELECTION_BACKGROUND, new Color(0x38466bff));
+        colors.put(SELECTION_BACKGROUND, new Color(0x4b6eafff));
     }
 
     private final Map<String, Drawable> drawablePatches = new HashMap<>();
@@ -218,5 +233,6 @@ public class KrSkin {
         BACKGROUND_DARK,
         FOREGROUND,
         SELECTION_BACKGROUND,
+        BORDER,
     }
 }
