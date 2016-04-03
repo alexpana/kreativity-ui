@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.google.common.base.Strings;
+import com.katzstudio.kreativity.ui.util.KrStrings;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class KrTextDocument {
     }
 
     private void updateTextValue(String text) {
-        text = Strings.nullToEmpty(text);
+        text = KrStrings.nullToEmpty(text);
         if (!text.equals(this.text)) {
             String oldValue = this.text;
             notifyTextChanged(oldValue, text);

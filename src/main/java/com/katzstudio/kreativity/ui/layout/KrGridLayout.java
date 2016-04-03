@@ -3,7 +3,6 @@ package com.katzstudio.kreativity.ui.layout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pools;
-import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
@@ -11,6 +10,7 @@ import com.katzstudio.kreativity.ui.component.KrWidget;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class KrGridLayout implements KrLayout {
 
     private final int columnCount;
 
-    private final List<KrWidget> widgets = Lists.newArrayList();
+    private final List<KrWidget> widgets = new ArrayList<>();
 
     private final Map<KrWidget, Constraint> constraints = new HashMap<>();
 

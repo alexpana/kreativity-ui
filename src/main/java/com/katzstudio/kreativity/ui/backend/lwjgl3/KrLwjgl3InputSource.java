@@ -5,13 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.badlogic.gdx.Input.Keys.*;
@@ -25,16 +25,16 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     private static final float KEY_REPEAT_TIME = 0.1f;
 
-    private static final List<Integer> metaKeys = Lists.newArrayList(
+    private static final List<Integer> metaKeys = Arrays.asList(
             ALT_LEFT, ALT_RIGHT, CONTROL_LEFT, CONTROL_RIGHT, SHIFT_LEFT, SHIFT_RIGHT);
 
-    private static final List<Integer> textModifierKeys = Lists.newArrayList(
+    private static final List<Integer> textModifierKeys = Arrays.asList(
             DEL, BACKSPACE, FORWARD_DEL, ENTER, TAB);
 
-    private static final List<Integer> navigationKeys = Lists.newArrayList(
+    private static final List<Integer> navigationKeys = Arrays.asList(
             LEFT, RIGHT, UP, DOWN, PAGE_DOWN, PAGE_UP, HOME, END, ESCAPE);
 
-    private static final List<Integer> functionKeys = Lists.newArrayList(
+    private static final List<Integer> functionKeys = Arrays.asList(
             F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12);
 
     private final List<KrInputEventListener> listeners = new ArrayList<>();

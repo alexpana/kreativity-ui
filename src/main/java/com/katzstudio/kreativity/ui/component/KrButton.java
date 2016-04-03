@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrPadding;
@@ -16,6 +15,7 @@ import com.katzstudio.kreativity.ui.style.KrButtonStyle;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
@@ -33,7 +33,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
 
     @Getter @Setter private KrAlignment textAlignment;
 
-    private final List<KrButtonListener> listeners = Lists.newArrayList();
+    private final List<KrButtonListener> listeners = new ArrayList<>();
 
     public KrButton(String text) {
         setText(text);

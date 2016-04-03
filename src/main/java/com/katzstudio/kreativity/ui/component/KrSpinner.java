@@ -2,7 +2,6 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -11,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
@@ -30,7 +30,7 @@ public class KrSpinner extends KrTextField {
 
     @Getter @Setter private float increment = 0.1f;
 
-    private final List<EditListener> editListeners = Lists.newArrayList();
+    private final List<EditListener> editListeners = new ArrayList<>();
 
     @Getter @Setter private KrValueModel<Float> spinnerModel = new KrValueModel.Default<>(0.0f);
 

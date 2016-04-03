@@ -4,13 +4,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrRectangles;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 
 import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.CENTER;
 
 /**
  * The KrPopup is show above the rest of the widgets, on the overlay panel.
  */
-public class KrPopup extends KrWidget {
+public class KrPopup extends KrWidget<KrWidgetStyle> {
 
     private Vector2 tmpVec = new Vector2();
 

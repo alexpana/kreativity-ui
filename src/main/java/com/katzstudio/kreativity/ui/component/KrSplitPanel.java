@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
@@ -16,6 +15,7 @@ import com.katzstudio.kreativity.ui.style.KrSplitPanelStyle;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -30,9 +30,9 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
 
     private static final int SEPARATOR_SIZE = 2;
 
-    private final List<KrWidget> separatorList = Lists.newArrayList();
+    private final List<KrWidget> separatorList = new ArrayList<>();
 
-    private final List<Cell> cells = Lists.newArrayList();
+    private final List<Cell> cells = new ArrayList<>();
 
     private final CellSizePolicyModel cellSizePolicyModel = new CellSizePolicyModel();
 

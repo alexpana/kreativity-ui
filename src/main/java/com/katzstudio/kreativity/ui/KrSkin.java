@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.google.common.collect.ImmutableMap;
 import com.katzstudio.kreativity.ui.style.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,12 +26,14 @@ import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.*;
  */
 public class KrSkin {
 
-    private final ImmutableMap<ColorKey, Color> colors = ImmutableMap.<ColorKey, Color>builder()
-            .put(BACKGROUND_LIGHT, new Color(0x424242ff))
-            .put(BACKGROUND_DARK, new Color(0x353535ff))
-            .put(FOREGROUND, new Color(0xDDDDDDFF))
-            .put(SELECTION_BACKGROUND, new Color(0x38466bff))
-            .build();
+    private final Map<ColorKey, Color> colors = new HashMap<>();
+
+    {
+        colors.put(BACKGROUND_LIGHT, new Color(0x424242ff));
+        colors.put(BACKGROUND_DARK, new Color(0x353535ff));
+        colors.put(FOREGROUND, new Color(0xDDDDDDFF));
+        colors.put(SELECTION_BACKGROUND, new Color(0x38466bff));
+    }
 
     private final Map<String, Drawable> drawablePatches = new HashMap<>();
 

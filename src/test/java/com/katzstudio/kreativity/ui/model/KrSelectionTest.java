@@ -1,8 +1,9 @@
 package com.katzstudio.kreativity.ui.model;
 
-import com.google.common.collect.ImmutableList;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -35,7 +36,7 @@ public class KrSelectionTest {
         KrModelIndex indexB = new KrModelIndex(4, 3, null);
         KrModelIndex indexC = new KrModelIndex(6, 3, null);
 
-        KrSelection selection = new KrSelection(ImmutableList.of(indexA, indexB, indexC));
+        KrSelection selection = new KrSelection(Arrays.asList(indexA, indexB, indexC));
         assertThat(selection.size(), is(3));
         assertThat(selection.contains(indexA), is(true));
         assertThat(selection.contains(indexB), is(true));
@@ -45,7 +46,7 @@ public class KrSelectionTest {
     @Test
     public void testExpandSelection() throws Exception {
 
-        KrSelection selection = new KrSelection(ImmutableList.of(new KrModelIndex(0), new KrModelIndex(1)));
+        KrSelection selection = new KrSelection(Arrays.asList(new KrModelIndex(0), new KrModelIndex(1)));
 
         KrModelIndex newIndex = new KrModelIndex(2);
         KrSelection newSelection = selection.expand(newIndex);
@@ -58,7 +59,7 @@ public class KrSelectionTest {
     @Test
     public void testRemoveSelection() throws Exception {
         KrModelIndex removedIndex = new KrModelIndex(2);
-        KrSelection selection = new KrSelection(ImmutableList.of(new KrModelIndex(0), new KrModelIndex(1), removedIndex));
+        KrSelection selection = new KrSelection(Arrays.asList(new KrModelIndex(0), new KrModelIndex(1), removedIndex));
 
         KrSelection newSelection = selection.shrink(removedIndex);
 

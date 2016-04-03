@@ -37,8 +37,6 @@ dependencies {
 
     compile "org.projectlombok:lombok:$lombokVersion"
 
-    compile "com.google.guava:guava:$guavaVersion"
-
     // Used by the demo to create a native window and context
     testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 

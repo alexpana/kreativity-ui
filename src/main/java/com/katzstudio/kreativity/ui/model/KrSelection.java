@@ -1,13 +1,10 @@
 package com.katzstudio.kreativity.ui.model;
 
-import com.google.common.collect.ImmutableList;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -19,18 +16,18 @@ public class KrSelection implements Iterable<KrModelIndex> {
 
     public static final KrSelection EMPTY = new KrSelection();
 
-    @Getter private final ImmutableList<KrModelIndex> selectedIndexes;
+    @Getter private final List<KrModelIndex> selectedIndexes;
 
     private KrSelection() {
-        selectedIndexes = ImmutableList.of();
+        selectedIndexes = Collections.EMPTY_LIST;
     }
 
     private KrSelection(KrModelIndex singleIndex) {
-        selectedIndexes = ImmutableList.of(singleIndex);
+        selectedIndexes = Collections.singletonList(singleIndex);
     }
 
     public KrSelection(List<KrModelIndex> selectedIndexes) {
-        this.selectedIndexes = ImmutableList.copyOf(selectedIndexes);
+        this.selectedIndexes = new ArrayList<>(selectedIndexes);
     }
 
     public static KrSelection of(KrModelIndex index) {
@@ -61,7 +58,8 @@ public class KrSelection implements Iterable<KrModelIndex> {
     }
 
     public KrSelection expand(KrModelIndex index) {
-        ImmutableList<KrModelIndex> newSelection = ImmutableList.<KrModelIndex>builder().add(index).addAll(selectedIndexes).build();
+        List<KrModelIndex> newSelection = new ArrayList<>(selectedIndexes);
+        newSelection.add(index);
         return new KrSelection(newSelection);
     }
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.google.common.collect.Lists;
 import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
@@ -41,7 +40,7 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     @Getter private float height;
 
-    @Getter private final ArrayList<KrWidget<? extends KrWidgetStyle>> children = Lists.newArrayList();
+    @Getter private final ArrayList<KrWidget<? extends KrWidgetStyle>> children = new ArrayList<>();
 
     @Getter private KrWidget parent;
 
@@ -63,13 +62,13 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     @Setter private KrCanvas canvas;
 
-    private final List<KrKeyboardListener> keyboardListeners = Lists.newArrayList();
+    private final List<KrKeyboardListener> keyboardListeners = new ArrayList<>();
 
-    private final List<KrMouseListener> mouseListeners = Lists.newArrayList();
+    private final List<KrMouseListener> mouseListeners = new ArrayList<>();
 
-    private final List<KrFocusListener> focusListeners = Lists.newArrayList();
+    private final List<KrFocusListener> focusListeners = new ArrayList<>();
 
-    private final List<KrWidgetListener> widgetListeners = Lists.newArrayList();
+    private final List<KrWidgetListener> widgetListeners = new ArrayList<>();
 
     @Setter private Vector2 minSize;
 

@@ -2,7 +2,6 @@ package com.katzstudio.kreativity.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.google.common.base.Strings;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import com.katzstudio.kreativity.ui.event.KrEvent;
@@ -10,6 +9,7 @@ import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
+import com.katzstudio.kreativity.ui.util.KrStrings;
 import com.katzstudio.kreativity.ui.util.KrTimer;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
 import lombok.Getter;
@@ -102,7 +102,7 @@ public class KrTooltipManager implements KrUpdateListener {
     }
 
     private boolean hasTooltipText(KrWidget widget) {
-        return widget.getTooltipText() != null && !Strings.isNullOrEmpty(widget.getTooltipText());
+        return widget.getTooltipText() != null && !KrStrings.isNullOrEmpty(widget.getTooltipText());
     }
 
     private boolean hasTooltipWidget(KrWidget widget) {

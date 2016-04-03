@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.google.common.collect.ImmutableList;
 import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
@@ -21,6 +20,7 @@ import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.gl;
@@ -223,7 +223,7 @@ public class UiDemo extends Game {
 //        listView.addDoubleClickListener(itemIndex -> System.out.println("2x clicked itemIndex: " + itemIndex));
 
         KrTableView.KrTableColumnModel columnModel = new KrTableView.KrTableColumnModel() {
-            private List<String> columns = ImmutableList.of("Col 0", "Col 1", "Col 2");
+            private List<String> columns = Arrays.asList("Col 0", "Col 1", "Col 2");
 
             @Override
             public int getColumnCount() {
