@@ -146,6 +146,13 @@ public class KrTooltipManager implements KrUpdateListener {
         }
 
         @Override
+        public void ensureUniqueStyle() {
+            if (style == getDefaultToolkit().getSkin().getWidgetStyle()) {
+                style = new KrWidgetStyle(style);
+            }
+        }
+
+        @Override
         public void setText(String text) {
             super.setText(text);
             if (!(getChild(0) == textLabel)) {

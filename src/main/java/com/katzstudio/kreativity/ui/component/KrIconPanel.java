@@ -5,15 +5,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A transparent panel that renders an icon.
  */
-public class KrIconPanel extends KrWidget {
+public class KrIconPanel extends KrWidget<KrWidgetStyle> {
 
     @Getter @Setter private KrFontAwesomeGlyph iconGlyph;
 
@@ -28,9 +30,8 @@ public class KrIconPanel extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        BitmapFont fontAwesome = getDefaultToolkit().getSkin().getFontAwesome();
         Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation(), tmpRect);
-        return expandSizeWithPadding(new Vector2(bounds.width, bounds.height), getPadding());
+        return rectangles(bounds).expand(getPadding()).size();
     }
 
     @Override

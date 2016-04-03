@@ -61,6 +61,8 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     private int inputOffsetY = 0;
 
+    private Vector2 mousePosition = new Vector2();
+
     public KrLwjgl3InputSource() {
         // TODO: investigate pointer offset on MAC OSX. Compensating here with a small hack
         if (((String) System.getProperties().get("os.name")).contains("Mac")) {
@@ -172,6 +174,7 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
         screenY += inputOffsetY;
 
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.MOVED, screenX, screenY, -1);
+        mousePosition.set(screenX, screenY);
 
         notifyMouseMoved(mouseEvent);
 
@@ -185,6 +188,7 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
         screenY += inputOffsetY;
 
         KrMouseEvent mouseEvent = createMouseEvent(KrMouseEvent.Type.MOVED, screenX, screenY, -1);
+        mousePosition.set(screenX, screenY);
 
         notifyMouseMoved(mouseEvent);
 
@@ -275,6 +279,11 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
     @Override
     public boolean isDragging() {
         return isDragging;
+    }
+
+    @Override
+    public Vector2 getMousePosition() {
+        return mousePosition;
     }
 
     @Override

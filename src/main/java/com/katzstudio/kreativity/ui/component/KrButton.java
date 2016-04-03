@@ -18,6 +18,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
@@ -25,11 +26,11 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrButton extends KrWidget<KrButtonStyle> {
 
-    protected enum State {
+    enum State {
         NORMAL, HOVERED, ARMED
     }
 
-    protected State state = State.NORMAL;
+    private State state = State.NORMAL;
 
     @Getter @Setter private KrAlignment textAlignment;
 
@@ -64,8 +65,7 @@ public class KrButton extends KrWidget<KrButtonStyle> {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        Rectangle textBounds = text.getBounds();
-        return expandSizeWithPadding(new Vector2(textBounds.width, textBounds.height), getPadding());
+        return rectangles(text.getBounds()).expand(getPadding()).size();
     }
 
     @Override

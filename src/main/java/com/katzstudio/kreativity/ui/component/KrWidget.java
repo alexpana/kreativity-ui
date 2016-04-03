@@ -409,6 +409,8 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     protected void drawSelf(KrRenderer renderer) {
+        renderer.setBrush(getBackground());
+        renderer.fillRect(0, 0, getWidth(), getHeight());
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
@@ -774,10 +776,6 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     protected void notifyWidgetInvalidated() {
         widgetListeners.forEach(KrWidgetListener::invalidated);
-    }
-
-    protected final Vector2 expandSizeWithPadding(Vector2 size, KrPadding padding) {
-        return new Vector2(size.x + padding.getHorizontalPadding(), size.y + padding.getVerticalPadding());
     }
 
     public Vector2 screenToLocal(Vector2 screenPosition) {

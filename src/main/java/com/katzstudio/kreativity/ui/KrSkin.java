@@ -29,6 +29,7 @@ public class KrSkin {
     private final Map<ColorKey, Color> colors = new HashMap<>();
 
     {
+        colors.put(BACKGROUND, new Color(0x4C4C4Cff));
         colors.put(BACKGROUND_LIGHT, new Color(0x424242ff));
         colors.put(BACKGROUND_DARK, new Color(0x353535ff));
         colors.put(FOREGROUND, new Color(0xDDDDDDFF));
@@ -116,7 +117,7 @@ public class KrSkin {
         }
 
         widgetStyle = new KrWidgetStyle();
-        widgetStyle.background = toolkit.getDrawable(KrColor.TRANSPARENT);
+        widgetStyle.background = toolkit.getDrawable(getColor(BACKGROUND));
         widgetStyle.foregroundColor = getColor(FOREGROUND);
         widgetStyle.font = getDefaultFont();
         widgetStyle.textShadowOffset = new Vector2(0, 0);
@@ -212,6 +213,7 @@ public class KrSkin {
     }
 
     public enum ColorKey {
+        BACKGROUND,
         BACKGROUND_LIGHT,
         BACKGROUND_DARK,
         FOREGROUND,

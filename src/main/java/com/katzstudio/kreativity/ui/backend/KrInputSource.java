@@ -1,5 +1,6 @@
 package com.katzstudio.kreativity.ui.backend;
 
+import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
@@ -18,6 +19,8 @@ public interface KrInputSource {
     boolean isShiftDown();
 
     boolean isDragging();
+
+    Vector2 getMousePosition();
 
     void addEventListener(KrInputEventListener listener);
 

@@ -28,7 +28,6 @@ import static com.badlogic.gdx.graphics.GL20.*;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
-import static com.katzstudio.kreativity.ui.KrToolkit.animations;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
@@ -97,6 +96,20 @@ public class UiDemo extends Game {
         canvas.getRootPanel().add(createTableView());
 //        canvas.getRootPanel().add(createListView());
         canvas.getRootPanel().add(createStackLayout());
+    }
+
+    private KrMenu createMenu() {
+        KrMenu menu = new KrMenu();
+
+        KrMenu.KrMenuItem menuItem1 = new KrMenu.KrMenuItem("Add", null);
+        KrMenu.KrMenuItem menuItem2 = new KrMenu.KrMenuItem("Remove", null);
+        KrMenu.KrMenuItem menuItem3 = new KrMenu.KrMenuItem("Explain", null);
+
+        menu.addMenuItem(menuItem1);
+        menu.addMenuItem(menuItem2);
+        menu.addMenuItem(menuItem3);
+
+        return menu;
     }
 
     private KrPopup createPopup() {
@@ -390,10 +403,13 @@ public class UiDemo extends Game {
 //            }
 //        });
 
+        final KrMenu menu = createMenu();
+
         button.addListener(() -> {
-            button.setOpacity(0);
-            animations().setOpacity(button, 1)
-                    .onFinish(() -> System.out.println("Finished animation"));
+//            button.setOpacity(0);
+//            animations().setOpacity(button, 1)
+//                    .onFinish(() -> System.out.println("Finished animation"));
+            menu.showAt(getDefaultToolkit().getInputSource().getMousePosition());
         });
 
         KrToggleButton toggleButton = new KrToggleButton("Toggle Button");

@@ -122,6 +122,15 @@ public class KrRectangles {
         return result;
     }
 
+    public Rectangle value(Rectangle value) {
+        if (w == 0 || h == 0) {
+            value.set(x, y, 0, 0);
+        } else {
+            value.set(x, y, w, h);
+        }
+        return value;
+    }
+
     public Vector2 size() {
         return new Vector2(w, h);
     }
@@ -131,9 +140,9 @@ public class KrRectangles {
     }
 
     private static class Segment extends KrPair<Float, Float> {
-        public static final Segment ZERO = new Segment(0.0f, 0.0f);
+        static final Segment ZERO = new Segment(0.0f, 0.0f);
 
-        public Segment(Float first, Float second) {
+        Segment(Float first, Float second) {
             super(first, second);
         }
     }

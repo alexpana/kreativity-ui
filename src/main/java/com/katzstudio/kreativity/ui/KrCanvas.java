@@ -60,14 +60,17 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         rootPanel = new KrPanel();
         rootPanel.setName("canvas.root");
         rootPanel.setCanvas(this);
+        rootPanel.setBackground(getDefaultToolkit().getDrawable(KrColor.TRANSPARENT));
 
         overlayPanel = new KrPanel();
         overlayPanel.setName("canvas.overlay");
         overlayPanel.setCanvas(this);
+        overlayPanel.setBackground(getDefaultToolkit().getDrawable(KrColor.TRANSPARENT));
 
         tooltipPanel = new KrPanel();
         tooltipPanel.setName("canvas.tooltip");
         tooltipPanel.setCanvas(this);
+        tooltipPanel.setBackground(getDefaultToolkit().getDrawable(KrColor.TRANSPARENT));
 
         focusManager = new KrFocusManager(rootPanel);
 
