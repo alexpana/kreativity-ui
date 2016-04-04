@@ -18,6 +18,8 @@ import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
+import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItem;
+import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItemSeparator;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
@@ -116,13 +118,19 @@ public class UiDemo extends Game {
     private KrMenu createMenu() {
         KrMenu menu = new KrMenu();
 
-        KrMenu.KrMenuItem menuItem1 = new KrMenu.KrMenuItem("Add", null);
-        KrMenu.KrMenuItem menuItem2 = new KrMenu.KrMenuItem("Remove", null);
-        KrMenu.KrMenuItem menuItem3 = new KrMenu.KrMenuItem("Explain", null);
+        KrMenuItem menuItem1 = new KrMenuItem("Add", null);
+        KrMenuItem menuItem2 = new KrMenuItem("Remove", null);
+        KrMenuItem menuItem3 = new KrMenuItem("Explain", null);
 
         menu.addMenuItem(menuItem1);
         menu.addMenuItem(menuItem2);
         menu.addMenuItem(menuItem3);
+        menu.addMenuItem(new KrMenuItemSeparator());
+		menu.addMenuItem(new KrMenuItem("Save"));
+		menu.addMenuItem(new KrMenuItem("Save All"));
+		menu.addMenuItem(new KrMenuItem("Export"));
+
+		menu.setPreferredSize(new Vector2(100, menu.getPreferredHeight()));
 
         return menu;
     }

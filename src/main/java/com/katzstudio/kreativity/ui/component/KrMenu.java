@@ -34,8 +34,6 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
 
     private final List<KrMenuItem> menuItems = new ArrayList<>();
 
-    private KrLabel titleLabel;
-
     private KrPopup popup;
 
     @Getter private Vector2 displayLocation = Vector2.Zero.cpy();
@@ -48,10 +46,6 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
         setLayout(new KrFlowLayout(VERTICAL, 0, 0));
         setPadding(new KrPadding(1));
         setBackground(getDefaultToolkit().getDrawable(getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER)));
-    }
-
-    public void setTitle(String title) {
-        titleLabel.setText(title);
     }
 
     public void addMenuItem(KrMenuItem item) {
@@ -101,6 +95,10 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
 
         private KrMenu parentMenu;
 
+		public KrMenuItem(String title) {
+			this(title, null);
+		}
+
         public KrMenuItem(String title, KrActionListener actionListener) {
             this.text.setString(title);
             this.actionListener = actionListener;
@@ -131,6 +129,7 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
             Rectangle alignmentReference = rectangles(0.0f, 0.0f, getWidth(), getHeight()).shrink(getPadding()).value();
             Vector2 textPosition = KrAlignmentTool.alignRectangles(text.getBounds(), alignmentReference, KrAlignment.MIDDLE_LEFT);
 
+			renderer.setPen(1, getForeground());
             renderer.drawText(text.getString(), textPosition);
 
             Pools.free(textPosition);
@@ -166,4 +165,36 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
             return true;
         }
     }
+
+	public static class KrMenuItemSeparator extends KrMenuItem {
+
+		public KrMenuItemSeparator() {
+			super("", null);
+		}
+
+		@Override
+		protected boolean enterEvent(KrEnterEvent event) {
+			return false;
+		}
+
+		@Override
+		protected boolean exitEvent(KrExitEvent event) {
+			return false;
+		}
+
+		@Override
+		public Vector2 calculatePreferredSize() {
+			return new Vector2(0, 7);
+		}
+
+		@Override
+		protected void drawSelf(KrRenderer renderer) {
+			super.drawSelf(renderer);
+
+			renderer.setPen(1, getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER));
+
+			int y = (int) getHeight() / 2;
+			renderer.drawLine(0, y, getWidth(), y);
+		}
+	}
 }
