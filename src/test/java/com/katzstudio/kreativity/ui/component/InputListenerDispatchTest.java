@@ -39,6 +39,10 @@ public class InputListenerDispatchTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object[]> testCases() {
+        KrMenu menu = new KrMenu();
+        KrMenu.KrMenuItem menuItem = new KrMenu.KrMenuItem("");
+        menu.addMenuItem(menuItem);
+
         return Arrays.asList(new Object[][]{
                 {"KrWidget", new KrWidget<>(createWidgetStyle())},
                 {"KrLabel", new KrLabel("")},
@@ -48,12 +52,13 @@ public class InputListenerDispatchTest {
                 {"KrTextField", new KrTextField()},
                 {"KrSpinner", new KrSpinner()},
                 {"KrListView", new KrListView(mock(KrAbstractItemModel.class))},
+                {"KrTableView", new KrTableView(mock(KrAbstractItemModel.class))},
                 {"KrPanel", new KrPanel()},
                 {"KrScrollBar", new KrScrollBar(KrOrientation.VERTICAL)},
                 {"KrToggleButton", new KrToggleButton("")},
                 {"KrPopup", new KrPopup()},
-                {"KrMenu", new KrMenu()},
-                {"KrMenuItem", new KrMenu.KrMenuItem("")}
+                {"KrMenu", menu},
+                {"KrMenuItem", menuItem}
         });
     }
 
