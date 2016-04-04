@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/kreativity-ui.iml" filepath="$PROJECT_DIR$/kreativity-ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kreativity-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/kreativity-ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kreativity-ui_main.iml" filepath="$PROJECT_DIR$/.idea/modules/kreativity-ui_main.iml" group="kreativity-ui" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kreativity-ui_test.iml" filepath="$PROJECT_DIR$/.idea/modules/kreativity-ui_test.iml" group="kreativity-ui" />
     </modules>
   </component>
 </project>
