@@ -25,43 +25,43 @@ public class KrToggleButton extends KrButton {
     }
 
     @Override
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
         setState(State.ARMED);
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean mouseReleasedEvent(KrMouseEvent event) {
+    protected void mouseReleasedEvent(KrMouseEvent event) {
         setChecked(!isChecked());
         if (!isChecked()) {
             setState(State.HOVERED);
         }
         notifyClicked();
         notifyMouseReleased(event);
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean enterEvent(KrEnterEvent event) {
+    protected void enterEvent(KrEnterEvent event) {
         super.enterEvent(event);
         if (isChecked()) {
             setState(State.ARMED);
         } else {
             setState(State.HOVERED);
         }
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean exitEvent(KrExitEvent event) {
+    protected void exitEvent(KrExitEvent event) {
         super.exitEvent(event);
         if (isChecked()) {
             setState(State.ARMED);
         } else {
             setState(State.NORMAL);
         }
-        return true;
+        event.accept();
     }
 
     public Boolean isChecked() {

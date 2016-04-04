@@ -58,13 +58,13 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
     }
 
     @Override
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
-        return requestFocus();
+        requestFocus();
     }
 
     @Override
-    protected boolean keyPressedEvent(KrKeyEvent event) {
+    protected void keyPressedEvent(KrKeyEvent event) {
         super.keyPressedEvent(event);
 
         if (event.getKeycode() == ESCAPE) {
@@ -73,17 +73,20 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
 
         if (event.getKeycode() == Input.Keys.A && event.isCtrlDown()) {
             textDocument.selectAll();
-            return true;
+            event.accept();
+            return;
         }
 
         if (event.getKeycode() == Input.Keys.C && event.isCtrlDown() && textDocument.hasSelection()) {
             getDefaultToolkit().writeToClipboard(textDocument.getSelectedText());
-            return true;
+            event.accept();
+            return;
         }
 
         if (event.getKeycode() == Input.Keys.V && event.isCtrlDown()) {
             textDocument.insertText(getDefaultToolkit().readFromClipboard());
-            return true;
+            event.accept();
+            return;
         }
 
         if (!event.getValue().equals("")) {
@@ -130,22 +133,22 @@ public class KrTextField extends KrWidget<KrTextFieldStyle> {
             textDocument.moveCaretEnd();
         }
 
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean focusGainedEvent(KrFocusEvent event) {
+    protected void focusGainedEvent(KrFocusEvent event) {
         super.focusGainedEvent(event);
         model.ephemeralChangesBegin();
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean focusLostEvent(KrFocusEvent event) {
+    protected void focusLostEvent(KrFocusEvent event) {
         super.focusLostEvent(event);
         model.ephemeralChangesEnd();
         textDocument.clearSelection();
-        return true;
+        event.accept();
     }
 
     @Override

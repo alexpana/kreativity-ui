@@ -213,26 +213,23 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         void eventDispatched(KrWidget widget, KrEvent event);
     }
 
-    private boolean dispatchEvent(KrWidget widget, KrEvent event) {
+    private void dispatchEvent(KrWidget widget, KrEvent event) {
         try {
 
             if (widget == null) {
-                return false;
+                return;
             }
 
             notifyEventDispatched(widget, event);
 
-            boolean handled = widget.handle(event);
+            widget.handle(event);
 
-            while (!handled && widget.getParent() != null) {
+            while (!event.handled() && widget.getParent() != null) {
                 widget = widget.getParent();
-                handled = widget.handle(event);
+                widget.handle(event);
             }
-
-            return handled;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 

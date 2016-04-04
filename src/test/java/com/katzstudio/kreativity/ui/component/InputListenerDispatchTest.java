@@ -51,6 +51,9 @@ public class InputListenerDispatchTest {
                 {"KrPanel", new KrPanel()},
                 {"KrScrollBar", new KrScrollBar(KrOrientation.VERTICAL)},
                 {"KrToggleButton", new KrToggleButton("")},
+                {"KrPopup", new KrPopup()},
+                {"KrMenu", new KrMenu()},
+                {"KrMenuItem", new KrMenu.KrMenuItem("")}
         });
     }
 

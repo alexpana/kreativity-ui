@@ -118,7 +118,7 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
     }
 
     @Override
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
 
         Vector2 localMouseLocation = screenToLocal(event.getScreenPosition());
@@ -133,34 +133,29 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
 
         isDragging = true;
         event.accept();
-        return true;
     }
 
     @Override
-    protected boolean mouseMoveEvent(KrMouseEvent event) {
+    protected void mouseMoveEvent(KrMouseEvent event) {
         super.mouseMoveEvent(event);
         if (isDragging) {
             float delta = orientation == VERTICAL ? event.getDeltaMove().y : event.getDeltaMove().x;
             dragPosition = dragPosition + delta;
             setThumbPosition(dragPosition);
             event.accept();
-            return true;
         }
-
-        return false;
     }
 
     @Override
-    protected boolean mouseReleasedEvent(KrMouseEvent event) {
+    protected void mouseReleasedEvent(KrMouseEvent event) {
         super.mouseReleasedEvent(event);
         isDragging = false;
         dragPosition = thumbPosition;
         event.accept();
-        return true;
     }
 
     @Override
-    protected boolean scrollEvent(KrScrollEvent event) {
+    protected void scrollEvent(KrScrollEvent event) {
         super.scrollEvent(event);
 
         if (!isDragging) {
@@ -168,7 +163,6 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
         }
 
         event.accept();
-        return true;
     }
 
     @Override

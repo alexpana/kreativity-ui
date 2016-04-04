@@ -69,36 +69,34 @@ public class KrButton extends KrWidget<KrButtonStyle> {
     }
 
     @Override
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
         setState(State.ARMED);
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean mouseReleasedEvent(KrMouseEvent event) {
+    protected void mouseReleasedEvent(KrMouseEvent event) {
         super.mouseReleasedEvent(event);
         if (state == State.ARMED) {
             setState(State.HOVERED);
             notifyClicked();
-            return true;
-        } else {
-            return false;
+            event.accept();
         }
     }
 
     @Override
-    protected boolean enterEvent(KrEnterEvent event) {
+    protected void enterEvent(KrEnterEvent event) {
         super.enterEvent(event);
         setState(State.HOVERED);
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean exitEvent(KrExitEvent event) {
+    protected void exitEvent(KrExitEvent event) {
         super.exitEvent(event);
         setState(State.NORMAL);
-        return true;
+        event.accept();
     }
 
     @Override

@@ -44,19 +44,20 @@ public class KrSpinner extends KrTextField {
     }
 
     @Override
-    protected boolean keyPressedEvent(KrKeyEvent event) {
+    protected void keyPressedEvent(KrKeyEvent event) {
         if (event.getKeycode() == Input.Keys.ENTER || event.getKeycode() == Input.Keys.ESCAPE) {
             validateText();
             notifyEditStopped();
             clearFocus();
-            return true;
+            event.accept();
+            return;
         }
 
-        return super.keyPressedEvent(event);
+        super.keyPressedEvent(event);
     }
 
     @Override
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
         wasDragged = false;
 
@@ -73,23 +74,23 @@ public class KrSpinner extends KrTextField {
 
         clearFocus();
         event.accept();
-        return true;
     }
 
     @Override
-    protected boolean mouseMoveEvent(KrMouseEvent event) {
+    protected void mouseMoveEvent(KrMouseEvent event) {
         super.mouseMoveEvent(event);
+
         if (dragStarted) {
             wasDragged = true;
             incrementValue(Gdx.input.getDeltaX());
         }
         event.accept();
-        return true;
     }
 
     @Override
-    protected boolean mouseReleasedEvent(KrMouseEvent event) {
+    protected void mouseReleasedEvent(KrMouseEvent event) {
         super.mouseReleasedEvent(event);
+
         dragStarted = false;
         if (!wasDragged && event.getButton() == LEFT) {
             requestFocus();
@@ -98,7 +99,6 @@ public class KrSpinner extends KrTextField {
             notifyEditStopped();
         }
         event.accept();
-        return true;
     }
 
     private void validateText() {

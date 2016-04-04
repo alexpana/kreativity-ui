@@ -54,15 +54,10 @@ public class KrPopup extends KrWidget<KrWidgetStyle> {
     }
 
     @Override
-    protected boolean focusGainedEvent(KrFocusEvent event) {
-        System.out.println("event = " + event);
-        return true;
-    }
-
-    @Override
-    protected boolean focusLostEvent(KrFocusEvent event) {
+    protected void focusLostEvent(KrFocusEvent event) {
+        super.focusLostEvent(event);
         hide();
-        return true;
+        event.accept();
     }
 
     public void hide() {

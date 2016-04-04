@@ -72,11 +72,11 @@ public abstract class KrAbstractItemView<S extends KrItemViewStyle> extends KrWi
     }
 
     @Override
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
 
         if (selectionMode == KrSelectionMode.NONE) {
-            return false;
+            return;
         }
 
         KrAbstractItemModel.KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
@@ -86,7 +86,7 @@ public abstract class KrAbstractItemView<S extends KrItemViewStyle> extends KrWi
             } else {
                 selectionModel.setSelection(KrSelection.of(itemIndex));
             }
-            return true;
+            return;
         }
 
         if (event.isCtrlDown()) {
@@ -98,22 +98,23 @@ public abstract class KrAbstractItemView<S extends KrItemViewStyle> extends KrWi
         } else {
             selectionModel.setSelection(KrSelection.of(itemIndex));
         }
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean mouseDoubleClickEvent(KrMouseEvent event) {
+    protected void mouseDoubleClickEvent(KrMouseEvent event) {
         super.mouseDoubleClickEvent(event);
 
         KrAbstractItemModel.KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
         notifyItemDoubleClicked(itemIndex);
-        return true;
+        event.accept();
     }
 
     @Override
-    protected boolean scrollEvent(KrScrollEvent event) {
+    protected void scrollEvent(KrScrollEvent event) {
         super.scrollEvent(event);
-        return verticalScrollBar.scrollEvent(event);
+
+        verticalScrollBar.scrollEvent(event);
     }
 
     @Override

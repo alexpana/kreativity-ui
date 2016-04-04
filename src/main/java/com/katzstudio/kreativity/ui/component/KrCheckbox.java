@@ -72,15 +72,13 @@ public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
     }
 
     @Override
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         super.mousePressedEvent(event);
 
         if (event.getButton() == KrMouseEvent.Button.LEFT) {
-            event.accept();
             setChecked(!model.getValue());
-            return true;
+            event.accept();
         }
-        return false;
     }
 
     @Override

@@ -138,27 +138,30 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
         }
 
         @Override
-        protected boolean enterEvent(KrEnterEvent event) {
+        protected void enterEvent(KrEnterEvent event) {
+            super.enterEvent(event);
+
             setBackground(selectedBackground);
             event.accept();
-            return true;
         }
 
         @Override
-        protected boolean exitEvent(KrExitEvent event) {
+        protected void exitEvent(KrExitEvent event) {
+            super.exitEvent(event);
+
             setBackground(defaultBackground);
             event.accept();
-            return true;
         }
 
         @Override
-        protected boolean mouseReleasedEvent(KrMouseEvent event) {
+        protected void mouseReleasedEvent(KrMouseEvent event) {
+            super.mouseReleasedEvent(event);
+
             if (actionListener != null) {
                 actionListener.actionPerformed();
             }
             parentMenu.hide();
             event.accept();
-            return true;
         }
     }
 
@@ -169,13 +172,13 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
         }
 
         @Override
-        protected boolean enterEvent(KrEnterEvent event) {
-            return false;
+        protected void enterEvent(KrEnterEvent event) {
+            // prevent super.enterEvent
         }
 
         @Override
-        protected boolean exitEvent(KrExitEvent event) {
-            return false;
+        protected void exitEvent(KrExitEvent event) {
+            // prevent super.exitEvent
         }
 
         @Override

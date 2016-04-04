@@ -580,18 +580,22 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     @SuppressWarnings("SimplifiableIfStatement")
-    public boolean handle(KrEvent event) {
+    public void handle(KrEvent event) {
         if (event instanceof KrMouseEvent) {
             KrMouseEvent mouseEvent = (KrMouseEvent) event;
             switch ((mouseEvent).getType()) {
                 case MOVED:
-                    return mouseMoveEvent(mouseEvent);
+                    mouseMoveEvent(mouseEvent);
+                    break;
                 case PRESSED:
-                    return mousePressedEvent(mouseEvent);
+                    mousePressedEvent(mouseEvent);
+                    break;
                 case RELEASED:
-                    return mouseReleasedEvent(mouseEvent);
+                    mouseReleasedEvent(mouseEvent);
+                    break;
                 case DOUBLE_CLICK:
-                    return mouseDoubleClickEvent(mouseEvent);
+                    mouseDoubleClickEvent(mouseEvent);
+                    break;
             }
         }
 
@@ -599,92 +603,83 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
             KrKeyEvent keyEvent = (KrKeyEvent) event;
             switch (keyEvent.getType()) {
                 case PRESSED:
-                    return keyPressedEvent(keyEvent);
+                    keyPressedEvent(keyEvent);
+                    break;
                 case RELEASED:
-                    return keyReleasedEvent(keyEvent);
+                    keyReleasedEvent(keyEvent);
+                    break;
             }
         }
 
         if (event instanceof KrScrollEvent) {
-            return scrollEvent((KrScrollEvent) event);
+            scrollEvent((KrScrollEvent) event);
         }
 
         if (event instanceof KrEnterEvent) {
-            return enterEvent((KrEnterEvent) event);
+            enterEvent((KrEnterEvent) event);
         }
 
         if (event instanceof KrExitEvent) {
-            return exitEvent((KrExitEvent) event);
+            exitEvent((KrExitEvent) event);
         }
 
         if (event instanceof KrFocusEvent) {
             KrFocusEvent focusEvent = (KrFocusEvent) event;
             switch (focusEvent.getType()) {
                 case FOCUS_GAINED:
-                    return focusGainedEvent(focusEvent);
+                    focusGainedEvent(focusEvent);
+                    break;
                 case FOCUS_LOST:
-                    return focusLostEvent(focusEvent);
+                    focusLostEvent(focusEvent);
+                    break;
             }
         }
-
-        return false;
     }
 
-    protected boolean keyPressedEvent(KrKeyEvent event) {
+    protected void keyPressedEvent(KrKeyEvent event) {
         notifyKeyPressed(event);
-        return event.handled();
     }
 
-    protected boolean keyReleasedEvent(KrKeyEvent event) {
+    protected void keyReleasedEvent(KrKeyEvent event) {
         notifyKeyReleased(event);
-        return event.handled();
     }
 
-    protected boolean scrollEvent(KrScrollEvent event) {
+    protected void scrollEvent(KrScrollEvent event) {
         notifyMouseScrolled(event);
-        return event.handled();
     }
 
-    protected boolean mouseMoveEvent(KrMouseEvent event) {
+    protected void mouseMoveEvent(KrMouseEvent event) {
         notifyMouseMoved(event);
-        return event.handled();
     }
 
-    protected boolean mousePressedEvent(KrMouseEvent event) {
+    protected void mousePressedEvent(KrMouseEvent event) {
         notifyMousePressed(event);
-        return event.handled();
     }
 
-    protected boolean mouseReleasedEvent(KrMouseEvent event) {
+    protected void mouseReleasedEvent(KrMouseEvent event) {
         notifyMouseReleased(event);
-        return event.handled();
     }
 
-    protected boolean mouseDoubleClickEvent(KrMouseEvent mouseEvent) {
+    protected void mouseDoubleClickEvent(KrMouseEvent mouseEvent) {
         notifyMouseDoubleClicked(mouseEvent);
-        return mouseEvent.handled();
     }
 
-    protected boolean enterEvent(KrEnterEvent event) {
+    protected void enterEvent(KrEnterEvent event) {
         notifyMouseEnter(event);
-        return event.handled();
     }
 
-    protected boolean exitEvent(KrExitEvent event) {
+    protected void exitEvent(KrExitEvent event) {
         notifyMouseExit(event);
-        return event.handled();
     }
 
-    protected boolean focusGainedEvent(KrFocusEvent event) {
+    protected void focusGainedEvent(KrFocusEvent event) {
         isFocused = true;
         notifyFocusGained(event);
-        return event.handled();
     }
 
-    protected boolean focusLostEvent(KrFocusEvent event) {
+    protected void focusLostEvent(KrFocusEvent event) {
         isFocused = false;
         notifyFocusLost(event);
-        return event.handled();
     }
 
     public void addKeyboardListener(KrKeyboardListener listener) {

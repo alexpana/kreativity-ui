@@ -49,9 +49,9 @@ public class KrScrollPanel extends KrPanel {
     }
 
     @Override
-    protected boolean scrollEvent(KrScrollEvent event) {
+    protected void scrollEvent(KrScrollEvent event) {
         verticalScrollBar.handle(event);
-        return true;
+        event.accept();
     }
 
     private class LayoutManager implements KrLayout {
