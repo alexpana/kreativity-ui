@@ -5,11 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.katzstudio.kreativity.ui.KrAlignment;
-import com.katzstudio.kreativity.ui.KrAlignmentTool;
-import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
@@ -95,9 +91,9 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
 
         private KrMenu parentMenu;
 
-		public KrMenuItem(String title) {
-			this(title, null);
-		}
+        public KrMenuItem(String title) {
+            this(title, null);
+        }
 
         public KrMenuItem(String title, KrActionListener actionListener) {
             this.text.setString(title);
@@ -129,7 +125,7 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
             Rectangle alignmentReference = rectangles(0.0f, 0.0f, getWidth(), getHeight()).shrink(getPadding()).value();
             Vector2 textPosition = KrAlignmentTool.alignRectangles(text.getBounds(), alignmentReference, KrAlignment.MIDDLE_LEFT);
 
-			renderer.setPen(1, getForeground());
+            renderer.setPen(1, getForeground());
             renderer.drawText(text.getString(), textPosition);
 
             Pools.free(textPosition);
@@ -166,35 +162,35 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
         }
     }
 
-	public static class KrMenuItemSeparator extends KrMenuItem {
+    public static class KrMenuItemSeparator extends KrMenuItem {
 
-		public KrMenuItemSeparator() {
-			super("", null);
-		}
+        public KrMenuItemSeparator() {
+            super("", null);
+        }
 
-		@Override
-		protected boolean enterEvent(KrEnterEvent event) {
-			return false;
-		}
+        @Override
+        protected boolean enterEvent(KrEnterEvent event) {
+            return false;
+        }
 
-		@Override
-		protected boolean exitEvent(KrExitEvent event) {
-			return false;
-		}
+        @Override
+        protected boolean exitEvent(KrExitEvent event) {
+            return false;
+        }
 
-		@Override
-		public Vector2 calculatePreferredSize() {
-			return new Vector2(0, 7);
-		}
+        @Override
+        public Vector2 calculatePreferredSize() {
+            return new Vector2(0, 7);
+        }
 
-		@Override
-		protected void drawSelf(KrRenderer renderer) {
-			super.drawSelf(renderer);
+        @Override
+        protected void drawSelf(KrRenderer renderer) {
+            super.drawSelf(renderer);
 
-			renderer.setPen(1, getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER));
+            renderer.setPen(1, getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER));
 
-			int y = (int) getHeight() / 2;
-			renderer.drawLine(0, y, getWidth(), y);
-		}
-	}
+            int y = (int) getHeight() / 2;
+            renderer.drawLine(0, y, getWidth(), y);
+        }
+    }
 }

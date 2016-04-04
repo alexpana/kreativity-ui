@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrRectangles;
 import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 
@@ -49,6 +50,19 @@ public class KrPopup extends KrWidget<KrWidgetStyle> {
         if (this.getParent() == null) {
             KrToolkit.getDefaultToolkit().getCanvas().getOverlayPanel().add(this);
         }
+        requestFocus();
+    }
+
+    @Override
+    protected boolean focusGainedEvent(KrFocusEvent event) {
+        System.out.println("event = " + event);
+        return true;
+    }
+
+    @Override
+    protected boolean focusLostEvent(KrFocusEvent event) {
+        hide();
+        return true;
     }
 
     public void hide() {
