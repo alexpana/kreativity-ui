@@ -63,6 +63,12 @@ public class KrRectangles {
         return this;
     }
 
+    public KrRectangles expand(int width, int height) {
+        w += width;
+        h += height;
+        return this;
+    }
+
     public KrRectangles intersect(Rectangle other) {
         Segment horizontalProjection = project(horizontalProjection(x, y, w, h), horizontalProjection(other));
         Segment verticalProjection = project(verticalProjection(x, y, w, h), verticalProjection(other));
@@ -78,6 +84,16 @@ public class KrRectangles {
             y = verticalProjection.getFirst();
         }
 
+        return this;
+    }
+
+    public KrRectangles minWidth(int minWidth) {
+        w = Math.max(w, minWidth);
+        return this;
+    }
+
+    public KrRectangles minHeight(int minHeight) {
+        h = Math.max(h, minHeight);
         return this;
     }
 
