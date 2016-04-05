@@ -23,27 +23,6 @@ public class KrWidgetTest {
         assertThat(parentWidget.getChildren().get(0), is(childWidget));
     }
 
-    @Test
-    public void testTopLevelAncestor() throws Exception {
-        KrWidget root = new KrWidget();
-        KrWidget firstChild = new KrWidget();
-        KrWidget secondChild = new KrWidget();
-
-        assertThat(root.getTopLevelAncestor(), is(root));
-        assertThat(firstChild.getTopLevelAncestor(), is(firstChild));
-        assertThat(secondChild.getTopLevelAncestor(), is(secondChild));
-
-        root.add(firstChild);
-        assertThat(root.getTopLevelAncestor(), is(root));
-        assertThat(firstChild.getTopLevelAncestor(), is(root));
-        assertThat(secondChild.getTopLevelAncestor(), is(secondChild));
-
-        firstChild.add(secondChild);
-        assertThat(root.getTopLevelAncestor(), is(root));
-        assertThat(firstChild.getTopLevelAncestor(), is(root));
-        assertThat(secondChild.getTopLevelAncestor(), is(root));
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testAddChildAlreadyParented() throws Exception {
         KrWidget root = new KrWidget();

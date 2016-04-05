@@ -25,9 +25,9 @@ import java.util.List;
 import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
 
 /**
- * Base class for all Kreativity Components
+ * Base class for all Kreativity UI Components
  */
-@SuppressWarnings({"UnusedParameters", "unused"})
+@SuppressWarnings("ALL")
 public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     public static final String FOCUS_PROPERTY = "property.focus";
@@ -90,25 +90,50 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     protected final KrMeasuredString text = new KrMeasuredString("");
 
+    /**
+     * Default constructor.
+     */
     public KrWidget() {
     }
 
+    /**
+     * Creates a new {@link KrWidget}
+     *
+     * @param style the widget style
+     */
     public KrWidget(S style) {
         setStyle(style);
     }
 
+    /**
+     * Creates a new {@link KrWidget}
+     *
+     * @param name the widget name (not text) used to uniquely identify this widget
+     */
     public KrWidget(String name) {
         this.name = name;
     }
 
+    /**
+     * Sets the widget parent. This method is called by the parent when this widget is added
+     * as a child.
+     *
+     * @param parent the new parent of this widget
+     */
     private void setParent(KrWidget parent) {
         this.parent = parent;
     }
 
+    /**
+     * Returns the number of child widgets this widget has.
+     */
     public int getChildCount() {
         return children.size();
     }
 
+    /**
+     * Returns the child widget at the specified index.
+     */
     public KrWidget getChild(int index) {
         return children.get(index);
     }
@@ -122,63 +147,106 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     public void ensureUniqueStyle() {
     }
 
+    /**
+     * Returns the background used when rendering this widget.
+     */
     public Drawable getBackground() {
         return style.background;
     }
 
+    /**
+     * Sets the background used when rendering this widget.
+     */
     public void setBackground(Drawable background) {
         ensureUniqueStyle();
         style.background = background;
     }
 
+    /**
+     * Gets the foreground color used for rendering the widget text.
+     */
     public Color getForeground() {
         return style.foregroundColor;
     }
 
+    /**
+     * Sets the foreground color used for rendering the widget text.
+     */
     public void setForeground(Color foreground) {
         ensureUniqueStyle();
         style.foregroundColor = foreground;
     }
 
+    /**
+     * Returns the padding preferred by the widget. The padding is the
+     * space between the inner contents of the widget and its outer bounds.
+     * <p>
+     * The background of the widget will cover the outer bounds.
+     */
     public KrPadding getPadding() {
         ensureUniqueStyle();
         return style.padding;
     }
 
+    /**
+     * Sets the preferred padding of the widget.
+     */
     public void setPadding(KrPadding padding) {
         ensureUniqueStyle();
         style.padding = padding;
     }
 
+    /**
+     * Returns the widget's cursor. When the mouse is hovering this widget,
+     * the widget's cursor will be used to represent the mouse pointer.
+     */
     public KrCursor getCursor() {
         return style.cursor;
     }
 
+    /**
+     * Sets the widget's cursor.
+     */
     public void setCursor(KrCursor cursor) {
         ensureUniqueStyle();
         style.cursor = cursor;
     }
 
+    /**
+     * Returns the font used to render the text of the widget.
+     */
+    public BitmapFont getFont() {
+        return style.font;
+    }
+
+    /**
+     * Sets the font used to render the text of the widget.
+     */
     public void setFont(BitmapFont font) {
         ensureUniqueStyle();
         style.font = font;
         text.setFont(font);
     }
 
-    public BitmapFont getFont() {
-        return style.font;
-    }
-
+    /**
+     * Sets the widget's text. The text is only used by some of the widgets such
+     * as labels, buttons, checkboxes, etc. to display the meaning of the widget.
+     */
     public void setText(String text) {
         this.text.setString(text);
     }
 
+    /**
+     * Returns this widget's text.
+     */
     public String getText() {
         return this.text.getString();
     }
 
     /**
-     * Adds a child to this widget
+     * Adds a child widget to this widget. A {@code null} layout constraint is used.
+     * This method invalidates the widget, making sure the layout is called to position
+     * the child widget.
      *
      * @param child the child to be added
      */
@@ -187,7 +255,9 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     /**
-     * Adds a child widget to this widget and to this widget's layout
+     * Adds a child widget to this widget.
+     * This method invalidates the widget, making sure the layout is called to position
+     * the child widget.
      *
      * @param child            the child to be added
      * @param layoutConstraint the layout constraint
@@ -207,7 +277,7 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     /**
-     * Removes a child of this widget
+     * Removes a child of this widget.
      *
      * @param child the child to be removed
      */
@@ -227,7 +297,7 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     /**
-     * Removes all the children of this widget
+     * Removes all the children of this widget.
      */
     public void removeAll() {
         while (getChildCount() > 0) {
@@ -348,7 +418,9 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         invalidateParent();
     }
 
-
+    /**
+     * Calls {@code invalidate()} on the parent widget, if any.
+     */
     private void invalidateParent() {
         if (parent != null) {
             parent.invalidate();
@@ -356,7 +428,29 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     /**
-     * Renders this widget and all its children
+     * Returns the opacity used when rendering this widget.
+     * This opacity takes into consideration the opacity of the
+     * widget hierarchy.
+     *
+     * @return the drawing opacity
+     */
+    public float getDrawOpacity() {
+        return (parent != null ? parent.getDrawOpacity() : 1) * opacity;
+    }
+
+    @Override
+    public void update(float deltaSeconds) {
+        if (!isValid) {
+            validate();
+        }
+    }
+
+    /**
+     * Renders this widget and all its children. Please don't override this
+     * method, unless you explicity setup the renderer and ensure all children
+     * are properly rendered.
+     * <p>
+     * Instead, consider overriding {@code drawSelf}
      *
      * @param renderer the renderer used to draw the widget
      */
@@ -383,51 +477,51 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
     }
 
     /**
-     * Returns the opacity used when rendering this widget.
-     * This opacity takes into consideration the opacity of the
-     * widget hierarchy.
+     * Draws only this widget. The default implementation fills the background
+     * with the background drawable of the style. Override this method to
+     * implement custom widgets.
      *
-     * @return the drawing opacity
+     * @param renderer the system renderer used to draw this widget.
      */
-    public float getDrawOpacity() {
-        return (parent != null ? parent.getDrawOpacity() : 1) * opacity;
-    }
-
-    @Override
-    public void update(float deltaSeconds) {
-        if (!isValid) {
-            validate();
-        }
-        updateChildren(deltaSeconds);
-    }
-
-    @SuppressWarnings("ForLoopReplaceableByForEach")
-    public void updateChildren(float deltaSeconds) {
-        for (int i = 0; i < children.size(); ++i) {
-            children.get(i).update(deltaSeconds);
-        }
-    }
-
     protected void drawSelf(KrRenderer renderer) {
         renderer.setBrush(getBackground());
         renderer.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    /**
+     * Draws the children widgets.
+     */
     @SuppressWarnings("ForLoopReplaceableByForEach")
-    protected void drawChildren(KrRenderer renderer) {
+    private void drawChildren(KrRenderer renderer) {
         for (int i = 0; i < children.size(); ++i) {
             children.get(i).draw(renderer);
         }
     }
 
+    /**
+     * Calculates a size preferred by this widget. This size is enough to hold all
+     * the content of the widget, including padding.
+     * <p>
+     * This method does not take into account the children of the widget. The layout
+     * is used to compute the preferred size of this widget, when children are
+     * involved.
+     *
+     * @return the preferred size of this widget, ignoring any children.
+     */
     public Vector2 calculatePreferredSize() {
         return layout.getPreferredSize();
     }
 
+    /**
+     * Returns true if the user has specifically set a max size.
+     */
     public boolean isMaxSizeSet() {
         return maxSize != null;
     }
 
+    /**
+     * Returns the maximum size of this widget.
+     */
     public Vector2 getMaxSize() {
         if (isMaxSizeSet()) {
             return maxSize;
@@ -440,26 +534,44 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         return new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
     }
 
+    /**
+     * Returns the maximum width of this widget.
+     */
     public float getMaxWidth() {
         return getMaxSize().x;
     }
 
+    /**
+     * Returns the maximum height of this widget.
+     */
     public float getMaxHeight() {
         return getMaxSize().y;
     }
 
+    /**
+     * Sets the maximum width of this widget.
+     */
     public void setMaxWidth(float maxWidth) {
         setMaxSize(new Vector2(maxWidth, maxSize.y));
     }
 
+    /**
+     * Sets the maximum height of this widget.
+     */
     public void setMaxHeight(float maxHeight) {
         setMaxSize(new Vector2(maxSize.x, maxHeight));
     }
 
+    /**
+     * Returns true if the user has set a specific minimum size for this widget.
+     */
     public boolean isMinSizeSet() {
         return minSize != null;
     }
 
+    /**
+     * Returns the minimum size of the widget.
+     */
     public Vector2 getMinSize() {
         if (isMinSizeSet()) {
             return minSize;
@@ -472,26 +584,44 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         return calculatePreferredSize();
     }
 
+    /**
+     * Returns the minimum width of the widget.
+     */
     public float getMinWidth() {
         return getMinSize().x;
     }
 
+    /**
+     * Returns the minimum height of the widget.
+     */
     public float getMinHeight() {
         return getMinSize().y;
     }
 
+    /**
+     * Sets the minimum width of the widget.
+     */
     public void setMinWidth(float minWidth) {
         setMinSize(new Vector2(minWidth, minSize.y));
     }
 
+    /**
+     * Sets the minimum height of the widget.
+     */
     public void setMinHeight(float minHeight) {
         setMinSize(new Vector2(minSize.x, minHeight));
     }
 
+    /**
+     * Returns true if the user has set a specific preferred size for this widget.
+     */
     public boolean isPreferredSizeSet() {
         return preferredSize != null;
     }
 
+    /**
+     * Returns the preferred size of the widget.
+     */
     public Vector2 getPreferredSize() {
         if (isPreferredSizeSet()) {
             return preferredSize;
@@ -504,23 +634,38 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         return calculatePreferredSize();
     }
 
+    /**
+     * Returns the preferred width of the widget.
+     */
     public float getPreferredWidth() {
         return getPreferredSize().x;
     }
 
+    /**
+     * Returns the preferred height of the widget.
+     */
     public float getPreferredHeight() {
         return getPreferredSize().y;
     }
 
+    /**
+     * Sets the preferred width of the widget.
+     */
     public void setPreferredWidth(float preferredWidth) {
         setPreferredSize(new Vector2(preferredWidth, preferredSize.y));
     }
 
+    /**
+     * Sets the preferred height of the widget.
+     */
     public void setPreferredHeight(float preferredHeight) {
         setPreferredSize(new Vector2(preferredSize.x, preferredHeight));
     }
 
-    private Rectangle getScreenGeometry() {
+    /**
+     * Returns the geometry of this widget in screen space.
+     */
+    public Rectangle getScreenGeometry() {
         float offsetX = 0;
         float offsetY = 0;
         if (parent != null) {
@@ -531,27 +676,33 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         return new Rectangle(offsetX + getX(), offsetY + getY(), getWidth(), getHeight());
     }
 
+    /**
+     * Returns the geometry of this widget in parent space.
+     */
     public Rectangle getGeometry() {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
+    /**
+     * Returns the geometry of this widget in parent space.
+     *
+     * @param geometry this object is updated with the return value, then returned.
+     */
     public Rectangle getGeometry(Rectangle geometry) {
         return geometry.set(getX(), getY(), getWidth(), getHeight());
     }
 
+    /**
+     * Returns the size of the widget.
+     */
     public Vector2 getSize() {
         return new Vector2(getWidth(), getHeight());
     }
 
-    public KrWidget getTopLevelAncestor() {
-        KrWidget widget = this;
-        if (widget.parent != null) {
-            return widget.parent.getTopLevelAncestor();
-        } else {
-            return this;
-        }
-    }
-
+    /**
+     * Returns the canvas that hosts this object. Returns {@code null} if this
+     * object does not belong to the canvas.
+     */
     public KrCanvas getCanvas() {
         if (canvas != null) {
             return canvas;
@@ -564,10 +715,22 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         return canvas;
     }
 
+    /**
+     * Requests to be the focused widget. Returns true if the request is successful,
+     * or false otherwise.
+     * <p>
+     * Note that if the request is fulfilled, a {@link KrFocusEvent} of type
+     * {@code FOCUS_GAINED} is received before this method returns.
+     *
+     * @return
+     */
     public boolean requestFocus() {
         return getCanvas() != null && getCanvas().requestFocus(this);
     }
 
+    /**
+     * Removes the focus from this widget.
+     */
     public void clearFocus() {
         KrCanvas canvas = getCanvas();
         if (canvas != null) {
@@ -575,10 +738,21 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         }
     }
 
+    /**
+     * Returns true if this widget can be focused via pressing the {@code TAB} key.
+     */
     public boolean acceptsTabInput() {
         return false;
     }
 
+    /**
+     * Handles an event. This is usually called by the {@link KrCanvas} when an event
+     * is dispatched to this widget, but it can be called manually.
+     * <p>
+     * This method delegates the event to one of the specific event handling methods.
+     *
+     * @param event the event received by this widget
+     */
     @SuppressWarnings("SimplifiableIfStatement")
     public void handle(KrEvent event) {
         if (event instanceof KrMouseEvent) {
@@ -636,47 +810,126 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         }
     }
 
+    /**
+     * Handle a key pressed event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyKeyPressed} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void keyPressedEvent(KrKeyEvent event) {
         notifyKeyPressed(event);
     }
 
+    /**
+     * Handle a key released event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyKeyReleased} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void keyReleasedEvent(KrKeyEvent event) {
         notifyKeyReleased(event);
     }
 
+    /**
+     * Handle a mouse scroll event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyMouseScrolled} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void scrollEvent(KrScrollEvent event) {
         notifyMouseScrolled(event);
     }
 
+    /**
+     * Handle a mouse move event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyMouseMoved} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void mouseMoveEvent(KrMouseEvent event) {
         notifyMouseMoved(event);
     }
 
+    /**
+     * Handle a mouse pressed event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyMousePressed} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void mousePressedEvent(KrMouseEvent event) {
         notifyMousePressed(event);
     }
 
+    /**
+     * Handle a mouse released event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyMouseReleased} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void mouseReleasedEvent(KrMouseEvent event) {
         notifyMouseReleased(event);
     }
 
+    /**
+     * Handle a mouse double click event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyMouseDoubleClicked} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void mouseDoubleClickEvent(KrMouseEvent mouseEvent) {
         notifyMouseDoubleClicked(mouseEvent);
     }
 
+    /**
+     * Handle an enter event. This event is dispatched when the mouse enters
+     * the surface of the widget and begins hovering it.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyMouseEnter} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void enterEvent(KrEnterEvent event) {
         notifyMouseEnter(event);
     }
 
+    /**
+     * Handle an exit event. This event is dispatched when the mouse leaves
+     * the surface of the widget and stops hovering it.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyMouseExit} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void exitEvent(KrExitEvent event) {
         notifyMouseExit(event);
     }
 
+    /**
+     * Handle a focus gained event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyFocusGained} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void focusGainedEvent(KrFocusEvent event) {
         isFocused = true;
         notifyFocusGained(event);
     }
 
+    /**
+     * Handle a focus lost event.
+     * <p>
+     * Note: when overriding this method, make sure to call super, or manually
+     * notify the event listeners using the {@code notifyFocusLost} method.
+     * Certain things may break when overriding this method without calling super.
+     */
     protected void focusLostEvent(KrFocusEvent event) {
         isFocused = false;
         notifyFocusLost(event);
@@ -690,20 +943,84 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         keyboardListeners.remove(listener);
     }
 
-    protected void notifyKeyPressed(KrKeyEvent event) {
-        keyboardListeners.forEach(l -> l.keyPressed(event));
-    }
-
-    protected void notifyKeyReleased(KrKeyEvent event) {
-        keyboardListeners.forEach(l -> l.keyReleased(event));
-    }
-
     public void addMouseListener(KrMouseListener mouseListener) {
         mouseListeners.add(mouseListener);
     }
 
     public void removeMouseListener(KrMouseListener mouseListener) {
         mouseListeners.remove(mouseListener);
+    }
+
+    public void addFocusListener(KrFocusListener focusListener) {
+        focusListeners.add(focusListener);
+    }
+
+    public void removeFocusListener(KrFocusListener focusListener) {
+        focusListeners.add(focusListener);
+    }
+
+    public void addWidgetListener(KrWidgetListener listener) {
+        widgetListeners.add(listener);
+    }
+
+    public void removeWidgetListener(KrWidgetListener listener) {
+        widgetListeners.remove(listener);
+    }
+
+    /**
+     * Sets whether or not this widget can receive focus events and hold input focus
+     *
+     * @param focusable whether or not the widget can be focused
+     */
+    public void setFocusable(boolean focusable) {
+        if (this.isFocusable != focusable) {
+            this.isFocusable = focusable;
+            notifyWidgetPropertyChanged(FOCUS_PROPERTY, !isFocusable, isFocusable);
+        }
+    }
+
+    /**
+     * Converts a point from screen space to local space
+     *
+     * @param screenPosition the position of the point in screen space
+     * @return the position of the point translated in local space
+     */
+    public Vector2 screenToLocal(Vector2 screenPosition) {
+        return screenToLocal(screenPosition.x, screenPosition.y);
+    }
+
+    /**
+     * Converts a point from screen space to local space.
+     *
+     * @param screenX the screen X position
+     * @param screenY the screen Y position
+     * @return the position translated to local space
+     */
+    public Vector2 screenToLocal(float screenX, float screenY) {
+        Rectangle screenGeometry = KrCanvas.getScreenGeometry(this);
+        float localX = screenGeometry.x;
+        float localY = screenGeometry.y;
+        return new Vector2(screenX - localX, screenY - localY);
+    }
+
+    @Override
+    public String toString() {
+        return toStringBuilder().toString();
+    }
+
+    /**
+     * Returns a builder used to create a string representation of this width.
+     */
+    protected KrWidgetToStringBuilder toStringBuilder() {
+        return KrWidgetToStringBuilder.builder().name(name).geometry(getGeometry()).enabled(true).visible(true);
+    }
+
+    protected void notifyKeyPressed(KrKeyEvent event) {
+        keyboardListeners.forEach(l -> l.keyPressed(event));
+    }
+
+    protected void notifyKeyReleased(KrKeyEvent event) {
+        keyboardListeners.forEach(l -> l.keyReleased(event));
     }
 
     protected void notifyMouseScrolled(KrScrollEvent event) {
@@ -734,14 +1051,6 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         mouseListeners.forEach(l -> l.exit(event));
     }
 
-    public void addFocusListener(KrFocusListener focusListener) {
-        focusListeners.add(focusListener);
-    }
-
-    public void removeFocusListener(KrFocusListener focusListener) {
-        focusListeners.add(focusListener);
-    }
-
     protected void notifyFocusGained(KrFocusEvent event) {
         focusListeners.forEach(l -> l.focusGained(event));
     }
@@ -750,47 +1059,12 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
         focusListeners.forEach(l -> l.focusLost(event));
     }
 
-    public void setFocusable(boolean focusable) {
-        if (this.isFocusable != focusable) {
-            this.isFocusable = focusable;
-            notifyWidgetPropertyChanged(FOCUS_PROPERTY, !isFocusable, isFocusable);
-        }
-    }
-
-    public void addWidgetListener(KrWidgetListener listener) {
-        widgetListeners.add(listener);
-    }
-
-    public void removeWidgetListener(KrWidgetListener listener) {
-        widgetListeners.remove(listener);
-    }
-
     protected void notifyWidgetPropertyChanged(String propertyName, Object oldValue, Object newValue) {
         widgetListeners.forEach(listener -> listener.propertyChanged(propertyName, oldValue, newValue));
     }
 
     protected void notifyWidgetInvalidated() {
         widgetListeners.forEach(KrWidgetListener::invalidated);
-    }
-
-    public Vector2 screenToLocal(Vector2 screenPosition) {
-        return screenToLocal(screenPosition.x, screenPosition.y);
-    }
-
-    public Vector2 screenToLocal(float screenX, float screenY) {
-        Rectangle screenGeometry = KrCanvas.getScreenGeometry(this);
-        float localX = screenGeometry.x;
-        float localY = screenGeometry.y;
-        return new Vector2(screenX - localX, screenY - localY);
-    }
-
-    @Override
-    public String toString() {
-        return toStringBuilder().toString();
-    }
-
-    public KrWidgetToStringBuilder toStringBuilder() {
-        return KrWidgetToStringBuilder.builder().name(name).geometry(getGeometry()).enabled(true).visible(true);
     }
 
     /**
