@@ -12,28 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.katzstudio.kreativity.ui.style.KrButtonGroupStyle;
-import com.katzstudio.kreativity.ui.style.KrButtonStyle;
-import com.katzstudio.kreativity.ui.style.KrCheckboxStyle;
-import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
-import com.katzstudio.kreativity.ui.style.KrLabelStyle;
-import com.katzstudio.kreativity.ui.style.KrPanelStyle;
-import com.katzstudio.kreativity.ui.style.KrScrollBarStyle;
-import com.katzstudio.kreativity.ui.style.KrSplitPanelStyle;
-import com.katzstudio.kreativity.ui.style.KrTextFieldStyle;
-import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
+import com.katzstudio.kreativity.ui.style.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_LIGHT;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BORDER;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.FOREGROUND;
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SELECTION_BACKGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.*;
 
 /**
  * Kreativity Skin
@@ -158,6 +144,7 @@ public class KrSkin {
         checkboxStyle = new KrCheckboxStyle(widgetStyle);
         checkboxStyle.checkboxBackground = drawablePatches.get("checkbox.background");
         checkboxStyle.mark = drawablePatches.get("checkbox.mark");
+        checkboxStyle.padding = new KrPadding(2);
 
         textFieldStyle = new KrTextFieldStyle(widgetStyle);
         textFieldStyle.backgroundNormal = drawablePatches.get("textfield.background_normal");

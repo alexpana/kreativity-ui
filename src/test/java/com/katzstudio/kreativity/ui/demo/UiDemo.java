@@ -9,24 +9,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrAlignment;
-import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KrSizePolicyModel;
-import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.KrUnifiedSize;
+import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItem;
 import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItemSeparator;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
-import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
-import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
-import com.katzstudio.kreativity.ui.layout.KrCardLayout;
-import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
-import com.katzstudio.kreativity.ui.layout.KrGridLayout;
+import com.katzstudio.kreativity.ui.layout.*;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
@@ -36,11 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.gl;
-import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
-import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
-import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
+import static com.badlogic.gdx.graphics.GL20.*;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
@@ -104,7 +90,7 @@ public class UiDemo extends Game {
 
         canvas.getRootPanel().add(createButtons());
         canvas.getRootPanel().add(createGridLayout());
-        canvas.getRootPanel().add(createCheckboxes());
+        canvas.getRootPanel().add(createCheckbox());
         canvas.getRootPanel().add(createHorizontalFlowLayoutPanel());
         canvas.getRootPanel().add(createVerticalFlowLayoutPanel());
         canvas.getRootPanel().add(createBorderLayoutPanel());
@@ -126,11 +112,11 @@ public class UiDemo extends Game {
         menu.addMenuItem(menuItem2);
         menu.addMenuItem(menuItem3);
         menu.addMenuItem(new KrMenuItemSeparator());
-		menu.addMenuItem(new KrMenuItem("Save"));
-		menu.addMenuItem(new KrMenuItem("Save All"));
-		menu.addMenuItem(new KrMenuItem("Export"));
+        menu.addMenuItem(new KrMenuItem("Save"));
+        menu.addMenuItem(new KrMenuItem("Save All"));
+        menu.addMenuItem(new KrMenuItem("Export"));
 
-		menu.setPreferredSize(new Vector2(100, menu.getPreferredHeight()));
+        menu.setPreferredSize(new Vector2(100, menu.getPreferredHeight()));
 
         return menu;
     }
@@ -315,7 +301,7 @@ public class UiDemo extends Game {
     }
 
 
-    private KrPanel createCheckboxes() {
+    private KrPanel createCheckbox() {
         KrPanel wrapper = new KrPanel();
 
         KrLabel label = new KrLabel("Checkboxes");
@@ -324,17 +310,15 @@ public class UiDemo extends Game {
         label.setGeometry(0, 0, 60, 20);
 
         KrCheckbox checkboxA = new KrCheckbox();
+        checkboxA.setText("Extra topping!");
         checkboxA.setPosition(10, 20);
         checkboxA.setChecked(true);
-
-        KrCheckbox checkboxB = new KrCheckbox();
-        checkboxB.setPosition(40, 20);
+        checkboxA.setSize(checkboxA.getPreferredSize());
 
         wrapper.add(label);
         wrapper.add(checkboxA);
-        wrapper.add(checkboxB);
 
-        wrapper.setGeometry(10, 250, 60, 50);
+        wrapper.setGeometry(10, 250, 160, 50);
         return wrapper;
     }
 

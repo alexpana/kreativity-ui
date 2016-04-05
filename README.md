@@ -47,6 +47,7 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 - Garbage reduced from 300K/s to ~5K/s (60x improvement). The demo now requires only one minor GC / minute.
 - Removed guava dependency
 - Added menu widget
+- Added support for checkbox text
 
 #### [0.2.0] - 2016-03-27
 - Migrated to libgdx 1.9.1 and backend lwjgl3

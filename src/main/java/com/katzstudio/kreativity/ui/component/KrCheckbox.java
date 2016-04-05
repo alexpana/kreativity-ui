@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -11,12 +12,19 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A simple checkbox component that can be either checked or unchecked.
  */
 public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
+
+    private static final int CHECKBOX_WIDTH = 14;
+
+    private static final int CHECKBOX_HEIGHT = 15;
+
+    private static final int TEXT_SPACING = 4;
 
     @Getter @Setter private KrValueModel<Boolean> model = new KrValueModel.Default<>(false);
 
@@ -25,6 +33,7 @@ public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
     public KrCheckbox() {
         setStyle(getDefaultToolkit().getSkin().getCheckboxStyle());
         setSize(calculatePreferredSize());
+        setCursor(KrCursor.HAND);
     }
 
     @Override
@@ -57,18 +66,28 @@ public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        return new Vector2(14, 15);
+        float textWidth = text.getBounds().width;
+        int spacing = textWidth > 0 ? TEXT_SPACING : 0;
+        return rectangles(text.getBounds()).expand(getPadding()).expand(14 + spacing, 0).minHeight(15).size();
     }
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
+        float checkboxX = getPadding().left;
+        float checkboxY = (getHeight() - CHECKBOX_HEIGHT) / 2;
+
         renderer.setBrush(style.checkboxBackground);
-        renderer.fillRect(0, 0, getWidth(), getHeight());
+        renderer.fillRect(checkboxX, checkboxY, CHECKBOX_WIDTH, CHECKBOX_HEIGHT);
 
         if (model.getValue()) {
             renderer.setBrush(style.mark);
-            renderer.fillRect(0, 0, getWidth(), getHeight());
+            renderer.fillRect(checkboxX, checkboxY, CHECKBOX_WIDTH, CHECKBOX_HEIGHT);
         }
+
+        float textX = checkboxX + CHECKBOX_WIDTH + TEXT_SPACING;
+        float textY = (getHeight() - text.getBounds().getHeight()) / 2;
+        renderer.setPen(1, getForeground());
+        renderer.drawText(text.getString(), textX, textY);
     }
 
     @Override
