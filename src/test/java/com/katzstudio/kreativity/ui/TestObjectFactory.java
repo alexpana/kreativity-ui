@@ -82,16 +82,12 @@ public class TestObjectFactory {
         return checkboxStyle;
     }
 
-    public static KrScrollBarStyle createVerticalScrollBarStyle() {
+    public static KrScrollBarStyle createScrollBarStyle() {
         KrScrollBarStyle style = new KrScrollBarStyle(createWidgetStyle());
         style.size = 5;
         style.thumb = mock(Drawable.class);
         style.track = mock(Drawable.class);
         return style;
-    }
-
-    public static KrScrollBarStyle createHorizontalScrollBarStyle() {
-        return createVerticalScrollBarStyle();
     }
 
     public static KrItemViewStyle createItemViewStyle() {

@@ -3,7 +3,6 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrOrientation;
-import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.math.KrRange;
@@ -22,7 +21,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * Scroll bar component which can be embedded into other components to enable scrolling
  */
-public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
+public class KrScrollBar extends KrWidget {
 
     private final List<Listener> listeners = new ArrayList<>();
 
@@ -51,16 +50,9 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
     public KrScrollBar(KrOrientation orientation) {
         this.orientation = orientation;
 
-        style = getDefaultStyle();
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrScrollBar.class));
 
         valueRange = new KrRange(0, 100);
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == getDefaultStyle()) {
-            style = new KrScrollBarStyle(style);
-        }
     }
 
     /**
@@ -77,11 +69,6 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
 
     protected float getTrackLength() {
         return orientation == VERTICAL ? getHeight() : getWidth();
-    }
-
-    private KrScrollBarStyle getDefaultStyle() {
-        KrSkin skin = getDefaultToolkit().getSkin();
-        return orientation == VERTICAL ? skin.getVerticalScrollBarStyle() : skin.getHorizontalScrollBarStyle();
     }
 
     public void setValue(float newValue) {
@@ -167,10 +154,10 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(style.track);
+        renderer.setBrush(((KrScrollBarStyle) getStyle()).track);
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        renderer.setBrush(style.thumb);
+        renderer.setBrush(((KrScrollBarStyle) getStyle()).thumb);
         renderer.fillRect(getThumbGeometry(tmpRect));
     }
 
@@ -178,9 +165,9 @@ public class KrScrollBar extends KrWidget<KrScrollBarStyle> {
     public Vector2 calculatePreferredSize() {
         switch (orientation) {
             case VERTICAL:
-                return new Vector2(style.size, 100);
+                return new Vector2(((KrScrollBarStyle) getStyle()).size, 100);
             case HORIZONTAL:
-                return new Vector2(100, style.size);
+                return new Vector2(100, ((KrScrollBarStyle) getStyle()).size);
             default:
                 return new Vector2(0, 0);
         }

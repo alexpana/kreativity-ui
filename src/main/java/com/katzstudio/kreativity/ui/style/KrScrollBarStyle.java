@@ -1,7 +1,6 @@
 package com.katzstudio.kreativity.ui.style;
 
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.component.KrScrollBar;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +16,6 @@ public class KrScrollBarStyle extends KrWidgetStyle {
 
     public float size;
 
-    public KrCursor splitterCursor;
-
     public KrScrollBarStyle(KrWidgetStyle other) {
         super(other);
     }
@@ -28,7 +25,6 @@ public class KrScrollBarStyle extends KrWidgetStyle {
         this.track = other.track;
         this.thumb = other.thumb;
         this.size = other.size;
-        this.splitterCursor = other.splitterCursor;
     }
 
     public KrScrollBarStyle copy() {

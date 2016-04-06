@@ -94,7 +94,6 @@ public class KrToggleButton extends KrButton {
         listeners.forEach(listener -> listener.toggled(isChecked()));
     }
 
-
     public interface KrToggleButtonListener {
         void toggled(boolean isChecked);
     }

@@ -19,9 +19,10 @@ public class KrItemViewStyle extends KrWidgetStyle {
     public KrItemViewStyle(KrItemViewStyle other) {
         super(other);
         this.gridColor = other.gridColor;
+        this.gridVisible = other.gridVisible;
     }
 
-    public KrSplitPanelStyle copy() {
-        return new KrSplitPanelStyle(this);
+    public KrItemViewStyle copy() {
+        return new KrItemViewStyle(this);
     }
 }

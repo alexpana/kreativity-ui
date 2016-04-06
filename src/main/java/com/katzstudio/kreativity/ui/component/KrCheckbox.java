@@ -18,7 +18,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * A simple checkbox component that can be either checked or unchecked.
  */
-public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
+public class KrCheckbox extends KrWidget {
 
     private static final int CHECKBOX_WIDTH = 14;
 
@@ -31,16 +31,9 @@ public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
     private final List<ValueListener> valueListeners = new ArrayList<>();
 
     public KrCheckbox() {
-        setStyle(getDefaultToolkit().getSkin().getCheckboxStyle());
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrCheckbox.class));
         setSize(calculatePreferredSize());
         setCursor(KrCursor.HAND);
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == getDefaultToolkit().getSkin().getCheckboxStyle()) {
-            style = new KrCheckboxStyle(style);
-        }
     }
 
     public void setChecked(boolean checked) {
@@ -75,6 +68,8 @@ public class KrCheckbox extends KrWidget<KrCheckboxStyle> {
     protected void drawSelf(KrRenderer renderer) {
         float checkboxX = getPadding().left;
         float checkboxY = (getHeight() - CHECKBOX_HEIGHT) / 2;
+
+        KrCheckboxStyle style = (KrCheckboxStyle) getStyle();
 
         renderer.setBrush(style.checkboxBackground);
         renderer.fillRect(checkboxX, checkboxY, CHECKBOX_WIDTH, CHECKBOX_HEIGHT);

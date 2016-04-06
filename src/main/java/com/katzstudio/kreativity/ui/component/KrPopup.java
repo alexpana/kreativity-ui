@@ -6,28 +6,20 @@ import com.katzstudio.kreativity.ui.KrRectangles;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
-import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 
 import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.CENTER;
 
 /**
  * The KrPopup is show above the rest of the widgets, on the overlay panel.
  */
-public class KrPopup extends KrWidget<KrWidgetStyle> {
+public class KrPopup extends KrWidget {
 
     private Vector2 tmpVec = new Vector2();
 
     public KrPopup() {
         setLayout(new KrBorderLayout(0, 0));
-        setStyle(KrToolkit.getDefaultToolkit().getSkin().getWidgetStyle());
+        setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrWidget.class));
         setPadding(new KrPadding(0));
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == KrToolkit.getDefaultToolkit().getSkin().getWidgetStyle()) {
-            style = new KrWidgetStyle(style);
-        }
     }
 
     public void setContentWidget(KrWidget contentWidget) {

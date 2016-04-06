@@ -39,7 +39,7 @@ public class KrSpinner extends KrTextField {
     private boolean wasDragged = false;
 
     public KrSpinner() {
-        setStyle(getDefaultToolkit().getSkin().getSpinnerStyle());
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrSpinner.class));
         setCursor(KrCursor.ARROW);
     }
 

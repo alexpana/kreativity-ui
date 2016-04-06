@@ -6,14 +6,13 @@ import com.katzstudio.kreativity.ui.component.renderer.KrDefaultCellRenderer;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * A list widget displays items in a vertical list. Items can be selected.
  */
-public class KrListView extends KrAbstractItemView<KrItemViewStyle> {
+public class KrListView extends KrAbstractItemView {
 
     public KrListView(KrAbstractItemModel model) {
         this(model, new KrDefaultCellRenderer());
@@ -21,14 +20,7 @@ public class KrListView extends KrAbstractItemView<KrItemViewStyle> {
 
     public KrListView(KrAbstractItemModel model, KrCellRenderer renderer) {
         super(model, renderer);
-        setStyle(getDefaultToolkit().getSkin().getListViewStyle());
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == getDefaultToolkit().getSkin().getListViewStyle()) {
-            style = new KrItemViewStyle(style);
-        }
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrListView.class));
     }
 
     @Override

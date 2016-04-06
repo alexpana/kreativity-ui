@@ -15,7 +15,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  * A button group contains a list of horizontal buttons, aligned and glued together. Only one button may be
  * toggled at any time.
  */
-public class KrButtonGroup extends KrWidget<KrButtonGroupStyle> {
+public class KrButtonGroup extends KrWidget {
 
     private final List<KrToggleButton> toggleButtons = new ArrayList<>();
 
@@ -27,7 +27,7 @@ public class KrButtonGroup extends KrWidget<KrButtonGroupStyle> {
 
     public KrButtonGroup(KrToggleButton... buttons) {
 
-        style = getDefaultToolkit().getSkin().getButtonGroupStyle();
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrButtonGroup.class));
 
         toggleButtons.addAll(Arrays.asList(buttons));
 
@@ -65,14 +65,15 @@ public class KrButtonGroup extends KrWidget<KrButtonGroupStyle> {
     }
 
     private void applyStyle() {
+        KrButtonGroupStyle buttonGroupStyle = (KrButtonGroupStyle) getStyle();
         if (toggleButtons.size() == 1) {
-            toggleButtons.get(0).setStyle(style.singleButtonStyle);
+            toggleButtons.get(0).setDefaultStyle(buttonGroupStyle.singleButtonStyle);
         } else {
-            toggleButtons.get(0).setStyle(style.firstButtonStyle);
-            toggleButtons.get(toggleButtons.size() - 1).setStyle(style.lastButtonStyle);
+            toggleButtons.get(0).setDefaultStyle(buttonGroupStyle.firstButtonStyle);
+            toggleButtons.get(toggleButtons.size() - 1).setDefaultStyle(buttonGroupStyle.lastButtonStyle);
 
             for (int i = 1; i < toggleButtons.size() - 1; ++i) {
-                toggleButtons.get(i).setStyle(style.middleButtonStyle);
+                toggleButtons.get(i).setDefaultStyle(buttonGroupStyle.middleButtonStyle);
             }
         }
     }
@@ -86,16 +87,8 @@ public class KrButtonGroup extends KrWidget<KrButtonGroupStyle> {
     }
 
     @Override
-    public void setStyle(KrButtonGroupStyle style) {
-        this.style = style;
+    public void validate() {
+        super.validate();
         applyStyle();
     }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == getDefaultToolkit().getSkin().getButtonGroupStyle()) {
-            style = new KrButtonGroupStyle(style);
-        }
-    }
-
 }

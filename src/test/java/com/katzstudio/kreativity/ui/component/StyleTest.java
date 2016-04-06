@@ -6,6 +6,7 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static com.katzstudio.kreativity.ui.TestUtils.getAllWidgets;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 
@@ -22,7 +23,7 @@ public class StyleTest {
 
     @Test
     @Parameters
-    public void testEnsureUniqueStyle(KrWidget widget) throws Exception {
+    public void testEnsureUniqueStyle(String widgetClass, KrWidget widget) throws Exception {
         Object originalStyle = widget.getStyle();
         widget.ensureUniqueStyle();
         Object newStyle = widget.getStyle();
@@ -30,14 +31,6 @@ public class StyleTest {
     }
 
     private Object parametersForTestEnsureUniqueStyle() {
-
-        return new Object[][]{
-                {new KrPanel()},
-                {new KrLabel("")},
-                {new KrTextField()},
-                {new KrCheckbox()},
-                {new KrButton("")},
-                {new KrSpinner()}
-        };
+        return getAllWidgets();
     }
 }

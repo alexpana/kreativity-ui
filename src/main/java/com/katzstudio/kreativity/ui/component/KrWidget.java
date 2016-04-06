@@ -28,7 +28,7 @@ import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
  * Base class for all Kreativity UI Components
  */
 @SuppressWarnings("ALL")
-public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
+public class KrWidget implements KrUpdateListener {
 
     public static final String FOCUS_PROPERTY = "property.focus";
 
@@ -40,7 +40,7 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     @Getter private float height;
 
-    @Getter private final ArrayList<KrWidget<? extends KrWidgetStyle>> children = new ArrayList<>();
+    @Getter private final ArrayList<KrWidget> children = new ArrayList<>();
 
     @Getter private KrWidget parent;
 
@@ -78,7 +78,9 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
 
     @Getter @Setter private boolean clipRendering = true;
 
-    @Getter @Setter protected S style;
+    @Getter private KrWidgetStyle defaultStyle;
+
+    @Getter private KrWidgetStyle style;
 
     @Getter @Setter protected String tooltipText;
 
@@ -94,6 +96,7 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
      * Default constructor.
      */
     public KrWidget() {
+        this("");
     }
 
     /**
@@ -101,8 +104,8 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
      *
      * @param style the widget style
      */
-    public KrWidget(S style) {
-        setStyle(style);
+    public KrWidget(KrWidgetStyle style) {
+        setDefaultStyle(style);
     }
 
     /**
@@ -112,6 +115,41 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
      */
     public KrWidget(String name) {
         this.name = name;
+        setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrWidget.class));
+    }
+
+    /**
+     * Ensures that the style getDefaultToolkit owned by this widget is not shared with other widgets.
+     * <p>
+     * Changes to the style of this widget after calling {@code ensureUniqueStyle} will only
+     * affect this widget getDefaultToolkit
+     */
+    public void ensureUniqueStyle() {
+        if (style == null || style == defaultStyle) {
+            style = defaultStyle.copy();
+        }
+    }
+
+    /**
+     * Sets the widget style.
+     */
+    public void setStyle(KrWidgetStyle style) {
+        this.style = style;
+    }
+
+    /**
+     * Returns the style of the widget.
+     */
+    public KrWidgetStyle getStyle() {
+        return style != null ? style : defaultStyle;
+    }
+
+    /**
+     * Sets the default style of the widget.
+     */
+    public void setDefaultStyle(KrWidgetStyle style) {
+        this.defaultStyle = style;
+        this.style = null;
     }
 
     /**
@@ -136,15 +174,6 @@ public class KrWidget<S extends KrWidgetStyle> implements KrUpdateListener {
      */
     public KrWidget getChild(int index) {
         return children.get(index);
-    }
-
-    /**
-     * Ensures that the style getDefaultToolkit owned by this widget is not shared with other widgets.
-     * <p>
-     * Changes to the style of this widget after calling {@code ensureUniqueStyle} will only
-     * affect this widget getDefaultToolkit
-     */
-    public void ensureUniqueStyle() {
     }
 
     /**

@@ -24,7 +24,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * A push button component.
  */
-public class KrButton extends KrWidget<KrButtonStyle> {
+public class KrButton extends KrWidget {
 
     enum State {
         NORMAL, HOVERED, ARMED
@@ -38,17 +38,10 @@ public class KrButton extends KrWidget<KrButtonStyle> {
 
     public KrButton(String text) {
         setText(text);
-        setStyle(getDefaultToolkit().getSkin().getButtonStyle());
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrButton.class));
         setPadding(new KrPadding(5, 4));
         setTextAlignment(KrAlignment.MIDDLE_CENTER);
         setSize(calculatePreferredSize());
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == getDefaultToolkit().getSkin().getButtonStyle()) {
-            style = new KrButtonStyle(style);
-        }
     }
 
     public void addListener(KrButtonListener listener) {
@@ -114,9 +107,9 @@ public class KrButton extends KrWidget<KrButtonStyle> {
         Vector2 textOffset = state == State.ARMED ? Vector2.Y : Vector2.Zero;
         textPosition.add(textOffset);
 
-        renderer.setPen(1, style.foregroundColor);
-        renderer.setFont(style.font);
-        renderer.drawTextWithShadow(text.getString(), textPosition, style.textShadowOffset, style.textShadowColor);
+        renderer.setPen(1, getStyle().foregroundColor);
+        renderer.setFont(getStyle().font);
+        renderer.drawTextWithShadow(text.getString(), textPosition, getStyle().textShadowOffset, getStyle().textShadowColor);
         Pools.free(textPosition);
     }
 
@@ -126,13 +119,14 @@ public class KrButton extends KrWidget<KrButtonStyle> {
     }
 
     private Drawable getBackgroundForState(State state) {
+        KrButtonStyle buttonStyle = ((KrButtonStyle) getStyle());
         switch (state) {
             case NORMAL:
-                return style.backgroundNormal;
+                return buttonStyle.backgroundNormal;
             case HOVERED:
-                return style.backgroundNormal;
+                return buttonStyle.backgroundNormal;
             case ARMED:
-                return style.backgroundArmed;
+                return buttonStyle.backgroundArmed;
         }
         throw new IllegalArgumentException("State not supported: " + state);
     }

@@ -17,7 +17,7 @@ import lombok.Setter;
  * A {@link KrTableView} widget displays data stored in a {@link KrAbstractItemModel}
  * using a table.
  */
-public class KrTableView extends KrAbstractItemView<KrItemViewStyle> {
+public class KrTableView extends KrAbstractItemView {
 
     public static final int ROW_HEIGHT = 20;
 
@@ -37,14 +37,7 @@ public class KrTableView extends KrAbstractItemView<KrItemViewStyle> {
         super(model);
         this.model = model;
         this.columnModel = columnModel;
-        setStyle(KrToolkit.getDefaultToolkit().getSkin().getTableViewStyle());
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == KrToolkit.getDefaultToolkit().getSkin().getTableViewStyle()) {
-            style = new KrItemViewStyle(style);
-        }
+        setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrTableView.class));
     }
 
     @Override
@@ -58,7 +51,7 @@ public class KrTableView extends KrAbstractItemView<KrItemViewStyle> {
         int columnWidth = (int) (getWidth() / columnCount);
         int rowHeight = ROW_HEIGHT;
 
-        int gridSize = style.gridVisible ? 1 : 0;
+        int gridSize = ((KrItemViewStyle) getStyle()).gridVisible ? 1 : 0;
 
         // draw columns
         if (drawHeader) {
@@ -91,8 +84,8 @@ public class KrTableView extends KrAbstractItemView<KrItemViewStyle> {
         }
 
         // draw grid
-        if (style.gridVisible) {
-            renderer.setPen(1, style.gridColor);
+        if (((KrItemViewStyle) getStyle()).gridVisible) {
+            renderer.setPen(1, ((KrItemViewStyle) getStyle()).gridColor);
 
             for (int i = 1; i < columnCount; ++i) {
                 renderer.drawLine(i * columnWidth - 1, 0, i * columnWidth - 1, getHeight());

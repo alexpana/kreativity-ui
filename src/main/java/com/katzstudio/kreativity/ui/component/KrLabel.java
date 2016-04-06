@@ -7,7 +7,6 @@ import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import com.katzstudio.kreativity.ui.style.KrLabelStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +16,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * A simple label component
  */
-public class KrLabel extends KrWidget<KrLabelStyle> {
+public class KrLabel extends KrWidget {
 
     @Setter @Getter private KrAlignment textAlignment;
 
@@ -25,16 +24,9 @@ public class KrLabel extends KrWidget<KrLabelStyle> {
         setText(text);
         this.textAlignment = KrAlignment.MIDDLE_LEFT;
 
-        setStyle(getDefaultToolkit().getSkin().getLabelStyle());
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrLabel.class));
         setPadding(new KrPadding(3, 3));
         setSize(calculatePreferredSize());
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == getDefaultToolkit().getSkin().getLabelStyle()) {
-            style = new KrLabelStyle(style);
-        }
     }
 
     @Override
@@ -46,14 +38,14 @@ public class KrLabel extends KrWidget<KrLabelStyle> {
     protected void drawSelf(KrRenderer renderer) {
         boolean componentClip = renderer.beginClip(0, 0, getWidth(), getHeight());
 
-        renderer.setBrush(style.background);
+        renderer.setBrush(getStyle().background);
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
         text.getBounds(tmpRect);
         Rectangle alignmentReference = rectangles(0.0f, 0.0f, getWidth(), getHeight()).shrink(getPadding()).value();
         Vector2 textPosition = KrAlignmentTool.alignRectangles(tmpRect, alignmentReference, getTextAlignment());
-        renderer.setPen(1, style.foregroundColor);
-        renderer.setFont(style.font);
+        renderer.setPen(1, getStyle().foregroundColor);
+        renderer.setFont(getStyle().font);
         renderer.drawText(text.getString(), textPosition);
 
         if (componentClip) {
@@ -62,11 +54,6 @@ public class KrLabel extends KrWidget<KrLabelStyle> {
 
         Pools.free(textPosition);
         Pools.free(alignmentReference);
-    }
-
-    @Override
-    public KrLabelStyle getStyle() {
-        return style;
     }
 
     @Override

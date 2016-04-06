@@ -8,7 +8,6 @@ import com.katzstudio.kreativity.ui.event.KrEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import com.katzstudio.kreativity.ui.util.KrStrings;
 import com.katzstudio.kreativity.ui.util.KrTimer;
 import com.katzstudio.kreativity.ui.util.KrUpdateListener;
@@ -128,7 +127,7 @@ public class KrTooltipManager implements KrUpdateListener {
         // pass
     }
 
-    private class KrTooltipWidget extends KrWidget<KrWidgetStyle> {
+    private class KrTooltipWidget extends KrWidget {
 
         public final Color background = new Color(0x202020ff);
 
@@ -138,18 +137,11 @@ public class KrTooltipManager implements KrUpdateListener {
             textLabel = new KrLabel("");
             textLabel.setTextAlignment(KrAlignment.MIDDLE_CENTER);
 
-            setStyle(getDefaultToolkit().getSkin().getWidgetStyle());
+            setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrWidget.class));
 
             setPadding(new KrPadding(6, 6, 6, 6));
             setLayout(new KrBorderLayout());
             add(textLabel);
-        }
-
-        @Override
-        public void ensureUniqueStyle() {
-            if (style == getDefaultToolkit().getSkin().getWidgetStyle()) {
-                style = new KrWidgetStyle(style);
-            }
         }
 
         @Override

@@ -12,9 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.style.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +27,8 @@ import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.*;
 public class KrSkin {
 
     private final Map<ColorKey, Color> colors = new HashMap<>();
+
+    private Map<Class<? extends KrWidget>, KrWidgetStyle> styles = new HashMap<>();
 
     {
         colors.put(BACKGROUND, new Color(0x4C4C4Cff));
@@ -44,38 +46,6 @@ public class KrSkin {
     @Getter private BitmapFont defaultFont;
 
     @Getter private BitmapFont defaultFontBold;
-
-    @Getter @Setter private KrWidgetStyle widgetStyle;
-
-    @Getter @Setter private KrPanelStyle panelStyle;
-
-    @Getter @Setter private KrLabelStyle labelStyle;
-
-    @Getter @Setter private KrCheckboxStyle checkboxStyle;
-
-    @Getter @Setter private KrButtonStyle buttonStyle;
-
-    @Getter @Setter private KrButtonStyle buttonGroupFirstButtonStyle;
-
-    @Getter @Setter private KrButtonStyle buttonGroupMiddleButtonStyle;
-
-    @Getter @Setter private KrButtonStyle buttonGroupLastButtonStyle;
-
-    @Getter @Setter private KrButtonGroupStyle buttonGroupStyle;
-
-    @Getter @Setter private KrTextFieldStyle textFieldStyle;
-
-    @Getter @Setter private KrTextFieldStyle spinnerStyle;
-
-    @Getter @Setter private KrScrollBarStyle verticalScrollBarStyle;
-
-    @Getter @Setter private KrScrollBarStyle horizontalScrollBarStyle;
-
-    @Getter @Setter private KrSplitPanelStyle splitPanelStyle;
-
-    @Getter @Setter private KrItemViewStyle listViewStyle;
-
-    @Getter @Setter private KrItemViewStyle tableViewStyle;
 
     @Getter private Texture skinTexture;
 
@@ -117,7 +87,7 @@ public class KrSkin {
             drawablePatches.put(patchName, ninePatchDrawable);
         }
 
-        widgetStyle = new KrWidgetStyle();
+        KrWidgetStyle widgetStyle = new KrWidgetStyle();
         widgetStyle.background = toolkit.getDrawable(getColor(BACKGROUND));
         widgetStyle.foregroundColor = getColor(FOREGROUND);
         widgetStyle.font = getDefaultFont();
@@ -127,83 +97,96 @@ public class KrSkin {
         widgetStyle.selectionColor = KrColor.rgb(0x38466b);
         widgetStyle.padding = new KrPadding(0);
         widgetStyle.cursor = KrCursor.ARROW;
+        registerStyle(KrWidget.class, widgetStyle);
 
-        panelStyle = new KrPanelStyle(widgetStyle);
+        KrPanelStyle panelStyle = new KrPanelStyle(widgetStyle);
+        registerStyle(KrPanel.class, panelStyle);
 
-        labelStyle = new KrLabelStyle(widgetStyle);
+        KrLabelStyle labelStyle = new KrLabelStyle(widgetStyle);
         labelStyle.foregroundColor = KrColor.rgb(0xffffff);
         labelStyle.padding = new KrPadding(4);
+        registerStyle(KrLabel.class, labelStyle);
 
-        buttonStyle = new KrButtonStyle(widgetStyle);
+        KrButtonStyle buttonStyle = new KrButtonStyle(widgetStyle);
         buttonStyle.backgroundNormal = drawablePatches.get("button.background_normal");
         buttonStyle.backgroundHovered = drawablePatches.get("button.background_hovered");
         buttonStyle.backgroundArmed = drawablePatches.get("button.background_armed");
         buttonStyle.textShadowOffset = new Vector2(0, 1);
         buttonStyle.textShadowColor = new Color(0x00000060);
+        registerStyle(KrButton.class, buttonStyle);
 
-        checkboxStyle = new KrCheckboxStyle(widgetStyle);
+        KrCheckboxStyle checkboxStyle = new KrCheckboxStyle(widgetStyle);
         checkboxStyle.checkboxBackground = drawablePatches.get("checkbox.background");
         checkboxStyle.mark = drawablePatches.get("checkbox.mark");
         checkboxStyle.padding = new KrPadding(2);
+        registerStyle(KrCheckbox.class, checkboxStyle);
 
-        textFieldStyle = new KrTextFieldStyle(widgetStyle);
+        KrTextFieldStyle textFieldStyle = new KrTextFieldStyle(widgetStyle);
         textFieldStyle.backgroundNormal = drawablePatches.get("textfield.background_normal");
         textFieldStyle.backgroundHovered = drawablePatches.get("textfield.background_hovered");
         textFieldStyle.backgroundFocused = drawablePatches.get("textfield.background_focused");
         textFieldStyle.caretColor = getColor(FOREGROUND);
         textFieldStyle.padding = new KrPadding(1, 4, 4, 4);
         textFieldStyle.cursor = KrCursor.IBEAM;
+        registerStyle(KrTextField.class, textFieldStyle);
 
-        spinnerStyle = new KrTextFieldStyle(textFieldStyle);
+        KrTextFieldStyle spinnerStyle = new KrTextFieldStyle(textFieldStyle);
         spinnerStyle.backgroundNormal = drawablePatches.get("spinner.background_normal");
         spinnerStyle.backgroundHovered = drawablePatches.get("spinner.background_hovered");
         spinnerStyle.backgroundFocused = drawablePatches.get("spinner.background_focused");
         spinnerStyle.padding = new KrPadding(1, 17, 4, 4);
+        registerStyle(KrSpinner.class, spinnerStyle);
 
-        verticalScrollBarStyle = new KrScrollBarStyle(widgetStyle);
-        verticalScrollBarStyle.track = drawablePatches.get("scrollbar.vertical.track");
-        verticalScrollBarStyle.thumb = drawablePatches.get("scrollbar.vertical.thumb");
-        verticalScrollBarStyle.size = 5;
-        verticalScrollBarStyle.splitterCursor = KrCursor.VERTICAL_RESIZE;
+        KrScrollBarStyle ScrollBarStyle = new KrScrollBarStyle(widgetStyle);
+        ScrollBarStyle.track = drawablePatches.get("scrollbar.vertical.track");
+        ScrollBarStyle.thumb = drawablePatches.get("scrollbar.vertical.thumb");
+        ScrollBarStyle.size = 5;
+        registerStyle(KrScrollBar.class, ScrollBarStyle);
 
-        horizontalScrollBarStyle = new KrScrollBarStyle(widgetStyle);
-        horizontalScrollBarStyle.track = drawablePatches.get("scrollbar.horizontal.track");
-        horizontalScrollBarStyle.thumb = drawablePatches.get("scrollbar.horizontal.thumb");
-        horizontalScrollBarStyle.size = 5;
-        horizontalScrollBarStyle.splitterCursor = KrCursor.HORIZONTAL_RESIZE;
-
-        buttonGroupFirstButtonStyle = new KrButtonStyle(buttonStyle);
+        KrButtonStyle buttonGroupFirstButtonStyle = new KrButtonStyle(buttonStyle);
         buttonGroupFirstButtonStyle.backgroundNormal = drawablePatches.get("button_group_first.background_normal");
         buttonGroupFirstButtonStyle.backgroundHovered = drawablePatches.get("button_group_first.background_hovered");
         buttonGroupFirstButtonStyle.backgroundArmed = drawablePatches.get("button_group_first.background_armed");
 
-        buttonGroupMiddleButtonStyle = new KrButtonStyle(buttonStyle);
+        KrButtonStyle buttonGroupMiddleButtonStyle = new KrButtonStyle(buttonStyle);
         buttonGroupMiddleButtonStyle.backgroundNormal = drawablePatches.get("button_group_middle.background_normal");
         buttonGroupMiddleButtonStyle.backgroundHovered = drawablePatches.get("button_group_middle.background_hovered");
         buttonGroupMiddleButtonStyle.backgroundArmed = drawablePatches.get("button_group_middle.background_armed");
 
-        buttonGroupLastButtonStyle = new KrButtonStyle(buttonStyle);
+        KrButtonStyle buttonGroupLastButtonStyle = new KrButtonStyle(buttonStyle);
         buttonGroupLastButtonStyle.backgroundNormal = drawablePatches.get("button_group_last.background_normal");
         buttonGroupLastButtonStyle.backgroundHovered = drawablePatches.get("button_group_last.background_hovered");
         buttonGroupLastButtonStyle.backgroundArmed = drawablePatches.get("button_group_last.background_armed");
 
-        buttonGroupStyle = new KrButtonGroupStyle(widgetStyle);
+        KrButtonGroupStyle buttonGroupStyle = new KrButtonGroupStyle(widgetStyle);
         buttonGroupStyle.singleButtonStyle = buttonStyle;
         buttonGroupStyle.firstButtonStyle = buttonGroupFirstButtonStyle;
         buttonGroupStyle.middleButtonStyle = buttonGroupMiddleButtonStyle;
         buttonGroupStyle.lastButtonStyle = buttonGroupLastButtonStyle;
+        registerStyle(KrButtonGroup.class, buttonGroupStyle);
 
-        splitPanelStyle = new KrSplitPanelStyle(widgetStyle);
+        KrSplitPanelStyle splitPanelStyle = new KrSplitPanelStyle(widgetStyle);
         splitPanelStyle.splitterBackground = toolkit.getDrawable(getColor(BACKGROUND_LIGHT));
         splitPanelStyle.splitterGrip = getDrawable("split_panel.splitter_grip");
+        registerStyle(KrSplitPanel.class, splitPanelStyle);
 
-        listViewStyle = new KrItemViewStyle(widgetStyle);
+        KrItemViewStyle listViewStyle = new KrItemViewStyle(widgetStyle);
         listViewStyle.gridColor = getColor(FOREGROUND);
         listViewStyle.gridVisible = false;
+        registerStyle(KrListView.class, listViewStyle);
 
-        tableViewStyle = new KrItemViewStyle(widgetStyle);
+        KrItemViewStyle tableViewStyle = new KrItemViewStyle(widgetStyle);
         tableViewStyle.gridColor = getColor(BACKGROUND_LIGHT);
         tableViewStyle.gridVisible = true;
+        registerStyle(KrTableView.class, tableViewStyle);
+    }
+
+    public <S extends KrWidgetStyle> void registerStyle(Class<? extends KrWidget> widgetClass, S style) {
+        styles.put(widgetClass, style);
+    }
+
+    public KrWidgetStyle getStyle(Class<? extends KrWidget> styleClass) {
+        return styles.get(styleClass);
     }
 
     private Rectangle jsonArrayToRectangle(JsonValue jsonValue) {

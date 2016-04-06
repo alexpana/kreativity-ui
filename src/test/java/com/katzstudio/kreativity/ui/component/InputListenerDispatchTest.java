@@ -1,23 +1,18 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.math.Vector2;
-import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
-import com.katzstudio.kreativity.ui.KrOrientation;
 import com.katzstudio.kreativity.ui.TestUtils;
 import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.Arrays;
 import java.util.Collection;
 
-import static com.katzstudio.kreativity.ui.TestObjectFactory.createWidgetStyle;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -39,27 +34,7 @@ public class InputListenerDispatchTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object[]> testCases() {
-        KrMenu menu = new KrMenu();
-        KrMenu.KrMenuItem menuItem = new KrMenu.KrMenuItem("");
-        menu.addMenuItem(menuItem);
-
-        return Arrays.asList(new Object[][]{
-                {"KrWidget", new KrWidget<>(createWidgetStyle())},
-                {"KrLabel", new KrLabel("")},
-                {"KrButton", new KrButton("")},
-                {"KrCheckbox", new KrCheckbox()},
-                {"KrIconPanel", new KrIconPanel(KrFontAwesomeGlyph.FONT)},
-                {"KrTextField", new KrTextField()},
-                {"KrSpinner", new KrSpinner()},
-                {"KrListView", new KrListView(mock(KrAbstractItemModel.class))},
-                {"KrTableView", new KrTableView(mock(KrAbstractItemModel.class))},
-                {"KrPanel", new KrPanel()},
-                {"KrScrollBar", new KrScrollBar(KrOrientation.VERTICAL)},
-                {"KrToggleButton", new KrToggleButton("")},
-                {"KrPopup", new KrPopup()},
-                {"KrMenu", menu},
-                {"KrMenuItem", menuItem}
-        });
+        return TestUtils.getAllWidgets();
     }
 
     @Test

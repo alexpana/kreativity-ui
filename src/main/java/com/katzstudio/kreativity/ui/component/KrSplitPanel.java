@@ -26,7 +26,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * Container panel that splits it's area between children. Areas can be resized.
  */
-public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
+public class KrSplitPanel extends KrWidget {
 
     private static final int SEPARATOR_SIZE = 2;
 
@@ -38,7 +38,7 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
 
     public KrSplitPanel() {
         setLayout(new LayoutManager());
-        setStyle(getDefaultToolkit().getSkin().getSplitPanelStyle());
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrSplitPanel.class));
     }
 
     public void add(KrWidget widget, KrUnifiedSize preferredSize) {
@@ -112,13 +112,6 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
 
     private KrPanel createSplitterPanel() {
         return new KrSplitterGrip();
-    }
-
-    @Override
-    public void ensureUniqueStyle() {
-        if (style == getDefaultToolkit().getSkin().getSplitPanelStyle()) {
-            style = new KrSplitPanelStyle(style);
-        }
     }
 
     @Override
@@ -202,24 +195,24 @@ public class KrSplitPanel extends KrWidget<KrSplitPanelStyle> {
 
     private final class KrSplitterGrip extends KrPanel {
 
-        public KrSplitterGrip() {
+        KrSplitterGrip() {
             this(KrCursor.VERTICAL_RESIZE);
         }
 
-        public KrSplitterGrip(KrCursor cursor) {
+        KrSplitterGrip(KrCursor cursor) {
             setCursor(cursor);
         }
 
         @Override
         protected void drawSelf(KrRenderer renderer) {
-            Drawable grip = KrSplitPanel.this.style.splitterGrip;
+            Drawable grip = ((KrSplitPanelStyle) KrSplitPanel.this.getStyle()).splitterGrip;
 
             Rectangle gripRectangle = Pools.obtain(Rectangle.class).set(0, 0, grip.getMinWidth(), grip.getMinHeight());
             Rectangle geometryRectangle = Pools.obtain(Rectangle.class).set(0, 0, getWidth(), getHeight());
             Vector2 gripPosition = alignRectangles(gripRectangle, geometryRectangle, MIDDLE_CENTER);
             gripRectangle.setPosition(gripPosition);
 
-            renderer.setBrush(KrSplitPanel.this.style.splitterBackground);
+            renderer.setBrush(((KrSplitPanelStyle) KrSplitPanel.this.getStyle()).splitterBackground);
             renderer.fillRect(geometryRectangle);
 
             renderer.setBrush(grip);

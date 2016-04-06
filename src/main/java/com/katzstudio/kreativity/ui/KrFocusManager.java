@@ -1,7 +1,6 @@
 package com.katzstudio.kreativity.ui;
 
 import com.katzstudio.kreativity.ui.component.KrWidget;
-import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,18 +11,18 @@ import java.util.Queue;
  */
 public class KrFocusManager {
 
-    private final KrWidget<? extends KrWidgetStyle> rootWidget;
+    private final KrWidget rootWidget;
 
     private final List<KrWidget> orderedFocusableWidgets = new LinkedList<>();
 
-    public KrFocusManager(KrWidget<? extends KrWidgetStyle> rootWidget) {
+    public KrFocusManager(KrWidget rootWidget) {
         this.rootWidget = rootWidget;
         refresh();
     }
 
     public void refresh() {
         orderedFocusableWidgets.clear();
-        Queue<KrWidget<? extends KrWidgetStyle>> toProcess = new LinkedList<>();
+        Queue<KrWidget> toProcess = new LinkedList<>();
         toProcess.add(rootWidget);
 
         while (!toProcess.isEmpty()) {

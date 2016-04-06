@@ -34,7 +34,7 @@ public class KrButtonTest {
         initializeToolkit();
 
         buttonStyle = createButtonStyle();
-        when(getDefaultToolkit().getSkin().getButtonStyle()).thenReturn(buttonStyle);
+        when(getDefaultToolkit().getSkin().getStyle(KrButton.class)).thenReturn(buttonStyle);
 
         button = new KrButton("button");
         renderer = mock(KrRenderer.class);

@@ -12,7 +12,6 @@ import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrSelection;
 import com.katzstudio.kreativity.ui.model.KrSelectionModel;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 /**
  * Base class for item view widgets such as lists and tables
  */
-public abstract class KrAbstractItemView<S extends KrItemViewStyle> extends KrWidget<S> {
+public abstract class KrAbstractItemView extends KrWidget {
 
     protected final static int ROW_HEIGHT = 20;
 

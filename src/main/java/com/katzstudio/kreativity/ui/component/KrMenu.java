@@ -12,7 +12,6 @@ import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrActionListener;
 import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
-import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  * A menu widget displays a vertical list of actions that can be
  * performed by clicking on them.
  */
-public class KrMenu extends KrWidget<KrWidgetStyle> {
+public class KrMenu extends KrWidget {
 
     private final List<KrMenuItem> menuItems = new ArrayList<>();
 
@@ -38,7 +37,7 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
         popup = new KrPopup();
         popup.setContentWidget(this);
 
-        setStyle(getDefaultToolkit().getSkin().getWidgetStyle());
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrWidget.class));
         setLayout(new KrFlowLayout(VERTICAL, 0, 0));
         setPadding(new KrPadding(1));
         setBackground(getDefaultToolkit().getDrawable(getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER)));
@@ -81,7 +80,7 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
         popup.validate();
     }
 
-    public static class KrMenuItem extends KrWidget<KrWidgetStyle> {
+    public static class KrMenuItem extends KrWidget {
 
         private final Drawable selectedBackground;
 
@@ -100,7 +99,7 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
             this.actionListener = actionListener;
             KrToolkit toolkit = getDefaultToolkit();
 
-            setStyle(toolkit.getSkin().getWidgetStyle());
+            setDefaultStyle(toolkit.getSkin().getStyle(KrWidget.class));
 
             Color selectionColor = toolkit.getSkin().getColor(KrSkin.ColorKey.SELECTION_BACKGROUND);
             selectedBackground = toolkit.getDrawable(selectionColor);
@@ -108,13 +107,6 @@ public class KrMenu extends KrWidget<KrWidgetStyle> {
 
             setBackground(defaultBackground);
             setPadding(new KrPadding(5, 6));
-        }
-
-        @Override
-        public void ensureUniqueStyle() {
-            if (style == getDefaultToolkit().getSkin().getWidgetStyle()) {
-                style = new KrWidgetStyle(style);
-            }
         }
 
         @Override

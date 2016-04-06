@@ -3,6 +3,11 @@ package com.katzstudio.kreativity.ui;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
+import com.katzstudio.kreativity.ui.component.*;
+import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import static com.katzstudio.kreativity.ui.TestObjectFactory.*;
 import static org.mockito.Matchers.any;
@@ -21,16 +26,41 @@ public class TestUtils {
 
     private static void initializeTestStyles() {
         KrSkin skin = KrToolkit.getDefaultToolkit().getSkin();
-        when(skin.getWidgetStyle()).thenReturn(createWidgetStyle());
-        when(skin.getPanelStyle()).thenReturn(createPanelStyle());
-        when(skin.getLabelStyle()).thenReturn(createLabelStyle());
-        when(skin.getButtonStyle()).thenReturn(createButtonStyle());
-        when(skin.getTextFieldStyle()).thenReturn(createTextFieldStyle());
-        when(skin.getCheckboxStyle()).thenReturn(createCheckBoxStyle());
-        when(skin.getSpinnerStyle()).thenReturn(createSpinnerStyle());
-        when(skin.getListViewStyle()).thenReturn(createItemViewStyle());
-        when(skin.getHorizontalScrollBarStyle()).thenReturn(createHorizontalScrollBarStyle());
-        when(skin.getVerticalScrollBarStyle()).thenReturn(createVerticalScrollBarStyle());
+        when(skin.getStyle(KrWidget.class)).thenReturn(createWidgetStyle());
+        when(skin.getStyle(KrPanel.class)).thenReturn(createPanelStyle());
+        when(skin.getStyle(KrLabel.class)).thenReturn(createLabelStyle());
+        when(skin.getStyle(KrTextField.class)).thenReturn(createTextFieldStyle());
+        when(skin.getStyle(KrCheckbox.class)).thenReturn(createCheckBoxStyle());
+        when(skin.getStyle(KrButton.class)).thenReturn(createButtonStyle());
+        when(skin.getStyle(KrSpinner.class)).thenReturn(createSpinnerStyle());
+        when(skin.getStyle(KrIconPanel.class)).thenReturn(createWidgetStyle());
+        when(skin.getStyle(KrScrollBar.class)).thenReturn(createScrollBarStyle());
+        when(skin.getStyle(KrListView.class)).thenReturn(createItemViewStyle());
+        when(skin.getStyle(KrTableView.class)).thenReturn(createItemViewStyle());
+    }
+
+    public static Collection<Object[]> getAllWidgets() {
+        KrMenu menu = new KrMenu();
+        KrMenu.KrMenuItem menuItem = new KrMenu.KrMenuItem("");
+        menu.addMenuItem(menuItem);
+
+        return Arrays.asList(new Object[][]{
+                {"KrWidget", new KrWidget()},
+                {"KrLabel", new KrLabel("")},
+                {"KrButton", new KrButton("")},
+                {"KrCheckbox", new KrCheckbox()},
+                {"KrIconPanel", new KrIconPanel(KrFontAwesomeGlyph.FONT)},
+                {"KrTextField", new KrTextField()},
+                {"KrSpinner", new KrSpinner()},
+                {"KrListView", new KrListView(mock(KrAbstractItemModel.class))},
+                {"KrTableView", new KrTableView(mock(KrAbstractItemModel.class))},
+                {"KrPanel", new KrPanel()},
+                {"KrScrollBar", new KrScrollBar(KrOrientation.VERTICAL)},
+                {"KrToggleButton", new KrToggleButton("")},
+                {"KrPopup", new KrPopup()},
+                {"KrMenu", menu},
+                {"KrMenuItem", menuItem}
+        });
     }
 
     public static KrBackend createMockBackend() {

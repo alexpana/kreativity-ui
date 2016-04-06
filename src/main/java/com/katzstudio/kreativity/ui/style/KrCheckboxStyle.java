@@ -23,4 +23,9 @@ public class KrCheckboxStyle extends KrWidgetStyle {
         this.checkboxBackground = other.checkboxBackground;
         this.mark = other.mark;
     }
+
+    @Override
+    public KrCheckboxStyle copy() {
+        return new KrCheckboxStyle(this);
+    }
 }
