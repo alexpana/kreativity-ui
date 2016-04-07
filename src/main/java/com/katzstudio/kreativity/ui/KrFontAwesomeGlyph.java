@@ -1,5 +1,8 @@
 package com.katzstudio.kreativity.ui;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The glyph icons provided by FontAwesome. Automatically extracted from the
  * Font Awesome <a href="https://fortawesome.github.io/Font-Awesome/cheatsheet/">cheatsheet</a>.
@@ -743,5 +746,18 @@ public enum KrFontAwesomeGlyph {
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+
+    public static void main(String[] args) {
+        List<KrFontAwesomeGlyph> glyphIcons = Arrays.asList(
+                ARROW_LEFT, ARROW_RIGHT, ARROW_UP, ARROW_DOWN, PLUS, MINUS, PENCIL, GEAR, GEARS,
+                CHEVRON_LEFT, CHEVRON_RIGHT, CHEVRON_UP, CHEVRON_DOWN
+        );
+
+        String renderedGlyphs = "";
+        for (KrFontAwesomeGlyph glyph : glyphIcons) {
+            renderedGlyphs += glyph.getRepresentation();
+        }
+        System.out.println("renderedGlyphs = " + renderedGlyphs);
     }
 }

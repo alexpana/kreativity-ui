@@ -3,7 +3,7 @@
   "fonts": {
     "default": "fonts/roboto_11.fnt",
     "bold": "fonts/roboto_11_bold.fnt",
-    "fontawesome": "fonts/fontawesome_11.fnt"
+    "fontawesome": "fonts/fontawesome_15.fnt"
   },
   "colors": {
     "background": "0x323334"
