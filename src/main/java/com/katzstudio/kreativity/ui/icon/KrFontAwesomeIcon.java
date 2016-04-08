@@ -12,6 +12,10 @@ import lombok.Getter;
  */
 public class KrFontAwesomeIcon implements KrIcon {
 
+    private static final int RENDER_OFFSET_X = 1;
+
+    private static final int RENDER_OFFSET_Y = -6;
+
     @Getter private final Vector2 size;
 
     private final KrFontAwesomeGlyph glyph;
@@ -24,6 +28,6 @@ public class KrFontAwesomeIcon implements KrIcon {
     @Override
     public void draw(KrRenderer renderer, int x, int y) {
         renderer.setFont(KrToolkit.getDefaultToolkit().getSkin().getFontAwesome());
-        renderer.drawText(glyph.getRepresentation(), x, y);
+        renderer.drawText(glyph.getRepresentation(), x + RENDER_OFFSET_X, y + RENDER_OFFSET_Y);
     }
 }
