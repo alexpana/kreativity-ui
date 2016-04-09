@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui.render;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -61,7 +62,9 @@ public interface KrRenderer {
 
     KrPen getPen();
 
-    void setFont(com.badlogic.gdx.graphics.g2d.BitmapFont font);
+    BitmapFont getFont();
+
+    void setFont(BitmapFont font);
 
     void setBrush(KrBrush brush);
 

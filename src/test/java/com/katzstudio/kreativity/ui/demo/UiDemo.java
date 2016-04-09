@@ -107,10 +107,10 @@ public class UiDemo extends Game {
 
     private KrWidget createSandbox() {
         return new KrWidget() {
-            KrIcon icon = new KrFontAwesomeIcon(KrFontAwesomeGlyph.CHEVRON_CIRCLE_LEFT, 15, 15);
+            KrIcon icon = new KrFontAwesomeIcon(KrFontAwesomeGlyph.CHEVRON_CIRCLE_LEFT);
 
             {
-                setGeometry(0, 500, 15, 15);
+                setGeometry(0, 500, 14, 14);
             }
 
             @Override
@@ -349,9 +349,10 @@ public class UiDemo extends Game {
         label.setName("buttons.label");
         label.setGeometry(0, 0, 100, 20);
 
-        KrButton button = new KrButton("Push Button");
+        KrButton button = new KrButton("");
         button.setName("buttons.button");
-        button.setGeometry(0, 20, 100, 26);
+        button.setGeometry(0, 20, 26, 26);
+        button.setIcon(new KrFontAwesomeIcon(KrFontAwesomeGlyph.BARS));
         button.addMouseListener(new KrMouseListener.KrMouseAdapter() {
             @Override
             public void mouseDoubleClicked(KrMouseEvent event) {
@@ -443,6 +444,7 @@ public class UiDemo extends Game {
         KrToggleButton toggleButton = new KrToggleButton("Toggle Button");
         toggleButton.setName("buttons.toggleButton");
         toggleButton.setGeometry(0, 50, 100, 26);
+        toggleButton.setIcon(new KrFontAwesomeIcon(KrFontAwesomeGlyph.PLUS));
         toggleButton.addToggleListener(active -> {
             if (active) {
                 canvas.getTooltipManager().showCustomTooltip(createDummyContent());

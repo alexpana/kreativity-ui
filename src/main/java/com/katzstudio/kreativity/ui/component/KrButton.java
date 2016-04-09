@@ -7,11 +7,13 @@ import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
 import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrRectangles;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrButtonStyle;
+import com.katzstudio.kreativity.ui.util.KrStrings;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,9 +28,13 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrButton extends KrWidget {
 
+    private static final int ICON_TEXT_PADDING = 2;
+
     enum State {
-        NORMAL, HOVERED, ARMED
+        NORMAL, HOVERED, ARMED;
     }
+
+    private Vector2 tmpVec = new Vector2();
 
     private State state = State.NORMAL;
 
@@ -58,7 +64,46 @@ public class KrButton extends KrWidget {
 
     @Override
     public Vector2 calculatePreferredSize() {
-        return rectangles(text.getBounds()).expand(getPadding()).size();
+        return rectangles(getContentSize()).expand(getPadding()).size();
+    }
+
+    private Vector2 getContentSize() {
+        return getContentSize(new Vector2());
+    }
+
+    private Vector2 getContentSize(Vector2 contentSize) {
+        KrRectangles rects = rectangles(0, 0);
+
+        boolean hasIcon = hasIcon();
+        boolean hasText = hasText();
+
+        if (hasIcon) {
+            Vector2 iconSize = getStyle().icon.getSize();
+            rects.expand(iconSize);
+        }
+
+        Rectangle textBounds = text.getBounds();
+        if (hasText) {
+            int textWidth = (int) text.getBounds().getWidth();
+            int textHeight = (int) textBounds.getHeight();
+            rects.minHeight(textHeight);
+
+            if (hasIcon) {
+                rects.expand(ICON_TEXT_PADDING, 0);
+            }
+
+            rects.expand(textWidth, 0);
+        }
+
+        return rects.size(contentSize);
+    }
+
+    private boolean hasText() {
+        return !KrStrings.isNullOrEmpty(text.getString());
+    }
+
+    private boolean hasIcon() {
+        return getStyle().icon != null;
     }
 
     @Override
@@ -100,16 +145,25 @@ public class KrButton extends KrWidget {
         renderer.setOpacity(getOpacity());
         renderer.fillRect(0, 0, getWidth(), getHeight());
 
-        Rectangle textBounds = text.getBounds();
-        float textWidth = textBounds.width;
-        float textHeight = textBounds.height;
-        Vector2 textPosition = KrAlignmentTool.alignRectangles(0, 0, textWidth, textHeight, 0, 0, getWidth(), getHeight(), getTextAlignment());
+        Vector2 contentSize = getContentSize(tmpVec);
+        Vector2 textPosition = KrAlignmentTool.alignRectangles(0, 0, contentSize.x, contentSize.y, 0, 0, getWidth(), getHeight(), getTextAlignment());
         Vector2 textOffset = state == State.ARMED ? Vector2.Y : Vector2.Zero;
         textPosition.add(textOffset);
 
-        renderer.setPen(1, getStyle().foregroundColor);
-        renderer.setFont(getStyle().font);
-        renderer.drawTextWithShadow(text.getString(), textPosition, getStyle().textShadowOffset, getStyle().textShadowColor);
+        // render icon
+        if (hasIcon()) {
+            getStyle().icon.draw(renderer, (int) textPosition.x, (int) textPosition.y);
+            textPosition.x += ICON_TEXT_PADDING + getStyle().icon.getSize().x;
+        }
+
+        // render text
+        if (hasText()) {
+            textPosition.y += (contentSize.y - text.getBounds().height) / 2;
+            renderer.setPen(1, getStyle().foregroundColor);
+            renderer.setFont(getStyle().font);
+            renderer.drawTextWithShadow(text.getString(), textPosition, getStyle().textShadowOffset, getStyle().textShadowColor);
+        }
+
         Pools.free(textPosition);
     }
 

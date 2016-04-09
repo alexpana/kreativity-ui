@@ -11,6 +11,7 @@ import com.katzstudio.kreativity.ui.event.*;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
+import com.katzstudio.kreativity.ui.icon.KrIcon;
 import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -239,6 +240,21 @@ public class KrWidget implements KrUpdateListener {
     public void setCursor(KrCursor cursor) {
         ensureUniqueStyle();
         style.cursor = cursor;
+    }
+
+    /**
+     * Returns the widget's icon.
+     */
+    public KrIcon getIcon() {
+        return style.icon;
+    }
+
+    /**
+     * Sets the widget icon.
+     */
+    public void setIcon(KrIcon icon) {
+        ensureUniqueStyle();
+        style.icon = icon;
     }
 
     /**

@@ -36,7 +36,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
 
     private RenderMode currentRenderMode;
 
-    @Setter private BitmapFont font;
+    @Setter @Getter private BitmapFont font;
 
     private Vector2 translation;
 

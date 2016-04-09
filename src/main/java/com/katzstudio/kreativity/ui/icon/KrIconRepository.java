@@ -10,13 +10,13 @@ import java.util.Map;
  */
 public class KrIconRepository {
 
-    private static final int ICON_SIZE = 16;
+    private static final int ICON_SIZE = 14;
 
     private final Map<KrFontAwesomeGlyph, KrIcon> fontAwesomeIcons = new HashMap<>();
 
     public KrIcon getIcon(KrFontAwesomeGlyph fontAwesomeGlyph) {
         if (!fontAwesomeIcons.containsKey(fontAwesomeGlyph)) {
-            KrIcon icon = new KrFontAwesomeIcon(fontAwesomeGlyph, ICON_SIZE, ICON_SIZE);
+            KrIcon icon = new KrFontAwesomeIcon(fontAwesomeGlyph);
             fontAwesomeIcons.put(fontAwesomeGlyph, icon);
             return icon;
         }

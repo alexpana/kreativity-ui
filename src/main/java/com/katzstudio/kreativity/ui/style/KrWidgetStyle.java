@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.icon.KrIcon;
 
 /**
  * Default style class with properties common to all widgets
@@ -22,7 +23,7 @@ public class KrWidgetStyle {
 
     public Color textShadowColor;
 
-    public Drawable icon;
+    public KrIcon icon;
 
     public Color selectionColor;
 

@@ -63,6 +63,10 @@ public class KrRectangles {
         return this;
     }
 
+    public KrRectangles expand(Vector2 size) {
+        return expand((int) size.x, (int) size.y);
+    }
+
     public KrRectangles expand(int width, int height) {
         w += width;
         h += height;

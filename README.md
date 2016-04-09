@@ -49,6 +49,7 @@ IDE would fill my autocomplete list with components from other frameworks and hi
 - Added menu widget
 - Added support for checkbox text
 - Improved documentation for the base class KrWidget
+- Added support for button icons
 
 #### [0.2.0] - 2016-03-27
 - Migrated to libgdx 1.9.1 and backend lwjgl3

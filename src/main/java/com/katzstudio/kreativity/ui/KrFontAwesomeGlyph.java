@@ -755,7 +755,7 @@ public enum KrFontAwesomeGlyph {
         );
 
         String renderedGlyphs = "";
-        for (KrFontAwesomeGlyph glyph : glyphIcons) {
+        for (KrFontAwesomeGlyph glyph : KrFontAwesomeGlyph.values()) {
             renderedGlyphs += glyph.getRepresentation();
         }
         System.out.println("renderedGlyphs = " + renderedGlyphs);
