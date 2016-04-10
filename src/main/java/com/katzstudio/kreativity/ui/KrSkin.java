@@ -140,6 +140,7 @@ public class KrSkin {
         buttonStyle.backgroundArmed = drawablePatches.get("button.background_armed");
         buttonStyle.textShadowOffset = new Vector2(0, 1);
         buttonStyle.textShadowColor = new Color(0x00000060);
+        buttonStyle.padding = new KrPadding(5, 4);
         registerStyle(KrButton.class, buttonStyle);
 
         KrCheckboxStyle checkboxStyle = new KrCheckboxStyle(widgetStyle);

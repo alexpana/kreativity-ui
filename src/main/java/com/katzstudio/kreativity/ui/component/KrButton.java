@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrAlignment;
 import com.katzstudio.kreativity.ui.KrAlignmentTool;
-import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrRectangles;
 import com.katzstudio.kreativity.ui.event.KrEnterEvent;
 import com.katzstudio.kreativity.ui.event.KrExitEvent;
@@ -45,7 +44,6 @@ public class KrButton extends KrWidget {
     public KrButton(String text) {
         setText(text);
         setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrButton.class));
-        setPadding(new KrPadding(5, 4));
         setTextAlignment(KrAlignment.MIDDLE_CENTER);
         setSize(calculatePreferredSize());
     }
