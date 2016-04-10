@@ -51,6 +51,10 @@ public class KrFlowLayout implements KrLayout {
     public void setGeometry(Rectangle geometry) {
         KrSizePolicyModel sizePolicyModel;
 
+        if (widgets.isEmpty()) {
+            return;
+        }
+
         if (orientation == HORIZONTAL) {
             sizePolicyModel = new KrSizePolicyModel(widgets.stream()
                     .map(w -> new KrUnifiedSize(w.getPreferredSize().x, 1))

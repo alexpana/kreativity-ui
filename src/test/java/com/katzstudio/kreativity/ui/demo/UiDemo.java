@@ -9,7 +9,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrCanvas;
+import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
+import com.katzstudio.kreativity.ui.KrOrientation;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSizePolicyModel;
+import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItem;
@@ -18,7 +26,11 @@ import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.icon.KrFontAwesomeIcon;
 import com.katzstudio.kreativity.ui.icon.KrIcon;
-import com.katzstudio.kreativity.ui.layout.*;
+import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
+import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
+import com.katzstudio.kreativity.ui.layout.KrCardLayout;
+import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
+import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
@@ -29,7 +41,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.gl;
-import static com.badlogic.gdx.graphics.GL20.*;
+import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
+import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
@@ -91,18 +107,28 @@ public class UiDemo extends Game {
             }
         });
 
-        canvas.getRootPanel().add(createButtons());
-        canvas.getRootPanel().add(createGridLayout());
-        canvas.getRootPanel().add(createCheckbox());
-        canvas.getRootPanel().add(createHorizontalFlowLayoutPanel());
-        canvas.getRootPanel().add(createVerticalFlowLayoutPanel());
-        canvas.getRootPanel().add(createBorderLayoutPanel());
-        canvas.getRootPanel().add(createScrollBarsPanel());
-        canvas.getRootPanel().add(createScrollPanel());
-        canvas.getRootPanel().add(createSplitPanel());
-        canvas.getRootPanel().add(createTableView());
-        canvas.getRootPanel().add(createStackLayout());
-        canvas.getRootPanel().add(createSandbox());
+        KrDemoPanel demoPanel = new KrDemoPanel();
+
+        canvas.getRootPanel().setLayout(new KrBorderLayout());
+        canvas.getRootPanel().add(demoPanel, KrBorderLayout.Constraint.CENTER);
+
+
+        demoPanel.addChild(createButtons(), 0);
+        demoPanel.addChild(createGridLayout(), 0);
+        demoPanel.addChild(createCheckbox(), 0);
+
+        demoPanel.addChild(createHorizontalFlowLayoutPanel(), 1);
+        demoPanel.addChild(createVerticalFlowLayoutPanel(), 1);
+        demoPanel.addChild(createBorderLayoutPanel(), 1);
+
+        demoPanel.addChild(createScrollBarsPanel(), 2);
+        demoPanel.addChild(createScrollPanel(), 2);
+        demoPanel.addChild(createTableView(), 2);
+        demoPanel.addChild(createStackLayout(), 2);
+
+        demoPanel.addChild(createSplitPanel(), 3);
+
+//        canvas.getRootPanel().add(createSandbox());
     }
 
     private KrWidget createSandbox() {
@@ -202,7 +228,7 @@ public class UiDemo extends Game {
         wrapper.add(cardSelector);
         wrapper.add(layoutContainer);
 
-        wrapper.setGeometry(190, 380, 180, 100);
+        wrapper.setPreferredHeight(100);
 
         return wrapper;
     }
@@ -247,7 +273,7 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(listView);
-        wrapper.setGeometry(385, 260, 160, 120);
+        wrapper.setPreferredHeight(120);
         return wrapper;
     }
 
@@ -258,12 +284,6 @@ public class UiDemo extends Game {
         label.setForeground(lightGray);
         label.setName("list_view.label");
         label.setGeometry(0, 0, 60, 20);
-
-//        KrListView listView = new KrListView(model);
-//        listView.setGeometry(0, 20, 160, 100);
-//        listView.getSelectionModel().addSelectionListener((oldSelection, newSelection) ->
-//                System.out.println("newSelection = " + newSelection));
-//        listView.addDoubleClickListener(itemIndex -> System.out.println("2x clicked itemIndex: " + itemIndex));
 
         KrTableView.KrTableColumnModel columnModel = new KrTableView.KrTableColumnModel() {
             private List<String> columns = Arrays.asList("Col 0", "Col 1", "Col 2");
@@ -317,10 +337,9 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(table);
-        wrapper.setGeometry(385, 260, 160, 120);
+        wrapper.setPreferredHeight(120);
         return wrapper;
     }
-
 
     private KrPanel createCheckbox() {
         KrPanel wrapper = new KrPanel();
@@ -339,7 +358,7 @@ public class UiDemo extends Game {
         wrapper.add(label);
         wrapper.add(checkboxA);
 
-        wrapper.setGeometry(10, 250, 160, 50);
+        wrapper.setPreferredHeight(50);
         return wrapper;
     }
 
@@ -360,84 +379,9 @@ public class UiDemo extends Game {
             }
         });
 
-//        button.addListener(() -> {
-//            Runnable timerAction = () -> System.out.println("One second has passed");
-//            KrTimer timer = new KrTimer(1.0f, timerAction);
-//            timer.start();
-//        });
-
-//        final KrUpdateListener updateListener = new KrUpdateListener() {
-//            private final Random random = new Random();
-//
-//            @Override
-//            public void update(float deltaSeconds) {
-//                button.setText(createRandomText(10));
-//            }
-//
-//            private String createRandomText(int i) {
-//                StringBuilder builder = new StringBuilder();
-//                while (i > 0) {
-//                    builder.append((char) ('a' + random.nextInt(24)));
-//                    i -= 1;
-//                }
-//                return builder.toString();
-//            }
-//        };
-//
-//        button.addListener(
-//                new KrButton.KrButtonListener() {
-//                    boolean toggle = false;
-//
-//                    @Override
-//                    public void clicked() {
-//                        if (!toggle) {
-//                            getDefaultToolkit().registerUpdateListener(updateListener);
-//                            toggle = true;
-//                        } else {
-//                            getDefaultToolkit().unregisterUpdateListener(updateListener);
-//                            toggle = false;
-//                        }
-//                    }
-//                });
-//
-//        KrTimer timer = new KrTimer(0, 0.1f, new Runnable() {
-//            private final Random random = new Random();
-//
-//            @Override
-//            public void run() {
-//                button.setText(createRandomText(10));
-//            }
-//
-//            private String createRandomText(int i) {
-//
-//                StringBuilder builder = new StringBuilder();
-//                while (i > 0) {
-//                    builder.append((char) ('a' + random.nextInt(24)));
-//                    i -= 1;
-//                }
-//                return builder.toString();
-//            }
-//        });
-//
-//        button.addListener(new KrButton.KrButtonListener() {
-//            private boolean toggle = false;
-//            @Override
-//            public void clicked() {
-//                if (!toggle) {
-//                    timer.start();
-//                } else {
-//                    timer.stop();
-//                }
-//                toggle = !toggle;
-//            }
-//        });
-
         final KrMenu menu = createMenu();
 
         button.addListener(() -> {
-//            button.setOpacity(0);
-//            animations().setOpacity(button, 1)
-//                    .onFinish(() -> System.out.println("Finished animation"));
             menu.showAt(getDefaultToolkit().getInputSource().getMousePosition());
         });
 
@@ -477,7 +421,7 @@ public class UiDemo extends Game {
         panel.add(toggleButton);
         panel.add(groupLabel);
         panel.add(buttonGroup);
-        panel.setGeometry(10, 10, 160, 140);
+        panel.setPreferredHeight(140);
 
         return panel;
     }
@@ -498,7 +442,7 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(splitPanel);
-        wrapper.setGeometry(560, 10, 150, 320);
+        wrapper.setPreferredHeight(320);
 
         return wrapper;
     }
@@ -517,7 +461,7 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(scrollPanel);
-        wrapper.setGeometry(385, 140, 160, 120);
+        wrapper.setPreferredHeight(120);
 
         return wrapper;
     }
@@ -536,7 +480,7 @@ public class UiDemo extends Game {
         wrapper.add(verticalScrollBarPanel);
         wrapper.add(horizontalScrollBarPanel);
 
-        wrapper.setGeometry(385, 10, 160, 120);
+        wrapper.setPreferredHeight(120);
 
         return wrapper;
     }
@@ -746,7 +690,7 @@ public class UiDemo extends Game {
         form.add(formLabel);
         form.add(fields);
 
-        form.setGeometry(10, 150, 1200, 110);
+        form.setPreferredHeight(110);
 
         return form;
     }
@@ -788,5 +732,36 @@ public class UiDemo extends Game {
     public void resize(int width, int height) {
         gl.glViewport(0, 0, width, height);
         canvas.setSize(width, height);
+    }
+
+    /**
+     * A container panel that lays out it's children in 4 columns.
+     */
+    private class KrDemoPanel extends KrPanel {
+
+        private static final int COLUMN_COUNT = 4;
+
+        private KrPanel[] columns = new KrPanel[COLUMN_COUNT];
+
+        public KrDemoPanel() {
+            KrGridLayout layout = new KrGridLayout(COLUMN_COUNT, 4, 4);
+            setLayout(layout);
+            setName("demo_panel");
+            for (int i = 0; i < COLUMN_COUNT; ++i) {
+                KrPanel column = new KrPanel(new KrFlowLayout(KrOrientation.VERTICAL));
+                column.setBackground(Color.RED);
+                column.setName("demo_panel.column_" + i);
+                column.setPreferredSize(2000, 2000);
+                columns[i] = column;
+                add(column);
+            }
+        }
+
+        public void addChild(KrWidget child, int columnId) {
+            if (columnId >= COLUMN_COUNT) {
+                throw new IllegalArgumentException("Column id out of bounds.");
+            }
+            columns[columnId].add(child);
+        }
     }
 }

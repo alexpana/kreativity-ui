@@ -6,8 +6,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.katzstudio.kreativity.ui.*;
-import com.katzstudio.kreativity.ui.event.*;
+import com.katzstudio.kreativity.ui.KrCanvas;
+import com.katzstudio.kreativity.ui.KrCursor;
+import com.katzstudio.kreativity.ui.KrMeasuredString;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
+import com.katzstudio.kreativity.ui.event.KrEnterEvent;
+import com.katzstudio.kreativity.ui.event.KrEvent;
+import com.katzstudio.kreativity.ui.event.KrExitEvent;
+import com.katzstudio.kreativity.ui.event.KrFocusEvent;
+import com.katzstudio.kreativity.ui.event.KrKeyEvent;
+import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
@@ -24,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.katzstudio.kreativity.ui.KrRectangles.rectangles;
+import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
  * Base class for all Kreativity UI Components
@@ -116,7 +127,7 @@ public class KrWidget implements KrUpdateListener {
      */
     public KrWidget(String name) {
         this.name = name;
-        setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrWidget.class));
+        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrWidget.class));
     }
 
     /**
@@ -190,6 +201,13 @@ public class KrWidget implements KrUpdateListener {
     public void setBackground(Drawable background) {
         ensureUniqueStyle();
         style.background = background;
+    }
+
+    /**
+     * Sets the background color of the widget.
+     */
+    public void setBackground(Color background) {
+        setBackground(getDefaultToolkit().getDrawable(background));
     }
 
     /**
@@ -378,24 +396,23 @@ public class KrWidget implements KrUpdateListener {
     /**
      * Sets the size of the widget. This size has no connection to the min / max / preferred sizes.
      *
-     * @param w the new width
-     * @param h the new height
+     * @param size the new widget size
      */
-    public void setSize(float w, float h) {
-        if (this.width != w || this.height != h) {
-            this.width = w;
-            this.height = h;
-            invalidate();
-        }
+    public void setSize(Vector2 size) {
+        setSize(size.x, size.y);
     }
 
     /**
      * Sets the size of the widget. This size has no connection to the min / max / preferred sizes.
      *
-     * @param size the new widget size
+     * @param w the new width
+     * @param h the new height
      */
-    public void setSize(Vector2 size) {
-        setSize(size.x, size.y);
+    public void setSize(float w, float h) {
+        if (this.width != w || this.height != h) {
+            setGeometry(x, y, w, h);
+            invalidate();
+        }
     }
 
     /**
@@ -693,10 +710,22 @@ public class KrWidget implements KrUpdateListener {
         return getPreferredSize().y;
     }
 
+    public void setPreferredSize(float preferredWidth, float preferredHeight) {
+        if (preferredSize == null) {
+            preferredSize = new Vector2(preferredWidth, preferredHeight);
+        } else {
+            preferredSize.x = preferredWidth;
+            preferredSize.y = preferredHeight;
+        }
+    }
+
     /**
      * Sets the preferred width of the widget.
      */
     public void setPreferredWidth(float preferredWidth) {
+        if (preferredSize == null) {
+            preferredSize = calculatePreferredSize();
+        }
         setPreferredSize(new Vector2(preferredWidth, preferredSize.y));
     }
 
@@ -704,6 +733,9 @@ public class KrWidget implements KrUpdateListener {
      * Sets the preferred height of the widget.
      */
     public void setPreferredHeight(float preferredHeight) {
+        if (preferredSize == null) {
+            preferredSize = calculatePreferredSize();
+        }
         setPreferredSize(new Vector2(preferredSize.x, preferredHeight));
     }
 
