@@ -3,15 +3,12 @@ package com.katzstudio.kreativity.ui.layout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrOrientation;
-import com.katzstudio.kreativity.ui.KrSizePolicyModel;
-import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.component.KrWidget;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
@@ -49,33 +46,14 @@ public class KrFlowLayout implements KrLayout {
 
     @Override
     public void setGeometry(Rectangle geometry) {
-        KrSizePolicyModel sizePolicyModel;
-
         if (widgets.isEmpty()) {
             return;
         }
-
-        if (orientation == HORIZONTAL) {
-            sizePolicyModel = new KrSizePolicyModel(widgets.stream()
-                    .map(w -> new KrUnifiedSize(w.getPreferredSize().x, 1))
-                    .collect(Collectors.toList()));
-        } else {
-            sizePolicyModel = new KrSizePolicyModel(widgets.stream()
-                    .map(w -> new KrUnifiedSize(w.getPreferredSize().y, 1))
-                    .collect(Collectors.toList()));
-        }
-
-        float widgetAvailableSpace = orientation == HORIZONTAL ?
-                geometry.getWidth() - (getCols() + 1) * horizontalPadding :
-                geometry.getHeight() - (getRows() + 1) * verticalPadding;
-
-        List<Integer> sizes = sizePolicyModel.getIntSizes(widgetAvailableSpace);
 
         float cellX = horizontalPadding + geometry.x;
         float cellY = verticalPadding + geometry.y;
         float cellHeight = 0;
         float cellWidth = 0;
-        int widgetIndex = 0;
 
         if (orientation == HORIZONTAL) {
             cellHeight = geometry.getHeight() - 2 * verticalPadding;
@@ -85,14 +63,13 @@ public class KrFlowLayout implements KrLayout {
 
         for (KrWidget widget : widgets) {
             if (orientation == HORIZONTAL) {
-                cellWidth = sizes.get(widgetIndex);
+                cellWidth = widget.getPreferredWidth();
             } else {
-                cellHeight = sizes.get(widgetIndex);
+                cellHeight = widget.getPreferredHeight();
             }
 
             layoutInsideCell(widget, new Rectangle(cellX, cellY, cellWidth, cellHeight));
 
-            widgetIndex += 1;
             if (orientation == HORIZONTAL) {
                 cellX += cellWidth + horizontalPadding;
             } else {
