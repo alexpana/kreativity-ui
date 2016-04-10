@@ -50,6 +50,8 @@ import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.CENTER;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.NORTH;
 
 /**
  * Demo / testing application.
@@ -120,11 +122,11 @@ public class UiDemo extends Game {
         demoPanel.addChild(createHorizontalFlowLayoutPanel(), 1);
         demoPanel.addChild(createVerticalFlowLayoutPanel(), 1);
         demoPanel.addChild(createBorderLayoutPanel(), 1);
+        demoPanel.addChild(createCardLayout(), 1);
 
         demoPanel.addChild(createScrollBarsPanel(), 2);
         demoPanel.addChild(createScrollPanel(), 2);
         demoPanel.addChild(createTableView(), 2);
-        demoPanel.addChild(createStackLayout(), 2);
 
         demoPanel.addChild(createSplitPanel(), 3);
 
@@ -172,7 +174,7 @@ public class UiDemo extends Game {
         KrToolkit toolkit = getDefaultToolkit();
 
         KrPopup popup = new KrPopup();
-        KrWidget stackLayout = createStackLayout();
+        KrWidget stackLayout = createCardLayout();
         stackLayout.ensureUniqueStyle();
         stackLayout.getStyle().background = toolkit.getDrawable(toolkit.getSkin().getColor(KrSkin.ColorKey.BACKGROUND_DARK));
         stackLayout.setPreferredSize(new Vector2(180, 100));
@@ -181,7 +183,7 @@ public class UiDemo extends Game {
         return popup;
     }
 
-    private KrWidget createStackLayout() {
+    private KrWidget createCardLayout() {
         KrPanel wrapper = new KrPanel();
 
         KrLabel titleLabel = new KrLabel("Card Layout");
@@ -391,7 +393,7 @@ public class UiDemo extends Game {
         toggleButton.setIcon(new KrFontAwesomeIcon(KrFontAwesomeGlyph.PLUS));
         toggleButton.addToggleListener(active -> {
             if (active) {
-                canvas.getTooltipManager().showCustomTooltip(createDummyContent());
+                canvas.getTooltipManager().showCustomTooltip(createDummyContent("Dummy tooltip"));
             } else {
                 canvas.getTooltipManager().stopShowingCustomTooltip();
             }
@@ -434,9 +436,9 @@ public class UiDemo extends Game {
         label.setGeometry(0, 0, 150, 20);
 
         KrSplitPanel splitPanel = new KrSplitPanel();
-        splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
-        splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
-        splitPanel.add(createDummyContent(), new KrUnifiedSize(60, 1));
+        splitPanel.add(createDummyContent("Top Panel"), new KrUnifiedSize(60, 1));
+        splitPanel.add(createDummyContent("Middle Panel"), new KrUnifiedSize(60, 1));
+        splitPanel.add(createDummyContent("Bottom Panel"), new KrUnifiedSize(60, 1));
 
         splitPanel.setGeometry(0, 20, 150, 300);
 
@@ -454,7 +456,7 @@ public class UiDemo extends Game {
         label.setForeground(lightGray);
         label.setGeometry(0, 0, 150, 20);
 
-        KrWidget panel = createDummyContent();
+        KrWidget panel = createDummyContent("DUMMY");
         panel.setPreferredSize(new Vector2(120, 200));
         KrScrollPanel scrollPanel = new KrScrollPanel(panel);
         scrollPanel.setGeometry(0, 20, 160, 90);
@@ -556,7 +558,7 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(panel);
-        wrapper.setGeometry(190, 10, 180, 60);
+        wrapper.setPreferredHeight(60);
         return wrapper;
     }
 
@@ -591,7 +593,7 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(panel);
-        wrapper.setGeometry(190, 80, 180, 140);
+        wrapper.setPreferredHeight(140);
 
         return wrapper;
     }
@@ -637,7 +639,7 @@ public class UiDemo extends Game {
         centerWidget.setBackground(darkerGray);
         centerWidget.setPreferredSize(new Vector2(100, 20));
 
-        panel.add(topWidget, KrBorderLayout.Constraint.NORTH);
+        panel.add(topWidget, NORTH);
         panel.add(bottomWidget, KrBorderLayout.Constraint.SOUTH);
         panel.add(leftWidget, KrBorderLayout.Constraint.WEST);
         panel.add(rightWidget, KrBorderLayout.Constraint.EAST);
@@ -647,7 +649,7 @@ public class UiDemo extends Game {
 
         wrapper.add(label);
         wrapper.add(panel);
-        wrapper.setGeometry(190, 230, 180, 140);
+        wrapper.setPreferredHeight(140);
 
         return wrapper;
     }
@@ -667,56 +669,42 @@ public class UiDemo extends Game {
 
         KrWidget usernameLabel = new KrLabel("Username");
         usernameLabel.setName("grid_layout.label.username");
+
         KrWidget usernameEdit = new KrTextField();
         usernameEdit.setName("grid_layout.textfield.username");
+
         KrWidget weight = new KrLabel("Weight");
         weight.setName("grid_layout.label.weight");
         KrSpinner weightEdit = new KrSpinner();
         weightEdit.setName("grid_layout.spinner.weight");
-        KrWidget weightClone = new KrLabel("Weight 2");
-        weightClone.setName("grid_layout.label.weight_clone");
-        KrSpinner weightEditClone = new KrSpinner();
-        weightEditClone.setName("grid_layout.spinner.weight_clone");
-        weightEditClone.setSpinnerModel(weightEdit.getSpinnerModel());
+
+//        KrWidget weightClone = new KrLabel("Weight 2");
+//        weightClone.setName("grid_layout.label.weight_clone");
+//        KrSpinner weightEditClone = new KrSpinner();
+//        weightEditClone.setName("grid_layout.spinner.weight_clone");
+//        weightEditClone.setSpinnerModel(weightEdit.getSpinnerModel());
 
         fields.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         fields.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
         fields.add(weight, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         fields.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        fields.add(weightClone, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-        fields.add(weightEditClone, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
+//        fields.add(weightClone, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
+//        fields.add(weightEditClone, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
         fields.setGeometry(new Vector2(0, 20), fields.getMinSize());
 
         form.add(formLabel);
         form.add(fields);
 
-        form.setPreferredHeight(110);
+        form.setPreferredHeight(100);
 
         return form;
     }
 
-    public KrPanel createDummyContent() {
+    public KrPanel createDummyContent(String text) {
         KrPanel panel = new KrPanel();
-        panel.setBackground(darkGray);
-
-        panel.setLayout(new KrFlowLayout(VERTICAL, 5, 5));
-
-        KrLabel labelA = new KrLabel("First Row");
-        labelA.setBackground(darkerGray);
-        labelA.setName("flowlayoutV.labelA");
-
-        KrLabel labelB = new KrLabel("Second Row");
-        labelB.setBackground(darkerGray);
-        labelB.setName("flowlayoutV.labelB");
-
-        KrLabel labelC = new KrLabel("Third Row");
-        labelC.setBackground(darkerGray);
-        labelC.setName("flowlayoutV.labelC");
-
-        panel.add(labelA);
-        panel.add(labelB);
-        panel.add(labelC);
-
+        panel.setBackground(darkerGray);
+        panel.setLayout(new KrBorderLayout());
+        panel.add(new KrLabel(text), CENTER);
         return panel;
     }
 
@@ -749,7 +737,6 @@ public class UiDemo extends Game {
             setName("demo_panel");
             for (int i = 0; i < COLUMN_COUNT; ++i) {
                 KrPanel column = new KrPanel(new KrFlowLayout(KrOrientation.VERTICAL));
-                column.setBackground(Color.RED);
                 column.setName("demo_panel.column_" + i);
                 column.setPreferredSize(2000, 2000);
                 columns[i] = column;
