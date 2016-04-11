@@ -14,7 +14,7 @@ public class KrComboBoxStyle extends KrWidgetStyle {
     public KrComboBoxStyle(KrComboBoxStyle other) {
     }
 
-    public KrComboBoxStyle copy(KrComboBoxStyle other) {
+    public KrComboBoxStyle copy() {
         return new KrComboBoxStyle(this);
     }
 }

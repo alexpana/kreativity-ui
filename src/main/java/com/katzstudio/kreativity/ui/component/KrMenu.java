@@ -15,6 +15,7 @@ import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
@@ -55,6 +56,11 @@ public class KrMenu extends KrWidget {
         updateItems();
     }
 
+    public void addMenuItems(Collection<KrMenuItem> menuItems) {
+        this.menuItems.addAll(menuItems);
+        updateItems();
+    }
+
     @SuppressWarnings("unused")
     public void removeMenuItem(KrMenuItem item) {
         menuItems.remove(item);
@@ -62,9 +68,18 @@ public class KrMenu extends KrWidget {
         updateItems();
     }
 
+    public void clearMenuItems() {
+        menuItems.clear();
+        updateItems();
+    }
+
     public void showAt(Vector2 position) {
+        showAt((int) position.x, (int) position.y);
+    }
+
+    public void showAt(int x, int y) {
         popup.setSize(this.getPreferredSize());
-        popup.show(position);
+        popup.show(x, y);
     }
 
     public void hide() {

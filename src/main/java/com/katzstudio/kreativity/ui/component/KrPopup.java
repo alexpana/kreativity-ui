@@ -7,6 +7,9 @@ import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.CENTER;
 
 /**
@@ -15,6 +18,8 @@ import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.CENT
 public class KrPopup extends KrWidget {
 
     private Vector2 tmpVec = new Vector2();
+
+    private List<KrPopupListener> listeners = new ArrayList<>();
 
     public KrPopup() {
         setLayout(new KrBorderLayout(0, 0));
@@ -36,15 +41,6 @@ public class KrPopup extends KrWidget {
         show(screenPosition.x, screenPosition.y);
     }
 
-    public void show(float x, float y) {
-        setVisible(true);
-        setPosition(x, y);
-        if (this.getParent() == null) {
-            KrToolkit.getDefaultToolkit().getCanvas().getOverlayPanel().add(this);
-        }
-        requestFocus();
-    }
-
     @Override
     protected void focusLostEvent(KrFocusEvent event) {
         super.focusLostEvent(event);
@@ -52,7 +48,46 @@ public class KrPopup extends KrWidget {
         event.accept();
     }
 
+    public void show(float x, float y) {
+        setVisible(true);
+        setPosition(x, y);
+        if (this.getParent() == null) {
+            KrToolkit.getDefaultToolkit().getCanvas().getOverlayPanel().add(this);
+        }
+        requestFocus();
+        notifyPopupShown();
+    }
+
     public void hide() {
         this.setVisible(false);
+        notifyPopupHidden();
+    }
+
+    public void addListener(KrPopupListener popupListener) {
+        listeners.add(popupListener);
+    }
+
+    public void removeListener(KrPopupListener popupListener) {
+        listeners.remove(popupListener);
+    }
+
+    protected void notifyPopupShown() {
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < listeners.size(); ++i) {
+            listeners.get(i).popupShown();
+        }
+    }
+
+    protected void notifyPopupHidden() {
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < listeners.size(); ++i) {
+            listeners.get(i).popupHidden();
+        }
+    }
+
+    public interface KrPopupListener {
+        void popupShown();
+
+        void popupHidden();
     }
 }

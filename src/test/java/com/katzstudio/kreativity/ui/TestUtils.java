@@ -3,8 +3,10 @@ package com.katzstudio.kreativity.ui;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
+import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,6 +39,7 @@ public class TestUtils {
         when(skin.getStyle(KrScrollBar.class)).thenReturn(createScrollBarStyle());
         when(skin.getStyle(KrListView.class)).thenReturn(createItemViewStyle());
         when(skin.getStyle(KrTableView.class)).thenReturn(createItemViewStyle());
+        when(skin.getStyle(KrComboBox.class)).thenReturn(createComboBoxStyle());
     }
 
     public static Collection<Object[]> getAllWidgets() {
@@ -59,7 +62,8 @@ public class TestUtils {
                 {"KrToggleButton", new KrToggleButton("")},
                 {"KrPopup", new KrPopup()},
                 {"KrMenu", menu},
-                {"KrMenuItem", menuItem}
+                {"KrMenuItem", menuItem},
+                {"KrComboBox", new KrComboBox<>()}
         });
     }
 
@@ -71,6 +75,8 @@ public class TestUtils {
         KrBackend backend = mock(KrBackend.class);
         when(backend.getFontMetrics()).thenReturn(fontMetricsMock);
         when(backend.createColorDrawable(any())).thenReturn(mock(Drawable.class));
+        when(backend.getRenderer()).thenReturn(mock(KrRenderer.class));
+        when(backend.getInputSource()).thenReturn(mock(KrInputSource.class));
         return backend;
     }
 }

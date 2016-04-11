@@ -96,6 +96,11 @@ public class TestObjectFactory {
         return itemViewStyle;
     }
 
+    public static KrComboBoxStyle createComboBoxStyle() {
+        KrComboBoxStyle comboBoxStyle = new KrComboBoxStyle(createWidgetStyle());
+        return comboBoxStyle;
+    }
+
     public static KrCanvas createCanvas() {
         return new KrCanvas(mock(KrInputSource.class), mock(KrRenderer.class), 100, 100);
     }
