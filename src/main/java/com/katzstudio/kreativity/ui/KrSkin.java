@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.katzstudio.kreativity.ui.component.KrButton;
 import com.katzstudio.kreativity.ui.component.KrButtonGroup;
 import com.katzstudio.kreativity.ui.component.KrCheckbox;
+import com.katzstudio.kreativity.ui.component.KrComboBox;
 import com.katzstudio.kreativity.ui.component.KrLabel;
 import com.katzstudio.kreativity.ui.component.KrListView;
 import com.katzstudio.kreativity.ui.component.KrPanel;
@@ -210,6 +211,7 @@ public class KrSkin {
 
         KrComboBoxStyle comboBoxStyle = new KrComboBoxStyle(widgetStyle);
         comboBoxStyle.background = getDrawable("combobox.background_normal");
+        registerStyle(KrComboBox.class, comboBoxStyle);
     }
 
     public <S extends KrWidgetStyle> void registerStyle(Class<? extends KrWidget> widgetClass, S style) {

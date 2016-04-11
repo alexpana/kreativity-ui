@@ -1,6 +1,9 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.model.KrValueModel;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +16,29 @@ import java.util.List;
  * and can pop up a list of selectable items.
  */
 public class KrComboBox<T> extends KrWidget {
-    private KrMenu popupMenu;
 
-    private List<T> elements = new ArrayList<>();
+	private KrMenu popupMenu;
 
-    private KrValueModel<T> model;
+	private List<T> elements = new ArrayList<>();
+
+	private KrValueModel<T> model;
+
+	public KrComboBox() {
+		setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrComboBox.class));
+	}
+
+	public void setValues(List<T> values) {
+		elements.clear();
+		elements.addAll(values);
+	}
+
+	@Override
+	public Vector2 calculatePreferredSize() {
+		return new Vector2(100, 21);
+	}
+
+	@Override
+	protected void drawSelf(KrRenderer renderer) {
+		super.drawSelf(renderer);
+	}
 }

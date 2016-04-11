@@ -130,11 +130,11 @@
             "split": [0, 0, 0, 0]
         },
         "combobox.background_active": {
-            "region": [114, 45, 24, 20],
+            "region": [114, 45, 24, 21],
             "split": [4, 16, 2, 2]
         },
         "combobox.background_normal": {
-            "region": [141, 45, 24, 20],
+            "region": [141, 45, 24, 21],
             "split": [4, 16, 2, 2]
         }
     }
