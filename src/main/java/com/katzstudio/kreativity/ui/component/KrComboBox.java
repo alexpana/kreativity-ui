@@ -37,7 +37,7 @@ public class KrComboBox<T> extends KrWidget {
         setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrComboBox.class));
         popupMenu = new KrMenu();
         popupMenu.addMenuListener(this::onSelectionChange);
-        popupMenu.getPopup().setPopupParent(this);
+        popupMenu.getPopup().setInvoker(this);
 
         model = new KrAbstractValueModel<>(null);
     }

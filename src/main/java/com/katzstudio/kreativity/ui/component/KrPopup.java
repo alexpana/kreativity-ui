@@ -26,18 +26,12 @@ public class KrPopup extends KrWidget {
     private List<KrPopupListener> listeners = new ArrayList<>();
 
     /**
-     * The popup parent is the widget that requested the popup to show.
-     * When the popup parent receives focus, the popup remains visible.
+     * The invoker is the widget that requested the popup to show.
+     * When the invoker receives focus, the popup remains visible.
      */
-    @Setter private KrWidget popupParent;
+    @Setter private KrWidget invoker;
 
     public KrPopup() {
-        this(null);
-    }
-
-    public KrPopup(KrWidget popupParent) {
-        this.popupParent = popupParent;
-
         setLayout(new KrBorderLayout(0, 0));
         setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrWidget.class));
         setPadding(new KrPadding(0));
@@ -73,7 +67,7 @@ public class KrPopup extends KrWidget {
     protected void focusLostEvent(KrFocusEvent event) {
         super.focusLostEvent(event);
 
-        if (!KrCanvas.isAncestor(event.getNewFocusHolder(), this) && !(popupParent != null && event.getNewFocusHolder() == popupParent)) {
+        if (!KrCanvas.isAncestor(event.getNewFocusHolder(), this) && !(invoker != null && event.getNewFocusHolder() == invoker)) {
             hide();
             event.accept();
         }
