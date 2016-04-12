@@ -30,6 +30,8 @@ public class KrMenu extends KrWidget {
 
     private final List<KrMenuItem> menuItems = new ArrayList<>();
 
+    private final List<KrMenuListener> listeners = new ArrayList<>();
+
     private KrPopup popup;
 
     @Getter private Vector2 displayLocation = Vector2.Zero.cpy();
@@ -86,6 +88,10 @@ public class KrMenu extends KrWidget {
         popup.hide();
     }
 
+    public boolean isShowing() {
+        return popup.isVisible();
+    }
+
     private void updateItems() {
         removeAll();
         //noinspection ForLoopReplaceableByForEach
@@ -93,6 +99,20 @@ public class KrMenu extends KrWidget {
             add(menuItems.get(i));
         }
         popup.validate();
+    }
+
+    public void addMenuListener(KrMenuListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeMenuListener(KrMenuListener listener) {
+        listeners.remove(listener);
+    }
+
+    protected void notifyItemSelected(KrMenuItem selectedItem) {
+        for (int i = 0; i < listeners.size(); ++i) {
+            listeners.get(i).itemSelected(selectedItem);
+        }
     }
 
     public static class KrMenuItem extends KrWidget {
@@ -164,11 +184,19 @@ public class KrMenu extends KrWidget {
         protected void mouseReleasedEvent(KrMouseEvent event) {
             super.mouseReleasedEvent(event);
 
+            notifySelected();
+            parentMenu.hide();
+            event.accept();
+        }
+
+        private void notifySelected() {
             if (actionListener != null) {
                 actionListener.actionPerformed();
             }
-            parentMenu.hide();
-            event.accept();
+
+            if (parentMenu != null) {
+                parentMenu.notifyItemSelected(this);
+            }
         }
     }
 
@@ -202,5 +230,9 @@ public class KrMenu extends KrWidget {
             int y = (int) getHeight() / 2;
             renderer.drawLine(0, y, getWidth(), y);
         }
+    }
+
+    public interface KrMenuListener {
+        void itemSelected(KrMenuItem selectedItem);
     }
 }
