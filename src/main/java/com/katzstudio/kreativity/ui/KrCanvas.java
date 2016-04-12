@@ -257,6 +257,10 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         return findWidgetAt(rootPanel, x, y);
     }
 
+    public static KrWidget findWidgetAt(KrWidget root, Vector2 screenPosition) {
+        return findWidgetAt(root, screenPosition.x, screenPosition.y);
+    }
+
     /**
      * Finds the topmost widget (a leaf in the hierarchy) whose geometry contains the requested screen coordinates.
      *
@@ -277,8 +281,21 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
         return root;
     }
 
-    public static KrWidget findWidgetAt(KrWidget root, Vector2 screenPosition) {
-        return findWidgetAt(root, screenPosition.x, screenPosition.y);
+    public static boolean isAncestor(KrWidget child, KrWidget ancestor) {
+        if (child == ancestor) {
+            return true;
+        }
+
+        KrWidget parent = child.getParent();
+
+        while (parent != null) {
+            if (parent == ancestor) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+
+        return false;
     }
 
     /**
@@ -321,13 +338,16 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
             throw new IllegalArgumentException("Cannot focus a widget that doesn't belong to this canvas.");
         }
 
+        KrWidget oldFocusHolder = keyboardFocusHolder;
+        KrWidget newFocusHolder = widget;
+
         if (keyboardFocusHolder != widget) {
             if (keyboardFocusHolder != null) {
-                dispatchEventWithoutBubbling(keyboardFocusHolder, new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST));
+                dispatchEventWithoutBubbling(keyboardFocusHolder, new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST, oldFocusHolder, newFocusHolder));
             }
 
             if (widget != null) {
-                dispatchEventWithoutBubbling(widget, new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED));
+                dispatchEventWithoutBubbling(widget, new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED, oldFocusHolder, newFocusHolder));
             }
             keyboardFocusHolder = widget;
             return true;

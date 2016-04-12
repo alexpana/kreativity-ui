@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A {@link KrListItemModel} is a convenience class that's specialized for {@link KrListView}
  */
-public class KrListItemModel<T> extends KrAbstractItemModel<T> {
+public class KrListItemModel<T> extends KrItemModel<T> {
 
     private final List<T> items = new ArrayList<>();
 

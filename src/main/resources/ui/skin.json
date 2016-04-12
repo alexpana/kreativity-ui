@@ -129,8 +129,8 @@
             "region": [1, 52, 18, 2],
             "split": [0, 0, 0, 0]
         },
-        "combobox.background_active": {
-            "region": [114, 45, 24, 21],
+        "combobox.background_pressed": {
+            "region": [115, 45, 24, 21],
             "split": [4, 16, 2, 2]
         },
         "combobox.background_normal": {

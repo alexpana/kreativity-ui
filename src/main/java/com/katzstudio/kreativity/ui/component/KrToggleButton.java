@@ -18,7 +18,7 @@ public class KrToggleButton extends KrButton {
 
     private final List<KrToggleButtonListener> listeners = new ArrayList<>();
 
-    @Getter @Setter KrValueModel<Boolean> model = new KrValueModel.Default<>(false);
+    @Getter @Setter KrValueModel<Boolean> model = new KrValueModel.KrAbstractValueModel<>(false);
 
     public KrToggleButton(String text) {
         super(text);

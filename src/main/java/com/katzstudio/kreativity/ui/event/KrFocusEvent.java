@@ -1,5 +1,6 @@
 package com.katzstudio.kreativity.ui.event;
 
+import com.katzstudio.kreativity.ui.component.KrWidget;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,4 +18,8 @@ public class KrFocusEvent extends KrEvent {
     }
 
     @Getter private final Type type;
+
+    @Getter private final KrWidget oldFocusHolder;
+
+    @Getter private final KrWidget newFocusHolder;
 }

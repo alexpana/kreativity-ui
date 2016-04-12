@@ -184,6 +184,7 @@ public class KrSkin {
 
         KrComboBoxStyle comboBoxStyle = new KrComboBoxStyle(widgetStyle);
         comboBoxStyle.background = getDrawable("combobox.background_normal");
+        comboBoxStyle.pressedBackground = getDrawable("combobox.background_pressed");
         comboBoxStyle.padding = new KrPadding(4, 4, 4, 4);
         registerStyle(KrComboBox.class, comboBoxStyle);
     }

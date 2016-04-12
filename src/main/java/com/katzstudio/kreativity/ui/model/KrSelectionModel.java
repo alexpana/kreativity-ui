@@ -1,7 +1,7 @@
 package com.katzstudio.kreativity.ui.model;
 
 import com.katzstudio.kreativity.ui.component.KrListView;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
+import com.katzstudio.kreativity.ui.model.KrItemModel.KrModelIndex;
 import lombok.Getter;
 
 import java.util.ArrayList;

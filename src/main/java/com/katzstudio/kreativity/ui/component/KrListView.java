@@ -3,8 +3,8 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.component.renderer.KrCellRenderer;
 import com.katzstudio.kreativity.ui.component.renderer.KrDefaultCellRenderer;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
+import com.katzstudio.kreativity.ui.model.KrItemModel;
+import com.katzstudio.kreativity.ui.model.KrItemModel.KrModelIndex;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
@@ -14,11 +14,11 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrListView extends KrAbstractItemView {
 
-    public KrListView(KrAbstractItemModel model) {
+    public KrListView(KrItemModel model) {
         this(model, new KrDefaultCellRenderer());
     }
 
-    public KrListView(KrAbstractItemModel model, KrCellRenderer renderer) {
+    public KrListView(KrItemModel model, KrCellRenderer renderer) {
         super(model, renderer);
         setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrListView.class));
     }

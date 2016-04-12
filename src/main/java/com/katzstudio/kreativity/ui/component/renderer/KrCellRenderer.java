@@ -1,8 +1,8 @@
 package com.katzstudio.kreativity.ui.component.renderer;
 
 import com.katzstudio.kreativity.ui.component.KrWidget;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
+import com.katzstudio.kreativity.ui.model.KrItemModel;
+import com.katzstudio.kreativity.ui.model.KrItemModel.KrModelIndex;
 
 /**
  * The cell renderer generates components that are used to render various parts
@@ -20,10 +20,10 @@ public interface KrCellRenderer {
      * @param model the model holding the data
      * @return a widget used to render the cell that holds the data at the requested index
      */
-    KrWidget getComponent(KrModelIndex index, KrAbstractItemModel model, boolean isSelected);
+    KrWidget getComponent(KrModelIndex index, KrItemModel model, boolean isSelected);
 
     /**
      * Overloaded method which avoids creating model index objects
      */
-    KrWidget getComponent(int row, int col, KrModelIndex parent, KrAbstractItemModel model, boolean isSelected);
+    KrWidget getComponent(int row, int col, KrModelIndex parent, KrItemModel model, boolean isSelected);
 }

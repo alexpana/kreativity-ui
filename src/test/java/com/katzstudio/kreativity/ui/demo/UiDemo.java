@@ -20,7 +20,7 @@ import com.katzstudio.kreativity.ui.icon.KrFontAwesomeIcon;
 import com.katzstudio.kreativity.ui.icon.KrIcon;
 import com.katzstudio.kreativity.ui.layout.*;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
+import com.katzstudio.kreativity.ui.model.KrItemModel;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
@@ -289,7 +289,7 @@ public class UiDemo extends Game {
             }
         };
 
-        KrAbstractItemModel model = new KrAbstractItemModel() {
+        KrItemModel model = new KrItemModel() {
             private String[][] values = new String[20][3];
 
             {

@@ -32,7 +32,7 @@ public class KrSpinner extends KrTextField {
 
     private final List<EditListener> editListeners = new ArrayList<>();
 
-    @Getter @Setter private KrValueModel<Float> spinnerModel = new KrValueModel.Default<>(0.0f);
+    @Getter @Setter private KrValueModel<Float> spinnerModel = new KrValueModel.KrAbstractValueModel<>(0.0f);
 
     private boolean dragStarted;
 

@@ -128,7 +128,7 @@ public class InputListenerDispatchTest {
     @Test
     public void testFocusGainedListener() {
         KrFocusListener listener = mock(KrFocusListener.class);
-        KrFocusEvent event = new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED);
+        KrFocusEvent event = new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED, null, testObject);
 
         testObject.addFocusListener(listener);
         testObject.handle(event);
@@ -139,7 +139,7 @@ public class InputListenerDispatchTest {
     @Test
     public void testFocusLostListener() {
         KrFocusListener listener = mock(KrFocusListener.class);
-        KrFocusEvent event = new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST);
+        KrFocusEvent event = new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST, testObject, null);
 
         testObject.addFocusListener(listener);
         testObject.handle(event);

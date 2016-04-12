@@ -6,22 +6,22 @@ import com.katzstudio.kreativity.ui.component.renderer.KrCellRenderer;
 import com.katzstudio.kreativity.ui.component.renderer.KrDefaultCellRenderer;
 import com.katzstudio.kreativity.ui.component.renderer.KrDefaultTableHeaderRenderer;
 import com.katzstudio.kreativity.ui.component.renderer.KrTableHeaderRenderer;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
+import com.katzstudio.kreativity.ui.model.KrItemModel;
+import com.katzstudio.kreativity.ui.model.KrItemModel.KrModelIndex;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A {@link KrTableView} widget displays data stored in a {@link KrAbstractItemModel}
+ * A {@link KrTableView} widget displays data stored in a {@link KrItemModel}
  * using a table.
  */
 public class KrTableView extends KrAbstractItemView {
 
     public static final int ROW_HEIGHT = 20;
 
-    @Getter @Setter private KrAbstractItemModel model;
+    @Getter @Setter private KrItemModel model;
 
     @Getter @Setter private KrTableColumnModel columnModel;
 
@@ -29,11 +29,11 @@ public class KrTableView extends KrAbstractItemView {
 
     @Getter @Setter private KrTableHeaderRenderer headerRenderer = new KrDefaultTableHeaderRenderer();
 
-    public KrTableView(KrAbstractItemModel model) {
+    public KrTableView(KrItemModel model) {
         this(model, null);
     }
 
-    public KrTableView(KrAbstractItemModel model, KrTableColumnModel columnModel) {
+    public KrTableView(KrItemModel model, KrTableColumnModel columnModel) {
         super(model);
         this.model = model;
         this.columnModel = columnModel;

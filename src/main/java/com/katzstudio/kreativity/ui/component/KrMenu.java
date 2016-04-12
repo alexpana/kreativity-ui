@@ -32,7 +32,7 @@ public class KrMenu extends KrWidget {
 
     private final List<KrMenuListener> listeners = new ArrayList<>();
 
-    private KrPopup popup;
+    @Getter private KrPopup popup;
 
     @Getter private Vector2 displayLocation = Vector2.Zero.cpy();
 

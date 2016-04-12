@@ -31,11 +31,11 @@ public interface KrValueModel<T> {
      */
     void ephemeralChangesEnd();
 
-    class Default<T> implements KrValueModel<T> {
+    class KrAbstractValueModel<T> implements KrValueModel<T> {
 
         public T value;
 
-        public Default(T initialValue) {
+        public KrAbstractValueModel(T initialValue) {
             value = initialValue;
         }
 

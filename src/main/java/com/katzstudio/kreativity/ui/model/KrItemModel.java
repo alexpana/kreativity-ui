@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Inspired by Qt's QAbstractItemModel, the {@link KrAbstractItemModel} class can be used to
+ * Inspired by Qt's QAbstractItemModel, the {@link KrItemModel} class can be used to
  * represent both table and hierarchical values.
  *
  * @see <a href="http://doc.qt.io/qt-4.8/qabstractitemmodel.html#details">QAbstractItemModel Class</a>
  */
 @SuppressWarnings("WeakerAccess")
-public class KrAbstractItemModel<T> {
+public class KrItemModel<T> {
 
-    protected final List<Listener> listeners = new ArrayList<>();
+    protected final List<KrItemModelListener> listeners = new ArrayList<>();
 
     public T getValue(KrModelIndex index) {
         return getValue(index.row, index.column, index.parentIndex);
@@ -52,16 +52,16 @@ public class KrAbstractItemModel<T> {
         return 0;
     }
 
-    public void addListener(Listener listener) {
+    public void addListener(KrItemModelListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(Listener listener) {
+    public void removeListener(KrItemModelListener listener) {
         listeners.remove(listener);
     }
 
     protected void notifyDataChanged() {
-        listeners.forEach(Listener::dataChanged);
+        listeners.forEach(KrItemModelListener::dataChanged);
     }
 
     // TODO(alex): add support for adding / removing rows
@@ -97,7 +97,7 @@ public class KrAbstractItemModel<T> {
         }
     }
 
-    public interface Listener {
+    public interface KrItemModelListener {
         void dataChanged();
     }
 }

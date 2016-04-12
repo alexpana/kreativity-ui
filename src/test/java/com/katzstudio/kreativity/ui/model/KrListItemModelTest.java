@@ -1,6 +1,6 @@
 package com.katzstudio.kreativity.ui.model;
 
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel.KrModelIndex;
+import com.katzstudio.kreativity.ui.model.KrItemModel.KrModelIndex;
 import org.junit.Test;
 
 import java.util.Arrays;

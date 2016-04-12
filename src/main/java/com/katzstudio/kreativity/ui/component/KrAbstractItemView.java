@@ -8,7 +8,7 @@ import com.katzstudio.kreativity.ui.component.renderer.KrDefaultCellRenderer;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.layout.KrLayout;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
+import com.katzstudio.kreativity.ui.model.KrItemModel;
 import com.katzstudio.kreativity.ui.model.KrSelection;
 import com.katzstudio.kreativity.ui.model.KrSelectionModel;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
@@ -26,7 +26,7 @@ public abstract class KrAbstractItemView extends KrWidget {
 
     protected final static int ROW_HEIGHT = 20;
 
-    protected final KrAbstractItemModel model;
+    protected final KrItemModel model;
 
     protected final KrCellRenderer cellRenderer;
 
@@ -38,11 +38,11 @@ public abstract class KrAbstractItemView extends KrWidget {
 
     @Getter protected KrSelectionMode selectionMode = KrSelectionMode.EXTENDED;
 
-    public KrAbstractItemView(KrAbstractItemModel model) {
+    public KrAbstractItemView(KrItemModel model) {
         this(model, new KrDefaultCellRenderer());
     }
 
-    public KrAbstractItemView(KrAbstractItemModel model, KrCellRenderer renderer) {
+    public KrAbstractItemView(KrItemModel model, KrCellRenderer renderer) {
         this.model = model;
         this.cellRenderer = renderer;
 
@@ -78,7 +78,7 @@ public abstract class KrAbstractItemView extends KrWidget {
             return;
         }
 
-        KrAbstractItemModel.KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
+        KrItemModel.KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
         if (selectionMode == KrSelectionMode.SINGLE) {
             if (event.isCtrlDown() && selectionModel.getCurrentSelection().contains(itemIndex)) {
                 selectionModel.setSelection(KrSelection.EMPTY);
@@ -104,7 +104,7 @@ public abstract class KrAbstractItemView extends KrWidget {
     protected void mouseDoubleClickEvent(KrMouseEvent event) {
         super.mouseDoubleClickEvent(event);
 
-        KrAbstractItemModel.KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
+        KrItemModel.KrModelIndex itemIndex = findItemIndexAt(screenToLocal(event.getScreenPosition()));
         notifyItemDoubleClicked(itemIndex);
         event.accept();
     }
@@ -135,11 +135,11 @@ public abstract class KrAbstractItemView extends KrWidget {
         invalidate();
     }
 
-    public KrAbstractItemModel.KrModelIndex findItemIndexAt(Vector2 position) {
+    public KrItemModel.KrModelIndex findItemIndexAt(Vector2 position) {
         return findItemIndexAt((int) position.x, (int) position.y);
     }
 
-    abstract public KrAbstractItemModel.KrModelIndex findItemIndexAt(int x, int y);
+    abstract public KrItemModel.KrModelIndex findItemIndexAt(int x, int y);
 
     public void addDoubleClickListener(KrDoubleClickListener listener) {
         doubleClickListeners.add(listener);
@@ -149,7 +149,7 @@ public abstract class KrAbstractItemView extends KrWidget {
         doubleClickListeners.remove(listener);
     }
 
-    protected void notifyItemDoubleClicked(KrAbstractItemModel.KrModelIndex itemIndex) {
+    protected void notifyItemDoubleClicked(KrItemModel.KrModelIndex itemIndex) {
         doubleClickListeners.forEach(l -> l.itemDoubleClicked(itemIndex));
     }
 
@@ -181,6 +181,6 @@ public abstract class KrAbstractItemView extends KrWidget {
     }
 
     public interface KrDoubleClickListener {
-        void itemDoubleClicked(KrAbstractItemModel.KrModelIndex itemIndex);
+        void itemDoubleClicked(KrItemModel.KrModelIndex itemIndex);
     }
 }

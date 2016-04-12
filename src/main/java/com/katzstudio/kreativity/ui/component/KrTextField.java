@@ -34,7 +34,7 @@ public class KrTextField extends KrWidget {
 
     protected final KrTextDocument textDocument;
 
-    @Getter @Setter private KrValueModel<String> model = new KrValueModel.Default<>("");
+    @Getter @Setter private KrValueModel<String> model = new KrValueModel.KrAbstractValueModel<>("");
 
     private int textOffset;
 

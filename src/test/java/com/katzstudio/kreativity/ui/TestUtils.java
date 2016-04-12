@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.katzstudio.kreativity.ui.backend.KrBackend;
 import com.katzstudio.kreativity.ui.backend.KrInputSource;
 import com.katzstudio.kreativity.ui.component.*;
-import com.katzstudio.kreativity.ui.model.KrAbstractItemModel;
+import com.katzstudio.kreativity.ui.model.KrItemModel;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
 import java.util.Arrays;
@@ -55,8 +55,8 @@ public class TestUtils {
                 {"KrIconPanel", new KrIconPanel(KrFontAwesomeGlyph.FONT)},
                 {"KrTextField", new KrTextField()},
                 {"KrSpinner", new KrSpinner()},
-                {"KrListView", new KrListView(mock(KrAbstractItemModel.class))},
-                {"KrTableView", new KrTableView(mock(KrAbstractItemModel.class))},
+                {"KrListView", new KrListView(mock(KrItemModel.class))},
+                {"KrTableView", new KrTableView(mock(KrItemModel.class))},
                 {"KrPanel", new KrPanel()},
                 {"KrScrollBar", new KrScrollBar(KrOrientation.VERTICAL)},
                 {"KrToggleButton", new KrToggleButton("")},

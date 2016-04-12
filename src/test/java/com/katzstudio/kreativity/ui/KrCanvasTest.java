@@ -120,11 +120,11 @@ public class KrCanvasTest {
 
         canvas.requestFocus(widgetA);
 
-        verify(widgetA).handle(eq(new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED)));
+        verify(widgetA).handle(eq(new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED, null, widgetA)));
 
         canvas.requestFocus(widgetB);
-        verify(widgetA).handle(eq(new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST)));
-        verify(widgetB).handle(eq(new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED)));
+        verify(widgetA).handle(eq(new KrFocusEvent(KrFocusEvent.Type.FOCUS_LOST, widgetA, widgetB)));
+        verify(widgetB).handle(eq(new KrFocusEvent(KrFocusEvent.Type.FOCUS_GAINED, widgetA, widgetB)));
     }
 
     @Test
@@ -179,5 +179,23 @@ public class KrCanvasTest {
         second.setGeometry(8, 4, 10, 10);
 
         assertThat(KrCanvas.convertPointToScreen(new Vector2(4, 2), second), is(new Vector2(62, 56)));
+    }
+
+    @Test
+    public void testIsAncestor() throws Exception {
+        KrWidget ancestor = new KrWidget();
+        KrWidget childA = new KrWidget();
+        KrWidget childB = new KrWidget();
+
+        assertThat(KrCanvas.isAncestor(childA, ancestor), is(false));
+        assertThat(KrCanvas.isAncestor(childA, childA), is(true));
+
+        ancestor.add(childA);
+        assertThat(KrCanvas.isAncestor(childA, ancestor), is(true));
+        assertThat(KrCanvas.isAncestor(childB, ancestor), is(false));
+
+        childA.add(childB);
+        assertThat(KrCanvas.isAncestor(childB, ancestor), is(true));
+        assertThat(KrCanvas.isAncestor(childB, childA), is(true));
     }
 }

@@ -2,12 +2,14 @@ package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.KrCanvas;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrRectangles;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
 import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,23 @@ public class KrPopup extends KrWidget {
 
     private List<KrPopupListener> listeners = new ArrayList<>();
 
+    /**
+     * The popup parent is the widget that requested the popup to show.
+     * When the popup parent receives focus, the popup remains visible.
+     */
+    @Setter private KrWidget popupParent;
+
     public KrPopup() {
+        this(null);
+    }
+
+    public KrPopup(KrWidget popupParent) {
+        this.popupParent = popupParent;
+
         setLayout(new KrBorderLayout(0, 0));
         setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrWidget.class));
         setPadding(new KrPadding(0));
+        setVisible(false);
     }
 
     public void setContentWidget(KrWidget contentWidget) {
@@ -35,19 +50,8 @@ public class KrPopup extends KrWidget {
         setSize(KrRectangles.rectangles(contentWidget.getPreferredSize()).expand(getPadding()).size(tmpVec));
     }
 
-    public void show() {
-        show(getX(), getY());
-    }
-
     public void show(Vector2 screenPosition) {
         show(screenPosition.x, screenPosition.y);
-    }
-
-    @Override
-    protected void focusLostEvent(KrFocusEvent event) {
-        super.focusLostEvent(event);
-        hide();
-        event.accept();
     }
 
     public void show(float x, float y) {
@@ -61,12 +65,23 @@ public class KrPopup extends KrWidget {
     }
 
     public void hide() {
-        this.setVisible(false);
+        setVisible(false);
         notifyPopupHidden();
     }
 
     @Override
+    protected void focusLostEvent(KrFocusEvent event) {
+        super.focusLostEvent(event);
+
+        if (!KrCanvas.isAncestor(event.getNewFocusHolder(), this) && !(popupParent != null && event.getNewFocusHolder() == popupParent)) {
+            hide();
+            event.accept();
+        }
+    }
+
+    @Override
     protected void keyPressedEvent(KrKeyEvent event) {
+        super.keyPressedEvent(event);
         if (event.getKeycode() == Input.Keys.ESCAPE) {
             hide();
         }

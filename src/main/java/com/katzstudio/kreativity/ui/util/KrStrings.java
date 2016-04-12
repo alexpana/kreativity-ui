@@ -11,4 +11,8 @@ public class KrStrings {
     public static String nullToEmpty(String value) {
         return value == null ? "" : value;
     }
+
+    public static String toString(Object object) {
+        return object != null ? object.toString() : "";
+    }
 }

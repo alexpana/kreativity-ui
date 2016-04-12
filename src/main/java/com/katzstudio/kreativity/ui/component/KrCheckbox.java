@@ -26,7 +26,7 @@ public class KrCheckbox extends KrWidget {
 
     private static final int TEXT_SPACING = 4;
 
-    @Getter @Setter private KrValueModel<Boolean> model = new KrValueModel.Default<>(false);
+    @Getter @Setter private KrValueModel<Boolean> model = new KrValueModel.KrAbstractValueModel<>(false);
 
     private final List<ValueListener> valueListeners = new ArrayList<>();
 
