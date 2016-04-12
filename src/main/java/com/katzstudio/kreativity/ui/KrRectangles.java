@@ -48,6 +48,9 @@ public class KrRectangles {
     }
 
     public KrRectangles shrink(KrPadding padding) {
+        if (padding == null) {
+            return this;
+        }
         x += padding.left;
         y += padding.top;
         w -= padding.getHorizontalPadding();
@@ -56,6 +59,9 @@ public class KrRectangles {
     }
 
     public KrRectangles expand(KrPadding padding) {
+        if (padding == null) {
+            return this;
+        }
         x -= padding.left;
         y -= padding.top;
         w += padding.getHorizontalPadding();
