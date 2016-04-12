@@ -1,10 +1,12 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrRectangles;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.event.KrFocusEvent;
+import com.katzstudio.kreativity.ui.event.KrKeyEvent;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 
 import java.util.ArrayList;
@@ -61,6 +63,13 @@ public class KrPopup extends KrWidget {
     public void hide() {
         this.setVisible(false);
         notifyPopupHidden();
+    }
+
+    @Override
+    protected void keyPressedEvent(KrKeyEvent event) {
+        if (event.getKeycode() == Input.Keys.ESCAPE) {
+            hide();
+        }
     }
 
     public void addListener(KrPopupListener popupListener) {
