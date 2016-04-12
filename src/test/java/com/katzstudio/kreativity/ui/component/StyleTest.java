@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import static com.katzstudio.kreativity.ui.TestUtils.getAllWidgets;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * KrWidgetStyle related unit tests
@@ -28,6 +29,7 @@ public class StyleTest {
         widget.ensureUniqueStyle();
         Object newStyle = widget.getStyle();
         assertThat(newStyle, not(equals(originalStyle)));
+        assertThat(newStyle, notNullValue());
     }
 
     private Object parametersForTestEnsureUniqueStyle() {
