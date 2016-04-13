@@ -112,8 +112,19 @@ public class UiDemo extends Game {
         demoPanel.addChild(createTableView(), 2);
 
         demoPanel.addChild(createSplitPanel(), 3);
+        demoPanel.addChild(createCollapsiblePanel(), 3);
 
 //        canvas.getRootPanel().add(createSandbox());
+    }
+
+    private KrCollapsiblePanel createCollapsiblePanel() {
+        KrCollapsiblePanel collapsiblePanel = new KrCollapsiblePanel("Collapsible Panel");
+
+        KrPanel bodyPanel = collapsiblePanel.getBodyPanel();
+        bodyPanel.setLayout(new KrBorderLayout());
+        bodyPanel.add(createDummyContent("Dummy Content"), KrBorderLayout.Constraint.CENTER);
+
+        return collapsiblePanel;
     }
 
     private KrWidget createSandbox() {
@@ -728,6 +739,7 @@ public class UiDemo extends Game {
                 KrPanel column = new KrPanel(new KrFlowLayout(KrOrientation.VERTICAL));
                 column.setName("demo_panel.column_" + i);
                 column.setPreferredSize(2000, 2000);
+                column.setPadding(new KrPadding(4));
                 columns[i] = column;
                 add(column);
             }

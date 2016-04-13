@@ -63,7 +63,8 @@ public class TestUtils {
                 {"KrPopup", new KrPopup()},
                 {"KrMenu", menu},
                 {"KrMenuItem", menuItem},
-                {"KrComboBox", new KrComboBox<>()}
+                {"KrComboBox", new KrComboBox<>()},
+                {"KrCollapsiblePanel", new KrCollapsiblePanel("")}
         });
     }
 

@@ -406,6 +406,25 @@ public class KrWidget implements KrUpdateListener {
     }
 
     /**
+     * Sets the position and size of this widget
+     *
+     * @param position the new position
+     * @param size     the new size
+     */
+    public void setGeometry(Vector2 position, Vector2 size) {
+        this.setGeometry(position.x, position.y, size.x, size.y);
+    }
+
+    /**
+     * Sets the position and size of this widget
+     *
+     * @param geometry a rectangle describing the new position and size of the widget
+     */
+    public void setGeometry(Rectangle geometry) {
+        this.setGeometry(geometry.x, geometry.y, geometry.width, geometry.height);
+    }
+
+    /**
      * Sets the position and size of the widget in parent space.
      *
      * @param x      the new X coordinate
@@ -423,25 +442,6 @@ public class KrWidget implements KrUpdateListener {
         this.width = width;
         this.height = height;
         invalidate();
-    }
-
-    /**
-     * Sets the position and size of this widget
-     *
-     * @param position the new position
-     * @param size     the new size
-     */
-    public void setGeometry(Vector2 position, Vector2 size) {
-        this.setGeometry(position.x, position.y, size.x, size.y);
-    }
-
-    /**
-     * Sets the position and size of this widget
-     *
-     * @param geometry a rectangle describing the new position and size of the widget
-     */
-    public void setGeometry(Rectangle geometry) {
-        this.setGeometry(geometry.x, geometry.y, geometry.width, geometry.height);
     }
 
     /**

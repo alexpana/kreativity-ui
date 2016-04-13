@@ -1,101 +1,87 @@
 package com.katzstudio.kreativity.ui.component;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.katzstudio.kreativity.ui.KrContext;
 import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
+import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import lombok.Getter;
 
 /**
  * A panel that can collapse to save space.
  */
-public class KrCollapsiblePanel extends Table {
+public class KrCollapsiblePanel extends KrWidget {
 
     public static final int SLIDE_SPEED = 1000;
 
     private static final int HEADER_HEIGHT = 18;
 
-    private static final int STATE_EXPANDED = 0;
-
-    private static final int STATE_COLLAPSED = 1;
-
-    private static final int STATE_COLLAPSING = 2;
-
-    private static final int STATE_EXPANDING = 3;
-
     public static final int COLLAPSED_HEIGHT = 24;
 
     private static final int CONTENT_PADDING = 4;
 
-    @Getter private String title;
+    private enum State {
+        EXPANDED, COLLAPSED, COLLAPSING, EXPANDING
+    }
 
-    @Getter private Actor content;
+    private KrLabel titleLabel;
 
-    private final Label titleLabel;
+    private KrIconPanel iconPanel;
 
-    private final KrIconPanel iconPanel;
+    private final KrPanel headerPanel;
 
-    private final KrContext uiContext;
+    @Getter private final KrPanel bodyPanel;
 
-    private int state = STATE_EXPANDED;
+    private State state = State.EXPANDED;
 
     private float realPreferredHeight = 0.0f;
 
     private float actualHeight = 0.0f;
 
-    public KrCollapsiblePanel(KrContext uiContext, String title) {
-        this.uiContext = uiContext;
-        this.title = title;
+    public KrCollapsiblePanel(String title) {
+        setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrWidget.class));
 
-        titleLabel = new Label(title, uiContext.getSkin());
-        titleLabel.addListener(new InputListener() {
+        headerPanel = createHeaderPanel(title);
+
+        bodyPanel = createBodyPanel();
+
+        setLayout(new KrBorderLayout(0, 0));
+
+        add(headerPanel, KrBorderLayout.Constraint.NORTH);
+        add(bodyPanel, KrBorderLayout.Constraint.CENTER);
+    }
+
+    private KrPanel createHeaderPanel(String title) {
+        KrPanel headerPanel = new KrPanel();
+
+        titleLabel = new KrLabel(title);
+        titleLabel.addMouseListener(new KrMouseListener.KrMouseAdapter() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void mousePressed(KrMouseEvent event) {
                 toggleState();
-                return true;
             }
         });
 
         iconPanel = new KrIconPanel(KrFontAwesomeGlyph.CARET_DOWN);
 
-        background(uiContext.getSkin().getDrawable("collapsiblepanel.checkboxBackground"));
-        getBackground().setTopHeight(2);
+        headerPanel.setLayout(new KrBorderLayout());
 
-        add(titleLabel);
-//        add(iconPanel);
+        headerPanel.add(titleLabel, KrBorderLayout.Constraint.WEST);
+        headerPanel.setPadding(new KrPadding(4, 4, 4, 4));
+
+        headerPanel.setBackground(KrToolkit.getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BACKGROUND_DARK));
+
+        return headerPanel;
     }
 
-
-    public void setContent(Actor content) {
-        if (this.content != null) {
-            this.removeActor(this.content);
-        }
-
-        this.content = content;
-
-        if (this.content != null) {
-            add(this.content);
-        }
-    }
-
-    @Override
-    public void layout() {
-        titleLabel.setBounds(20, getHeight() - HEADER_HEIGHT, getWidth(), HEADER_HEIGHT);
-        iconPanel.setGeometry(2, getHeight() - HEADER_HEIGHT + 1, HEADER_HEIGHT - 5, HEADER_HEIGHT);
-        content.setBounds(0, 0, getWidth(), getHeight() - HEADER_HEIGHT - CONTENT_PADDING);
-    }
-
-    @Override
-    protected void sizeChanged() {
-        System.out.println("getHeight() = " + getHeight());
+    private KrPanel createBodyPanel() {
+        return new KrPanel();
     }
 
     public boolean isCollapsed() {
-        return state == STATE_COLLAPSED;
+        return state == State.COLLAPSED;
     }
 
     public void setCollapsed(boolean collapsed) {
@@ -110,32 +96,32 @@ public class KrCollapsiblePanel extends Table {
         }
     }
 
-    private void setState(int newState) {
+    private void setState(State newState) {
         state = newState;
 
-        if (state == STATE_COLLAPSED || state == STATE_COLLAPSING) {
+        if (state == State.COLLAPSED || state == State.COLLAPSING) {
             iconPanel.setIconGlyph(KrFontAwesomeGlyph.CARET_RIGHT);
         } else {
             iconPanel.setIconGlyph(KrFontAwesomeGlyph.CARET_DOWN);
         }
 
-        if (state == STATE_COLLAPSED) {
-            content.setVisible(false);
+        if (state == State.COLLAPSED) {
+            bodyPanel.setVisible(false);
         } else {
-            content.setVisible(true);
+            bodyPanel.setVisible(true);
         }
     }
 
     private void collapse() {
-        setState(STATE_COLLAPSING);
+        setState(State.COLLAPSING);
     }
 
     private void expand() {
-        setState(STATE_EXPANDING);
+        setState(State.EXPANDING);
     }
 
     private void toggleState() {
-        if (state == STATE_COLLAPSED || state == STATE_COLLAPSING) {
+        if (state == State.EXPANDED || state == State.COLLAPSING) {
             expand();
         } else {
             collapse();
@@ -150,84 +136,48 @@ public class KrCollapsiblePanel extends Table {
         return getHeight() >= realPreferredHeight;
     }
 
-    @Override
-    public void act(float delta) {
-        int slideOffset = (int) (SLIDE_SPEED * delta);
+//    @Override
+//    public void update(float deltaSeconds) {
+//        int slideOffset = (int) (SLIDE_SPEED * deltaSeconds);
+//
+//        if (state == State.COLLAPSING) {
+//            if (!collapseFinished()) {
+//                if (actualHeight - slideOffset < COLLAPSED_HEIGHT) {
+//                    slideOffset = (int) (actualHeight - COLLAPSED_HEIGHT);
+//                }
+//                actualHeight -= slideOffset;
+//            } else {
+//                setState(State.COLLAPSED);
+//                actualHeight = COLLAPSED_HEIGHT;
+//            }
+//        }
+//
+//        if (state == State.EXPANDING) {
+//            if (!expandFinished()) {
+//                if (actualHeight + slideOffset > realPreferredHeight) {
+//                    slideOffset = (int) (realPreferredHeight - actualHeight);
+//                }
+//                actualHeight += slideOffset;
+//            } else {
+//                setState(State.EXPANDED);
+//                actualHeight = realPreferredHeight;
+//            }
+//        }
+//    }
 
-        if (state == STATE_COLLAPSING) {
-            if (!collapseFinished()) {
-                if (actualHeight - slideOffset < COLLAPSED_HEIGHT) {
-                    slideOffset = (int) (actualHeight - COLLAPSED_HEIGHT);
-                }
-                actualHeight -= slideOffset;
-                setY(getY() + slideOffset);
-            } else {
-                setState(STATE_COLLAPSED);
-                actualHeight = COLLAPSED_HEIGHT;
-            }
-        }
-
-        if (state == STATE_EXPANDING) {
-            if (!expandFinished()) {
-                if (actualHeight + slideOffset > realPreferredHeight) {
-                    slideOffset = (int) (realPreferredHeight - actualHeight);
-                }
-                actualHeight += slideOffset;
-                setY(getY() - slideOffset);
-            } else {
-                setState(STATE_EXPANDED);
-                actualHeight = realPreferredHeight;
-            }
-        }
-
-        titleLabel.setText(getTitle());
-    }
-
-    @Override
-    protected void childrenChanged() {
-        super.childrenChanged();
-//        realPreferredHeight = (isCollapsed() ? COLLAPSED_HEIGHT : HEADER_HEIGHT) + (content != null ? getPreferredSize(content).y : 0) + 2 * CONTENT_PADDING;
-
-        if (!isCollapsed()) {
-            actualHeight = realPreferredHeight;
-        }
-    }
-
-    @Override
-    public float getPrefHeight() {
-        return actualHeight;
-    }
-
-    @Override
-    public float getMaxHeight() {
-        if (isCollapsed()) {
-            return COLLAPSED_HEIGHT;
-        } else return 100000;
-    }
-
-    @Override
-    public float getMinHeight() {
-        if (isCollapsed()) {
-            return COLLAPSED_HEIGHT;
-        }
-
-        return super.getMinHeight();
-    }
-
-    @Override
-    public void setY(float y) {
-        super.setY(y);
-    }
-
-    @Override
-    public void setBounds(float x, float y, float width, float height) {
-        super.setBounds(x, y, width, height);
-        setHeight(height);
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        layout();
-        super.draw(batch, parentAlpha);
-    }
+//    @Override
+//    public float getMaxHeight() {
+//        if (isCollapsed()) {
+//            return COLLAPSED_HEIGHT;
+//        } else return 100000;
+//    }
+//
+//    @Override
+//    public float getMinHeight() {
+//        if (isCollapsed()) {
+//            return COLLAPSED_HEIGHT;
+//        }
+//
+//        return super.getMinHeight();
+//    }
 }
