@@ -286,6 +286,10 @@ public class KrCanvas implements KrInputSource.KrInputEventListener {
             return true;
         }
 
+        if (child == null || ancestor == null) {
+            return false;
+        }
+
         KrWidget parent = child.getParent();
 
         while (parent != null) {
