@@ -377,9 +377,7 @@ public class UiDemo extends Game {
 
         final KrMenu menu = createMenu();
 
-        button.addListener(() -> {
-            menu.showAt(getDefaultToolkit().getInputSource().getMousePosition());
-        });
+        button.addListener(() -> menu.showAt(getDefaultToolkit().getInputSource().getMousePosition()));
 
         KrToggleButton toggleButton = new KrToggleButton("Toggle Button");
         toggleButton.setName("buttons.toggleButton");
@@ -649,8 +647,6 @@ public class UiDemo extends Game {
     }
 
     private KrWidget createGridLayout() {
-        KrPanel form = new KrPanel();
-
         KrLabel formLabel = new KrLabel("Grid Layout / Text Field / Spinner");
         formLabel.setForeground(lightGray);
         formLabel.setName("grid_layout.form_label");
@@ -672,15 +668,9 @@ public class UiDemo extends Game {
         KrComboBox<String> genderEditor = new KrComboBox<>();
         genderEditor.setValues(Arrays.asList("Male", "Female", "Other", "Pretentious"));
 
-//        KrWidget weightClone = new KrLabel("Weight 2");
-//        weightClone.setName("grid_layout.label.weight_clone");
-//        KrSpinner weightEditClone = new KrSpinner();
-//        weightEditClone.setName("grid_layout.spinner.weight_clone");
-//        weightEditClone.setSpinnerModel(weightEdit.getSpinnerModel());
-
         KrPanel fields = new KrPanel();
         KrGridLayout formLayout = new KrGridLayout(2, 5, 3);
-        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(55, 0), new KrUnifiedSize(80, 1)));
+        formLayout.setColumnSizePolicy(new KrSizePolicyModel(new KrUnifiedSize(55, 0), new KrUnifiedSize(50, 1)));
         fields.setLayout(formLayout);
         fields.add(usernameLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         fields.add(usernameEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
@@ -688,13 +678,10 @@ public class UiDemo extends Game {
         fields.add(weightEdit, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
         fields.add(genderLabel, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
         fields.add(genderEditor, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-//        fields.add(weightClone, new Constraint(KrAlignment.MIDDLE_RIGHT, false, false));
-//        fields.add(weightEditClone, new Constraint(KrAlignment.MIDDLE_LEFT, true, false));
-        fields.setGeometry(new Vector2(0, 20), fields.getMinSize());
 
+        KrPanel form = new KrPanel(new KrFlowLayout(VERTICAL));
         form.add(formLabel);
         form.add(fields);
-
         form.setPreferredHeight(100);
 
         return form;
@@ -736,10 +723,10 @@ public class UiDemo extends Game {
             setLayout(layout);
             setName("demo_panel");
             for (int i = 0; i < COLUMN_COUNT; ++i) {
-                KrPanel column = new KrPanel(new KrFlowLayout(KrOrientation.VERTICAL));
+                KrPanel column = new KrPanel(new KrFlowLayout(KrOrientation.VERTICAL, 4, 4));
                 column.setName("demo_panel.column_" + i);
                 column.setPreferredSize(2000, 2000);
-                column.setPadding(new KrPadding(4));
+
                 columns[i] = column;
                 add(column);
             }
