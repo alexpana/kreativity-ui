@@ -604,6 +604,9 @@ public class KrWidget implements KrUpdateListener {
      * Sets the maximum width of this widget.
      */
     public void setMaxWidth(float maxWidth) {
+        if (maxSize == null && layout != null) {
+            maxSize = layout.getMaxSize();
+        }
         setMaxSize(new Vector2(maxWidth, maxSize.y));
     }
 
@@ -611,6 +614,9 @@ public class KrWidget implements KrUpdateListener {
      * Sets the maximum height of this widget.
      */
     public void setMaxHeight(float maxHeight) {
+        if (maxSize == null && layout != null) {
+            maxSize = layout.getMaxSize();
+        }
         setMaxSize(new Vector2(maxSize.x, maxHeight));
     }
 
@@ -654,6 +660,9 @@ public class KrWidget implements KrUpdateListener {
      * Sets the minimum width of the widget.
      */
     public void setMinWidth(float minWidth) {
+        if (minSize == null && layout != null) {
+            minSize = layout.getMinSize();
+        }
         setMinSize(new Vector2(minWidth, minSize.y));
     }
 
@@ -661,6 +670,9 @@ public class KrWidget implements KrUpdateListener {
      * Sets the minimum height of the widget.
      */
     public void setMinHeight(float minHeight) {
+        if (minSize == null && layout != null) {
+            minSize = layout.getMinSize();
+        }
         setMinSize(new Vector2(minSize.x, minHeight));
     }
 
