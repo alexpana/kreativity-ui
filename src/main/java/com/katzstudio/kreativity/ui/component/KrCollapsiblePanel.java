@@ -1,5 +1,6 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.katzstudio.kreativity.ui.KrCursor;
 import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
 import com.katzstudio.kreativity.ui.KrPadding;
 import com.katzstudio.kreativity.ui.KrSkin;
@@ -9,6 +10,7 @@ import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
 import lombok.Getter;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
+import static com.katzstudio.kreativity.ui.layout.KrBorderLayout.Constraint.*;
 
 /**
  * A panel that can collapse to save space.
@@ -46,8 +48,8 @@ public class KrCollapsiblePanel extends KrWidget {
 
         setLayout(new KrBorderLayout(0, 0));
 
-        add(headerPanel, KrBorderLayout.Constraint.NORTH);
-        add(bodyPanel, KrBorderLayout.Constraint.CENTER);
+        add(headerPanel, NORTH);
+        add(bodyPanel, CENTER);
     }
 
     private KrPanel createHeaderPanel(String title) {
@@ -56,11 +58,14 @@ public class KrCollapsiblePanel extends KrWidget {
         titleLabel = new KrLabel(title);
 
         iconPanel = new KrIconPanel(KrFontAwesomeGlyph.CARET_DOWN);
+        iconPanel.setIconOffsetY(-2);
 
         headerPanel.setLayout(new KrBorderLayout());
         headerPanel.setPadding(new KrPadding(4, 4, 4, 4));
         headerPanel.setBackground(getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BACKGROUND_DARK));
-        headerPanel.add(titleLabel, KrBorderLayout.Constraint.WEST);
+        headerPanel.setCursor(KrCursor.HAND);
+        headerPanel.add(titleLabel, CENTER);
+        headerPanel.add(iconPanel, WEST);
 
         headerPanel.addMouseListener(new KrMouseListener.KrMouseAdapter() {
             @Override
@@ -78,18 +83,6 @@ public class KrCollapsiblePanel extends KrWidget {
 
     public boolean isCollapsed() {
         return state == State.COLLAPSED;
-    }
-
-    public void setCollapsed(boolean collapsed) {
-        if (collapsed == isCollapsed()) {
-            return;
-        }
-
-        if (collapsed) {
-            collapse();
-        } else {
-            expand();
-        }
     }
 
     private void setState(State newState) {

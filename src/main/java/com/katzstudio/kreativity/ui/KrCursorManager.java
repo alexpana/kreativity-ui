@@ -19,8 +19,24 @@ public class KrCursorManager {
 
     private void onEventDispatched(KrWidget widget, KrEvent event) {
         if (event instanceof KrEnterEvent) {
-            setCursor(widget.getCursor());
+            setCursor(getCursorFor(widget));
         }
+    }
+
+    private KrCursor getCursorFor(KrWidget widget) {
+        if (widget == null) {
+            return null;
+        }
+
+        KrWidget parent = widget;
+        while (parent != null) {
+            if (parent.getCursor() != null) {
+                return parent.getCursor();
+            }
+            parent = parent.getParent();
+        }
+
+        return null;
     }
 
     private void setCursor(KrCursor cursor) {

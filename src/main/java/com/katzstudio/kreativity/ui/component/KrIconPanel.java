@@ -20,6 +20,10 @@ public class KrIconPanel extends KrWidget {
 
     private final BitmapFont fontAwesome;
 
+    @Getter @Setter private int iconOffsetX = 0;
+
+    @Getter @Setter private int iconOffsetY = 0;
+
     public KrIconPanel(KrFontAwesomeGlyph iconGlyph) {
         this.iconGlyph = iconGlyph;
         this.fontAwesome = getDefaultToolkit().getSkin().getFontAwesome();
@@ -35,8 +39,9 @@ public class KrIconPanel extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
+        super.drawSelf(renderer);
         Rectangle bounds = getDefaultToolkit().fontMetrics().bounds(fontAwesome, iconGlyph.getRepresentation(), tmpRect);
         renderer.setFont(getDefaultToolkit().getSkin().getFontAwesome());
-        renderer.drawText(iconGlyph.getRepresentation(), getX() + (getWidth() - bounds.width) / 2, getY() + getHeight() + (getHeight() - bounds.height) / 2);
+        renderer.drawText(iconGlyph.getRepresentation(), iconOffsetX + (getWidth() - bounds.width) / 2, iconOffsetY + (getHeight() - bounds.height) / 2);
     }
 }

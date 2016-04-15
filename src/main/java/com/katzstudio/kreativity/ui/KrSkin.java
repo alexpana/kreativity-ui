@@ -127,7 +127,7 @@ public class KrSkin {
         widgetStyle.icon = null;
         widgetStyle.selectionColor = KrColor.rgb(0x38466b);
         widgetStyle.padding = new KrPadding(0);
-        widgetStyle.cursor = KrCursor.ARROW;
+        widgetStyle.cursor = null;
         registerStyle(KrWidget.class, widgetStyle);
 
         KrPanelStyle panelStyle = new KrPanelStyle(widgetStyle);
@@ -217,10 +217,12 @@ public class KrSkin {
         KrComboBoxStyle comboBoxStyle = new KrComboBoxStyle(widgetStyle);
         comboBoxStyle.background = getDrawable("combobox.background_normal");
         comboBoxStyle.pressedBackground = getDrawable("combobox.background_pressed");
-        comboBoxStyle.padding = new KrPadding(4, 4, 4, 4);
+        comboBoxStyle.padding = new KrPadding(4);
         registerStyle(KrComboBox.class, comboBoxStyle);
 
         KrWidgetStyle iconPanelStyle = new KrWidgetStyle(widgetStyle);
+        iconPanelStyle.padding = new KrPadding(0, 3, 0, 3);
+        iconPanelStyle.background = toolkit.getDrawable(KrColor.TRANSPARENT);
         registerStyle(KrIconPanel.class, iconPanelStyle);
     }
 
