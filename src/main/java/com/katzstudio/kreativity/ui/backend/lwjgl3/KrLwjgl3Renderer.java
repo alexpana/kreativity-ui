@@ -10,7 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Pools;
 import com.katzstudio.kreativity.ui.KrColor;
-import com.katzstudio.kreativity.ui.render.*;
+import com.katzstudio.kreativity.ui.render.KrBrush;
+import com.katzstudio.kreativity.ui.render.KrColorBrush;
+import com.katzstudio.kreativity.ui.render.KrDrawableBrush;
+import com.katzstudio.kreativity.ui.render.KrPen;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,7 +24,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 /**
  * {@link KrRenderer} implementation for the libgdx lwjgl3 backend
  */
-public class KrLwjgl3Renderer implements KrRenderer {
+public class KrLwjgl3Renderer extends KrRenderer {
 
     private final RenderMode spriteBatchRenderMode;
 
@@ -82,11 +86,6 @@ public class KrLwjgl3Renderer implements KrRenderer {
     }
 
     @Override
-    public void drawText(String text, Vector2 position) {
-        drawText(text, position.x, position.y);
-    }
-
-    @Override
     public void drawText(String text, float x, float y) {
         Color color = getAlphaMultiplied(penColor);
 
@@ -140,11 +139,6 @@ public class KrLwjgl3Renderer implements KrRenderer {
     }
 
     @Override
-    public void drawRect(Rectangle rectangle) {
-        drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    }
-
-    @Override
     public void drawRect(float x, float y, float w, float h) {
         Color color = getAlphaMultiplied(penColor);
 
@@ -175,11 +169,6 @@ public class KrLwjgl3Renderer implements KrRenderer {
     }
 
     @Override
-    public void fillRect(Rectangle rectangle) {
-        fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    }
-
-    @Override
     public void fillRect(float x, float y, float w, float h) {
         if (brushType == BrushType.DRAWABLE) {
             ensureSpriteBatchOpen();
@@ -197,12 +186,7 @@ public class KrLwjgl3Renderer implements KrRenderer {
     }
 
     @Override
-    public void fillRoundedRect(Rectangle geometry, int radius) {
-        fillRoundedRect((int) geometry.x, (int) geometry.y, (int) geometry.width, (int) geometry.height, radius);
-    }
-
-    @Override
-    public void fillRoundedRect(int x, int y, int w, int h, int cornerRadius) {
+    public void fillRoundedRect(float x, float y, float w, float h, int cornerRadius) {
         Drawable drawable = getRoundedRectDrawable(cornerRadius);
 
         ensureSpriteBatchOpen();
@@ -244,11 +228,6 @@ public class KrLwjgl3Renderer implements KrRenderer {
     }
 
     @Override
-    public boolean beginClip(Rectangle rectangle) {
-        return beginClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    }
-
-    @Override
     public boolean beginClip(float x, float y, float width, float height) {
         flush();
         Rectangle clipRectangle = Pools.obtain(Rectangle.class);
@@ -258,7 +237,6 @@ public class KrLwjgl3Renderer implements KrRenderer {
         }
         Pools.free(clipRectangle);
         return false;
-
     }
 
     @Override

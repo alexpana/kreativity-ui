@@ -12,67 +12,82 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  * It can render geometric shapes, images and text. All UI components call
  * the renderer to paint their graphical representation
  */
-public interface KrRenderer {
+@SuppressWarnings("WeakerAccess")
+public abstract class KrRenderer {
 
-    void beginFrame();
+    public abstract void beginFrame();
 
-    void endFrame();
+    public abstract void endFrame();
 
-    void drawText(String text, Vector2 position);
+    public void drawText(String text, Vector2 position) {
+        drawText(text, position.x, position.y);
+    }
 
-    void drawText(String text, float x, float y);
+    public abstract void drawText(String text, float x, float y);
 
-    void drawTextWithShadow(String text, Vector2 position, Vector2 shadowOffset, Color shadowColor);
+    public abstract void drawTextWithShadow(String text, Vector2 position, Vector2 shadowOffset, Color shadowColor);
 
-    void drawRect(Rectangle rectangle);
+    public void drawRect(Rectangle rectangle) {
+        drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
 
-    void drawRect(float x, float y, float w, float h);
+    public abstract void drawRect(float x, float y, float w, float h);
 
-    void drawLine(float x1, float y1, float x2, float y2);
+    public abstract void drawLine(float x1, float y1, float x2, float y2);
 
-    void fillRect(Rectangle rectangle);
+    public void fillRect(Rectangle rectangle) {
+        fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
 
-    void fillRect(float x, float y, float w, float h);
+    public abstract void fillRect(float x, float y, float w, float h);
 
-    void fillRoundedRect(Rectangle geometry, int radius);
+    public void fillRoundedRect(Rectangle geometry, int radius) {
+        fillRoundedRect(geometry.x, geometry.y, geometry.width, geometry.height, radius);
+    }
 
-    void fillRoundedRect(int x, int y, int w, int h, int cornerRadius);
+    public abstract void fillRoundedRect(float x, float y, float w, float h, int cornerRadius);
 
-    void translate(float x, float y);
+    public abstract void translate(float x, float y);
 
-    boolean beginClip(Rectangle rectangle);
+    public boolean beginClip(Rectangle rectangle) {
+        return beginClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
 
-    boolean beginClip(float x, float y, float width, float height);
+    public abstract boolean beginClip(float x, float y, float width, float height);
 
-    void endClip();
+    public abstract void endClip();
 
-    void setViewportSize(float width, float height);
+    public abstract void setViewportSize(float width, float height);
 
-    float setOpacity(float opacity);
+    public abstract float setOpacity(float opacity);
 
-    float getOpacity();
+    public abstract float getOpacity();
 
-    void popState();
+    public abstract void popState();
 
-    void pushState();
+    public abstract void pushState();
 
-    Vector2 getViewportSize();
+    public abstract Vector2 getViewportSize();
 
-    KrBrush getBrush();
+    public abstract KrBrush getBrush();
 
-    KrPen getPen();
+    public abstract KrPen getPen();
 
-    BitmapFont getFont();
+    public abstract BitmapFont getFont();
 
-    void setFont(BitmapFont font);
+    public abstract void setFont(BitmapFont font);
 
-    void setBrush(KrBrush brush);
+    public abstract void setBrush(KrBrush brush);
 
-    void setBrush(Drawable drawable);
+    public abstract void setBrush(Drawable drawable);
 
-    void setBrush(Color color);
+    public abstract void setBrush(Color color);
 
-    void setPen(KrPen pen);
+    public abstract void setPen(KrPen pen);
 
-    void setPen(int size, Color color);
+    public abstract void setPen(int size, Color color);
+
+    public void setPen(Color color) {
+        setPen(1, color);
+    }
 }
