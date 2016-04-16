@@ -12,14 +12,42 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.katzstudio.kreativity.ui.component.*;
-import com.katzstudio.kreativity.ui.style.*;
+import com.katzstudio.kreativity.ui.component.KrButton;
+import com.katzstudio.kreativity.ui.component.KrButtonGroup;
+import com.katzstudio.kreativity.ui.component.KrCheckbox;
+import com.katzstudio.kreativity.ui.component.KrComboBox;
+import com.katzstudio.kreativity.ui.component.KrIconPanel;
+import com.katzstudio.kreativity.ui.component.KrLabel;
+import com.katzstudio.kreativity.ui.component.KrListView;
+import com.katzstudio.kreativity.ui.component.KrPanel;
+import com.katzstudio.kreativity.ui.component.KrScrollBar;
+import com.katzstudio.kreativity.ui.component.KrSpinner;
+import com.katzstudio.kreativity.ui.component.KrSplitPanel;
+import com.katzstudio.kreativity.ui.component.KrTableView;
+import com.katzstudio.kreativity.ui.component.KrTextField;
+import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.style.KrButtonGroupStyle;
+import com.katzstudio.kreativity.ui.style.KrButtonStyle;
+import com.katzstudio.kreativity.ui.style.KrCheckboxStyle;
+import com.katzstudio.kreativity.ui.style.KrComboBoxStyle;
+import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
+import com.katzstudio.kreativity.ui.style.KrLabelStyle;
+import com.katzstudio.kreativity.ui.style.KrPanelStyle;
+import com.katzstudio.kreativity.ui.style.KrScrollBarStyle;
+import com.katzstudio.kreativity.ui.style.KrSplitPanelStyle;
+import com.katzstudio.kreativity.ui.style.KrTextFieldStyle;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.*;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_LIGHT;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BORDER;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.FOREGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SELECTION_BACKGROUND;
 
 /**
  * Kreativity Skin
@@ -178,7 +206,7 @@ public class KrSkin {
         registerStyle(KrListView.class, listViewStyle);
 
         KrItemViewStyle tableViewStyle = new KrItemViewStyle(widgetStyle);
-        tableViewStyle.gridColor = getColor(BACKGROUND_LIGHT);
+        tableViewStyle.gridColor = getColor(BORDER);
         tableViewStyle.gridVisible = true;
         registerStyle(KrTableView.class, tableViewStyle);
 

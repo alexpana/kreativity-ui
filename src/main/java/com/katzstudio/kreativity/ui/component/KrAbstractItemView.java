@@ -7,7 +7,7 @@ import com.katzstudio.kreativity.ui.component.renderer.KrCellRenderer;
 import com.katzstudio.kreativity.ui.component.renderer.KrDefaultCellRenderer;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.KrScrollEvent;
-import com.katzstudio.kreativity.ui.layout.KrLayout;
+import com.katzstudio.kreativity.ui.layout.KrLayout.KrAbstractLayout;
 import com.katzstudio.kreativity.ui.model.KrItemModel;
 import com.katzstudio.kreativity.ui.model.KrSelection;
 import com.katzstudio.kreativity.ui.model.KrSelectionModel;
@@ -153,7 +153,7 @@ public abstract class KrAbstractItemView extends KrWidget {
         doubleClickListeners.forEach(l -> l.itemDoubleClicked(itemIndex));
     }
 
-    private class KrInternalListViewLayout extends KrLayout.KrAbstractLayout {
+    private class KrInternalListViewLayout extends KrAbstractLayout {
 
         @SuppressWarnings("Duplicates")
         @Override

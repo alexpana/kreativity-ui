@@ -1,6 +1,8 @@
 package com.katzstudio.kreativity.ui.component;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.component.renderer.KrCellRenderer;
 import com.katzstudio.kreativity.ui.component.renderer.KrDefaultCellRenderer;
@@ -19,7 +21,7 @@ import lombok.Setter;
  */
 public class KrTableView extends KrAbstractItemView {
 
-    public static final int ROW_HEIGHT = 20;
+    private static final int ROW_HEIGHT = 20;
 
     @Getter @Setter private KrItemModel model;
 
@@ -38,13 +40,15 @@ public class KrTableView extends KrAbstractItemView {
         this.model = model;
         this.columnModel = columnModel;
         setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrTableView.class));
+        verticalScrollBar.setVisible(false);
     }
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        boolean clipped = false;
+        boolean clipped;
         boolean drawHeader = columnModel != null;
         int columnCount = columnModel != null ? columnModel.getColumnCount() : model.getColumnCount();
+        int clipY = 1;
 
         int x = 0;
         int y = 0;
@@ -52,6 +56,13 @@ public class KrTableView extends KrAbstractItemView {
         int rowHeight = ROW_HEIGHT;
 
         int gridSize = ((KrItemViewStyle) getStyle()).gridVisible ? 1 : 0;
+        Color borderColor = KrToolkit.getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER);
+
+        renderer.setBrush(borderColor);
+        renderer.fillRoundedRect(0, 0, (int) getWidth(), (int) getHeight(), 3);
+
+        renderer.setBrush(KrToolkit.getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BACKGROUND));
+        renderer.fillRoundedRect(1, 1, (int) getWidth() - 2, (int) getHeight() - 2, 3);
 
         // draw columns
         if (drawHeader) {
@@ -61,9 +72,12 @@ public class KrTableView extends KrAbstractItemView {
                 cellWidget.draw(renderer);
                 x += columnWidth;
             }
-
-            clipped = renderer.beginClip(0, ROW_HEIGHT, getWidth(), getHeight() - ROW_HEIGHT);
+            renderer.setPen(borderColor);
+            renderer.drawLine(0, ROW_HEIGHT, getWidth(), ROW_HEIGHT);
+            clipY += ROW_HEIGHT;
         }
+
+        clipped = renderer.beginClip(1, clipY, getWidth() - 1, getHeight() - ROW_HEIGHT - 2);
 
         // draw elements
         x = 0;
@@ -79,7 +93,6 @@ public class KrTableView extends KrAbstractItemView {
         }
 
         if (clipped) {
-            clipped = false;
             renderer.endClip();
         }
 
@@ -91,15 +104,15 @@ public class KrTableView extends KrAbstractItemView {
                 renderer.drawLine(i * columnWidth - 1, 0, i * columnWidth - 1, getHeight());
             }
 
-            clipped = renderer.beginClip(0, ROW_HEIGHT, getWidth(), getHeight() - ROW_HEIGHT);
-            int rowCount = model.getRowCount();
-            for (int i = 1; i < rowCount + (drawHeader ? 1 : 0); ++i) {
-                int offset = (int) -verticalScrollBar.getCurrentValue();
-                renderer.drawLine(0, i * rowHeight - 1 + offset, getWidth(), i * rowHeight - 1 + offset);
-            }
-        }
-        if (clipped) {
-            renderer.endClip();
+//            clipped = renderer.beginClip(1, ROW_HEIGHT - 2, getWidth() - 2, getHeight() - ROW_HEIGHT - 2);
+//            int rowCount = model.getRowCount();
+//            for (int i = 1; i < rowCount + (drawHeader ? 1 : 0); ++i) {
+//                int offset = (int) -verticalScrollBar.getCurrentValue();
+//                renderer.drawLine(0, i * rowHeight - 1 + offset, getWidth(), i * rowHeight - 1 + offset);
+//            }
+//            if (clipped) {
+//                renderer.endClip();
+//            }
         }
     }
 
