@@ -158,15 +158,10 @@ public abstract class KrAbstractItemView extends KrWidget {
         @SuppressWarnings("Duplicates")
         @Override
         public void setGeometry(Rectangle geometry) {
-            int width = (int) geometry.getWidth();
-            int height = (int) geometry.getHeight();
-
-            float preferredHeight = getPreferredHeight();
-            int requiredScrollSize = (int) (preferredHeight - geometry.getHeight());
-
+            int requiredScrollSize = (int) (getPreferredHeight() - geometry.getHeight());
             if (requiredScrollSize > 0) {
-                int scrollBarWidth = (int) verticalScrollBar.getPreferredWidth();
-                verticalScrollBar.setGeometry(width - scrollBarWidth, 0, scrollBarWidth, height);
+                getScrollBarGeometry(tmpRect);
+                verticalScrollBar.setGeometry(tmpRect);
                 verticalScrollBar.setValueRange(0, requiredScrollSize);
             } else {
                 verticalScrollBar.setSize(0, 0);
@@ -179,6 +174,8 @@ public abstract class KrAbstractItemView extends KrWidget {
             return calculatePreferredSize();
         }
     }
+
+    protected abstract void getScrollBarGeometry(Rectangle scrollbarGeometry);
 
     public interface KrDoubleClickListener {
         void itemDoubleClicked(KrItemModel.KrModelIndex itemIndex);

@@ -9,7 +9,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.*;
+import com.katzstudio.kreativity.ui.KrAlignment;
+import com.katzstudio.kreativity.ui.KrCanvas;
+import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
+import com.katzstudio.kreativity.ui.KrOrientation;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrSizePolicyModel;
+import com.katzstudio.kreativity.ui.KrSkin;
+import com.katzstudio.kreativity.ui.KrToolkit;
+import com.katzstudio.kreativity.ui.KrUnifiedSize;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItem;
@@ -18,7 +26,11 @@ import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.icon.KrFontAwesomeIcon;
 import com.katzstudio.kreativity.ui.icon.KrIcon;
-import com.katzstudio.kreativity.ui.layout.*;
+import com.katzstudio.kreativity.ui.layout.KrAbsoluteLayout;
+import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
+import com.katzstudio.kreativity.ui.layout.KrCardLayout;
+import com.katzstudio.kreativity.ui.layout.KrFlowLayout;
+import com.katzstudio.kreativity.ui.layout.KrGridLayout;
 import com.katzstudio.kreativity.ui.layout.KrGridLayout.Constraint;
 import com.katzstudio.kreativity.ui.model.KrItemModel;
 import com.katzstudio.kreativity.ui.model.KrListItemModel;
@@ -29,7 +41,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.gl;
-import static com.badlogic.gdx.graphics.GL20.*;
+import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_DEPTH_BUFFER_BIT;
+import static com.badlogic.gdx.graphics.GL20.GL_ONE_MINUS_SRC_ALPHA;
+import static com.badlogic.gdx.graphics.GL20.GL_SRC_ALPHA;
 import static com.katzstudio.kreativity.ui.KrColor.rgb;
 import static com.katzstudio.kreativity.ui.KrOrientation.HORIZONTAL;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
@@ -109,6 +125,7 @@ public class UiDemo extends Game {
 
         demoPanel.addChild(createScrollBarsPanel(), 2);
         demoPanel.addChild(createScrollPanel(), 2);
+        demoPanel.addChild(createListView(), 2);
         demoPanel.addChild(createTableView(), 2);
 
         demoPanel.addChild(createSplitPanel(), 3);
@@ -252,12 +269,11 @@ public class UiDemo extends Game {
     }
 
     private KrPanel createListView() {
-        KrPanel wrapper = new KrPanel();
+        KrPanel wrapper = new KrPanel(new KrBorderLayout(4, 0));
 
         KrLabel label = new KrLabel("List View");
         label.setForeground(lightGray);
         label.setName("list_view.label");
-        label.setGeometry(0, 0, 60, 20);
 
         List<String> itemValues = new ArrayList<>(15);
         for (int i = 0; i < 15; ++i) {
@@ -265,24 +281,22 @@ public class UiDemo extends Game {
         }
         KrListItemModel<String> model = new KrListItemModel<>(itemValues);
         KrListView listView = new KrListView(model);
-        listView.setGeometry(0, 20, 160, 100);
         listView.getSelectionModel().addSelectionListener((oldSelection, newSelection) ->
                 System.out.println("newSelection = " + newSelection));
         listView.addDoubleClickListener(itemIndex -> System.out.println("2x clicked itemIndex: " + itemIndex));
 
-        wrapper.add(label);
-        wrapper.add(listView);
+        wrapper.add(label, NORTH);
+        wrapper.add(listView, CENTER);
         wrapper.setPreferredHeight(120);
         return wrapper;
     }
 
     private KrPanel createTableView() {
-        KrPanel wrapper = new KrPanel();
+        KrPanel wrapper = new KrPanel(new KrBorderLayout(4, 0));
 
         KrLabel label = new KrLabel("Table View");
         label.setForeground(lightGray);
         label.setName("list_view.label");
-        label.setGeometry(0, 0, 60, 20);
 
         KrTableView.KrTableColumnModel columnModel = new KrTableView.KrTableColumnModel() {
             private List<String> columns = Arrays.asList("Col 0", "Col 1", "Col 2");
@@ -332,11 +346,11 @@ public class UiDemo extends Game {
 
         KrTableView table = new KrTableView(model);
         table.setColumnModel(columnModel);
-        table.setGeometry(0, 20, 160, 100);
 
-        wrapper.add(label);
-        wrapper.add(table);
+        wrapper.add(label, NORTH);
+        wrapper.add(table, CENTER);
         wrapper.setPreferredHeight(120);
+
         return wrapper;
     }
 
@@ -445,19 +459,17 @@ public class UiDemo extends Game {
     }
 
     private KrWidget createScrollPanel() {
-        KrPanel wrapper = new KrPanel();
+        KrPanel wrapper = new KrPanel(new KrBorderLayout(4, 4));
 
         KrLabel label = new KrLabel("Scroll Panel");
         label.setForeground(lightGray);
-        label.setGeometry(0, 0, 150, 20);
 
         KrWidget panel = createDummyContent("DUMMY");
         panel.setPreferredSize(new Vector2(120, 200));
         KrScrollPanel scrollPanel = new KrScrollPanel(panel);
-        scrollPanel.setGeometry(0, 20, 160, 90);
 
-        wrapper.add(label);
-        wrapper.add(scrollPanel);
+        wrapper.add(label, NORTH);
+        wrapper.add(scrollPanel, CENTER);
         wrapper.setPreferredHeight(120);
 
         return wrapper;
@@ -700,6 +712,7 @@ public class UiDemo extends Game {
 
     @Override
     public void render() {
+        fpsLogger.log();
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         float deltaTime = Gdx.graphics.getRawDeltaTime();
         getDefaultToolkit().update(deltaTime);

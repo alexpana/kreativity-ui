@@ -47,6 +47,7 @@ import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_DARK;
 import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BACKGROUND_LIGHT;
 import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.BORDER;
 import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.FOREGROUND;
+import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SCROLLBAR_THUMB;
 import static com.katzstudio.kreativity.ui.KrSkin.ColorKey.SELECTION_BACKGROUND;
 
 /**
@@ -63,8 +64,10 @@ public class KrSkin {
         colors.put(BACKGROUND_LIGHT, new Color(0x424242ff));
         colors.put(BACKGROUND_DARK, new Color(0x353535ff));
         colors.put(BORDER, new Color(0x323232ff));
+//        colors.put(BORDER, new Color(0x676767ff));
         colors.put(FOREGROUND, new Color(0xDDDDDDFF));
         colors.put(SELECTION_BACKGROUND, new Color(0x4b6eafff));
+        colors.put(SCROLLBAR_THUMB, new Color(0x323232ff));
     }
 
     private final Map<String, Drawable> drawablePatches = new HashMap<>();
@@ -167,11 +170,12 @@ public class KrSkin {
         spinnerStyle.padding = new KrPadding(1, 17, 4, 4);
         registerStyle(KrSpinner.class, spinnerStyle);
 
-        KrScrollBarStyle ScrollBarStyle = new KrScrollBarStyle(widgetStyle);
-        ScrollBarStyle.track = drawablePatches.get("scrollbar.vertical.track");
-        ScrollBarStyle.thumb = drawablePatches.get("scrollbar.vertical.thumb");
-        ScrollBarStyle.size = 5;
-        registerStyle(KrScrollBar.class, ScrollBarStyle);
+        KrScrollBarStyle scrollBarStyle = new KrScrollBarStyle(widgetStyle);
+        scrollBarStyle.track = toolkit.getDrawable(KrColor.TRANSPARENT); //drawablePatches.get("scrollbar.vertical.track");
+        scrollBarStyle.foregroundColor = getColor(SCROLLBAR_THUMB);
+        scrollBarStyle.thumb = drawablePatches.get("scrollbar.vertical.thumb");
+        scrollBarStyle.size = 4;
+        registerStyle(KrScrollBar.class, scrollBarStyle);
 
         KrButtonStyle buttonGroupFirstButtonStyle = new KrButtonStyle(buttonStyle);
         buttonGroupFirstButtonStyle.backgroundNormal = drawablePatches.get("button_group_first.background_normal");
@@ -243,5 +247,6 @@ public class KrSkin {
         FOREGROUND,
         SELECTION_BACKGROUND,
         BORDER,
+        SCROLLBAR_THUMB,
     }
 }

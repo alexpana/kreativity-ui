@@ -154,11 +154,14 @@ public class KrScrollBar extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-        renderer.setBrush(((KrScrollBarStyle) getStyle()).track);
-        renderer.fillRect(0, 0, getWidth(), getHeight());
+//        renderer.setBrush(((KrScrollBarStyle) getStyle()).track);
+//        renderer.fillRect(0, 0, getWidth(), getHeight());
+//
+//        renderer.setBrush(((KrScrollBarStyle) getStyle()).thumb);
+//        renderer.fillRect(getThumbGeometry(tmpRect));
 
-        renderer.setBrush(((KrScrollBarStyle) getStyle()).thumb);
-        renderer.fillRect(getThumbGeometry(tmpRect));
+        renderer.setBrush(getForeground());
+        renderer.fillRoundedRect(getThumbGeometry(tmpRect), 2);
     }
 
     @Override

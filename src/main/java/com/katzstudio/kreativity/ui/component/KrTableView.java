@@ -1,6 +1,7 @@
 package com.katzstudio.kreativity.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
@@ -40,7 +41,6 @@ public class KrTableView extends KrAbstractItemView {
         this.model = model;
         this.columnModel = columnModel;
         setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrTableView.class));
-        verticalScrollBar.setVisible(false);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class KrTableView extends KrAbstractItemView {
         renderer.setBrush(borderColor);
         renderer.fillRoundedRect(0, 0, (int) getWidth(), (int) getHeight(), 3);
 
-        renderer.setBrush(KrToolkit.getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BACKGROUND));
+        renderer.setBrush(KrToolkit.getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BACKGROUND_LIGHT));
         renderer.fillRoundedRect(1, 1, (int) getWidth() - 2, (int) getHeight() - 2, 3);
 
         // draw columns
@@ -103,16 +103,6 @@ public class KrTableView extends KrAbstractItemView {
             for (int i = 1; i < columnCount; ++i) {
                 renderer.drawLine(i * columnWidth - 1, 0, i * columnWidth - 1, getHeight());
             }
-
-//            clipped = renderer.beginClip(1, ROW_HEIGHT - 2, getWidth() - 2, getHeight() - ROW_HEIGHT - 2);
-//            int rowCount = model.getRowCount();
-//            for (int i = 1; i < rowCount + (drawHeader ? 1 : 0); ++i) {
-//                int offset = (int) -verticalScrollBar.getCurrentValue();
-//                renderer.drawLine(0, i * rowHeight - 1 + offset, getWidth(), i * rowHeight - 1 + offset);
-//            }
-//            if (clipped) {
-//                renderer.endClip();
-//            }
         }
     }
 
@@ -127,6 +117,12 @@ public class KrTableView extends KrAbstractItemView {
     @Override
     public Vector2 calculatePreferredSize() {
         return new Vector2(100, model.getRowCount() * ROW_HEIGHT + (columnModel != null ? ROW_HEIGHT : 0));
+    }
+
+    @Override
+    protected void getScrollBarGeometry(Rectangle scrollbarGeometry) {
+        int scrollBarWidth = (int) verticalScrollBar.getPreferredWidth();
+        scrollbarGeometry.set(getWidth() - scrollBarWidth - 2, ROW_HEIGHT + 2, scrollBarWidth, getHeight() - ROW_HEIGHT - 4);
     }
 
     // TODO: implement selection type: cell / row

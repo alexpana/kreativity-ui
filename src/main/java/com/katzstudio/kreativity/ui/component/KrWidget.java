@@ -6,8 +6,19 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.katzstudio.kreativity.ui.*;
-import com.katzstudio.kreativity.ui.event.*;
+import com.katzstudio.kreativity.ui.KrCanvas;
+import com.katzstudio.kreativity.ui.KrCursor;
+import com.katzstudio.kreativity.ui.KrMeasuredString;
+import com.katzstudio.kreativity.ui.KrPadding;
+import com.katzstudio.kreativity.ui.KrRectangles;
+import com.katzstudio.kreativity.ui.KrWidgetToStringBuilder;
+import com.katzstudio.kreativity.ui.event.KrEnterEvent;
+import com.katzstudio.kreativity.ui.event.KrEvent;
+import com.katzstudio.kreativity.ui.event.KrExitEvent;
+import com.katzstudio.kreativity.ui.event.KrFocusEvent;
+import com.katzstudio.kreativity.ui.event.KrKeyEvent;
+import com.katzstudio.kreativity.ui.event.KrMouseEvent;
+import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrFocusListener;
 import com.katzstudio.kreativity.ui.event.listener.KrKeyboardListener;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
@@ -38,7 +49,7 @@ public class KrWidget implements KrUpdateListener {
 
     @Getter private float y;
 
-    @Getter float width;
+    @Getter private float width;
 
     @Getter private float height;
 
