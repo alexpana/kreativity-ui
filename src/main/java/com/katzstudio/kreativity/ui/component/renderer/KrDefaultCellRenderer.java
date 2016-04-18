@@ -38,9 +38,9 @@ public class KrDefaultCellRenderer implements KrCellRenderer {
     public KrWidget getComponent(int row, int col, KrModelIndex parent, KrItemModel model, boolean isSelected) {
         label.setText(model.getValue(row, col, parent).toString());
         if (isSelected) {
-            label.getStyle().background = selectedBackground;
+            label.setBackground(selectedBackground);
         } else {
-            label.getStyle().background = unselectedBackground;
+            label.setBackground(unselectedBackground);
         }
 
         return label;

@@ -3,6 +3,7 @@ package com.katzstudio.kreativity.ui.component;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.katzstudio.kreativity.ui.KrSizePolicyModel;
 import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.KrToolkit;
 import com.katzstudio.kreativity.ui.component.renderer.KrCellRenderer;
@@ -15,6 +16,8 @@ import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * A {@link KrTableView} widget displays data stored in a {@link KrItemModel}
@@ -32,6 +35,8 @@ public class KrTableView extends KrAbstractItemView {
 
     @Getter @Setter private KrTableHeaderRenderer headerRenderer = new KrDefaultTableHeaderRenderer();
 
+    private KrSizePolicyModel columnSizePolicy;
+
     public KrTableView(KrItemModel model) {
         this(model, null);
     }
@@ -40,6 +45,8 @@ public class KrTableView extends KrAbstractItemView {
         super(model);
         this.model = model;
         this.columnModel = columnModel;
+        int columnCount = columnModel != null ? columnModel.getColumnCount() : model.getColumnCount();
+        columnSizePolicy = new KrSizePolicyModel(columnCount);
         setDefaultStyle(KrToolkit.getDefaultToolkit().getSkin().getStyle(KrTableView.class));
     }
 
@@ -52,11 +59,11 @@ public class KrTableView extends KrAbstractItemView {
 
         int x = 0;
         int y = 0;
-        int columnWidth = (int) (getWidth() / columnCount);
         int rowHeight = ROW_HEIGHT;
 
-        int gridSize = ((KrItemViewStyle) getStyle()).gridVisible ? 1 : 0;
         Color borderColor = KrToolkit.getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER);
+
+        List<Integer> columnSizes = columnSizePolicy.getIntSizes(getWidth());
 
         renderer.setBrush(borderColor);
         renderer.fillRoundedRect(0, 0, (int) getWidth(), (int) getHeight(), 3);
@@ -68,16 +75,16 @@ public class KrTableView extends KrAbstractItemView {
         if (drawHeader) {
             for (int i = 0; i < columnCount; ++i) {
                 KrWidget cellWidget = headerRenderer.getComponent(i, columnModel);
-                cellWidget.setGeometry(x, y, columnWidth - gridSize, rowHeight - gridSize);
+                cellWidget.setGeometry(x, y, columnSizes.get(i), rowHeight);
                 cellWidget.draw(renderer);
-                x += columnWidth;
+                x += columnSizes.get(i);
             }
             renderer.setPen(borderColor);
             renderer.drawLine(0, ROW_HEIGHT, getWidth(), ROW_HEIGHT);
             clipY += ROW_HEIGHT;
         }
 
-        clipped = renderer.beginClip(1, clipY, getWidth() - 1, getHeight() - ROW_HEIGHT - 2);
+        clipped = renderer.beginClip(1, clipY, getWidth() - 2, getHeight() - ROW_HEIGHT - 2);
 
         // draw elements
         x = 0;
@@ -85,11 +92,11 @@ public class KrTableView extends KrAbstractItemView {
             y = (int) -verticalScrollBar.getCurrentValue() + (drawHeader ? rowHeight : 0);
             for (int j = 0; j < model.getRowCount(); ++j) {
                 KrWidget cellWidget = cellRenderer.getComponent(j, i, null, model, selectionModel.getCurrentSelection().containsRow(j));
-                cellWidget.setGeometry(x, y, columnWidth - gridSize, rowHeight - gridSize);
+                cellWidget.setGeometry(x, y, columnSizes.get(i), rowHeight);
                 cellWidget.draw(renderer);
                 y += rowHeight;
             }
-            x += columnWidth;
+            x += columnSizes.get(i);
         }
 
         if (clipped) {
@@ -100,8 +107,10 @@ public class KrTableView extends KrAbstractItemView {
         if (((KrItemViewStyle) getStyle()).gridVisible) {
             renderer.setPen(1, ((KrItemViewStyle) getStyle()).gridColor);
 
-            for (int i = 1; i < columnCount; ++i) {
-                renderer.drawLine(i * columnWidth - 1, 0, i * columnWidth - 1, getHeight());
+            x = 0;
+            for (int i = 0; i < columnCount - 1; ++i) {
+                x += columnSizes.get(i) - 1;
+                renderer.drawLine(x, 0, x, getHeight());
             }
         }
     }

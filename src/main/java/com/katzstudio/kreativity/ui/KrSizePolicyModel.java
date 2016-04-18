@@ -13,8 +13,8 @@ public class KrSizePolicyModel {
 
     private final List<KrUnifiedSize> sizePolicies = new ArrayList<>();
 
-    public KrSizePolicyModel(int size) {
-        for (int i = 0; i < size; ++i) {
+    public KrSizePolicyModel(int count) {
+        for (int i = 0; i < count; ++i) {
             sizePolicies.add(new KrUnifiedSize(0, 1));
         }
     }
