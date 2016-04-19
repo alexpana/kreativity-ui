@@ -188,9 +188,11 @@ public class KrLwjgl3Renderer extends KrRenderer {
     @Override
     public void fillRoundedRect(float x, float y, float w, float h, int cornerRadius) {
         Drawable drawable = getRoundedRectDrawable(cornerRadius);
+        Color originalColor = null;
 
         ensureSpriteBatchOpen();
         if (brushType == BrushType.COLOR) {
+            originalColor = spriteBatch.getColor();
             Color color = getAlphaMultiplied(colorBrush);
             spriteBatch.setColor(color);
             freeColor(color);
@@ -198,7 +200,9 @@ public class KrLwjgl3Renderer extends KrRenderer {
 
         drawable.draw(spriteBatch, x, viewportSize.y - y - h, w, h);
 
-        spriteBatch.setColor(Color.WHITE);
+        if (originalColor != null) {
+            spriteBatch.setColor(originalColor);
+        }
     }
 
     private Drawable getRoundedRectDrawable(int radius) {

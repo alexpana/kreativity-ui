@@ -64,10 +64,9 @@ public class KrSkin {
         colors.put(BACKGROUND_LIGHT, new Color(0x424242ff));
         colors.put(BACKGROUND_DARK, new Color(0x353535ff));
         colors.put(BORDER, new Color(0x323232ff));
-//        colors.put(BORDER, new Color(0x676767ff));
         colors.put(FOREGROUND, new Color(0xDDDDDDFF));
         colors.put(SELECTION_BACKGROUND, new Color(0x4b6eafff));
-        colors.put(SCROLLBAR_THUMB, new Color(0x323232ff));
+        colors.put(SCROLLBAR_THUMB, new Color(0x20202080));
     }
 
     private final Map<String, Drawable> drawablePatches = new HashMap<>();
@@ -174,7 +173,7 @@ public class KrSkin {
         scrollBarStyle.track = toolkit.getDrawable(KrColor.TRANSPARENT); //drawablePatches.get("scrollbar.vertical.track");
         scrollBarStyle.foregroundColor = getColor(SCROLLBAR_THUMB);
         scrollBarStyle.thumb = drawablePatches.get("scrollbar.vertical.thumb");
-        scrollBarStyle.size = 4;
+        scrollBarStyle.size = 5;
         registerStyle(KrScrollBar.class, scrollBarStyle);
 
         KrButtonStyle buttonGroupFirstButtonStyle = new KrButtonStyle(buttonStyle);

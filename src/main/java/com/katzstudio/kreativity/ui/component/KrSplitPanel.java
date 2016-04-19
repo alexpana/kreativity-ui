@@ -28,7 +28,7 @@ import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
  */
 public class KrSplitPanel extends KrWidget {
 
-    private static final int SEPARATOR_SIZE = 2;
+    private static final int SEPARATOR_SIZE = 4;
 
     private final List<KrWidget> separatorList = new ArrayList<>();
 
@@ -212,13 +212,10 @@ public class KrSplitPanel extends KrWidget {
             Vector2 gripPosition = alignRectangles(gripRectangle, geometryRectangle, MIDDLE_CENTER);
             gripRectangle.setPosition(gripPosition);
 
-            renderer.setBrush(((KrSplitPanelStyle) KrSplitPanel.this.getStyle()).splitterBackground);
-            renderer.fillRect(geometryRectangle);
-
             renderer.setBrush(grip);
             renderer.fillRect(gripRectangle);
 
-            Pools.free(gripPosition);
+            Pools.free(getGeometry());
             Pools.free(geometryRectangle);
             Pools.free(gripRectangle);
         }

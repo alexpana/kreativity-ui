@@ -47,6 +47,8 @@ public class KrScrollBar extends KrWidget {
      */
     private float dragPosition;
 
+    private boolean isHovered = false;
+
     public KrScrollBar(KrOrientation orientation) {
         this.orientation = orientation;
 
@@ -154,12 +156,6 @@ public class KrScrollBar extends KrWidget {
 
     @Override
     protected void drawSelf(KrRenderer renderer) {
-//        renderer.setBrush(((KrScrollBarStyle) getStyle()).track);
-//        renderer.fillRect(0, 0, getWidth(), getHeight());
-//
-//        renderer.setBrush(((KrScrollBarStyle) getStyle()).thumb);
-//        renderer.fillRect(getThumbGeometry(tmpRect));
-
         renderer.setBrush(getForeground());
         renderer.fillRoundedRect(getThumbGeometry(tmpRect), 2);
     }

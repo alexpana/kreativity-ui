@@ -459,7 +459,7 @@ public class UiDemo extends Game {
     }
 
     private KrWidget createScrollPanel() {
-        KrPanel wrapper = new KrPanel(new KrBorderLayout(4, 4));
+        KrPanel wrapper = new KrPanel(new KrBorderLayout(4, 0));
 
         KrLabel label = new KrLabel("Scroll Panel");
         label.setForeground(lightGray);
@@ -703,8 +703,16 @@ public class UiDemo extends Game {
     }
 
     public KrPanel createDummyContent(String text) {
-        KrPanel panel = new KrPanel();
-        panel.setBackground(darkerGray);
+        KrPanel panel = new KrPanel() {
+            @Override
+            protected void drawSelf(KrRenderer renderer) {
+                renderer.setBrush(getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BORDER));
+                renderer.fillRoundedRect(0, 0, getWidth(), getHeight(), 2);
+
+                renderer.setBrush(getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BACKGROUND_LIGHT));
+                renderer.fillRoundedRect(1, 1, getWidth() - 2, getHeight() - 2, 2);
+            }
+        };
         panel.setLayout(new KrBorderLayout());
         panel.add(new KrLabel(text), CENTER);
         return panel;
