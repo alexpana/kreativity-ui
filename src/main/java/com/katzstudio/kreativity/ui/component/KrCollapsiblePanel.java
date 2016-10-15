@@ -7,6 +7,7 @@ import com.katzstudio.kreativity.ui.KrSkin;
 import com.katzstudio.kreativity.ui.event.KrMouseEvent;
 import com.katzstudio.kreativity.ui.event.listener.KrMouseListener;
 import com.katzstudio.kreativity.ui.layout.KrBorderLayout;
+import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
@@ -53,7 +54,17 @@ public class KrCollapsiblePanel extends KrWidget {
     }
 
     private KrPanel createHeaderPanel(String title) {
-        KrPanel headerPanel = new KrPanel();
+        KrPanel headerPanel = new KrPanel() {
+            @Override
+            protected void drawSelf(KrRenderer renderer) {
+                renderer.setBrush(getDefaultToolkit().getSkin().getColor(KrSkin.ColorKey.BACKGROUND_DARK));
+                renderer.fillRoundedRect(0, 0, getWidth(), getHeight(), 2);
+
+                if (state != State.COLLAPSED) {
+                    renderer.fillRect(0, 2, getWidth(), getHeight() - 2);
+                }
+            }
+        };
 
         titleLabel = new KrLabel(title);
 
