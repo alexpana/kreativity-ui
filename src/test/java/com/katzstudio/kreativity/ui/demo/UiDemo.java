@@ -9,15 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.katzstudio.kreativity.ui.KrAlignment;
-import com.katzstudio.kreativity.ui.KrCanvas;
-import com.katzstudio.kreativity.ui.KrFontAwesomeGlyph;
-import com.katzstudio.kreativity.ui.KrOrientation;
-import com.katzstudio.kreativity.ui.KrPadding;
-import com.katzstudio.kreativity.ui.KrSizePolicyModel;
-import com.katzstudio.kreativity.ui.KrSkin;
-import com.katzstudio.kreativity.ui.KrToolkit;
-import com.katzstudio.kreativity.ui.KrUnifiedSize;
+import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItem;
@@ -606,7 +598,7 @@ public class UiDemo extends Game {
     }
 
     private KrWidget createBorderLayoutPanel() {
-        KrPanel wrapper = new KrPanel();
+        KrPanel wrapper = new KrPanel(new KrBorderLayout(4, 0));
 
         KrLabel label = new KrLabel("Border Layout");
         label.setForeground(lightGray);
@@ -654,8 +646,8 @@ public class UiDemo extends Game {
 
         panel.setGeometry(0, 20, 180, 120);
 
-        wrapper.add(label);
-        wrapper.add(panel);
+        wrapper.add(label, KrBorderLayout.Constraint.NORTH);
+        wrapper.add(panel, KrBorderLayout.Constraint.CENTER);
         wrapper.setPreferredHeight(140);
 
         return wrapper;

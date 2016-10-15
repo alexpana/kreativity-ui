@@ -30,7 +30,7 @@ public class KrButton extends KrWidget {
     private static final int ICON_TEXT_PADDING = 2;
 
     enum State {
-        NORMAL, HOVERED, ARMED;
+        NORMAL, HOVERED, ARMED
     }
 
     private Vector2 tmpVec = new Vector2();

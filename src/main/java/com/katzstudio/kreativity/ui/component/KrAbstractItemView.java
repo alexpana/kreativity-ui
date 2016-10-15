@@ -11,7 +11,6 @@ import com.katzstudio.kreativity.ui.layout.KrLayout.KrAbstractLayout;
 import com.katzstudio.kreativity.ui.model.KrItemModel;
 import com.katzstudio.kreativity.ui.model.KrSelection;
 import com.katzstudio.kreativity.ui.model.KrSelectionModel;
-import com.katzstudio.kreativity.ui.render.KrRenderer;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -114,10 +113,6 @@ public abstract class KrAbstractItemView extends KrWidget {
         super.scrollEvent(event);
 
         verticalScrollBar.scrollEvent(event);
-    }
-
-    @Override
-    protected void drawSelf(KrRenderer renderer) {
     }
 
     @Override

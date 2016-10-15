@@ -8,6 +8,7 @@ import lombok.ToString;
  */
 @ToString
 public class KrRange {
+
     @Getter private final float min;
 
     @Getter private final float max;

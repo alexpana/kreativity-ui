@@ -101,20 +101,20 @@ public class KrCollapsiblePanel extends KrWidget {
         }
     }
 
-    private void collapse() {
-        setState(State.COLLAPSING);
-    }
-
-    private void expand() {
-        setState(State.EXPANDING);
-    }
-
     private void toggleState() {
         if (state == State.COLLAPSED || state == State.COLLAPSING) {
             expand();
         } else {
             collapse();
         }
+    }
+
+    private void expand() {
+        setState(State.EXPANDING);
+    }
+
+    private void collapse() {
+        setState(State.COLLAPSING);
     }
 
     private boolean collapseFinished() {
