@@ -12,20 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.katzstudio.kreativity.ui.component.KrButton;
-import com.katzstudio.kreativity.ui.component.KrButtonGroup;
-import com.katzstudio.kreativity.ui.component.KrCheckbox;
-import com.katzstudio.kreativity.ui.component.KrComboBox;
-import com.katzstudio.kreativity.ui.component.KrIconPanel;
-import com.katzstudio.kreativity.ui.component.KrLabel;
-import com.katzstudio.kreativity.ui.component.KrListView;
-import com.katzstudio.kreativity.ui.component.KrPanel;
-import com.katzstudio.kreativity.ui.component.KrScrollBar;
-import com.katzstudio.kreativity.ui.component.KrSpinner;
-import com.katzstudio.kreativity.ui.component.KrSplitPanel;
-import com.katzstudio.kreativity.ui.component.KrTableView;
-import com.katzstudio.kreativity.ui.component.KrTextField;
-import com.katzstudio.kreativity.ui.component.KrWidget;
+import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.style.KrButtonGroupStyle;
 import com.katzstudio.kreativity.ui.style.KrButtonStyle;
 import com.katzstudio.kreativity.ui.style.KrCheckboxStyle;
@@ -34,6 +21,7 @@ import com.katzstudio.kreativity.ui.style.KrItemViewStyle;
 import com.katzstudio.kreativity.ui.style.KrLabelStyle;
 import com.katzstudio.kreativity.ui.style.KrPanelStyle;
 import com.katzstudio.kreativity.ui.style.KrScrollBarStyle;
+import com.katzstudio.kreativity.ui.style.KrSliderStyle;
 import com.katzstudio.kreativity.ui.style.KrSplitPanelStyle;
 import com.katzstudio.kreativity.ui.style.KrTextFieldStyle;
 import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
@@ -223,6 +211,13 @@ public class KrSkin {
         iconPanelStyle.padding = new KrPadding(0, 3, 0, 3);
         iconPanelStyle.background = toolkit.getDrawable(KrColor.TRANSPARENT);
         registerStyle(KrIconPanel.class, iconPanelStyle);
+
+        KrSliderStyle sliderStyle = new KrSliderStyle(widgetStyle);
+        sliderStyle.track = getDrawable("slider.track");
+        sliderStyle.thumb = getDrawable("slider.thumb");
+        sliderStyle.size = 7;
+        registerStyle(KrSlider.class, sliderStyle);
+
     }
 
     public <S extends KrWidgetStyle> void registerStyle(Class<? extends KrWidget> widgetClass, S style) {

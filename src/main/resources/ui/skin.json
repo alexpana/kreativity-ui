@@ -136,6 +136,14 @@
         "combobox.background_normal": {
             "region": [141, 45, 24, 21],
             "split": [4, 16, 2, 2]
+        },
+        "slider.thumb": {
+            "region": [3, 65, 11, 10],
+            "split": [0, 0, 0, 0]
+        },
+        "slider.track": {
+            "region": [0, 57, 17, 7],
+            "split": [3, 3, 3, 3]
         }
     }
 }

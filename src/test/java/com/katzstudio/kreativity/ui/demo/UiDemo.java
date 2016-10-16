@@ -109,6 +109,7 @@ public class UiDemo extends Game {
         demoPanel.addChild(createButtons(), 0);
         demoPanel.addChild(createGridLayout(), 0);
         demoPanel.addChild(createCheckbox(), 0);
+        demoPanel.addChild(createSlider(), 0);
 
         demoPanel.addChild(createHorizontalFlowLayoutPanel(), 1);
         demoPanel.addChild(createVerticalFlowLayoutPanel(), 1);
@@ -125,6 +126,25 @@ public class UiDemo extends Game {
         demoPanel.addChild(createCollapsiblePanel(), 3);
 
 //        canvas.getRootPanel().add(createSandbox());
+    }
+
+    private KrWidget createSlider() {
+        KrPanel wrapper = new KrPanel();
+
+        KrLabel label = new KrLabel("Sliders");
+        label.setForeground(lightGray);
+        label.setName("sliders.label");
+        label.setGeometry(0, 0, 60, 20);
+
+        KrSlider slider = new KrSlider();
+        slider.setPosition(10, 20);
+        slider.setSize(slider.getPreferredSize());
+
+        wrapper.add(label);
+        wrapper.add(slider);
+
+        wrapper.setPreferredHeight(50);
+        return wrapper;
     }
 
     private KrCollapsiblePanel createCollapsiblePanel() {

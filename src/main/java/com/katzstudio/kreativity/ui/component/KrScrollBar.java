@@ -8,13 +8,13 @@ import com.katzstudio.kreativity.ui.event.KrScrollEvent;
 import com.katzstudio.kreativity.ui.math.KrRange;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 import com.katzstudio.kreativity.ui.style.KrScrollBarStyle;
+import com.katzstudio.kreativity.ui.style.KrWidgetStyle;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.badlogic.gdx.math.MathUtils.clamp;
 import static com.katzstudio.kreativity.ui.KrOrientation.VERTICAL;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
@@ -50,11 +50,19 @@ public class KrScrollBar extends KrWidget {
     private boolean isHovered = false;
 
     public KrScrollBar(KrOrientation orientation) {
-        this.orientation = orientation;
-
-        setDefaultStyle(getDefaultToolkit().getSkin().getStyle(KrScrollBar.class));
+        this(orientation, getDefaultToolkit().getSkin().getStyle(KrScrollBar.class));
 
         valueRange = new KrRange(0, 100);
+        setValue(0);
+    }
+
+    public KrScrollBar(KrOrientation orientation, KrWidgetStyle style) {
+        this.orientation = orientation;
+
+        setDefaultStyle(style);
+
+        valueRange = new KrRange(0, 100);
+        setValue(0);
     }
 
     /**
@@ -62,9 +70,9 @@ public class KrScrollBar extends KrWidget {
      */
     protected Rectangle getThumbGeometry(Rectangle thumbGeometry) {
         if (orientation == VERTICAL) {
-            thumbGeometry.set(0, thumbPosition, getWidth(), thumbLength);
+            thumbGeometry.set(0, thumbPosition, getWidth(), getThumbLength());
         } else {
-            thumbGeometry.set(thumbPosition, 0, thumbLength, getHeight());
+            thumbGeometry.set(thumbPosition, 0, getThumbLength(), getHeight());
         }
         return thumbGeometry;
     }
@@ -80,18 +88,17 @@ public class KrScrollBar extends KrWidget {
     }
 
     private void updatePositionFromValue() {
-        thumbPosition = KrRange.map(currentValue, valueRange, thumbRange);
+        thumbPosition = KrRange.map(currentValue, valueRange, getThumbRange());
     }
 
     protected void setThumbPosition(float newPosition) {
-        float max = (orientation == VERTICAL ? getHeight() : getWidth()) - thumbLength;
-        thumbPosition = clamp(newPosition, 0, max);
+        thumbPosition = getThumbRange().clamp(newPosition);
         updateValueFromPosition();
         notifyScrolled(getCurrentValue());
     }
 
     private void updateValueFromPosition() {
-        currentValue = KrRange.map(thumbPosition, thumbRange, valueRange);
+        currentValue = KrRange.map(thumbPosition, getThumbRange(), valueRange);
     }
 
     private void updateThumbLength() {
@@ -103,7 +110,16 @@ public class KrScrollBar extends KrWidget {
             thumbLength = 0;
         }
 
-        thumbRange = new KrRange(0, getTrackLength() - thumbLength);
+        thumbRange = new KrRange(0, getTrackLength() - getThumbLength());
+        thumbPosition = getThumbRange().clamp(thumbPosition);
+    }
+
+    protected KrRange getThumbRange() {
+        return thumbRange;
+    }
+
+    protected float getThumbLength() {
+        return thumbLength;
     }
 
     @Override
@@ -114,7 +130,7 @@ public class KrScrollBar extends KrWidget {
 
         if (!getThumbGeometry(tmpRect).contains(localMouseLocation)) {
             float positionOnTrack = orientation == VERTICAL ? localMouseLocation.y : localMouseLocation.x;
-            dragPosition = positionOnTrack - thumbLength / 2;
+            dragPosition = positionOnTrack - getThumbLength() / 2;
             setThumbPosition(dragPosition);
         } else {
             dragPosition = thumbPosition;
@@ -188,7 +204,7 @@ public class KrScrollBar extends KrWidget {
     }
 
     private void notifyScrolled(float newScrollValue) {
-        listeners.stream().forEach(listener -> listener.scrolled(newScrollValue));
+        listeners.forEach(listener -> listener.scrolled(newScrollValue));
     }
 
     protected static float mapRange(float value, float min, float max, float newMin, float newMax) {
