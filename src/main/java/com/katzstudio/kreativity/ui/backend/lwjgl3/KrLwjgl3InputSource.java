@@ -196,8 +196,8 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
     }
 
     @Override
-    public boolean scrolled(int amount) {
-        KrScrollEvent scrollEvent = new KrScrollEvent(amount);
+    public boolean scrolled(float amountX, float amountY) {
+        KrScrollEvent scrollEvent = new KrScrollEvent(amountX, amountY);
 
         notifyScrolledEvent(scrollEvent);
 

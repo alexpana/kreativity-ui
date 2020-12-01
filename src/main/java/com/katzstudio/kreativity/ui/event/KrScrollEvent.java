@@ -8,5 +8,6 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class KrScrollEvent extends KrEvent {
-    @Getter private final float scrollAmount;
+    @Getter private final float scrollAmountX;
+    @Getter private final float scrollAmountY;
 }
