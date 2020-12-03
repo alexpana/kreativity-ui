@@ -164,7 +164,7 @@ public class KrScrollBar extends KrWidget {
         super.scrollEvent(event);
 
         if (!isDragging) {
-            setValue(getCurrentValue() + getScrollStep() * event.getScrollAmount());
+            setValue(getCurrentValue() + getScrollStep() * event.getScrollAmountY());
         }
 
         event.accept();

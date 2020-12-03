@@ -1,5 +1,5 @@
 plugins {
-    id "org.sonarqube" version "1.2"
+    id "org.sonarqube" version "3.0"
 }
 
 apply plugin: "java"
@@ -14,7 +14,7 @@ compileJava {
 }
 
 ext {
-    gdxVersion = "1.9.1"
+    gdxVersion = "1.9.12"
     lombokVersion = "1.16.6"
     guavaVersion = "12.0"
 }
@@ -36,6 +36,9 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
 
     compile "org.projectlombok:lombok:$lombokVersion"
+
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     // Used by the demo to create a native window and context
     testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"

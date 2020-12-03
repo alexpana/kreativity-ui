@@ -95,7 +95,7 @@ public class InputListenerDispatchTest {
     @Test
     public void testMouseScrolledListener() {
         KrMouseListener listener = mock(KrMouseListener.class);
-        KrScrollEvent event = new KrScrollEvent(10f);
+        KrScrollEvent event = new KrScrollEvent(0, 10f);
 
         testObject.addMouseListener(listener);
         testObject.handle(event);
