@@ -45,13 +45,13 @@ public class KrWidget implements KrUpdateListener {
 
     public static final String FOCUS_PROPERTY = "property.focus";
 
-    @Getter private float x;
+    @Getter protected float x;
 
-    @Getter private float y;
+    @Getter protected float y;
 
-    @Getter private float width;
+    @Getter protected float width;
 
-    @Getter private float height;
+    @Getter protected float height;
 
     @Getter private final ArrayList<KrWidget> children = new ArrayList<>();
 
