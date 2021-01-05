@@ -153,6 +153,7 @@ public class KrMenu extends KrWidget {
             Vector2 textPosition = KrAlignmentTool.alignRectangles(text.getBounds(), alignmentReference, KrAlignment.MIDDLE_LEFT);
 
             renderer.setPen(1, getForeground());
+            renderer.setFont(getStyle().font);
             renderer.drawText(text.getString(), textPosition);
 
             Pools.free(textPosition);
