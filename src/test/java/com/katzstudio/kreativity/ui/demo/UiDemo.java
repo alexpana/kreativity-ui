@@ -7,8 +7,10 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.katzstudio.kreativity.ui.*;
 import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
 import com.katzstudio.kreativity.ui.component.*;
@@ -66,7 +68,7 @@ public class UiDemo extends Game {
 
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setWindowedMode(840, 600);
+        config.setWindowedMode(940, 600);
         config.setTitle("Kreativity UI Demo");
         config.useVsync(false);
         new Lwjgl3Application(new UiDemo(), config);
@@ -123,9 +125,27 @@ public class UiDemo extends Game {
 
         demoPanel.addChild(createSplitPanel(), 3);
         demoPanel.addChild(createCollapsiblePanel(), 3);
-        demoPanel.addChild(createCollapsiblePanel(), 3);
+        demoPanel.addChild(createImagePanel(), 3);
 
 //        canvas.getRootPanel().add(createSandbox());
+    }
+
+    private KrWidget createImagePanel() {
+        KrCollapsiblePanel collapsiblePanel = new KrCollapsiblePanel("Collapsible Image Panel");
+
+        KrPanel bodyPanel = collapsiblePanel.getBodyPanel();
+        bodyPanel.setLayout(new KrBorderLayout());
+
+        Texture texture = new Texture(Gdx.files.internal("badlogic.jpg"));
+        TextureRegionDrawable drawable = new TextureRegionDrawable(texture);
+        KrDrawableView imagePanel = new KrDrawableView(drawable);
+        imagePanel.setKeepAspect(false);
+        // Force image size to 256 x 256
+        imagePanel.setGeometry(0,0, texture.getWidth(), texture.getHeight());
+
+        bodyPanel.add(imagePanel, KrBorderLayout.Constraint.CENTER);
+
+        return collapsiblePanel;
     }
 
     private KrWidget createSlider() {
@@ -454,14 +474,14 @@ public class UiDemo extends Game {
 
         KrLabel label = new KrLabel("Split Panel");
         label.setForeground(lightGray);
-        label.setGeometry(0, 0, 150, 20);
+        label.setGeometry(0, 0, 250, 20);
 
         KrSplitPanel splitPanel = new KrSplitPanel();
         splitPanel.add(createDummyContent("Top Panel"), new KrUnifiedSize(60, 1));
         splitPanel.add(createDummyContent("Middle Panel"), new KrUnifiedSize(60, 1));
         splitPanel.add(createDummyContent("Bottom Panel"), new KrUnifiedSize(60, 1));
 
-        splitPanel.setGeometry(0, 20, 150, 300);
+        splitPanel.setGeometry(0, 20, 250, 300);
 
         wrapper.add(label);
         wrapper.add(splitPanel);
