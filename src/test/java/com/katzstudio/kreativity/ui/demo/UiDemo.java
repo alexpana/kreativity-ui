@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.katzstudio.kreativity.ui.*;
-import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Backend;
+import com.katzstudio.kreativity.ui.backend.gdx.KrGdxBackend;
 import com.katzstudio.kreativity.ui.component.*;
 import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItem;
 import com.katzstudio.kreativity.ui.component.KrMenu.KrMenuItemSeparator;
@@ -81,7 +81,7 @@ public class UiDemo extends Game {
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 
-        KrToolkit.initialize(new KrLwjgl3Backend());
+        KrToolkit.initialize(new KrGdxBackend());
         Gdx.input.setInputProcessor((InputAdapter) getDefaultToolkit().getInputSource());
         canvas = KrToolkit.getDefaultToolkit().getCanvas();
 

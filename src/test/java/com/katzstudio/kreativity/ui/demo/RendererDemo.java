@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
-import com.katzstudio.kreativity.ui.backend.lwjgl3.KrLwjgl3Renderer;
+import com.katzstudio.kreativity.ui.backend.gdx.KrGdxRenderer;
 import com.katzstudio.kreativity.ui.render.KrColorBrush;
 import com.katzstudio.kreativity.ui.render.KrRenderer;
 
@@ -30,7 +30,7 @@ public class RendererDemo extends Game {
         gl.glDepthMask(true);
         gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        renderer = new KrLwjgl3Renderer();
+        renderer = new KrGdxRenderer();
     }
 
     @Override
