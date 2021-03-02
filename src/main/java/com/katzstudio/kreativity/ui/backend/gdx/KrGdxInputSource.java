@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.backend.lwjgl3;
+package com.katzstudio.kreativity.ui.backend.gdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -17,9 +17,9 @@ import java.util.List;
 import static com.badlogic.gdx.Input.Keys.*;
 
 /**
- * {@link KrInputSource} implementation for libgdx lwjgl3 backend.
+ * {@link KrInputSource} implementation for the libgdx backend.
  */
-public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
+public class KrGdxInputSource extends InputAdapter implements KrInputSource {
 
     private static final float KEY_REPEAT_INITIAL_TIME = 0.4f;
 
@@ -63,7 +63,7 @@ public class KrLwjgl3InputSource extends InputAdapter implements KrInputSource {
 
     private Vector2 mousePosition = new Vector2();
 
-    public KrLwjgl3InputSource() {
+    public KrGdxInputSource() {
         // TODO: investigate pointer offset on MAC OSX. Compensating here with a small hack
         if (((String) System.getProperties().get("os.name")).contains("Mac")) {
             inputOffsetX = -4;

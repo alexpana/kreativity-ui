@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.backend.lwjgl3;
+package com.katzstudio.kreativity.ui.backend.gdx;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -6,9 +6,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.katzstudio.kreativity.ui.KrFontMetrics;
 
 /**
- * {@link KrFontMetrics} implementation for the libgdx lwjgl3 backend
+ * {@link KrFontMetrics} implementation for the libgdx backend
  */
-public class KrLwjgl3FontMetrics extends KrFontMetrics {
+public class KrGdxFontMetrics extends KrFontMetrics {
 
     private GlyphLayout layout = new GlyphLayout();
 
