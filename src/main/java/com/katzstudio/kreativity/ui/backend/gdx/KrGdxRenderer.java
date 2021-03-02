@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.backend.lwjgl3;
+package com.katzstudio.kreativity.ui.backend.gdx;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,9 +22,9 @@ import lombok.Setter;
 import static com.katzstudio.kreativity.ui.KrToolkit.getDefaultToolkit;
 
 /**
- * {@link KrRenderer} implementation for the libgdx lwjgl3 backend
+ * {@link KrRenderer} implementation for the libgdx backend
  */
-public class KrLwjgl3Renderer extends KrRenderer {
+public class KrGdxRenderer extends KrRenderer {
 
     private final RenderMode spriteBatchRenderMode;
 
@@ -56,7 +56,7 @@ public class KrLwjgl3Renderer extends KrRenderer {
 
     @Getter private float opacity = 1;
 
-    public KrLwjgl3Renderer() {
+    public KrGdxRenderer() {
         spriteBatch = new SpriteBatch(100);
         shapeRenderer = new ShapeRenderer(100);
         shapeRenderer.setAutoShapeType(true);

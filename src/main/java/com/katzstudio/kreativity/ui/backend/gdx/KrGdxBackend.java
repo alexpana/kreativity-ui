@@ -1,4 +1,4 @@
-package com.katzstudio.kreativity.ui.backend.lwjgl3;
+package com.katzstudio.kreativity.ui.backend.gdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -19,26 +19,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This backed works with the libgdx Lwjgl3 backend.
+ * This backend works with libgdx.
  */
-public class KrLwjgl3Backend implements KrBackend {
+public class KrGdxBackend implements KrBackend {
 
     private final Map<Color, Drawable> drawableCache = new HashMap<>();
 
-    private final KrLwjgl3Renderer renderer;
+    private final KrGdxRenderer renderer;
 
-    private final KrLwjgl3FontMetrics fontMetrics;
+    private final KrGdxFontMetrics fontMetrics;
 
-    private final KrLwjgl3InputSource inputSource;
+    private final KrGdxInputSource inputSource;
 
     private final Clipboard clipboard;
 
     private KrCursor currentCursor;
 
-    public KrLwjgl3Backend() {
-        renderer = new KrLwjgl3Renderer();
-        fontMetrics = new KrLwjgl3FontMetrics();
-        inputSource = new KrLwjgl3InputSource();
+    public KrGdxBackend() {
+        renderer = new KrGdxRenderer();
+        fontMetrics = new KrGdxFontMetrics();
+        inputSource = new KrGdxInputSource();
         clipboard = Gdx.app.getClipboard();
     }
 
